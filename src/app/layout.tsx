@@ -18,7 +18,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className={`${roboto.variable} antialiased`}>
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
