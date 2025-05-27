@@ -27,7 +27,7 @@ export default function ProductIdReview() {
   console.log(product?.data)
   const productData = product?.data
 
-  if (isLoading) return <div>로딩 중...</div>
+  if (isLoading) return <div>로딩 이모티콘 들어가야 함...</div>
   if (isError) return <div>에러 발생: {(error as Error).message}</div>
 
   return (
