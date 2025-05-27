@@ -7,7 +7,7 @@ type Props = {};
 
 const Header = (props: Props) => {
   return (
-    <header className="flex flex-row items-center justify-between lg:px-[120px] lg:py-[36px] md:px-[30px] md:py-[28px] p-[23px]">
+    <header className="flex flex-row items-center justify-between h-[100px] lg:px-[120px] lg:py-[36px] md:px-[30px] md:py-[28px] p-[23px]">
       <RxHamburgerMenu
         className="md:hidden cursor-pointer"
         size={24}
@@ -36,7 +36,7 @@ const Header = (props: Props) => {
         />
         <CiSearch
           size={24}
-          className="absolute lg:top-[20px] lg:left-[23px] md:top-[15px] md:left-[20px]"
+          className="absolute lg:top-[16px] lg:left-[23px] md:top-[15px] md:left-[20px]"
           color="#9FA6B2"
         />
         <Link
