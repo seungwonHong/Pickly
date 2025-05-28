@@ -1,19 +1,19 @@
-'use client'
+"use client";
 
-import { useQuery } from '@tanstack/react-query'
-import React, { useEffect } from 'react'
-import { useParams } from 'next/navigation'
+import { useQuery } from "@tanstack/react-query";
+import React, { useEffect } from "react";
+import { useParams } from "next/navigation";
 
-import { productService } from '../api'
-import ProductIdStatsBone from './ProductIdStatsBone'
+import { productService } from "../api";
+import ProductIdStatsBone from "./ProductIdStatsBone";
 
-import Heart from '../../../../public/icons/Heart.png'
-import Star from '../../../../public/icons/Star.png'
-import Talk from '../../../../public/icons/Talk.png'
+import Heart from "../../../../public/icons/Heart.png";
+import Star from "../../../../public/icons/Star.png";
+import Talk from "../../../../public/icons/Talk.png";
 
 export default function ProductIdStats() {
-  const { id } = useParams()
-  console.log('id:', id)
+  const { id } = useParams();
+  console.log("id:", id);
 
   const {
     data: score,
@@ -21,21 +21,21 @@ export default function ProductIdStats() {
     isError,
     error,
   } = useQuery({
-    queryKey: ['productIdStats', id],
+    queryKey: ["productIdStats", id],
     queryFn: () =>
       productService.getProductsId(Number(id)).then((res) => res.data),
     enabled: !!id,
-  })
+  });
   console.log(
-    'score:',
+    "score:",
     score,
-    'isLoading:',
+    "isLoading:",
     isLoading,
-    'isError:',
+    "isError:",
     isError,
-    'error:',
+    "error:",
     error
-  )
+  );
   return (
     <div className="w-[940px] h-[244px] text-amber-50 flex flex-col gap-[29px]">
       <div className="text-[20px] font-normal">상품통계</div>
@@ -53,7 +53,7 @@ export default function ProductIdStats() {
         <ProductIdStatsBone title="댓글 수" icon={Talk} />
       </div>
     </div>
-  )
+  );
 }
 
 // import { useQuery } from '@tanstack/react-query'
