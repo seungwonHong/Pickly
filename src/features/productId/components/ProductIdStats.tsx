@@ -25,7 +25,7 @@ export default function ProductIdStats() {
           icon={Star}
           score={product?.rating}
           diffValue={product?.categoryMetric?.rating - product?.rating}
-          unit="점"
+          unit=" 점"
         />
         <ProductIdStatsBone
           title="하트 수"
@@ -34,7 +34,7 @@ export default function ProductIdStats() {
           diffValue={
             product?.categoryMetric?.favoriteCount - product?.favoriteCount
           }
-          unit="개"
+          unit=" 개"
         />
         <ProductIdStatsBone
           title="댓글 수"
@@ -43,7 +43,7 @@ export default function ProductIdStats() {
           diffValue={
             product?.categoryMetric?.reviewCount - product?.reviewCount
           }
-          unit="개"
+          unit=" 개"
         />
       </div>
     </div>

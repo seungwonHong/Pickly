@@ -35,7 +35,7 @@ export default function ProductIdStatsBone({
               <span className="text-[#f1f1f5] font-medium">
                 {Math.round(Math.abs(diffValue))}
                 {unit}
-              </span>
+              </span>{" "}
               {diffValue > 0
                 ? "더 적어요!"
                 : diffValue < 0
