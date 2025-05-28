@@ -33,7 +33,7 @@ export default function ProductIdStatsBone({
             <>
               같은 카테고리의 제품들보다
               <span className="text-[#f1f1f5] font-medium">
-                {Math.abs(diffValue)}
+                {Math.round(Math.abs(diffValue))}
                 {unit}
               </span>
               {diffValue > 0

@@ -15,7 +15,7 @@ export default function ProductIdStats() {
   console.log("id:", id);
 
   const { product } = useGetProductId();
-  console.log("product:", product);
+
   return (
     <div className="w-[940px] h-[244px] text-amber-50 flex flex-col gap-[29px]">
       <div className="text-[20px] font-normal">상품통계</div>
@@ -24,7 +24,7 @@ export default function ProductIdStats() {
           title="별점 평균"
           icon={Star}
           score={product?.rating}
-          diffValue={product.categoryMetric?.rating - product?.rating}
+          diffValue={product?.categoryMetric?.rating - product?.rating}
           unit="점"
         />
         <ProductIdStatsBone
@@ -32,7 +32,7 @@ export default function ProductIdStats() {
           icon={Heart}
           score={product?.favoriteCount}
           diffValue={
-            product.categoryMetric?.favoriteCount - product?.favoriteCount
+            product?.categoryMetric?.favoriteCount - product?.favoriteCount
           }
           unit="개"
         />
@@ -40,7 +40,9 @@ export default function ProductIdStats() {
           title="댓글 수"
           icon={Talk}
           score={product?.reviewCount}
-          diffValue={product.categoryMetric?.reviewCount - product?.reviewCount}
+          diffValue={
+            product?.categoryMetric?.reviewCount - product?.reviewCount
+          }
           unit="개"
         />
       </div>
