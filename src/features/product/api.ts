@@ -8,5 +8,11 @@ class ProductService {
   }
 }
 
-const productService = new ProductService()
-export default productService
+class UserService {
+  getUser() {
+    return axios.get(`${BASE_URL}/users/me`)
+  }
+}
+
+export const productService = new ProductService()
+export const userService = new UserService()
