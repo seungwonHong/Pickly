@@ -29,20 +29,24 @@ export default function ProductIdStatsBone({
           <div className="text-[24px] font-[300] text-[#9FA6B2]">{score}</div>
         </div>
         <div className="text-[13px] font-[300] text-[#9FA6B2] text-center">
-          {typeof diffValue === "number" && (
-            <>
-              같은 카테고리의 제품들보다
-              <span className="text-[#f1f1f5] font-medium">
-                {Math.round(Math.abs(diffValue))}
-                {unit}
-              </span>{" "}
-              {diffValue > 0
-                ? "더 적어요!"
-                : diffValue < 0
-                ? "더 많아요!"
-                : "같은 수준이에요!"}
-            </>
-          )}
+          {typeof diffValue === "number" &&
+            (() => {
+              const roundedDiff = Math.round(diffValue);
+              return (
+                <>
+                  같은 카테고리의 제품들보다
+                  <span className="text-[#f1f1f5] font-medium">
+                    {Math.abs(roundedDiff)}
+                    {unit}
+                  </span>{" "}
+                  {roundedDiff > 0
+                    ? "더 적어요!"
+                    : roundedDiff < 0
+                    ? "더 많아요!"
+                    : "같은 수준이에요!"}
+                </>
+              );
+            })()}
         </div>
       </div>
     </div>
