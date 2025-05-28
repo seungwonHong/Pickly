@@ -1,12 +1,15 @@
-import type { Metadata } from 'next'
-import { Roboto } from 'next/font/google'
-import './globals.css'
 
-const roboto = Roboto({
-  variable: '--font-roboto',
-  subsets: ['latin'],
-  weight: ['100', '300', '400', '500', '700', '900'],
-})
+import type { Metadata } from "next";
+import { M_PLUS_Rounded_1c } from "next/font/google";
+import "./globals.css";
+import QueryProvider from "./providers/QueryProvider";
+
+const mplus = M_PLUS_Rounded_1c({
+  variable: "--font-mplus",
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "800", "900"],
+});
+
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,8 +22,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`${roboto.variable} antialiased`}>{children}</body>
+    <html lang="ko">
+
+      <body className={`${mplus.variable} antialiased`}>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
+
     </html>
   )
 }
