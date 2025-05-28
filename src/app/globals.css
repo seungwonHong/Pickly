@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #1C1C22;
@@ -14,15 +14,15 @@
   --color-black2: #21212a;
   --color-black3: #2e2e3a;
   --gradient-main_gradiation: linear-gradient(90deg, #5097fa 0%, #5363ff 100%);
-  --color-main_blue:#5097FA;
-  --color-main_indigo:#5363FF;
-  --color-deepGray:#6E6E82;
-  --color-lightGray:#9FA6B2;
-  --color-white:#F1F1F5;
-  --color-yellow:#FFC83C;
-  --color-green:#05D58B;
-  --color-pink:#FF2F9F;
-  --color-red:#FF0000;
+  --color-main_blue: #5097fa;
+  --color-main_indigo: #5363ff;
+  --color-deepGray: #6e6e82;
+  --color-lightGray: #9fa6b2;
+  --color-white: #f1f1f5;
+  --color-yellow: #ffc83c;
+  --color-green: #05d58b;
+  --color-pink: #ff2f9f;
+  --color-red: #ff0000;
 }
 
 @media (prefers-color-scheme: dark) {
