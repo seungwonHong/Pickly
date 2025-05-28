@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'next/navigation'
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 
-import { productService } from '../api'
+import { productService } from "../api";
 
 export default function useGetProductId() {
-  const { id } = useParams()
+  const { id } = useParams();
 
   const {
     data: product,
@@ -12,16 +12,16 @@ export default function useGetProductId() {
     isError,
     error,
   } = useQuery({
-    queryKey: ['product', id],
+    queryKey: ["product", id],
     queryFn: () =>
       productService.getProductsId(Number(id)).then((res) => res.data),
     enabled: !!id,
-  })
+  });
 
   return {
     product,
     isLoading,
     isError,
     error,
-  }
+  };
 }

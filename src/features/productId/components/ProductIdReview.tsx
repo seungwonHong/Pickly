@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
+import Image from "next/image";
 
-import useGetUser from '../hooks/useGetUser'
-import useGetProductId from '../hooks/useGetProductId'
+import useGetUser from "../hooks/useGetUser";
+import useGetProductId from "../hooks/useGetProductId";
 
-import HeartInactive from '../../../../public/svg/heart-inactive.svg'
-import KakaoLink from '../../../../public/image/kakao-link.png'
-import LinkShare from '../../../../public/image/link-share.png'
+import HeartInactive from "../../../../public/svg/heart-inactive.svg";
+import KakaoLink from "../../../../public/image/kakao-link.png";
+import LinkShare from "../../../../public/image/link-share.png";
 
 export default function ProductIdReview() {
   // useGetProductId 훅을 사용하여 상품 정보를 가져옴
-  const { product, isLoading, isError, error } = useGetProductId()
+  const { product, isLoading, isError, error } = useGetProductId();
   // useGetUser 훅을 사용하여 사용자 정보를 가져옴
-  const { user } = useGetUser()
+  const { user } = useGetUser();
 
-  if (isLoading) return <div>로딩 이모티콘 들어가야 함</div>
-  if (isError) return <div>에러 발생: {(error as Error).message}</div>
-  if (!product) return <div>상품 정보가 없습니다.</div>
+  if (isLoading) return <div>로딩 이모티콘 들어가야 함</div>;
+  if (isError) return <div>에러 발생: {(error as Error).message} </div>;
+  if (!product) return <div>상품 정보가 없습니다.</div>;
 
   return (
     <div className="flex items-start justify-between gap-10 text-[#f1f1f5]">
@@ -52,11 +52,12 @@ export default function ProductIdReview() {
         ) : (
           <div className="flex items-center justify-between">
             <div>버튼1 머지 하고 </div>
+
             <div>버튼2 머지 하고 </div>
             <div>버튼3 머지 하고 </div>
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import ProductIdReview from '@/features/productId/components/ProductIdReview'
+import ProductIdReview from '@/features/productId/components/ProductIdReview';
 
 export default function ProductIdPage() {
   return (
@@ -7,5 +7,5 @@ export default function ProductIdPage() {
         <ProductIdReview />
       </div>
     </div>
-  )
+  );
 }
