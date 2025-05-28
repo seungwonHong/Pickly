@@ -52,7 +52,6 @@ export default function ProductIdReview() {
         ) : (
           <div className="flex items-center justify-between">
             <div>버튼1 머지 하고 </div>
-
             <div>버튼2 머지 하고 </div>
             <div>버튼3 머지 하고 </div>
           </div>
