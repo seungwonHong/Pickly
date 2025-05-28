@@ -16,20 +16,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-<<<<<<< HEAD
-=======
-
->>>>>>> 0594f1cfb52c09a290bb15bd766b5cd54f5510ab
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="ko">
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 0594f1cfb52c09a290bb15bd766b5cd54f5510ab
       <body className={`${mplus.variable} antialiased`}>
         <QueryProvider>{children}</QueryProvider>
       </body>
