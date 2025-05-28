@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'next/navigation'
 
-import { productService, userService } from '../api'
+// import { userService } from '../api'
 
-export default function useProductIdReview() {
-  const { id } = useParams()
-
+export default function useGetUser() {
   // 로그인 되면 목데이터 뺄 예정
   const mockUser = {
     id: 793,
@@ -29,23 +26,7 @@ export default function useProductIdReview() {
     // queryFn: () => userService.getUser().then((res) => res.data),  -> 로그인 완료되면 다시 해야합니다.
   })
 
-  const {
-    data: product,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['product', id],
-    queryFn: () =>
-      productService.getProductsId(Number(id)).then((res) => res.data),
-    enabled: !!id,
-  })
-
   return {
     user,
-    product,
-    isLoading,
-    isError,
-    error,
   }
 }

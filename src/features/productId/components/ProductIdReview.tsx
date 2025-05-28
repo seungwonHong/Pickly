@@ -2,15 +2,18 @@
 
 import Image from 'next/image'
 
-import useProductIdReview from '../hooks/useProductReview'
+import useGetUser from '../hooks/useGetUser'
+import useGetProductId from '../hooks/useGetProductId'
 
 import HeartInactive from '../../../../public/svg/heart-inactive.svg'
 import KakaoLink from '../../../../public/image/kakao-link.png'
 import LinkShare from '../../../../public/image/link-share.png'
 
 export default function ProductIdReview() {
-  // useProductIdReview 훅을 사용하여 상품 정보와 사용자 정보를 가져옴
-  const { user, product, isLoading, isError, error } = useProductIdReview()
+  // useGetProductId 훅을 사용하여 상품 정보를 가져옴
+  const { product, isLoading, isError, error } = useGetProductId()
+  // useGetUser 훅을 사용하여 사용자 정보를 가져옴
+  const { user } = useGetUser()
 
   if (isLoading) return <div>로딩 이모티콘 들어가야 함</div>
   if (isError) return <div>에러 발생: {(error as Error).message}</div>

@@ -1,4 +1,4 @@
-import ProductIdReview from '@/features/product/components/ProductIdReview'
+import ProductIdReview from '@/features/productId/components/ProductIdReview'
 
 export default function ProductIdPage() {
   return (
