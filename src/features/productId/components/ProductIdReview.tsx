@@ -1,22 +1,23 @@
-"use client";
-
 import Image from "next/image";
 
-import useGetUser from "../hooks/useGetUser";
-import useGetProductId from "../hooks/useGetProductId";
+import { productService } from "../api";
+import ProductIdReviewButton from "./ProductIdReviewButton";
 
-import HeartInactive from "../../../../public/svg/heart-inactive.svg";
-import KakaoLink from "../../../../public/image/kakao-link.png";
-import LinkShare from "../../../../public/image/link-share.png";
+import HeartInactive from "../../../../public/icons/heart-inactive.svg";
+import KakaoLink from "../../../../public/images/kakao-link.png";
+import LinkShare from "../../../../public/images/link-share.png";
 
-export default function ProductIdReview() {
-  // useGetProductId 훅을 사용하여 상품 정보를 가져옴
-  const { product, isLoading, isError, error } = useGetProductId();
-  // useGetUser 훅을 사용하여 사용자 정보를 가져옴
-  const { user } = useGetUser();
+interface ProductIdReviewProps {
+  params: { id: string };
+}
 
-  if (isLoading) return <div>로딩 이모티콘 들어가야 함</div>;
-  if (isError) return <div>에러 발생: {(error as Error).message} </div>;
+export default async function ProductIdReview({
+  params,
+}: ProductIdReviewProps) {
+  const { data: product } = await productService.getProductsId(
+    Number(params.id)
+  );
+
   if (!product) return <div>상품 정보가 없습니다.</div>;
 
   return (
@@ -44,18 +45,8 @@ export default function ProductIdReview() {
         <div className="text-[16px] pb-[60px] font-normal">
           {product.description}
         </div>
-        {user?.id === product.userId ? (
-          <div className="flex items-center justify-between">
-            <div>버튼1 머지 하고 이거 넣어야 해요</div>
-            <div>버튼2 머지 하고 이거 넣어야 해요</div>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between">
-            <div>버튼1 머지 하고 </div>
-            <div>버튼2 머지 하고 </div>
-            <div>버튼3 머지 하고 </div>
-          </div>
-        )}
+        {/* 여기는 csr로 해야함 -> 로그인 여부에 따라 모양이 달라짐 */}
+        <ProductIdReviewButton productUserId={product.userId} />
       </div>
     </div>
   );
