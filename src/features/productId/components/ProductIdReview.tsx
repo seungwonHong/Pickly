@@ -3,9 +3,9 @@ import Image from "next/image";
 import { productService } from "../api";
 import ProductIdReviewButton from "./ProductIdReviewButton";
 
-import HeartInactive from "../../../../public/svg/heart-inactive.svg";
-import KakaoLink from "../../../../public/image/kakao-link.png";
-import LinkShare from "../../../../public/image/link-share.png";
+import HeartInactive from "../../../../public/icons/heart-inactive.svg";
+import KakaoLink from "../../../../public/images/kakao-link.png";
+import LinkShare from "../../../../public/images/link-share.png";
 
 interface ProductIdReviewProps {
   params: { id: string };
