@@ -1,5 +1,4 @@
 
-
 type TextboxSize = 'S' | 'M' | 'L';
 
 interface TextfieldProps {
@@ -35,7 +34,7 @@ export function Textfield ({
         style={{ width: width ? `${width}px` : '100%' }}
       > 
         <input 
-          className={`w-full outline-0 rounded-[8px] bg-[#252530] px-[20px] placeholder-[var(--color-deepGray)] text-[var(--color-white)] ${sizeStyle}`}
+          className={`w-full outline-0 border-0 rounded-[8px] bg-[#252530] px-[20px] placeholder-[var(--color-deepGray)] text-[var(--color-white)] ${sizeStyle}`}
           placeholder={placeholder}  
           {...rest}
         />
