@@ -44,7 +44,7 @@ const SortDropDown = ({ selectList, selected, onChange }: DropDownProps) => {
   return (
     <div className="relative" ref={selectRef}>
       <div
-        className="w-[200px] h-[24px] px-[20px]  cursor-pointer flex items-center justify-between text-[#F1F1F5]"
+        className="w-[200px]  h-[24px] px-[20px]  cursor-pointer flex items-center justify-between text-[#6E6E82]"
         onClick={toggleDropdown}
       >
         {selectList.find((item) => item.value === selected)?.name}
@@ -57,7 +57,7 @@ const SortDropDown = ({ selectList, selected, onChange }: DropDownProps) => {
         />
       </div>
       {isOpen && (
-        <ul className="absolute top-[34px]  w-full border z-10 flex flex-col items-center justify-around list-none p-[10px] gap-[5px] border-[#626282] rounded-[8px] bg-[#252530] ">
+        <ul className="absolute top-[34px] w-full border z-10 flex flex-col items-center justify-around list-none p-[10px] gap-[5px] border-[#626282] rounded-[8px] bg-[#252530] ">
           {selectList.map((item) => {
             const isSelected = item.value === selected;
             return (
