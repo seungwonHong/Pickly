@@ -9,7 +9,6 @@ export default function InputTestPage() {
   
   const [passwordBoxType, setPasswordBoxType] = useState(false);
   const handleEyeClick = () => setPasswordBoxType(!passwordBoxType);
-
   
   return (
     <div className="max-w-[1025px] h-full mx-auto mt-20">
@@ -17,7 +16,7 @@ export default function InputTestPage() {
       <p className="text-[var(--color-lightGray)]">
         현재는 유효성 검사하고있지 않습니다.  
         <br/>
-        Textbox S 과 M 은 width를 제외하고는 차이가 그게 없습니다. 참고해서 사용에 따라 가져다 쓰시면 될거 같습니다.<br/>
+        Textbox S 과 M 은 width를 제외하고는 차이가 크게 없습니다. 참고해서 사용에 따라 가져다 쓰시면 될거 같습니다.<br/>
         - Textbox는 글자수 카운트 부분이 필요해서 클라이언트 컨포넌드입니다.<br/>
         - 유효성 검사하고있지 않습니다. 글자 객수만 표기되고있습니다. form 이용한 예시 같이 올리겠습니다~ <br/>
       </p>
