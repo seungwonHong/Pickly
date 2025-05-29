@@ -6,9 +6,7 @@ import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-type Props = {};
-
-const Header = (props: Props) => {
+const Header = () => {
   const [clicked, setClicked] = useState(false);
   const params = useParams();
   const categoryId = params?.id as string;
@@ -35,7 +33,7 @@ const Header = (props: Props) => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-between h-[100px] lg:px-[120px] lg:py-[36px] md:px-[30px] md:py-[28px] p-[23px]">
+      <div className="flex flex-row items-center justify-between md:h-[100px] h-[70px] lg:px-[120px] lg:py-[36px] md:px-[30px] md:py-[28px] p-[23px] bg-[#1C1C22]">
         <RxHamburgerMenu
           className="md:hidden cursor-pointer"
           size={24}
@@ -93,7 +91,7 @@ const Header = (props: Props) => {
 
       {clicked && (
         <div
-          className="absolute w-full h-full bg-[#25253080] md:hidden"
+          className="fixed h-full w-full bg-[#25253080] md:hidden"
           onClick={() => setClicked(false)}
         >
           <Category categoryId={categoryId} />
