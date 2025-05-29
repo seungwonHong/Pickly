@@ -1,5 +1,3 @@
-"use client";
-
 interface TypeButtonProps {
   children?: React.ReactNode;
   onClick?: () => void;

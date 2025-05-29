@@ -1,5 +1,3 @@
-"use client";
-
 interface BaseButtonProps {
   children?: React.ReactNode;
   onClick?: () => void;
