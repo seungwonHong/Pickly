@@ -1,21 +1,20 @@
-"use client";
-
 import React from "react";
-import { useParams } from "next/navigation";
 
-import useGetProductId from "../hooks/useGetProductId";
+import { productService } from "../api";
 import ProductIdStatsBone from "./ProductIdStatsBone";
 
 import Heart from "../../../../public/icons/Heart.png";
 import Star from "../../../../public/icons/Star.png";
 import Talk from "../../../../public/icons/Talk.png";
 
-export default function ProductIdStats() {
-  const { id } = useParams();
-  console.log("id:", id);
+interface ProductIdReviewProps {
+  params: { id: string };
+}
 
-  const { product } = useGetProductId();
-
+export default async function ProductIdStats({ params }: ProductIdReviewProps) {
+  const { data: product } = await productService.getProductsId(
+    Number(params.id)
+  );
   return (
     <div className="w-[940px] h-[244px] text-amber-50 flex flex-col gap-[29px]">
       <div className="text-[20px] font-normal">상품통계</div>
