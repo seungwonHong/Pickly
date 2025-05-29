@@ -1,6 +1,8 @@
+
 import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
 
 // 로그인시 지워야 함, 좋아요버튼 테스트 용
 const TOKEN =
@@ -11,11 +13,13 @@ class ProductService {
   }
   getProductsIdReviews(productId: number) {
     return axios.get(`${BASE_URL}/products/${productId}/reviews`);
+
   }
 }
 
 class UserService {
   getUser() {
+
     return axios.get(`${BASE_URL}/users/me`);
   }
 }
@@ -39,9 +43,11 @@ class ReviewService {
         Authorization: `Bearer ${TOKEN}`,
       },
     });
+
   }
 }
 
 export const productService = new ProductService();
 export const userService = new UserService();
+
 export const reviewService = new ReviewService();
