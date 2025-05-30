@@ -1,7 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+
 import BaseButton from "@/components/shared/BaseButton";
 import useGetProductId from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
-import { useQuery } from "@tanstack/react-query";
+
+import CloseX from "../../../../../public/icons/close-x.png";
 export default function ProductReviewModal({
   open,
   setOpen,
@@ -13,7 +17,7 @@ export default function ProductReviewModal({
 }) {
   const { product } = useGetProductId();
   const postProductIdReview = useQuery({
-    queryKey: ["postProductIdReview", product?.id],
+    queryKey: ["postnpProductIdReview", product?.id],
     queryFn: () =>
       reviewService.postReviews(product?.id).then((res) => res.data),
     enabled: !!product?.id,
@@ -21,7 +25,12 @@ export default function ProductReviewModal({
   if (!open || !product) return null;
   return (
     <div className="w-[620px] h-[698px] bg-[#383842] rounded-2xl">
-      <div>x</div>
+      <Image
+        src={CloseX}
+        alt="close"
+        className="cursor-pointer w-[40px] h-[40px] mt-5 mr-5 mb-0 ml-0"
+        onClick={() => setOpen(false)}
+      />
       <div className="w-[540px] h-[598px] flex gap-[40px] flex-col justify-between">
         <div className="flex flex-col gap-[10px]">
           <div>{product.category.name}</div>
