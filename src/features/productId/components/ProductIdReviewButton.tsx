@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+
 import BaseButton from "@/components/shared/BaseButton";
 import TypeButton from "@/components/shared/TypeButton";
 import useGetUser from "../hooks/useGetUser";
@@ -14,16 +15,21 @@ export default function ProductIdReviewButton({
   const { user } = useGetUser();
   const isOwner = user?.id === productUserId;
 
-  // 모달
-  const [openReviewModal, setOpenReviewModal] = useState(false);
-  const handleReviewClick = () => {
-    if (!user) {
-      // 로그인하지 않은 경우 모달을 열도록 설정
-      setOpenReviewModal(false);
-    }
-    // 로그인한 경우 리뷰 작성 로직을 여기에 추가
-    setOpenReviewModal(true);
+  // 모달 열기 및 닫기 로직 (이렇게 할 수 있다니...ㄷㄷ...)
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const isReviewModalOpen = searchParams.get("modal") === "review";
+  const openModal = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("modal", "review");
+    router.push(`?${params.toString()}`, { scroll: false });
   };
+  const closeModal = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("modal");
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
   return (
     <>
       {isOwner ? (
@@ -32,7 +38,7 @@ export default function ProductIdReviewButton({
           <BaseButton
             disabled={false}
             className="px-[123.5px] py-[22px] font-semibold text-[18px] "
-            onClick={handleReviewClick}
+            onClick={openModal}
           >
             리뷰 작성하기
           </BaseButton>
@@ -48,7 +54,7 @@ export default function ProductIdReviewButton({
           <BaseButton
             disabled={false}
             className="px-[43.5px] py-[22px] font-semibold text-[18px] "
-            onClick={handleReviewClick}
+            onClick={openModal}
           >
             리뷰 작성하기
           </BaseButton>
@@ -66,10 +72,10 @@ export default function ProductIdReviewButton({
           </TypeButton>
         </div>
       )}
-      {openReviewModal && (
+      {isReviewModalOpen && (
         <ProductReviewModal
-          open={openReviewModal}
-          setOpen={setOpenReviewModal}
+          open={isReviewModalOpen}
+          setOpen={closeModal}
           productUserId={productUserId}
         />
       )}
