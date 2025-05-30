@@ -11,8 +11,8 @@ export default function HomePage({ params }: { params: { id: string } }) {
         <Header />
       </header>
 
-      <div className="relative flex flex-row lg:justify-center lg:px-[180px] md:px-0 px-[20px] lg:mt-[140px] md:mt-[120px] mt-[100px]">
-        <div className="fixed lg:left-[180px] md:left-0 md:flex hidden">
+      <div className="relative flex flex-row lg:justify-center 2xl:px-[180px] md:px-0 px-[20px] mt-[100px] lg:mx-auto">
+        <div className="fixed 2xl:left-[180px] md:left-0 md:flex hidden">
           <Category categoryId={params.id} />
         </div>
 
@@ -20,7 +20,7 @@ export default function HomePage({ params }: { params: { id: string } }) {
           <span className="lg:text-[24px] text-[#F1F1F5] font-semibold">
             지금 핫한 상품{" "}
             <span className="bg-gradient-to-r from-[#5097fa] to-[#5363ff] bg-clip-text text-transparent">
-              Top 6
+              TOP 6
             </span>
           </span>
 
@@ -54,7 +54,7 @@ export default function HomePage({ params }: { params: { id: string } }) {
         </div>
 
         <div className="flex flex-col lg:ml-0 md:ml-[180px]">
-          <div className="lg:fixed lg:right-[180px] ">
+          <div className="lg:fixed 2xl:right-[180px]">
             <ReviewerRanking />
           </div>
 

@@ -20,7 +20,7 @@ export default async function CategoryPage({
         <Header />
       </header>
 
-      <div className="relative flex flex-row lg:justify-center lg:px-[180px] md:px-0 px-[20px] lg:mt-[140px] md:mt-[120px] mt-[100px]">
+      <div className="relative flex flex-row lg:justify-center 2xl:px-[180px] md:px-0 px-[20px] mt-[100px]">
         <div className="fixed lg:left-[180px] md:left-0 md:flex hidden">
           <Category categoryId={categoryId} />
         </div>
@@ -44,7 +44,7 @@ export default async function CategoryPage({
         </div>
 
         <div className="flex flex-col lg:ml-0 md:ml-[180px]">
-          <div className="lg:fixed lg:right-[180px] ">
+          <div className="lg:fixed 2xl:right-[180px]">
             <ReviewerRanking />
           </div>
 

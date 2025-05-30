@@ -23,7 +23,7 @@ const Category = ({ categoryId }: { categoryId: string }) => {
         <CategoryTab placeholder="호텔" selected={decodedId === "호텔"} />
         <CategoryTab
           placeholder="가구/인테리아"
-          selected={decodedId === "가구/인테리아"}
+          selected={decodedId === "가구/인테리어"}
         />
         <CategoryTab placeholder="식당" selected={decodedId === "식당"} />
         <CategoryTab
