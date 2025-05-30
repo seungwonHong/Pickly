@@ -9,7 +9,11 @@ class ProductService {
   getProductsId(productId: number) {
     return axios.get(`${BASE_URL}/products/${productId}`);
   }
-  getProductsIdReviews(productId: number, order?: "recent", cursor?: number) {
+  getProductsIdReviews(
+    productId: number,
+    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount",
+    cursor?: number
+  ) {
     let url = `${BASE_URL}/products/${productId}/reviews`;
 
     if (order) url += `?order=${order}`;

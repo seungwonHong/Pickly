@@ -1,34 +1,77 @@
-"use client";
+import Image from "next/image";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { productService } from "../../api";
+import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
+import { formatDate } from "../../../../lib/utils/datetime";
+import { GetProductIdDetail } from "../../types";
 
-interface Props {
-  productId: number;
-}
+import Star from "../../../../../public/icons/Star.png";
+import UserImageNo from "../../../../../public/icons/user-imag-no.png";
 
-export default function ProductReviewsListComponent({ productId }: Props) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["reviews", productId],
-      queryFn: ({ pageParam = undefined }) =>
-        productService
-          .getProductsIdReviews(productId, "recent", pageParam)
-          .then((res) => res.data),
-      initialPageParam: undefined,
-      getNextPageParam: (lastPage) => lastPage.nextCursor ?? null,
-    });
-
+export default function ProductReviewsListComponent({
+  review,
+}: {
+  review: GetProductIdDetail;
+}) {
   return (
-    <div>
-      {data?.pages.map((page) =>
-        page.list.map((review: any) => (
-          <div key={review.id}>{review.content}</div>
-        ))
-      )}
-      {hasNextPage && !isFetchingNextPage && (
-        <button onClick={() => fetchNextPage()}>더 보기</button>
-      )}
+    <div className="text-[#F1F1F5] flex justify-between p-[30px] bg-[#252530] rounded-2xl">
+      <div className="flex items-start gap-[10px]">
+        <Image
+          src={review.user.image || UserImageNo}
+          alt="프로필 이미지"
+          width={43}
+          height={43}
+        />
+        <div>
+          <div className="text-[16px] font-medium">{review.user.nickname}</div>
+          <div>
+            <div className="flex gap-[2px]">
+              {Array.from({ length: review.rating }).map((_, idx) => (
+                <Image
+                  key={idx}
+                  src={Star}
+                  alt="별점"
+                  width={20}
+                  height={20}
+                  className="inline-block"
+                />
+              ))}
+            </div>
+          </div>
+          {/* <div>{review.rating}</div> */}
+        </div>
+      </div>
+      <div className="w-[680px] flex flex-col gap-[20px]">
+        <div className="text-[16px] font-medium">{review.content}</div>
+        <div>
+          {review.reviewImages.length > 0 && (
+            <div className="flex gap-[20px]">
+              {review.reviewImages.map((image) => (
+                <img
+                  key={image.id}
+                  src={image.source}
+                  alt="Review Image"
+                  className="w-[100px] h-[100px] rounded-xl"
+                />
+              ))}
+            </div>
+          )}
+          <></>
+        </div>
+        <div className="flex justify-between items-end">
+          <div className="flex gap-[20px] text-[14px]">
+            <div className=" text-[#6E6E82]">
+              {formatDate(review.createdAt)}
+            </div>
+            <div className="flex gap-[10px] text-[#9FA6B2] ">
+              <div className="underline cursor-pointer">수정</div>
+              <div className="underline cursor-pointer">삭제</div>
+            </div>
+          </div>
+          <div>
+            <ThumbsUpButton />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
