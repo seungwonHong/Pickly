@@ -12,6 +12,7 @@ export default async function CategoryPage({
   params: Promise<{ id: string }>;
 }) {
   const { id: categoryId } = await params;
+  const decodeParams = decodeURIComponent(categoryId);
 
   return (
     <div>
@@ -26,26 +27,7 @@ export default async function CategoryPage({
 
         <div className="lg:flex flex-col mt-[60px] hidden">
           <span className="lg:text-[24px] text-[#F1F1F5] font-semibold">
-            지금 핫한 상품{" "}
-            <span className="bg-gradient-to-r from-[#5097fa] to-[#5363ff] bg-clip-text text-transparent">
-              Top 6
-            </span>
-          </span>
-
-          <div
-            className="grid lg:grid-cols-3 grid-cols-2 lg:gap-[20px]
-          lg:mt-[30px]"
-          >
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-          </div>
-
-          <span className="lg:text-[24px] text-[#F1F1F5] font-semibold mt-[80px]">
-            별점이 높은 상품
+            {decodeParams}의 모든 상품
           </span>
 
           <div
@@ -69,23 +51,7 @@ export default async function CategoryPage({
           {/* 데스크톱 사이즈가 아닌 경우 */}
           <div className="lg:hidden flex flex-col mt-[60px] md:ml-[25px] md:w-[510px] w-[335px]">
             <span className="text-[20px] text-[#F1F1F5] font-semibold">
-              지금 핫한 상품{" "}
-              <span className="bg-gradient-to-r from-[#5097fa] to-[#5363ff] bg-clip-text text-transparent">
-                Top 6
-              </span>
-            </span>
-
-            <div className="grid grid-cols-2 gap-[15px] items-center justify-center mt-[30px]">
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-            </div>
-
-            <span className="text-[20px] text-[#F1F1F5] font-semibold mt-[60px]">
-              별점이 높은 상품
+              {decodeParams}의 모든 상품
             </span>
 
             <div className="grid grid-cols-2 gap-[15px] items-center justify-center mt-[30px]">
