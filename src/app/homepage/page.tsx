@@ -1,7 +1,7 @@
 import FloatingButton from "@/components/shared/FloatingButton";
 import Header from "@/components/shared/Header";
 import Category from "@/features/home/components/Category";
-import ProductCard from "@/features/home/components/ProductCard";
+import ProductCard from "@/components/shared/ProductCard";
 import ReviewerRanking from "@/features/home/components/ReviewerRanking";
 
 export default function HomePage({ params }: { params: { id: string } }) {

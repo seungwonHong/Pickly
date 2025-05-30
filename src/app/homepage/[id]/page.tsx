@@ -1,7 +1,7 @@
 import FloatingButton from "@/components/shared/FloatingButton";
 import Header from "@/components/shared/Header";
 import Category from "@/features/home/components/Category";
-import ProductCard from "@/features/home/components/ProductCard";
+import ProductCard from "@/components/shared/ProductCard";
 import ReviewerRanking from "@/features/home/components/ReviewerRanking";
 
 // next 15 부터 동적 라우팅은 비동기로 처리된다
