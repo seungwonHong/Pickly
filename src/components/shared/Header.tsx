@@ -3,9 +3,7 @@ import React from "react";
 import { CiSearch } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-type Props = {};
-
-const Header = (props: Props) => {
+const Header = () => {
   return (
     <header className="flex flex-row items-center justify-between h-[100px] lg:px-[120px] lg:py-[36px] md:px-[30px] md:py-[28px] p-[23px]">
       <RxHamburgerMenu
