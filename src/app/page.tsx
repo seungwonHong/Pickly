@@ -7,5 +7,5 @@ export default function Home({ params }: { params: { id: string } }) {
         <HomePage params={params}/>
       </main>
     </div>
-  );
+  )
 }
