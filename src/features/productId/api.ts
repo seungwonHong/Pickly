@@ -21,10 +21,25 @@ class UserService {
 }
 
 class ReviewService {
-  postReviews() {
+  postReviews({
+    productId,
+    content,
+    rating,
+    images,
+  }: {
+    productId: number;
+    content: string;
+    rating: number;
+    images?: string[];
+  }) {
     return axios.post(
       `${BASE_URL}/reviews`,
-      {},
+      {
+        productId,
+        content,
+        rating,
+        images,
+      },
       {
         headers: {
           Authorization: `Bearer ${TOKEN}`,

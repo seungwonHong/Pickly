@@ -4,7 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import BaseButton from "@/components/shared/BaseButton";
 import TypeButton from "@/components/shared/TypeButton";
 import useGetUser from "../hooks/useGetUser";
-import ProductReviewModal from "./modal/ProductReviewModal";
+import ProductReviewModal from "./modal/ProductReviewModal/ProductReviewModal";
 
 export default function ProductIdReviewButton({
   productUserId,
@@ -22,12 +22,12 @@ export default function ProductIdReviewButton({
   const openModal = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("modal", "review");
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
   const closeModal = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("modal");
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   return (
@@ -73,11 +73,7 @@ export default function ProductIdReviewButton({
         </div>
       )}
       {isReviewModalOpen && (
-        <ProductReviewModal
-          open={isReviewModalOpen}
-          setOpen={closeModal}
-          productUserId={productUserId}
-        />
+        <ProductReviewModal open={isReviewModalOpen} setOpen={closeModal} />
       )}
     </>
   );
