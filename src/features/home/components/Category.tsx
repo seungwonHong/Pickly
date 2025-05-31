@@ -22,7 +22,7 @@ const Category = ({ categoryId }: { categoryId: string }) => {
         <CategoryTab placeholder="강의/책" selected={decodedId === "강의/책"} />
         <CategoryTab placeholder="호텔" selected={decodedId === "호텔"} />
         <CategoryTab
-          placeholder="가구/인테리아"
+          placeholder="가구/인테리어"
           selected={decodedId === "가구/인테리어"}
         />
         <CategoryTab placeholder="식당" selected={decodedId === "식당"} />
@@ -42,5 +42,3 @@ const Category = ({ categoryId }: { categoryId: string }) => {
 };
 
 export default Category;
-
-//
