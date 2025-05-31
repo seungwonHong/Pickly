@@ -21,38 +21,35 @@ export default function ProductReviewInputModal({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  // 텍스트 변경 핸들러
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
     onTextChange(e.target.value);
   };
 
+  // 이미지 변경 핸들러
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const newPreview: PreviewImage = {
-        id: editingId || String(Date.now()),
-        url: reader.result as string,
-        file,
-      };
-
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
       setImages((prev) => {
-        // 이미지 교체인 경우
         if (editingId) {
-          return prev.map((img) => (img.id === editingId ? newPreview : img));
+          return prev.map((img) =>
+            img.id === editingId ? { ...img, file, url: imageUrl } : img
+          );
         }
-        // 새로 추가하는 경우
-        return [newPreview, ...prev];
+        if (prev.length >= 3) return prev;
+        return [
+          ...prev,
+          {
+            id: String(Date.now()),
+            url: imageUrl,
+            file,
+          },
+        ];
       });
-
-      // 초기화
       setEditingId(null);
-      e.target.value = "";
-    };
-
-    reader.readAsDataURL(file);
+    }
   };
 
   const handleDeleteClick = (id: string) => {
