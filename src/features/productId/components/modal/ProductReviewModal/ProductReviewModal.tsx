@@ -26,7 +26,8 @@ export default function ProductReviewModal({
 }: ProductReviewModalProps) {
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState<number>(0);
-  // const [product, setProduct] = useState<any>(null);
+
+  // 상품 ID를 가져오기 위한 커스텀 훅 사용
   const { product } = useGetProductId();
 
   // 리뷰 post 요청을 위한 useMutation 훅
