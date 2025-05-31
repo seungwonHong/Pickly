@@ -41,7 +41,7 @@ const ReviewerTab = ({ rank, rankNum }: Props) => {
           </span>
         </div>
 
-        <div className="flex flex-row items-center mt-[5px] text-[10px] text-deepGray font-light">
+        <div className="flex flex-row items-center mt-[5px] text-[12px] text-deepGray font-light">
           <span> 팔로워 {rank.followersCount}</span>
           <span className="ml-[10px]">리뷰 {rank.reviewCount}</span>
         </div>
