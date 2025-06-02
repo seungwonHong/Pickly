@@ -19,3 +19,27 @@ export const loginFormSchema = z.object({
     ),
 
 });
+
+// 유효성 검사 그대로 타입정의
+export type LoginForm = z.infer<typeof loginFormSchema>;
+
+export const UserSchema = z.object({
+  id: z.number(),
+  email: z.string().email(),
+  description: z.string(),
+  image: z.string().nullable(),
+  nickname: z.string(),
+  teamId: z.string(),
+  updatedAt: z.string(),
+  createdAt: z.string(),
+});
+
+export type User = z.infer<typeof UserSchema>;
+
+
+export const AuthResponseSchema = z.object({
+  accessToken: z.string(),
+  user: UserSchema,
+});
+
+export type AuthResponse = z.infer<typeof AuthResponseSchema>;

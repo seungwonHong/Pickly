@@ -4,7 +4,7 @@ import axios from "axios";
 
 const apiInstance = axios.create({
   // 임시api
-  baseURL: "https://mogazoa-api.vercel.app/default",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 
   //   withCredentials: true,
   //   headers: {
