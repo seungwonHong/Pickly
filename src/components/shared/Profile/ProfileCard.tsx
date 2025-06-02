@@ -1,5 +1,5 @@
 import { User } from "@/types/user";
-import defaultImage from "../../../../public/globe.svg"; //임시 defaultImage//
+import defaultIProfileImage from "../../../../public/defaultIProfileImage.jpeg"; //임시 defaultImage//
 import Image from "next/image";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 
 export default function ProfileCard({ user, isMe }: Props) {
   return (
-    <div className="mb-[60px] px-[20px] py-[30px] w-full h-auto rounded-lg bg-[#252530] md:px-[30px] lg:w-[340px] lg:mb-0">
+    <div className="mb-[60px] px-[20px] py-[30px] w-full h-auto rounded-lg bg-[#252530] md:px-[30px] lg:w-[340px] lg:mb-0 lg:sticky lg:top-[120px]">
       <div className="w-full h-auto flex flex-col items-center gap-[30px] lg:gap-10">
         <div className="relative flex items-center justify-center w-[120px] h-[120px] lg:w-[180px] lg:h-[180px] mb-7">
           <div
@@ -25,7 +25,7 @@ export default function ProfileCard({ user, isMe }: Props) {
             {user?.image && user.image !== "https://none" ? (
               <Image src={user.image} alt="유저 이미지" fill />
             ) : (
-              <Image src={defaultImage} alt="유저 이미지" fill />
+              <Image src={defaultIProfileImage} alt="유저 이미지" fill />
             )}
           </div>
         </div>
