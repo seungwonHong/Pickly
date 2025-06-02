@@ -6,7 +6,7 @@ import TypeButton from "@/components/shared/TypeButton";
 
 import useGetUser from "../../hooks/useGetUser";
 
-import ProductReviewModal from "./modal/ProductReviewModal/ProductReviewModal";
+import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
 
 export default function ProductIdDetailButton({
   productUserId,
