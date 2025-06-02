@@ -7,7 +7,7 @@ import { productService } from "../../api";
 import { GetProductIdReviews, GetProductIdDetail } from "../../types";
 
 interface ProductIdReviewProps {
-  initialData: GetProductIdReviews;
+  initialData?: GetProductIdReviews;
   productId: number;
   order: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
 }
@@ -26,7 +26,7 @@ export default function ProductReviewsInfinite({
         productService
           .getProductsIdReviews(productId, order, pageParam)
           .then((res) => res.data),
-      getNextPageParam: (lastPage) => lastPage.nextCursor ?? null,
+      getNextPageParam: (lastPage) => lastPage?.nextCursor ?? undefined,
 
       initialData: {
         pages: [initialData],
@@ -55,7 +55,7 @@ export default function ProductReviewsInfinite({
     <div>
       {data?.pages.map((page, i) => (
         <div key={i} className="flex flex-col gap-[20px]">
-          {page.list.map((review: GetProductIdDetail) => (
+          {page?.list?.map((review: GetProductIdDetail) => (
             <ProductReviewsListComponent key={review.id} review={review} />
           ))}
         </div>

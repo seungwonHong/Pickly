@@ -2,23 +2,29 @@ import ProductIdStats from "@/features/productId/components/ProductIdStats/Produ
 import Header from "@/components/shared/Header";
 import ProductIdDetail from "@/features/productId/components/ProductIdDetail/ProductIdDetail";
 import ProductReviewsFetch from "@/features/productId/components/ProductReviews/ProductReviewsFetch";
+import { productService } from "@/features/productId/api";
+
 interface PageProps {
   params: Promise<{
     id: string;
   }>;
-  searchParams?: {
-    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
-  };
 }
 
-export default function ProductIdPage({ params, searchParams }: PageProps) {
+export default async function ProductIdPage({ params }: PageProps) {
+  const productId = Number((await params).id);
+
+  if (isNaN(productId)) return null;
+
+  const initialData = await productService
+    .getProductsIdReviews(productId, "recent")
+    .then((res) => res.data);
   return (
     <div>
       <Header />
       <div className="w-[940px] h-auto mx-auto mb-[120px] my-[60px]">
         <ProductIdDetail params={params} />
         <ProductIdStats params={params} />
-        <ProductReviewsFetch params={params} searchParams={searchParams} />
+        <ProductReviewsFetch initialData={initialData} productId={productId} />
       </div>
     </div>
   );

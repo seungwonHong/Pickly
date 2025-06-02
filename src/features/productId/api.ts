@@ -14,7 +14,7 @@ class ProductService {
   }: {
     keyword?: string;
     category?: number;
-    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
+    order?: "recent" | "rating" | "reviewCount";
     cursor?: number;
   }) {
     let url = `${BASE_URL}/products`;
@@ -99,5 +99,4 @@ class ReviewService {
 
 export const productService = new ProductService();
 export const userService = new UserService();
-
 export const reviewService = new ReviewService();
