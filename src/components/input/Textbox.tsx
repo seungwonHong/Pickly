@@ -6,7 +6,8 @@ interface TextboxProps {
   size?: TextboxSize;
   width?: number;
   placeholder?: string;
-  error?: boolean;
+  error?: string;
+  subText?: string;
   className?: string;
   maxLength?: number;
   [key: string]: any;
@@ -18,6 +19,7 @@ export function Textbox({
   placeholder, 
   className, 
   error, 
+  subText, 
   maxLength, 
   ...rest
 }:TextboxProps){
@@ -25,6 +27,7 @@ export function Textbox({
   const [text, setText] = useState('');
   const noSpaceCount = text.replace(/\s/g, '').length;  // 공백제외하고 카운트
 
+  const message = error || subText;
   const isActive = 'focus-within:bg-gradient-to-r hover:bg-gradient-to-r from-[#5097fa] to-[#5363ff]' 
 
   const large = 'h-[128px] text-[16px] '
@@ -55,6 +58,12 @@ export function Textbox({
           {noSpaceCount}/{maxLength}
         </span>
       </div>
+      {/* 서브텍스트 또는 오류메세지 */}
+      {message && (
+        <p className={`text-sm mt-[10px] ${error ? 'text-[var(--color-red)]' : 'text-[var(--color-deepGray)]'}`}>
+          {message}
+        </p>
+      )}
     </>
   )
 }

@@ -2,13 +2,8 @@
 
 import { InputField } from "@/components/input/InputField";
 import { Textbox } from "@/components/input/Textbox";
-import { Textfield } from "@/components/input/Textfield";
-import { useState } from "react";
 
 export default function InputTestPage() {
-  
-  const [passwordBoxType, setPasswordBoxType] = useState(false);
-  const handleEyeClick = () => setPasswordBoxType(!passwordBoxType);
   
   return (
     <div className="max-w-[1025px] h-full mx-auto mt-20">
@@ -59,22 +54,16 @@ export default function InputTestPage() {
       <InputField
         id="login_pwd"
         label="비밀번호"
-        type={passwordBoxType ? "text" : "password" }
         placeholder="비밀번호를 입력해주세요"
         withEyeToggle
-        eyeState={passwordBoxType} // eye 토글 상태 관리 필요시 별도 상태 선언
-        onEyeToggle={handleEyeClick}
       />
       <br/>
       <InputField
         id="login_pwd"
         label="비밀번호"
         subText="최소 8자 이상"
-        type={passwordBoxType ? "text" : "password" }
         placeholder="비밀번호를 입력해주세요"
         withEyeToggle
-        eyeState={passwordBoxType} // eye 토글 상태 관리 필요시 별도 상태 선언
-        onEyeToggle={handleEyeClick}
       />
       <br/>
       <InputField
@@ -82,23 +71,40 @@ export default function InputTestPage() {
         label="비밀번호"
         subText="최소 8자 이상"
         error="비밀번호가 일치하지 않습니다."
-        type={passwordBoxType ? "text" : "password" }
         placeholder="비밀번호를 입력해주세요"
         withEyeToggle
-        eyeState={passwordBoxType} // eye 토글 상태 관리 필요시 별도 상태 선언
-        onEyeToggle={handleEyeClick}
+      />
+      <br/>
+      <InputField
+        id="login_pwd"
+        placeholder="비밀번호를 입력해주세요"
+        withEyeToggle
+      />
+      <br/>
+      <InputField
+        id="login_pwd"
+        subText="최소 8자 이상"
+        placeholder="비밀번호를 입력해주세요"
+        withEyeToggle
+      />
+      <br/>
+      <InputField
+        id="login_pwd"
+        subText="최소 8자 이상"
+        error="비밀번호가 일치하지 않습니다."
+        placeholder="비밀번호를 입력해주세요"
+        withEyeToggle
       />
       <br/><br/>
       <h2 className="text-[var(--color-white)]">Textbox</h2><br/>
       <Textbox 
         placeholder='리뷰를 작성해 주세요'
-        error={false}
         maxLength={300}
       />
       <br/>
       <Textbox 
         placeholder='리뷰를 작성해 주세요'
-        error={true}
+        error="내용을 입력해주세요."
         maxLength={300}
       />
       <br/>
@@ -107,7 +113,6 @@ export default function InputTestPage() {
         size="M"
         width={360}
         placeholder='리뷰를 작성해 주세요'
-        error={false}
         maxLength={300}
       />
       <br/>
@@ -116,34 +121,7 @@ export default function InputTestPage() {
         size="S"
         width={295}
         placeholder='리뷰를 작성해 주세요'
-        error={false}
         maxLength={300}
-      />
-      <br/><br/>
-      <h2 className="text-[var(--color-white)]">Textfield</h2>
-      <br/>
-      <Textfield 
-        placeholder='상품명'
-        error={false}
-      />
-      <br/>
-      <Textfield 
-        placeholder='상품명'
-        error={true}
-      />
-      <br/>
-      <Textfield 
-        size="M"
-        width={360}
-        placeholder='상품명'
-        error={false}
-      />
-      <br/>
-      <Textfield 
-        size="S"
-        width={335}
-        placeholder='상품명'
-        error={false}
       />
       <br/>
       <br/>
