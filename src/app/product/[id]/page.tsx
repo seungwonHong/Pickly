@@ -3,10 +3,12 @@ import Header from "@/components/shared/Header";
 import ProductIdDetail from "@/features/productId/components/ProductIdDetail/ProductIdDetail";
 import ProductReviewsFetch from "@/features/productId/components/ProductReviews/ProductReviewsFetch";
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
+  }>;
+  searchParams?: {
+    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
   };
-  searchParams: { order?: string };
 }
 
 export default function ProductIdPage({ params, searchParams }: PageProps) {

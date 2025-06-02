@@ -44,7 +44,7 @@ const SortDropDown = ({ selectList, selected, onChange }: DropDownProps) => {
   return (
     <div className="relative" ref={selectRef}>
       <div
-        className="w-[200px] h-[24px] px-[20px] py-0 cursor-pointer flex items-center justify-end lg:gap-[90px] md:gap-[80px] gap-[5px] text-[#6E6E82] md:text-[16px] text-[14px]"
+        className="w-[200px] h-[24px] px-[20px] py-0 cursor-pointer flex items-center justify-between  gap-[5px] text-[#6E6E82] md:text-[16px] text-[14px]"
         onClick={toggleDropdown}
       >
         {selectList.find((item) => item.value === selected)?.name}
@@ -52,7 +52,7 @@ const SortDropDown = ({ selectList, selected, onChange }: DropDownProps) => {
           src={SortArrow}
           alt="Arrow"
           className={`cursor-pointer transition-transform duration-200 ease-in-out ${
-            isOpen ? "rotate-180" : ""
+            isOpen ? "" : "rotate-180"
           }`}
         />
       </div>

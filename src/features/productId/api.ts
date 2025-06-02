@@ -6,9 +6,29 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzkzLCJ0ZWFtSWQiOiIxNC02IiwiaWF0IjoxNzQ4MzU0NjI5LCJpc3MiOiJzcC1tb2dhem9hIn0.PZJlV0LShr2yPDET0tjTDrgTydcQCcCR6medOrkv9zg";
 class ProductService {
+  getProducts({
+    keyword,
+    category,
+    order,
+    cursor,
+  }: {
+    keyword?: string;
+    category?: number;
+    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
+    cursor?: number;
+  }) {
+    let url = `${BASE_URL}/products`;
+    if (keyword) url += `?keyword=${keyword}`;
+    if (category) url += `&category=${category}`;
+    if (order) url += `&order=${order}`;
+    if (cursor) url += `&cursor=${cursor}`;
+    return axios.get(url);
+  }
+
   getProductsId(productId: number) {
     return axios.get(`${BASE_URL}/products/${productId}`);
   }
+
   getProductsIdReviews(
     productId: number,
     order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount",
