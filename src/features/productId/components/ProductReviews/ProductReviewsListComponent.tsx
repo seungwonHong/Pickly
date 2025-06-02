@@ -4,7 +4,7 @@ import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
 import { formatDate } from "../../../../lib/utils/datetime";
 import { GetProductIdDetail } from "../../types";
 
-import Star from "../../../../../public/icons/Star.png";
+import Star from "../../../../../public/icons/star.svg";
 import UserImageNo from "../../../../../public/icons/user-imag-no.png";
 
 export default function ProductReviewsListComponent({

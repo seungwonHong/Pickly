@@ -3,9 +3,9 @@ import React from "react";
 import { productService } from "../../api";
 import ProductIdStatsBone from "./ProductIdStatsBone";
 
-import Heart from "../../../../public/icons/Heart.png";
-import Star from "../../../../public/icons/star.svg";
-import Talk from "../../../../public/icons/Talk.png";
+import Heart from "../../../../../public/icons/heart-active.svg";
+import Star from "../../../../../public/icons/star.svg";
+import Talk from "../../../../../public/icons/Talk.png";
 
 interface ProductIdReviewProps {
   params: Promise<{ id: string }>;
