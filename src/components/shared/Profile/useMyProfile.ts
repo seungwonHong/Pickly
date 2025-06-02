@@ -10,7 +10,7 @@ export const useMyProfile = () => {
       //   const token = localStorage.getItem('accessToken')
       const res = await apiInstance.get("/users/me", {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidGVhbUlkIjoiZGVmYXVsdCIsImlhdCI6MTc0ODQxMzYzMywiaXNzIjoic3AtbW9nYXpvYSJ9.5-tiiXDtNS1uXFAJsOIk3EndrWisvz9_iWxZ9kOIC74`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nzk3LCJ0ZWFtSWQiOiIxNC02IiwiaWF0IjoxNzQ4NjczMzEwLCJpc3MiOiJzcC1tb2dhem9hIn0.Almry9H8io3c3gR61WPBuy_sXosdjsL3QgZBvLUy0Bw`,
         },
       });
       return res.data;
