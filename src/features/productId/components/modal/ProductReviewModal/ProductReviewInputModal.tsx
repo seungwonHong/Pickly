@@ -12,9 +12,11 @@ interface PreviewImage {
 }
 interface ProductReviewInputModalProps {
   onTextChange: (text: string) => void;
+  onImageChange?: (images: PreviewImage[]) => void;
 }
 export default function ProductReviewInputModal({
   onTextChange,
+  onImageChange,
 }: ProductReviewInputModalProps) {
   const [text, setText] = useState("");
   const [images, setImages] = useState<PreviewImage[]>([]);
@@ -48,6 +50,14 @@ export default function ProductReviewInputModal({
           },
         ];
       });
+      onImageChange?.([
+        ...images,
+        {
+          id: String(Date.now()),
+          url: imageUrl,
+          file,
+        },
+      ]);
       setEditingId(null);
     }
   };
