@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginFormSchema } from "./validationSchema";
-import { LoginForm } from "./useSignIn";
+import { LoginForm, useLoginMutation } from "./useSignIn";
 
 const login_icon_google = '/icons/login_sns_google.svg';
 const login_icon_kakao = '/icons/login_sns_kakao.svg';
@@ -16,7 +16,7 @@ const login_icon_kakao = '/icons/login_sns_kakao.svg';
 
 const SigninPage = () => {
   const { mutate: login } = useLoginMutation();
-  
+   
   const {
     register,
     handleSubmit,
