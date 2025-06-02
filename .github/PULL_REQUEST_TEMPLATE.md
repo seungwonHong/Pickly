@@ -1,11 +1,3 @@
----
-name: 🚀 기본 PR 템플릿
-about: 기능 개발, 버그 수정 등 Pull Request를 생성할 때 사용하는 템플릿
-title: "[PR] "
-labels: ["feature", "bug", "enhancement", "fix"]
-assignees: []
----
-
 # 🚀 Pull Request
 
 ## 📝 PR 유형
