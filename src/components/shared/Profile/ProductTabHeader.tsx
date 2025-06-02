@@ -1,7 +1,5 @@
 "use client";
 
-// import { useState } from 'react'
-// import { cn } from '@/lib/utils' // Tailwind 클래스 병합 유틸리티
 import { TabKo } from "./ProductTabSection";
 
 const TABS: TabKo[] = ["리뷰 남긴 상품", "등록한 상품", "찜한 상품"];
