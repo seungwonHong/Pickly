@@ -5,11 +5,9 @@ interface Props {
   product: ProductList;
 }
 
-const ProductCard = ({
-  product
-}: Props) => {
+const ProductCard = ({ product }: Props) => {
   return (
-    <div className="flex flex-col items-center p-[10px] lg:w-[300px] lg:h-[308px] md:w-[247px] md:h-[256px] w-[160px] h-[183px] rounded-xl bg-[#252530] border-[1px] border-[#353542]">
+    <div className="transition-transform duration-300 hover:scale-105 cursor-pointer flex flex-col items-center p-[10px] lg:w-[300px] lg:h-[308px] md:w-[247px] md:h-[256px] w-[160px] h-[183px] rounded-xl bg-[#252530] border-[1px] border-[#353542]">
       <img
         src={product.image}
         alt="productImage"
@@ -27,7 +25,9 @@ const ProductCard = ({
             <span className="lg:ml-[15px]">찜 {product.favoriteCount}</span>
           </div>
 
-          <span className="text-[#9FA6B2]">⭐️ {product.rating.toFixed(2)}</span>
+          <span className="text-[#9FA6B2]">
+            ⭐️ {product.rating.toFixed(2)}
+          </span>
         </div>
       </div>
     </div>

@@ -5,6 +5,8 @@ import ProductCard from "@/components/shared/ProductCard";
 import ReviewerRanking from "@/features/home/components/ReviewerRanking";
 import { getProductsFetch } from "@/features/home/services/getProduct";
 import HighStarProduct from "@/features/home/components/HighStarProduct";
+import MoreProducts from "@/features/home/components/MoreProducts";
+import SpinningWidget from "@/components/shared/SpinningWidget";
 
 export default async function HomePage({ params }: { params: { id: string } }) {
   const hotProduct = await getProductsFetch({ order: "reviewCount" });
@@ -43,7 +45,12 @@ export default async function HomePage({ params }: { params: { id: string } }) {
             <span className="lg:text-[24px] text-[20px] text-[#F1F1F5] font-semibold">
               별점이 높은 상품
             </span>
-            <HighStarProduct number={6} products={starProduct} />
+            <HighStarProduct products={starProduct} />
+            <MoreProducts
+              nextCursor={starProduct.nextCursor}
+              queryKey={["products", 0]}
+              key={"starProduct"}
+            />
           </div>
         </div>
 
@@ -71,7 +78,12 @@ export default async function HomePage({ params }: { params: { id: string } }) {
               <span className="lg:text-[24px] text-[20px] text-[#F1F1F5] font-semibold">
                 별점이 높은 상품
               </span>
-              <HighStarProduct number={6} products={starProduct} />
+              <HighStarProduct products={starProduct} />
+              <MoreProducts
+                nextCursor={starProduct.nextCursor}
+                queryKey={["products", 0]}
+                key={"starProduct"}
+              />
             </div>
           </div>
         </div>
