@@ -6,7 +6,6 @@ export interface User {
   nickname: string;
   createdAt: string;
   updatedAt: string;
-
   mostFavoriteCategory: {
     id: number;
     name: string;
