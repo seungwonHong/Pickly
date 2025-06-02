@@ -57,7 +57,7 @@ export function InputField({
         {/* input 박스 */}
         <label className="block mb-[10px] text-[var(--color-white)]">{label}</label>
         <div 
-          className={`relative rounded-[8px] p-[1px] bg-[#353542] ${isError} ${sizeStyle}`}
+          className={`relative rounded-[8px] p-[2px] bg-[#353542] ${isError} ${sizeStyle}`}
           style={{ width: width ? `${width}px` : '100%' }}
         > 
           <input 

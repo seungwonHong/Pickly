@@ -38,13 +38,14 @@ body {
   font-family: var(--font-mplus), sans-serif;
 }
 
-@layer base { 
+@layer base {
   /* 자동완성시 bg 컬러 텍스트 컬러 변경방지 */
   input:-internal-autofill-selected,
   input:-webkit-autofill {
     box-shadow: 0 0 0 1000px #252530 inset;
     background-color: #252530 !important;
     -webkit-text-fill-color: var(--color-white);
+    transition: background-color 5000s ease-in-out 0s;
   }
 }
 
