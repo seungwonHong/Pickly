@@ -1,4 +1,4 @@
-import { User } from "@/types/user";
+import { User } from "@/features/Profile/types/user";
 import defaultProfileImage from "../../../../public/defaultProfileImage.jpeg"; //임시 defaultImage//
 import Image from "next/image";
 import { useState } from "react";

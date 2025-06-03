@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import apiInstance from "@/lib/axios/index";
-import { User } from "@/types/user";
+import { User } from "@/features/Profile/types/user";
 
 export const useMyProfile = () => {
   return useQuery<User>({

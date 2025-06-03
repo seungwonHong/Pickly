@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import ProductTabHeader from "./ProductTabHeader";
+
 import ProductGrid from "./ProductGrid";
+import ProductTabHeader from "./ProductTabHeader";
 
 const tabMap = {
   "리뷰 남긴 상품": "reviewed",

@@ -1,7 +1,7 @@
 "use client";
 
-import { useUserProducts, ProductTabType } from "./useUserProducts";
-import UserProductCard from "./UserProductCard";
+import { useUserProducts, ProductTabType } from "../hook/useUserProducts";
+import UserProductCard from "../hook/UserProductCard";
 
 interface ProductGridProps {
   userId: number;
