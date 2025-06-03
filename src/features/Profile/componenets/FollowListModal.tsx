@@ -138,7 +138,7 @@ export default function FollowListModal({
       : `${nickname}님이 팔로우하는 유저`;
 
   return createPortal(
-    <div className="fixed inset-0 bg-[#000000]/70 z-50 flex items-center justify-center ">
+    <div className="fixed inset-0 bg-[#000000]/50 z-50 flex items-center justify-center ">
       <div
         className="relative bg-[#1C1C22] rounded-xl   h-[700px] sm:h-[550px] overflow-y-auto p-8 md:rounded-2xl w-[335px]  md:w-[500px] lg:w-[500px]"
         ref={modalRef}
