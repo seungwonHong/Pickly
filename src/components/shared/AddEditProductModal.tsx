@@ -27,7 +27,7 @@ const AddEditProductModal = () => {
 
   return (
     <div className="flex w-full h-full justify-center items-center bg-[#000000B2]">
-      <div className="flex flex-col lg:w-[620px] lg:h-[614px] md:w-[590px] md:h-[569px] bg-[#1C1C22] rounded-2xl lg:p-[27px] p-[20px]">
+      <div className="flex flex-col lg:w-[620px] lg:h-[614px] md:w-[590px] md:h-[569px] w-[335px] h-[578px] bg-[#1C1C22] rounded-2xl lg:p-[20px] p-[20px]">
         <IoClose
           size={24}
           color="#F1F1F5"
@@ -79,7 +79,7 @@ const AddEditProductModal = () => {
           </div>
           <div className="flex flex-col lg:mr-[20px] md:mr-[15px]">
             <InputField
-              className="md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px]"
+              className="md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
               placeholder="상품명 (상품 등록 여부를 확인해 주세요)"
             />
             <CategoryDropDown />
@@ -127,10 +127,10 @@ const AddEditProductModal = () => {
 
         <Textbox
           maxLength={500}
-          className="lg:w-[540px] lg:h-[160px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px]md:ml-[20px]"
+          className="lg:w-[540px] lg:h-[160px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
         />
 
-        <BaseButton className="lg:w-[540px] lg:h-[65px] md:w-[510px] md:h-[55px] md:mt-[40px] mt-[20px] lg:text-[18px] text-[16px] font-semibold rounded-lg">
+        <BaseButton className="lg:w-[540px] lg:h-[65px] md:w-[510px] md:h-[55px] md:mt-[40px] mt-[10px] md:ml-[20px] lg:text-[18px] text-[16px] font-semibold rounded-lg">
           추가하기
         </BaseButton>
       </div>
