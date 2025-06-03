@@ -31,12 +31,11 @@ export default function ProductIdDetailButton({
     params.delete("modal");
     router.replace(`?${params.toString()}`, { scroll: false });
   };
-
+  // 쿠키 이용하면 로딩중 버튼 갯수 빠르게 로딩 가능
   return (
     <>
       {isOwner ? (
         <div className="flex items-center justify-between">
-          리뷰작성하기 클릭시 로그인 여부에 따라 모달
           <BaseButton
             disabled={false}
             className="px-[123.5px] py-[22px] font-semibold text-[18px] "

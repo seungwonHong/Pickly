@@ -9,12 +9,10 @@ export interface GetProductIdDetail {
     nickname: string;
     id: number;
   };
-  reviewImages: [
-    {
-      source: string;
-      id: number;
-    }
-  ];
+  reviewImages: {
+    source: string;
+    id: number;
+  }[];
   productId: number;
   userId: number;
   updatedAt: string;

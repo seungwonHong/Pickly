@@ -6,8 +6,37 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 const TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzkzLCJ0ZWFtSWQiOiIxNC02IiwiaWF0IjoxNzQ4MzU0NjI5LCJpc3MiOiJzcC1tb2dhem9hIn0.PZJlV0LShr2yPDET0tjTDrgTydcQCcCR6medOrkv9zg";
 class ProductService {
+  getProducts({
+    keyword,
+    category,
+    order,
+    cursor,
+  }: {
+    keyword?: string;
+    category?: number;
+    order?: "recent" | "rating" | "reviewCount";
+    cursor?: number;
+  }) {
+    let url = `${BASE_URL}/products`;
+    if (keyword) url += `?keyword=${keyword}`;
+    if (category) url += `&category=${category}`;
+    if (order) url += `&order=${order}`;
+    if (cursor) url += `&cursor=${cursor}`;
+    return axios.get(url, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
+  }
+
   getProductsId(productId: number) {
-    return axios.get(`${BASE_URL}/products/${productId}`);
+    return axios.get(`${BASE_URL}/products/${productId}`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
   }
   getProductsIdReviews(
     productId: number,
@@ -18,13 +47,24 @@ class ProductService {
 
     if (order) url += `?order=${order}`;
     if (cursor) url += `&cursor=${cursor}`;
-    return axios.get(url);
+
+    return axios.get(url, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
   }
 }
 
 class UserService {
   getUser() {
-    return axios.get(`${BASE_URL}/users/me`);
+    return axios.get(`${BASE_URL}/users/me`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
   }
 }
 
@@ -50,6 +90,7 @@ class ReviewService {
       },
       {
         headers: {
+          Accept: "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       }
@@ -62,6 +103,7 @@ class ReviewService {
       {},
       {
         headers: {
+          Accept: "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       }
@@ -71,6 +113,7 @@ class ReviewService {
   deleteReviews(reviewId: number) {
     return axios.delete(`${BASE_URL}/reviews/${reviewId}/like`, {
       headers: {
+        Accept: "application/json",
         Authorization: `Bearer ${TOKEN}`,
       },
     });
@@ -79,5 +122,4 @@ class ReviewService {
 
 export const productService = new ProductService();
 export const userService = new UserService();
-
 export const reviewService = new ReviewService();

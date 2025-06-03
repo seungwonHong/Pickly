@@ -7,9 +7,9 @@ import { productService } from "../../api";
 import { GetProductIdReviews, GetProductIdDetail } from "../../types";
 
 interface ProductIdReviewProps {
-  initialData: GetProductIdReviews;
+  initialData?: GetProductIdReviews;
   productId: number;
-  order: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
+  order: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
 }
 
 export default function ProductReviewsInfinite({
@@ -26,12 +26,16 @@ export default function ProductReviewsInfinite({
         productService
           .getProductsIdReviews(productId, order, pageParam)
           .then((res) => res.data),
-      getNextPageParam: (lastPage) => lastPage.nextCursor ?? null,
-
-      initialData: {
-        pages: [initialData],
-        pageParams: [undefined],
-      },
+      getNextPageParam: (lastPage) => lastPage?.nextCursor ?? null,
+      keepPreviousData: true,
+      ...(order === "recent" && initialData
+        ? {
+            initialData: {
+              pages: [initialData],
+              pageParams: [undefined],
+            },
+          }
+        : {}),
     });
 
   useEffect(() => {
@@ -49,13 +53,13 @@ export default function ProductReviewsInfinite({
     observer.observe(ref.current);
 
     return () => observer.disconnect();
-  }, [ref, hasNextPage, isFetchingNextPage]);
+  }, [ref, hasNextPage, isFetchingNextPage, order]);
 
   return (
     <div>
       {data?.pages.map((page, i) => (
         <div key={i} className="flex flex-col gap-[20px]">
-          {page.list.map((review: GetProductIdDetail) => (
+          {page?.list?.map((review: GetProductIdDetail) => (
             <ProductReviewsListComponent key={review.id} review={review} />
           ))}
         </div>

@@ -5,7 +5,7 @@ export default function Home({
   searchParams,
 }: {
   params: { id: string };
-  searchParams: { [key: string]: string | undefined };
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
   return (
     <div>
