@@ -9,7 +9,7 @@ interface OptionType {
 
 interface DropDownProps {
   selectList: OptionType[];
-  selected: string;
+  selected: string | undefined;
   onChange: (value: string) => void;
 }
 

@@ -31,7 +31,7 @@ export default function ProductIdStatsBone({
         <div className="text-[13px] font-[300] text-[#9FA6B2] text-center">
           {typeof diffValue === "number" &&
             (() => {
-              const roundedDiff = Math.round(diffValue);
+              const roundedDiff = parseFloat(diffValue.toFixed(1));
               return (
                 <>
                   같은 카테고리의 제품들보다
@@ -40,9 +40,9 @@ export default function ProductIdStatsBone({
                     {unit}
                   </span>{" "}
                   {roundedDiff > 0
-                    ? "더 적어요!"
-                    : roundedDiff < 0
                     ? "더 많아요!"
+                    : roundedDiff < 0
+                    ? "더 적어요!"
                     : "같은 수준이에요!"}
                 </>
               );

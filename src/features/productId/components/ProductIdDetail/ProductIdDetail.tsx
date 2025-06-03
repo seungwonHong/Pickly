@@ -7,17 +7,15 @@ import HeartInactive from "../../../../../public/icons/heart-inactive.svg";
 import KakaoLink from "../../../../../public/images/kakao-link.png";
 import LinkShare from "../../../../../public/images/link-share.png";
 
-interface ProductIdReviewProps {
-  params: Promise<{ id: string }>;
+interface PageProps {
+  params: {
+    id: string;
+  };
 }
 
-export default async function ProductIdDetail({
-  params,
-}: ProductIdReviewProps) {
-  const { data: product } = await productService.getProductsId(
-    Number((await params).id)
-  );
-
+export default async function ProductIdDetail({ params }: PageProps) {
+  const response = await productService.getProductsId(Number(params.id));
+  const product = response.data;
   if (!product) return <div>상품 정보가 없습니다.</div>;
 
   return (

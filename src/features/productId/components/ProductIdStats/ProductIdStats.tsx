@@ -7,15 +7,15 @@ import Heart from "../../../../../public/icons/heart-active.svg";
 import Star from "../../../../../public/icons/star.svg";
 import Talk from "../../../../../public/icons/Talk.png";
 
-interface ProductIdReviewProps {
-  params: Promise<{ id: string }>;
+interface PageProps {
+  params: {
+    id: string;
+  };
 }
 
-export default async function generateStaticParams({
-  params,
-}: ProductIdReviewProps) {
+export default async function generateStaticParams({ params }: PageProps) {
   const { data: product } = await productService.getProductsId(
-    Number((await params).id)
+    Number(params.id)
   );
   return (
     <div className="w-[940px] h-[244px] text-amber-50 flex flex-col gap-[29px]">
@@ -24,8 +24,10 @@ export default async function generateStaticParams({
         <ProductIdStatsBone
           title="별점 평균"
           icon={Star}
-          score={product?.rating}
-          diffValue={product?.categoryMetric?.rating - product?.rating}
+          score={product?.rating?.toFixed(1)}
+          diffValue={Number(
+            (product?.rating - product?.categoryMetric?.rating).toFixed(1)
+          )}
           unit=" 점"
         />
         <ProductIdStatsBone

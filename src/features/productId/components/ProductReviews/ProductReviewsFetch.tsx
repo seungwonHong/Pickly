@@ -7,14 +7,14 @@ import SortDropDown from "@/components/shared/SortDropDown";
 
 interface ProductReviewsClientProps {
   initialData: GetProductIdReviews;
-
   productId: number;
+  initialOrder?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
 }
 
 export default function ProductReviewsFetch({
   initialData,
-
   productId,
+  initialOrder,
 }: ProductReviewsClientProps) {
   const selectList = [
     { name: "최신순", value: "recent" },
@@ -23,14 +23,19 @@ export default function ProductReviewsFetch({
     { name: "좋아요 많은 순", value: "likeCount" },
   ];
   const [selectedOption, setSelectedOption] = useState("recent");
-  const onSortChange = (newSort) => {
+  const [dataForSelectedOrder, setDataForSelectedOrder] = useState<
+    GetProductIdReviews | undefined
+  >(initialOrder === selectedOption ? initialData : undefined);
+
+  const onSortChange = (newSort: typeof selectedOption) => {
     setSelectedOption(newSort);
+    setDataForSelectedOrder(undefined);
   };
   return (
     <div className="mt-[60px]">
       <div className="text-[#f1f1f1] text-[20px] font-semibold flex justify-between mb-[30px]">
         <div>상품리뷰</div>
-        {/* <ProductReviewSort selected={order} onChange={handleChangeOrder} /> */}
+
         <SortDropDown
           selectList={selectList}
           selected={selectedOption}
@@ -39,7 +44,7 @@ export default function ProductReviewsFetch({
       </div>
       <div className="min-h-[2000px]">
         <ProductReviewsInfinite
-          initialData={selectedOption === "recent" ? initialData : undefined}
+          initialData={dataForSelectedOrder}
           productId={productId}
           order={selectedOption}
         />

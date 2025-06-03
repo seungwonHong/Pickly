@@ -1,26 +1,24 @@
-"use client";
-
 import { productService } from "@/features/productId/api";
-import ProductReviewsFetch from "@/features/productId/components/ProductReviews/ProductReviewsFetch";
-import { useParams } from "next/navigation";
-import { GetProductIdReviews } from "@/features/productId/types";
-import { useState } from "react";
+import ProductReviewsFetch from "./ProductReviewsFetch";
+
 interface Props {
-  initialData: GetProductIdReviews;
   productId: number;
 }
 
-export default function ProductReviewClient({ initialData, productId }: Props) {
-  const [order, setOrder] = useState<
-    "recent" | "ratingDesc" | "ratingAsc" | "likeCount"
-  >("recent");
+export default async function ProductReviewClient({ productId }: Props) {
+  const initialOrder = "recent";
+
+  const initialData = await productService
+    .getProductsIdReviews(productId, "recent")
+    .then((res) => res.data);
+
+  if (!initialData) return <p className="text-gray-400">리뷰 로딩 중...</p>;
 
   return (
     <ProductReviewsFetch
       initialData={initialData}
       productId={productId}
-      order={order}
-      setOrder={setOrder}
+      initialOrder={initialOrder}
     />
   );
 }
