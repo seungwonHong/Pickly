@@ -9,8 +9,10 @@ import UserImageNo from "../../../../../public/icons/user-imag-no.png";
 
 export default function ProductReviewsListComponent({
   review,
+  productId,
 }: {
   review: GetProductIdReviewsDetail;
+  productId: number;
 }) {
   return (
     <div className="text-[#F1F1F5] flex justify-between p-[30px] bg-[#252530] rounded-2xl">
@@ -68,7 +70,12 @@ export default function ProductReviewsListComponent({
             </div>
           </div>
           <div>
-            <ThumbsUpButton />
+            <ThumbsUpButton
+              productId={productId}
+              reviewId={review.id}
+              initialLikeCount={review.likeCount}
+              initialIsLiked={review.isLiked}
+            />
           </div>
         </div>
       </div>

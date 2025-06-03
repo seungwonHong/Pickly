@@ -25,7 +25,7 @@ export default function ProductReviewsInfinite({
       queryFn: ({ pageParam = undefined }) =>
         productService
           .getProductsIdReviews(productId, order, pageParam)
-          .then((res) => res.data),
+          .then((res) => res.data as GetProductIdReviews),
       getNextPageParam: (lastPage) => lastPage?.nextCursor ?? null,
       keepPreviousData: true,
       ...(order === "recent" && initialData
@@ -59,7 +59,7 @@ export default function ProductReviewsInfinite({
     <div>
       {data?.pages.map((page, i) => (
         <div key={i} className="flex flex-col gap-[20px]">
-          {page?.list?.map((review: GetProductIdReviewsDetail) => (
+          {page?.list?.map((review) => (
             <ProductReviewsListComponent key={review.id} review={review} />
           ))}
         </div>
