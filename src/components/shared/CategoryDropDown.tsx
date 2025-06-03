@@ -10,9 +10,9 @@ const CategoryDropDown = (props: Props) => {
 
   return (
     <div
-      className={`relative flex flex-row items-center md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] bg-[#252530] border-[1px] ${
+      className={`relative z-999 flex flex-row items-center md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] bg-[#252530] border-[1px] ${
         isClicked ? "border-[#5363FF]" : "border-[#353542]"
-      } lg:px-[23px] lg:py-[20px] lg:text-[16px] text-[14px] text-[#6E6E82] font-normal rounded-lg lg:mt-[20px] md:mt-[15px] mt-[10px] cursor-pointer`}
+      } lg:px-[23px] lg:py-[20px] md:px-[20px] md:py-[21px] px-[20px] py-[18px] lg:text-[16px] text-[14px] text-[#6E6E82] font-normal rounded-lg lg:mt-[20px] md:mt-[15px] mt-[10px] cursor-pointer`}
       onClick={() => setIsClicked(!isClicked)}
     >
       <span>카테고리 선택</span>
