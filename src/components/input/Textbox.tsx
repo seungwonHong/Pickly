@@ -48,7 +48,7 @@ export function Textbox({
             w-full outline-0 resize-none overflow-y-auto break-words 
             rounded-[8px] bg-[#252530] p-[20px] 
             placeholder-[var(--color-deepGray)] text-[var(--color-white)] 
-            ${sizeStyle}
+             ${sizeStyle}
             `}
             onChange={(e) => setText(e.target.value)}
             placeholder={placeholder}  

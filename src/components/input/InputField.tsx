@@ -1,11 +1,9 @@
 import Image from "next/image";
 import { useState } from "react";
+const eyeOpen = "/icons/eye_open.svg";
+const eyeClose = "/icons/eye_close.svg";
 
-
-const eyeOpen = '/icons/eye_open.svg';
-const eyeClose = '/icons/eye_close.svg';
-
-type TextboxSize = 'S' | 'M' | 'L';
+type TextboxSize = "S" | "M" | "L";
 
 interface InputFieldProps {
   size?: TextboxSize;
@@ -13,7 +11,7 @@ interface InputFieldProps {
   label?: string;
   placeholder?: string;
   className?: string;
-  subText?:string;
+  subText?: string;
   withEyeToggle?: boolean;
   eyeState?: boolean;
   onEyeToggle?: () => void;
@@ -22,60 +20,67 @@ interface InputFieldProps {
 }
 
 export function InputField({
-  size='L', 
+  size = "L",
   id,
-  width, 
-  label, 
-  placeholder, 
-  className, 
-  subText, 
+  width,
+  label,
+  placeholder,
+  className,
+  subText,
   withEyeToggle,
-  error, 
+  error,
   ...rest
-}:InputFieldProps){
-
+}: InputFieldProps) {
   const [passwordBoxType, setPasswordBoxType] = useState(true);
 
   const hasError = !!error;
   const message = error || subText;
-  const isActive = 'focus-within:bg-gradient-to-r hover:bg-gradient-to-r from-[#5097fa] to-[#5363ff]' 
+  const isActive =
+    "focus-within:bg-gradient-to-r hover:bg-gradient-to-r from-[#5097fa] to-[#5363ff]";
 
-  const large = 'h-[70px] text-[16px]'
-  const medium = 'h-[60px] text-[16px]'
-  const small = 'h-[55px] text-[14px]'
-  const sizeStyle = size === 'L' ? large : size === 'M' ? medium : small;
-  const isError = hasError ? '!bg-[var(--color-red)] ' : isActive;
+  const large = "h-[70px] text-[16px]";
+  const medium = "h-[60px] text-[16px]";
+  const small = "h-[55px] text-[14px]";
+  const sizeStyle = size === "L" ? large : size === "M" ? medium : small;
+  const isError = hasError ? "!bg-[var(--color-red)] " : isActive;
 
- const handleEyeClick = () => {
-    setPasswordBoxType(prev => !prev);
+  const handleEyeClick = () => {
+    setPasswordBoxType((prev) => !prev);
   };
 
-  return(
+  return (
     <div className={`${className}`}>
       <div className="relative">
-
         {/* input 박스 */}
-        <label className="block mb-[10px] text-[var(--color-white)]">{label}</label>
-        <div 
+        <label
+          className={`block mb-[10px] text-[var(--color-white)] ${
+            label === undefined && "hidden"
+          }`}
+        >
+          {label}
+        </label>
+        <div
           className={`relative rounded-[8px] p-[1px] bg-[#353542] ${isError} ${sizeStyle}`}
-          style={{ width: width ? `${width}px` : '100%' }}
-        > 
-          <input 
+          style={{ width: width ? `${width}px` : "100%" }}
+        >
+          <input
             className={`w-full h-full outline-0 border-0 rounded-[8px] bg-[#252530] px-[20px] placeholder-[var(--color-deepGray)] text-[var(--color-white)] `}
-            placeholder={placeholder}  
+            placeholder={placeholder}
             type={passwordBoxType ? "password" : "text"}
             {...rest}
           />
-          
+
           {/* 토글아이콘 */}
           {withEyeToggle && (
-            <button type="button" onClick={handleEyeClick}
-              className='absolute right-6 top-1/2 -translate-y-1/2 cursor-pointer'
+            <button
+              type="button"
+              onClick={handleEyeClick}
+              className="absolute right-6 top-1/2 -translate-y-1/2 cursor-pointer"
               aria-label="비밀번호 표시 전환"
             >
               <Image
                 src={passwordBoxType ? eyeClose : eyeOpen}
-                alt={passwordBoxType ? '비밀번호 보기' : '비밀번호 숨기기'}
+                alt={passwordBoxType ? "비밀번호 보기" : "비밀번호 숨기기"}
                 width={24}
                 height={24}
               />
@@ -86,10 +91,14 @@ export function InputField({
 
       {/* 서브텍스트 또는 오류메세지 */}
       {message && (
-        <p className={`text-sm mt-[10px] ${error ? 'text-[var(--color-red)]' : 'text-[var(--color-deepGray)]'}`}>
+        <p
+          className={`text-sm mt-[10px] ${
+            error ? "text-[var(--color-red)]" : "text-[var(--color-deepGray)]"
+          }`}
+        >
           {message}
         </p>
       )}
     </div>
-  )
+  );
 }

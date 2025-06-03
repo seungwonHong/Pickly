@@ -5,16 +5,20 @@ import ReviewerRanking from "@/features/home/components/ReviewerRanking";
 import { getProductsFetch } from "@/features/home/services/getProduct";
 import HighStarProduct from "@/features/home/components/HighStarProduct";
 import MoreProducts from "@/features/home/components/MoreProducts";
+import AddEditProductModal from "@/components/shared/AddEditProductModal";
 
 // next 15 부터 동적 라우팅은 비동기로 처리된다
 // 따라서 params도 promise 형태로 감싸야 한다
 export default async function CategoryPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
   const { id: categoryId } = await params;
   const decodeParams = decodeURIComponent(categoryId);
+  const sp = await searchParams;
 
   const categoryIndexMap: Record<string, number> = {
     음악: 1,
@@ -90,6 +94,11 @@ export default async function CategoryPage({
           <FloatingButton />
         </div>
       </div>
+      {sp.modal === "true" && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center">
+          <AddEditProductModal />
+        </div>
+      )}
     </div>
   );
 }

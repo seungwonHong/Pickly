@@ -6,12 +6,20 @@ import ReviewerRanking from "@/features/home/components/ReviewerRanking";
 import { getProductsFetch } from "@/features/home/services/getProduct";
 import HighStarProduct from "@/features/home/components/HighStarProduct";
 import MoreProducts from "@/features/home/components/MoreProducts";
-import SpinningWidget from "@/components/shared/SpinningWidget";
+import AddEditProductModal from "@/components/shared/AddEditProductModal";
 
-export default async function HomePage({ params }: { params: { id: string } }) {
+export default async function HomePage({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
   const hotProduct = await getProductsFetch({ order: "reviewCount" });
 
   const starProduct = await getProductsFetch({ order: "rating" });
+
+  const sp = await searchParams;
 
   return (
     <div className="relative">
@@ -92,6 +100,12 @@ export default async function HomePage({ params }: { params: { id: string } }) {
           <FloatingButton />
         </div>
       </div>
+
+      {sp.modal === "true" && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center">
+          <AddEditProductModal />
+        </div>
+      )}
     </div>
   );
 }
