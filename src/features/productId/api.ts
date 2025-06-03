@@ -55,6 +55,28 @@ class ProductService {
       },
     });
   }
+
+  postProductsFavorite(productId: number) {
+    return axios.post(
+      `${BASE_URL}/products/${productId}/favorite`,
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      }
+    );
+  }
+
+  deleteProductsFavorite(productId: number) {
+    return axios.delete(`${BASE_URL}/products/${productId}/favorite`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
+  }
 }
 
 class UserService {
