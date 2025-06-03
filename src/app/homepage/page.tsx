@@ -4,6 +4,9 @@ import Category from "@/features/home/components/Category";
 import ProductCard from "@/components/shared/ProductCard";
 import ReviewerRanking from "@/features/home/components/ReviewerRanking";
 import { getProductsFetch } from "@/features/home/services/getProduct";
+import HighStarProduct from "@/features/home/components/HighStarProduct";
+import MoreProducts from "@/features/home/components/MoreProducts";
+import SpinningWidget from "@/components/shared/SpinningWidget";
 
 export default async function HomePage({ params }: { params: { id: string } }) {
   const hotProduct = await getProductsFetch({ order: "reviewCount" });
@@ -38,17 +41,16 @@ export default async function HomePage({ params }: { params: { id: string } }) {
             ))}
           </div>
 
-          <span className="lg:text-[24px] text-[#F1F1F5] font-semibold mt-[80px]">
-            별점이 높은 상품
-          </span>
-
-          <div
-            className="grid lg:grid-cols-3 grid-cols-2 lg:gap-[20px]
-          lg:mt-[30px]"
-          >
-            {starProduct.list.slice(0, 6).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+          <div className="mt-[80px]">
+            <span className="lg:text-[24px] text-[20px] text-[#F1F1F5] font-semibold">
+              별점이 높은 상품
+            </span>
+            <HighStarProduct products={starProduct} />
+            <MoreProducts
+              nextCursor={starProduct.nextCursor}
+              queryKey={["products", 0]}
+              key={"starProduct"}
+            />
           </div>
         </div>
 
@@ -72,14 +74,16 @@ export default async function HomePage({ params }: { params: { id: string } }) {
               ))}
             </div>
 
-            <span className="text-[20px] text-[#F1F1F5] font-semibold mt-[60px]">
-              별점이 높은 상품
-            </span>
-
-            <div className="grid grid-cols-2 gap-[15px] items-center justify-center mt-[30px]">
-              {starProduct.list.slice(0, 6).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            <div className="mt-[60px]">
+              <span className="lg:text-[24px] text-[20px] text-[#F1F1F5] font-semibold">
+                별점이 높은 상품
+              </span>
+              <HighStarProduct products={starProduct} />
+              <MoreProducts
+                nextCursor={starProduct.nextCursor}
+                queryKey={["products", 0]}
+                key={"starProduct"}
+              />
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ const Base_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface Props {
   keyword?: string;
-  categoryId?: number;
+  categoryId?: number | null;
   order: "recent" | "rating" | "reviewCount";
   cursor?: number;
 }
@@ -18,7 +18,7 @@ export async function getProducts({
 }: Props): Promise<Product> {
   const params: Record<string, any> = {};
   if (keyword) params.keyword = keyword;
-  if (categoryId) params.categoryId = categoryId;
+  if (categoryId) params.category = categoryId;
   if (order) params.order = order;
   if (cursor) params.cursor = cursor;
 
