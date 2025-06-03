@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 import ProductReviewsListComponent from "./ProductReviewsListComponent";
 import { productService } from "../../api";
-import { GetProductIdReviews, GetProductIdReviewsDetail } from "../../types";
+import { GetProductIdReviews } from "../../types";
 
 interface ProductIdReviewProps {
   initialData?: GetProductIdReviews;
@@ -60,7 +60,11 @@ export default function ProductReviewsInfinite({
       {data?.pages.map((page, i) => (
         <div key={i} className="flex flex-col gap-[20px]">
           {page?.list?.map((review) => (
-            <ProductReviewsListComponent key={review.id} review={review} />
+            <ProductReviewsListComponent
+              key={review.id}
+              review={review}
+              productId={productId}
+            />
           ))}
         </div>
       ))}
