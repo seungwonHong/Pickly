@@ -22,13 +22,22 @@ class ProductService {
     if (category) url += `&category=${category}`;
     if (order) url += `&order=${order}`;
     if (cursor) url += `&cursor=${cursor}`;
-    return axios.get(url);
+    return axios.get(url, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
   }
 
   getProductsId(productId: number) {
-    return axios.get(`${BASE_URL}/products/${productId}`);
+    return axios.get(`${BASE_URL}/products/${productId}`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
   }
-
   getProductsIdReviews(
     productId: number,
     order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount",
@@ -38,13 +47,24 @@ class ProductService {
 
     if (order) url += `?order=${order}`;
     if (cursor) url += `&cursor=${cursor}`;
-    return axios.get(url);
+
+    return axios.get(url, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
   }
 }
 
 class UserService {
   getUser() {
-    return axios.get(`${BASE_URL}/users/me`);
+    return axios.get(`${BASE_URL}/users/me`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
   }
 }
 
@@ -70,6 +90,7 @@ class ReviewService {
       },
       {
         headers: {
+          Accept: "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       }
@@ -82,6 +103,7 @@ class ReviewService {
       {},
       {
         headers: {
+          Accept: "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       }
@@ -91,6 +113,7 @@ class ReviewService {
   deleteReviews(reviewId: number) {
     return axios.delete(`${BASE_URL}/reviews/${reviewId}/like`, {
       headers: {
+        Accept: "application/json",
         Authorization: `Bearer ${TOKEN}`,
       },
     });

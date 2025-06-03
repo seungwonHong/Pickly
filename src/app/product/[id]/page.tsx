@@ -1,8 +1,8 @@
 import ProductIdStats from "@/features/productId/components/ProductIdStats/ProductIdStats";
 import Header from "@/components/shared/Header";
 import ProductIdDetail from "@/features/productId/components/ProductIdDetail/ProductIdDetail";
-import ProductReviewsFetch from "@/features/productId/components/ProductReviews/ProductReviewsFetch";
 import { productService } from "@/features/productId/api";
+import ProductReviewsFetch from "@/features/productId/components/ProductReviews/ProductReviewsFetch";
 
 interface PageProps {
   params: Promise<{
@@ -11,13 +11,14 @@ interface PageProps {
 }
 
 export default async function ProductIdPage({ params }: PageProps) {
-  const productId = Number((await params).id);
+  const productId = await Number(params.id);
 
   if (isNaN(productId)) return null;
 
   const initialData = await productService
     .getProductsIdReviews(productId, "recent")
     .then((res) => res.data);
+
   return (
     <div>
       <Header />
