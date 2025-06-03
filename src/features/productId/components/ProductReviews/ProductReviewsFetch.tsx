@@ -1,40 +1,54 @@
-import ProductReviewsInfinite from "./ProductReviewsInfinite";
-import { productService } from "../../api";
+"use client";
+import { useState } from "react";
 
-interface ProductIdReviewProps {
-  params: {
-    id: string;
-  };
-  searchParams?: {
-    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
-  };
+import ProductReviewsInfinite from "./ProductReviewsInfinite";
+import { GetProductIdReviews } from "../../types";
+import SortDropDown from "@/components/shared/SortDropDown";
+
+interface ProductReviewsClientProps {
+  initialData: GetProductIdReviews;
+  productId: number;
+  initialOrder?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
 }
 
-export default async function ProductReviewsList({
-  params,
-  searchParams,
-}: ProductIdReviewProps) {
-  const productId = Number(params.id);
-  const order = searchParams?.order || "recent";
+export default function ProductReviewsFetch({
+  initialData,
+  productId,
+  initialOrder,
+}: ProductReviewsClientProps) {
+  const selectList = [
+    { name: "최신순", value: "recent" },
+    { name: "평점 높은 순", value: "ratingDesc" },
+    { name: "평점 낮은 순", value: "ratingAsc" },
+    { name: "좋아요 많은 순", value: "likeCount" },
+  ];
+  const [selectedOption, setSelectedOption] = useState("recent");
+  const [dataForSelectedOrder, setDataForSelectedOrder] = useState<
+    GetProductIdReviews | undefined
+  >(initialOrder === selectedOption ? initialData : undefined);
 
-  if (isNaN(productId)) return null;
-
-  const initialData = await productService
-    .getProductsIdReviews(productId, order)
-    .then((res) => res.data);
-
-  console.log("initialData", initialData);
+  const onSortChange = (newSort: typeof selectedOption) => {
+    setSelectedOption(newSort);
+    setDataForSelectedOrder(undefined);
+  };
   return (
     <div className="mt-[60px]">
       <div className="text-[#f1f1f1] text-[20px] font-semibold flex justify-between mb-[30px]">
         <div>상품리뷰</div>
-        <div>드롭다운 와야함</div>
+
+        <SortDropDown
+          selectList={selectList}
+          selected={selectedOption}
+          onChange={onSortChange}
+        />
       </div>
-      <ProductReviewsInfinite
-        initialData={initialData}
-        productId={productId}
-        order={order}
-      />
+      <div className="min-h-[2000px]">
+        <ProductReviewsInfinite
+          initialData={dataForSelectedOrder}
+          productId={productId}
+          order={selectedOption}
+        />
+      </div>
     </div>
   );
 }

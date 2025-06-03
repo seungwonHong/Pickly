@@ -2,22 +2,21 @@ import Image from "next/image";
 
 import { productService } from "../../api";
 import ProductIdReviewButton from "./ProductIdDetailButton";
+import CategoryChip from "@/components/CategoryChip";
 
 import HeartInactive from "../../../../../public/icons/heart-inactive.svg";
 import KakaoLink from "../../../../../public/images/kakao-link.png";
 import LinkShare from "../../../../../public/images/link-share.png";
 
-interface ProductIdReviewProps {
-  params: Promise<{ id: string }>;
+interface PageProps {
+  params: {
+    id: string;
+  };
 }
 
-export default async function ProductIdDetail({
-  params,
-}: ProductIdReviewProps) {
-  const { data: product } = await productService.getProductsId(
-    Number((await params).id)
-  );
-
+export default async function ProductIdDetail({ params }: PageProps) {
+  const response = await productService.getProductsId(Number(params.id));
+  const product = response.data;
   if (!product) return <div>상품 정보가 없습니다.</div>;
 
   return (
@@ -25,7 +24,10 @@ export default async function ProductIdDetail({
       <img src={product.image} width={306} height={228} alt="상품 이미지" />
 
       <div className="w-[545px] ">
-        <div className="pb-[9.5px]">{product.category.name}</div>
+        <CategoryChip
+          category={product.category.name}
+          className="text-[12px] mb-[9.5px]"
+        />
         <div className="flex items-center justify-between pb-[49px]">
           <div className="flex items-center gap-[15px] justify-between">
             <div className="text-2xl font-semibold">{product.name}</div>
