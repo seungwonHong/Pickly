@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Image } from "next/image";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
@@ -41,7 +40,7 @@ class ProductService {
   }
   getProductsIdReviews(
     productId: number,
-    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount",
+    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined,
     cursor?: number
   ) {
     let url = `${BASE_URL}/products/${productId}/reviews`;

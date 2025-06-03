@@ -81,7 +81,7 @@ export default function ProductReviewInputModal({
   }, [images, onImageUrlsChange]);
   return (
     <div className="flex flex-col gap-[20px] h-fit">
-      {/* 텍스트 입력 나중에 컴포넌트로 교체예쩡*/}
+      {/* 텍스트 입력 나중에 컴포넌트로 교체예쩡 텍스트필드 오류 있음 */}
       <Textbox
         size="S"
         placeholder="리뷰를 입력해주세요"

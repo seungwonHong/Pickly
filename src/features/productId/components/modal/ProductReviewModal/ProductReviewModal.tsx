@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 
 import ProductReviewStarModal from "./ProductReviewStarModal";
@@ -24,6 +24,7 @@ export default function ProductReviewModal({
   open,
   setOpen,
 }: ProductReviewModalProps) {
+  const queryClient = useQueryClient();
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<string[]>([]);
@@ -42,6 +43,9 @@ export default function ProductReviewModal({
     onSuccess: () => {
       alert("리뷰가 등록되었습니다!");
       setOpen(false);
+      queryClient.invalidateQueries({
+        queryKey: ["reviews", product.id, "recent"],
+      });
     },
     onError: () => {
       alert("리뷰 등록에 실패했습니다.");
