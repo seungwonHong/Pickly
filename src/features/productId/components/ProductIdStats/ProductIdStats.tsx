@@ -35,7 +35,7 @@ export default async function generateStaticParams({ params }: PageProps) {
           icon={Heart}
           score={product?.favoriteCount}
           diffValue={
-            product?.categoryMetric?.favoriteCount - product?.favoriteCount
+            product?.favoriteCount - product?.categoryMetric?.favoriteCount
           }
           unit=" 개"
         />
@@ -44,7 +44,7 @@ export default async function generateStaticParams({ params }: PageProps) {
           icon={Talk}
           score={product?.reviewCount}
           diffValue={
-            product?.categoryMetric?.reviewCount - product?.reviewCount
+            product?.reviewCount - product?.categoryMetric?.reviewCount
           }
           unit=" 개"
         />
