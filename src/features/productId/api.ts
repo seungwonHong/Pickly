@@ -91,16 +91,16 @@ class UserService {
 }
 
 class ReviewService {
-  postReviews({
+  async postReviews({
     productId,
     content,
     rating,
-    images,
+    imageUrls,
   }: {
     productId: number;
     content: string;
     rating: number;
-    images?: string[];
+    imageUrls: string[];
   }) {
     return axios.post(
       `${BASE_URL}/reviews`,
@@ -108,7 +108,7 @@ class ReviewService {
         productId,
         content,
         rating,
-        images,
+        images: imageUrls,
       },
       {
         headers: {

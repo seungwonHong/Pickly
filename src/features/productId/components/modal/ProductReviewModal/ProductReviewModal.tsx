@@ -26,7 +26,7 @@ export default function ProductReviewModal({
 }: ProductReviewModalProps) {
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState<number>(0);
-
+  const [reviewImages, setReviewImages] = useState([]);
   // 상품 ID를 가져오기 위한 커스텀 훅 사용
   const { product } = useGetProductId();
 
@@ -35,6 +35,7 @@ export default function ProductReviewModal({
     mutationFn: () =>
       reviewService.postReviews({
         productId: product.id,
+        imageUrls: reviewImages.map((img) => img.url),
         content: reviewText,
         rating: rating,
       }),
@@ -84,7 +85,10 @@ export default function ProductReviewModal({
                 {/* 별점 입력 모달 */}
                 <ProductReviewStarModal onChange={setRating} />
                 {/* 리뷰 내용 입력 모달 */}
-                <ProductReviewInputModal onTextChange={setReviewText} />
+                <ProductReviewInputModal
+                  onTextChange={setReviewText}
+                  onImageChange={setReviewImages}
+                />
               </div>
               <BaseButton
                 className="py-[22px] text-[18px] font-semibold"

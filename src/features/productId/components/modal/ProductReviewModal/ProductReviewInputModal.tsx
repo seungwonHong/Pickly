@@ -14,9 +14,11 @@ interface PreviewImage {
 }
 interface ProductReviewInputModalProps {
   onTextChange: (text: string) => void;
+  onImageChange?: (images: PreviewImage[]) => void;
 }
 export default function ProductReviewInputModal({
   onTextChange,
+  onImageChange,
 }: ProductReviewInputModalProps) {
   const [text, setText] = useState("");
   const [images, setImages] = useState<PreviewImage[]>([]);
@@ -79,14 +81,6 @@ export default function ProductReviewInputModal({
         maxLength={500}
         className="h-[150px] w-[540px] text-[16px]"
       />
-      {/* // <textarea
-      //   value={text}
-      //   onChange={handleTextChange}
-      //   placeholder="리뷰를 입력해주세요"
-      //   className="w-full outline-0 resize-none overflow-y-auto break-words 
-      //              rounded-[8px] bg-[#252530] p-[20px] 
-      //              placeholder-[var(--color-deepGray)] text-[var(--color-white)]"
-      // /> */}
 
       {/* 이미지 업로드 섹션 */}
       <div className="flex flex-row-reverse gap-[20px] w-full justify-end">

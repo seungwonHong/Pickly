@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
 import { formatDate } from "../../../../lib/utils/datetime";
-import { GetProductIdDetail } from "../../types";
+import { GetProductIdReviewsDetail } from "../../types";
 
 import Star from "../../../../../public/icons/star.svg";
 import UserImageNo from "../../../../../public/icons/user-imag-no.png";
@@ -10,7 +10,7 @@ import UserImageNo from "../../../../../public/icons/user-imag-no.png";
 export default function ProductReviewsListComponent({
   review,
 }: {
-  review: GetProductIdDetail;
+  review: GetProductIdReviewsDetail;
 }) {
   return (
     <div className="text-[#F1F1F5] flex justify-between p-[30px] bg-[#252530] rounded-2xl">

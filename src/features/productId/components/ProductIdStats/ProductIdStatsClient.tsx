@@ -3,12 +3,16 @@ import { useEffect } from "react";
 
 import { useProductStatsStore } from "../../libs/useProductStatsStore";
 import ProductIdStatsBone from "./ProductIdStatsBone";
-
+import { GetProductIdDetail } from "../../types";
 import Heart from "../../../../../public/icons/Heart.png";
 import Star from "../../../../../public/icons/star.svg";
 import Talk from "../../../../../public/icons/Talk.png";
 
-export default function ProductStatsClient({ product }: { product: any }) {
+export default function ProductStatsClient({
+  product,
+}: {
+  product: GetProductIdDetail;
+}) {
   const {
     setRating,
     setReviewCount,
@@ -33,7 +37,7 @@ export default function ProductStatsClient({ product }: { product: any }) {
         <ProductIdStatsBone
           title="별점 평균"
           icon={Star}
-          score={rating.toFixed(1)}
+          score={Number(rating.toFixed(1))}
           diffValue={Number(
             (rating - product.categoryMetric.rating).toFixed(1)
           )}
