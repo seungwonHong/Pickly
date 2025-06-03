@@ -11,6 +11,7 @@ type Props = {};
 
 const AddEditProductModal = (props: Props) => {
   const router = useRouter();
+
   const handleClose = () => {
     const params = new URLSearchParams(window.location.search);
     params.delete("modal");
@@ -18,7 +19,10 @@ const AddEditProductModal = (props: Props) => {
   };
 
   return (
-    <div className="flex w-full h-full justify-center items-center bg-[#000000B2]">
+    <div
+      className="flex w-full h-full justify-center items-center bg-[#000000B2]"
+      onClick={handleClose}
+    >
       <div className="flex flex-col lg:w-[620px] lg:h-[614px] bg-[#1C1C22] rounded-2xl lg:p-[27px] p-[15px]">
         <IoClose
           size={24}

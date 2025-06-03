@@ -16,7 +16,6 @@ export default async function HomePage({
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
   const hotProduct = await getProductsFetch({ order: "reviewCount" });
-
   const starProduct = await getProductsFetch({ order: "rating" });
 
   const sp = await searchParams;

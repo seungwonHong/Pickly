@@ -1,7 +1,7 @@
 "use client";
 import Category from "@/features/home/components/Category";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -12,9 +12,16 @@ const Header = () => {
   const params = useParams();
   const categoryId = params?.id as string;
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const handleClick = () => {
     setClicked(!clicked);
+  };
+
+  const handleClose = () => {
+    const params = new URLSearchParams(window.location.search);
+    params.delete("modal");
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   useEffect(() => {
@@ -37,8 +44,11 @@ const Header = () => {
     <>
       <div
         className={`flex flex-row items-center justify-between md:h-[100px] h-[70px] lg:px-[120px] lg:py-[36px] md:px-[30px] md:py-[28px] p-[23px] ${
-          searchParams.get("modal") === "true" ? "bg-[#000000B2]" : "bg-[#1C1C22]"
+          searchParams.get("modal") === "true"
+            ? "bg-[#000000B2]"
+            : "bg-[#1C1C22]"
         }`}
+        onClick={handleClose}
       >
         <RxHamburgerMenu
           className="md:hidden cursor-pointer"
