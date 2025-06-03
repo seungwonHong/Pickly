@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Image } from "next/image";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
@@ -95,12 +96,12 @@ class ReviewService {
     productId,
     content,
     rating,
-    imageUrls,
+    images,
   }: {
     productId: number;
     content: string;
     rating: number;
-    imageUrls: string[];
+    images: string[];
   }) {
     return axios.post(
       `${BASE_URL}/reviews`,
@@ -108,7 +109,7 @@ class ReviewService {
         productId,
         content,
         rating,
-        images: imageUrls,
+        images,
       },
       {
         headers: {
@@ -142,6 +143,27 @@ class ReviewService {
   }
 }
 
+class ImageService {
+  async postImage(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const response = await axios.post<{ url: string }>(
+      `${BASE_URL}/images/upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      }
+    );
+
+    return response.data.url;
+  }
+}
 export const productService = new ProductService();
 export const userService = new UserService();
 export const reviewService = new ReviewService();
+export const imageService = new ImageService();
