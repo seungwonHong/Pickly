@@ -79,13 +79,13 @@ export default function ProductIdDetailButton({
           <TypeButton
             type="secondary"
             className="px-[43.5px] py-[22px] font-semibold text-[18px]"
+            onClick={openCompareModal}
           >
             비교하기
           </TypeButton>
           <TypeButton
             type="tertiary"
             className="px-[43.5px] py-[22px] font-semibold text-[18px]"
-            onClick={openCompareModal}
           >
             편집하기
           </TypeButton>
