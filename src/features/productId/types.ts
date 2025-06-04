@@ -1,6 +1,6 @@
 export interface GetProductIdReviews {
-  nextCursor: number;
-  list: GetProductIdDetail[];
+  nextCursor: number | null;
+  list: GetProductIdReviewsDetail[];
 }
 
 export interface GetProductIdReviewsDetail {
