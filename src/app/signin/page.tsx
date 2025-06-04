@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
 import { InputField } from "@/components/input/InputField";
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler } from "react-hook-form";
 
+import { useUserStore } from "@/features/productId/libs/userStore";
 import { AuthResponse, LoginForm, loginFormSchema } from "./validationSchema";
 import { useLoginMutation } from "./useSignIn";
 
@@ -12,30 +13,37 @@ import Header from "@/components/shared/Header";
 import Image from "next/image";
 import Link from "next/link";
 
-const login_icon_google = '/icons/login_sns_google.svg';
-const login_icon_kakao = '/icons/login_sns_kakao.svg';
+const login_icon_google = "/icons/login_sns_google.svg";
+const login_icon_kakao = "/icons/login_sns_kakao.svg";
 
 const SigninPage = () => {
+  const { setUser } = useUserStore();
+
   const { mutate: login } = useLoginMutation({
     onSuccess: (data: AuthResponse) => {
-      console.log('로그인 완료되었습니다!');
+      console.log("로그인 완료되었습니다!");
       console.log(data);
+      setUser({
+        userId: data.user.id,
+        email: data.user.email,
+      });
     },
     onError: (error: any) => {
-      console.error(error?.response?.data?.message || '로그인 실패');
-    }
+      console.error(error?.response?.data?.message || "로그인 실패");
+    },
   });
-   
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginForm>({
-    mode: 'onBlur', // blur 시 유효성 검사
+    mode: "onBlur", // blur 시 유효성 검사
     resolver: zodResolver(loginFormSchema),
   });
 
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
+    console.log("로그인 폼 제출됨", data);
     login(data);
   };
 
@@ -52,7 +60,7 @@ const SigninPage = () => {
                 type="email"
                 placeholder="이메일을 입력해주세요"
                 error={errors.email?.message}
-                {...register('email')}
+                {...register("email")}
                 className="mb-[39px]"
               />
               <InputField
@@ -61,7 +69,7 @@ const SigninPage = () => {
                 placeholder="비밀번호를 입력해주세요"
                 withEyeToggle
                 error={errors.password?.message}
-                {...register('password')}
+                {...register("password")}
                 className="mb-[59px]"
               />
               <BaseButton
@@ -75,13 +83,29 @@ const SigninPage = () => {
               <span>SNS로 바로 시작하기</span>
               <ul className="flex justify-center gap-5 mt-[19px]">
                 <li>
-                  <Link href='' className="block border border-[#353542] rounded-full p-[13px] hover:scale-105 transition-transform duration-200 ease-in-out">
-                    <Image src={login_icon_google} width={28} height={28} alt="구글로 로그인하기"/>
+                  <Link
+                    href=""
+                    className="block border border-[#353542] rounded-full p-[13px] hover:scale-105 transition-transform duration-200 ease-in-out"
+                  >
+                    <Image
+                      src={login_icon_google}
+                      width={28}
+                      height={28}
+                      alt="구글로 로그인하기"
+                    />
                   </Link>
                 </li>
                 <li>
-                  <Link href='' className="block border border-[#353542] rounded-full p-[13px] hover:scale-105 transition-transform duration-200 ease-in-out">
-                    <Image src={login_icon_kakao} width={28} height={28} alt="카카오로 로그인하기"/>
+                  <Link
+                    href=""
+                    className="block border border-[#353542] rounded-full p-[13px] hover:scale-105 transition-transform duration-200 ease-in-out"
+                  >
+                    <Image
+                      src={login_icon_kakao}
+                      width={28}
+                      height={28}
+                      alt="카카오로 로그인하기"
+                    />
                   </Link>
                 </li>
               </ul>

@@ -6,7 +6,7 @@ import TypeButton from "@/components/shared/TypeButton";
 import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
 import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
 
-import useGetUser from "../../hooks/useGetUser";
+import { useUserStore } from "../../libs/userStore";
 
 export default function ProductIdDetailButton({
   productUserId,
@@ -14,8 +14,8 @@ export default function ProductIdDetailButton({
   productUserId: number;
 }) {
   // useGetUser 훅을 사용하여 사용자 정보를 가져옴
-  const { user } = useGetUser();
-  const isOwner = user?.id === productUserId;
+  const { userId } = useUserStore();
+  const isOwner = userId === productUserId;
 
   // 모달 열기 및 닫기 로직 (이렇게 할 수 있다니...ㄷㄷ...)
   const searchParams = useSearchParams();
