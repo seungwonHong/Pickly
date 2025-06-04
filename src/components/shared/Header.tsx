@@ -24,6 +24,8 @@ const Header = () => {
     router.replace(`?${params.toString()}`, { scroll: false });
   };
 
+  const handleSearch = () => {};
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {

@@ -29,9 +29,8 @@ const AddEditProductModal = () => {
     <div className="flex w-full h-full justify-center items-center bg-[#000000B2]">
       <div className="flex flex-col lg:w-[620px] lg:h-[614px] md:w-[590px] md:h-[569px] w-[335px] h-[578px] bg-[#1C1C22] rounded-2xl lg:p-[20px] p-[20px]">
         <IoClose
-          size={24}
           color="#F1F1F5"
-          className="ml-auto cursor-pointer"
+          className="ml-auto cursor-pointer lg:w-[40px] lg:h-[40px] md:w-[36px] md:h-[36px] w-[24px] h-[24px]"
           onClick={handleClose}
         />
         <span className="lg:text-[24px] text-[20px] text-[#F1F1F5] font-semibold md:ml-[20px]">
@@ -127,10 +126,10 @@ const AddEditProductModal = () => {
 
         <Textbox
           maxLength={500}
-          className="lg:w-[540px] lg:h-[160px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
+          className="lg:w-[540px] lg:h-[160px] md:w-[510px] md:h-[160px] w-[295px] h-[120px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
         />
 
-        <BaseButton className="lg:w-[540px] lg:h-[65px] md:w-[510px] md:h-[55px] md:mt-[40px] mt-[10px] md:ml-[20px] lg:text-[18px] text-[16px] font-semibold rounded-lg">
+        <BaseButton className="lg:w-[540px] lg:h-[65px] md:w-[510px] md:h-[55px] md:mt-[40px] mt-[20px] md:ml-[20px] lg:text-[18px] text-[16px] font-semibold rounded-lg">
           추가하기
         </BaseButton>
       </div>
