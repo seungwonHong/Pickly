@@ -5,16 +5,23 @@ import ReviewerRanking from "@/features/home/components/ReviewerRanking";
 import { getProductsFetch } from "@/features/home/services/getProduct";
 import HighStarProduct from "@/features/home/components/HighStarProduct";
 import MoreProducts from "@/features/home/components/MoreProducts";
+import AddEditProductModal from "@/components/shared/AddEditProductModal";
+import SortComponent from "@/features/home/components/SortComponent";
 
 // next 15 부터 동적 라우팅은 비동기로 처리된다
 // 따라서 params도 promise 형태로 감싸야 한다
 export default async function CategoryPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{
+    [key: string]: "recent" | "reviewCount" | "rating";
+  }>;
 }) {
   const { id: categoryId } = await params;
   const decodeParams = decodeURIComponent(categoryId);
+  const sp = await searchParams;
 
   const categoryIndexMap: Record<string, number> = {
     음악: 1,
@@ -34,7 +41,7 @@ export default async function CategoryPage({
   console.log("매핑된 번호:", categoryNumber);
 
   const products = await getProductsFetch({
-    order: "recent",
+    order: sp.sort,
     categoryId: categoryNumber,
   });
 
@@ -52,9 +59,12 @@ export default async function CategoryPage({
         </div>
 
         <div className="lg:flex flex-col mt-[60px] hidden lg:mb-[50px] mb-[30px] lg:w-[950px] md:w-[510px] w-[340px]">
-          <span className="lg:text-[24px] text-[#F1F1F5] font-semibold">
-            {decodeParams}의 모든 상품
-          </span>
+          <div className="flex flex-row items-center justify-between">
+            <span className="lg:text-[24px] text-[#F1F1F5] font-semibold">
+              {decodeParams}의 모든 상품
+            </span>
+            <SortComponent />
+          </div>
 
           <HighStarProduct products={products} />
           <MoreProducts
@@ -90,6 +100,11 @@ export default async function CategoryPage({
           <FloatingButton />
         </div>
       </div>
+      {sp.modal?.toString() === "true" && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center">
+          <AddEditProductModal />
+        </div>
+      )}
     </div>
   );
 }

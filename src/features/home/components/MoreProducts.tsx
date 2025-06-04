@@ -12,8 +12,8 @@ interface Props {
 }
 
 const MoreProducts = ({ nextCursor, categoryId, queryKey }: Props) => {
-  if (nextCursor === null) return;
   const observerRef = useRef(null);
+  if (nextCursor === null) return;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
@@ -46,7 +46,7 @@ const MoreProducts = ({ nextCursor, categoryId, queryKey }: Props) => {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <>

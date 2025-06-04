@@ -2,24 +2,25 @@ import Image from "next/image";
 
 import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
 import { formatDate } from "../../../../lib/utils/datetime";
-import { GetProductIdDetail } from "../../types";
+import { GetProductIdReviewsDetail } from "../../types";
 
 import Star from "../../../../../public/icons/star.svg";
-import UserImageNo from "../../../../../public/icons/user-imag-no.png";
+import DefaultIProfileImage from "../../../../../public/defaultIProfileImage.jpeg";
 
 export default function ProductReviewsListComponent({
   review,
 }: {
-  review: GetProductIdDetail;
+  review: GetProductIdReviewsDetail;
 }) {
   return (
     <div className="text-[#F1F1F5] flex justify-between p-[30px] bg-[#252530] rounded-2xl">
       <div className="flex items-start gap-[10px]">
         <Image
-          src={review.user.image || UserImageNo}
+          src={review.user.image || DefaultIProfileImage}
           alt="프로필 이미지"
           width={43}
           height={43}
+          className="rounded-full"
         />
         <div>
           <div className="text-[16px] font-medium">{review.user.nickname}</div>
@@ -37,7 +38,6 @@ export default function ProductReviewsListComponent({
               ))}
             </div>
           </div>
-          {/* <div>{review.rating}</div> */}
         </div>
       </div>
       <div className="w-[680px] flex flex-col gap-[20px]">
@@ -68,7 +68,11 @@ export default function ProductReviewsListComponent({
             </div>
           </div>
           <div>
-            <ThumbsUpButton />
+            <ThumbsUpButton
+              reviewId={review.id}
+              initialLikeCount={review.likeCount}
+              initialIsLiked={review.isLiked}
+            />
           </div>
         </div>
       </div>

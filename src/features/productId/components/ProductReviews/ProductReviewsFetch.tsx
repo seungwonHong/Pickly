@@ -8,7 +8,12 @@ import SortDropDown from "@/components/shared/SortDropDown";
 interface ProductReviewsClientProps {
   initialData: GetProductIdReviews;
   productId: number;
-  initialOrder?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
+  initialOrder?:
+    | "recent"
+    | "ratingDesc"
+    | "ratingAsc"
+    | "likeCount"
+    | undefined;
 }
 
 export default function ProductReviewsFetch({
