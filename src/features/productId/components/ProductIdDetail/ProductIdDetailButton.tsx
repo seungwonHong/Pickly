@@ -3,10 +3,10 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 import BaseButton from "@/components/shared/BaseButton";
 import TypeButton from "@/components/shared/TypeButton";
+import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
+import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
 
 import useGetUser from "../../hooks/useGetUser";
-
-import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
 
 export default function ProductIdDetailButton({
   productUserId,
@@ -20,17 +20,33 @@ export default function ProductIdDetailButton({
   // 모달 열기 및 닫기 로직 (이렇게 할 수 있다니...ㄷㄷ...)
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  // 리뷰 작성 모달
   const isReviewModalOpen = searchParams.get("modal") === "review";
-  const openModal = () => {
+  const openReviewModal = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("modal", "review");
     router.replace(`?${params.toString()}`, { scroll: false });
   };
-  const closeModal = () => {
+  const closeReviewModal = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("modal");
     router.replace(`?${params.toString()}`, { scroll: false });
   };
+
+  // 비교하기 모달
+  const isCompareModalOpen = searchParams.get("modal") === "compare";
+  const openCompareModal = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("modal", "compare");
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+  const closeCompareModal = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("modal");
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+
   // 쿠키 이용하면 로딩중 버튼 갯수 빠르게 로딩 가능
   return (
     <>
@@ -39,13 +55,14 @@ export default function ProductIdDetailButton({
           <BaseButton
             disabled={false}
             className="px-[123.5px] py-[22px] font-semibold text-[18px] "
-            onClick={openModal}
+            onClick={openReviewModal}
           >
             리뷰 작성하기
           </BaseButton>
           <TypeButton
             type="secondary"
             className="px-[58.5px] py-[22px] font-semibold text-[18px]"
+            onClick={openCompareModal}
           >
             비교하기
           </TypeButton>
@@ -55,7 +72,7 @@ export default function ProductIdDetailButton({
           <BaseButton
             disabled={false}
             className="px-[43.5px] py-[22px] font-semibold text-[18px] "
-            onClick={openModal}
+            onClick={openReviewModal}
           >
             리뷰 작성하기
           </BaseButton>
@@ -68,13 +85,25 @@ export default function ProductIdDetailButton({
           <TypeButton
             type="tertiary"
             className="px-[43.5px] py-[22px] font-semibold text-[18px]"
+            onClick={openCompareModal}
           >
             편집하기
           </TypeButton>
         </div>
       )}
+      {/* 리뷰 작성 모달 컴포넌트 */}
       {isReviewModalOpen && (
-        <ProductReviewModal open={isReviewModalOpen} setOpen={closeModal} />
+        <ProductReviewModal
+          open={isReviewModalOpen}
+          setOpen={closeReviewModal}
+        />
+      )}
+      {/* 비교하기 모달 컴포넌트 */}
+      {isCompareModalOpen && (
+        <ProductCompareModal
+          open={isCompareModalOpen}
+          setOpen={closeCompareModal}
+        />
       )}
     </>
   );
