@@ -26,7 +26,7 @@ export default function ProductReviewsInfinite({
       queryFn: ({ pageParam = undefined }) =>
         productService
           .getProductsIdReviews(productId, order, pageParam)
-          .then((res) => res.data as GetProductIdReviews),
+          .then((res) => res.data),
       getNextPageParam: (lastPage) => lastPage?.nextCursor ?? null,
       keepPreviousData: true,
       ...(order === "recent" && initialData
