@@ -1,12 +1,13 @@
 "use client";
 import Header from "@/components/shared/Header";
 import ActivitySection from "@/components/shared/Profile/ActivitySection";
+import ProductTabSection from "@/components/shared/Profile/ProductTabSection";
 import ProfileCard from "@/components/shared/Profile/ProfileCard";
 import { useMyProfile } from "@/components/shared/Profile/useMyProfile";
 
 const MyPagePage = () => {
   const { data: user, isLoading, isError } = useMyProfile();
-
+  // console.log(user);
   if (isLoading) {
     return <p className="text-gray-400">로딩 중...</p>;
   }
@@ -27,6 +28,7 @@ const MyPagePage = () => {
             활동 내역
           </span>
           <ActivitySection user={user} />
+          <ProductTabSection userId={user.id} />
         </div>
       </div>
     </>

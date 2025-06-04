@@ -2,6 +2,8 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 
+import { Textbox } from "@/components/input/Textbox";
+
 import ImageDelete from "../../../../../../public/icons/image-delete.png";
 import PlusImage from "../../../../../../public/icons/plus-image.png";
 
@@ -69,14 +71,22 @@ export default function ProductReviewInputModal({
   return (
     <div className="flex flex-col gap-[20px] h-fit">
       {/* 텍스트 입력 나중에 컴포넌트로 교체예쩡*/}
-      <textarea
+      <Textbox
+        size="S"
+        placeholder="리뷰를 입력해주세요"
         value={text}
         onChange={handleTextChange}
-        placeholder="리뷰를 입력해주세요"
-        className="w-full outline-0 resize-none overflow-y-auto break-words 
-                   rounded-[8px] bg-[#252530] p-[20px] 
-                   placeholder-[var(--color-deepGray)] text-[var(--color-white)]"
+        maxLength={500}
+        className="h-[150px] w-[540px] text-[16px]"
       />
+      {/* // <textarea
+      //   value={text}
+      //   onChange={handleTextChange}
+      //   placeholder="리뷰를 입력해주세요"
+      //   className="w-full outline-0 resize-none overflow-y-auto break-words 
+      //              rounded-[8px] bg-[#252530] p-[20px] 
+      //              placeholder-[var(--color-deepGray)] text-[var(--color-white)]"
+      // /> */}
 
       {/* 이미지 업로드 섹션 */}
       <div className="flex flex-row-reverse gap-[20px] w-full justify-end">
