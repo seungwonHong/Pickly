@@ -50,28 +50,45 @@ const SigninPage = () => {
   return (
     <>
       <div className="min-h-dvh">
-        <Header />
-        <div className="max-w-[640px] w-full mx-auto pt-[93px] pb-[93px] min-h-[calc(100dvh-72px)] md:min-h-[calc(100dvh-102px)] flex justify-center items-center">
+        <div className="max-w-[440px] md:max-w-[640px] w-full mx-auto pt-[93px] pb-[93px] min-h-[100dvh] flex justify-center items-center">
           <div className="w-full">
             <form onSubmit={handleSubmit(onSubmit)}>
+              <div 
+                className="mb-[39px]"
+              >
               <InputField
                 id="login_email"
                 label="이메일"
                 type="email"
                 placeholder="이메일을 입력해주세요"
                 error={errors.email?.message}
+<<<<<<< HEAD
                 {...register("email")}
                 className="mb-[39px]"
+=======
+                {...register('email')}
+                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
+>>>>>>> origin/main
               />
+              </div>
+              <div 
+                className="mb-[59px]"
+              >
               <InputField
                 id="login_pwd"
                 label="비밀번호"
                 placeholder="비밀번호를 입력해주세요"
                 withEyeToggle
                 error={errors.password?.message}
+<<<<<<< HEAD
                 {...register("password")}
                 className="mb-[59px]"
+=======
+                {...register('password')}
+                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
+>>>>>>> origin/main
               />
+              </div>
               <BaseButton
                 disabled={!isValid}
                 className="w-full h-[65px] font-semibold text-lg"
