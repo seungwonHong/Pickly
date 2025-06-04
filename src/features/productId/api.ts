@@ -40,7 +40,7 @@ class ProductService {
   }
   getProductsIdReviews(
     productId: number,
-    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount",
+    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined,
     cursor?: number
   ) {
     let url = `${BASE_URL}/products/${productId}/reviews`;
@@ -49,6 +49,28 @@ class ProductService {
     if (cursor) url += `&cursor=${cursor}`;
 
     return axios.get(url, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    });
+  }
+
+  postProductsFavorite(productId: number) {
+    return axios.post(
+      `${BASE_URL}/products/${productId}/favorite`,
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      }
+    );
+  }
+
+  deleteProductsFavorite(productId: number) {
+    return axios.delete(`${BASE_URL}/products/${productId}/favorite`, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${TOKEN}`,
@@ -69,7 +91,7 @@ class UserService {
 }
 
 class ReviewService {
-  postReviews({
+  async postReviews({
     productId,
     content,
     rating,
@@ -78,7 +100,7 @@ class ReviewService {
     productId: number;
     content: string;
     rating: number;
-    images?: string[];
+    images: string[];
   }) {
     return axios.post(
       `${BASE_URL}/reviews`,
@@ -120,6 +142,27 @@ class ReviewService {
   }
 }
 
+class ImageService {
+  async postImage(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const response = await axios.post<{ url: string }>(
+      `${BASE_URL}/images/upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      }
+    );
+
+    return response.data.url;
+  }
+}
 export const productService = new ProductService();
 export const userService = new UserService();
 export const reviewService = new ReviewService();
+export const imageService = new ImageService();

@@ -3,8 +3,8 @@ import Image from "next/image";
 import { productService } from "../../api";
 import ProductIdReviewButton from "./ProductIdDetailButton";
 import CategoryChip from "@/components/CategoryChip";
+import ProductIdDetailHeart from "./ProductIdDetailHeart";
 
-import HeartInactive from "../../../../../public/icons/heart-inactive.svg";
 import KakaoLink from "../../../../../public/images/kakao-link.png";
 import LinkShare from "../../../../../public/images/link-share.png";
 
@@ -15,7 +15,8 @@ interface PageProps {
 }
 
 export default async function ProductIdDetail({ params }: PageProps) {
-  const response = await productService.getProductsId(Number(params.id));
+  const productId = Number(params.id);
+  const response = await productService.getProductsId(productId);
   const product = response.data;
   if (!product) return <div>상품 정보가 없습니다.</div>;
 
@@ -31,8 +32,8 @@ export default async function ProductIdDetail({ params }: PageProps) {
         <div className="flex items-center justify-between pb-[49px]">
           <div className="flex items-center gap-[15px] justify-between">
             <div className="text-2xl font-semibold">{product.name}</div>
-            {/* 토큰 완료되면 좋아요 활성화 / 비활성화화 */}
-            <Image src={HeartInactive} alt="좋아요" width={28} height={28} />
+            {/* 찜 하트는 csr이라 따로 컴포넌트 팜 */}
+            <ProductIdDetailHeart productId={productId} />
           </div>
           <div className="flex items-center justify-between gap-[10px] ">
             <Image
