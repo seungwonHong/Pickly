@@ -1,19 +1,24 @@
 "use client";
 import Category from "@/features/home/components/Category";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { useSearchParams } from "next/navigation";
 
 const Header = () => {
   const [clicked, setClicked] = useState(false);
   const params = useParams();
   const categoryId = params?.id as string;
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const handleClick = () => {
     setClicked(!clicked);
   };
+
+  const handleSearch = () => {};
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,7 +38,13 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-between md:h-[100px] h-[70px] lg:px-[120px] lg:py-[36px] md:px-[30px] md:py-[28px] p-[23px] bg-[#1C1C22]">
+      <div
+        className={`flex flex-row items-center justify-between md:h-[100px] h-[70px] lg:px-[120px] lg:py-[36px] md:px-[30px] md:py-[28px] p-[23px] ${
+          searchParams.get("modal") === "true"
+            ? "bg-[#000000B2]"
+            : "bg-[#1C1C22]"
+        }`}
+      >
         <RxHamburgerMenu
           className="md:hidden cursor-pointer"
           size={24}
