@@ -18,12 +18,6 @@ const Header = () => {
     setClicked(!clicked);
   };
 
-  const handleClose = () => {
-    const params = new URLSearchParams(window.location.search);
-    params.delete("modal");
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
-
   const handleSearch = () => {};
 
   useEffect(() => {
@@ -50,7 +44,6 @@ const Header = () => {
             ? "bg-[#000000B2]"
             : "bg-[#1C1C22]"
         }`}
-        onClick={handleClose}
       >
         <RxHamburgerMenu
           className="md:hidden cursor-pointer"
