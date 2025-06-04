@@ -38,10 +38,12 @@ const SignUpPage = () => {
   return (
     <>
       <div className="min-h-dvh">
-        <Header />
-        <div className="max-w-[640px] w-full pt-[93px] pb-[93px] mx-auto min-h-[calc(100dvh-72px)] md:min-h-[calc(100dvh-102px)] flex justify-center items-center">
+        <div className="max-w-[440px] md:max-w-[640px] w-full pt-[93px] pb-[93px] mx-auto min-h-[100dvh] flex justify-center items-center">
           <div className="w-full">
             <form onSubmit={handleSubmit(onSubmit)}>
+              <div 
+                className="mb-[39px]"
+              >
               <InputField
                 id="login_email"
                 label="이메일"
@@ -49,8 +51,12 @@ const SignUpPage = () => {
                 placeholder="이메일을 입력해주세요"
                 error={errors.email?.message}
                 {...register('email')}
-                className="mb-[39px]"
+                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
               />
+              </div>
+              <div 
+                className="mb-[39px]"
+              >
               <InputField
                 id="login_name"
                 label="닉네임"
@@ -58,8 +64,12 @@ const SignUpPage = () => {
                 placeholder="닉네임을 입력해주세요"
                 error={errors.nickname?.message}
                 {...register('nickname')}
-                className="mb-[39px]"
+                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
               />
+              </div>
+              <div 
+                className="mb-[39px]"
+              >
               <InputField
                 id="login_pwd"
                 label="비밀번호"
@@ -67,8 +77,12 @@ const SignUpPage = () => {
                 withEyeToggle
                 error={errors.password?.message}
                 {...register('password')}
-                className="mb-[59px]"
+                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
               />
+              </div>
+              <div 
+                className="mb-[59px]"
+              >
               <InputField
                 id="login_pwd_check"
                 label="비밀번호 확인"
@@ -76,8 +90,9 @@ const SignUpPage = () => {
                 withEyeToggle
                 error={errors.passwordConfirmation?.message}
                 {...register('passwordConfirmation')}
-                className="mb-[59px]"
+                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
               />
+              </div>
               <BaseButton
                 disabled={!isValid}
                 className="w-full h-[65px] font-semibold text-lg"

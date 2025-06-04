@@ -5,7 +5,6 @@ import { useState } from "react";
 const eyeOpen = '/icons/eye_open.svg';
 const eyeClose = '/icons/eye_close.svg';
 
-type TextboxSize = 'S' | 'M' | 'L';
 
 interface InputFieldProps {
   label?: string;
@@ -34,7 +33,7 @@ export function InputField({
 
   const hasError = !!error;
   const message = error || subText;
-  const isActive = 'focus-within:bg-gradient-to-r hover:bg-gradient-to-r from-[#5097fa] to-[#5363ff]' 
+  const isActive = 'focus-within:bg-gradient-to-r from-[#5097fa] to-[#5363ff]' 
 
   const isError = hasError ? '!bg-[var(--color-red)] ' : isActive;
 
@@ -45,9 +44,9 @@ export function InputField({
   return(
     <>
       {/* input 박스 */}
-      {label && <label className="block mb-[10px] text-[var(--color-white)]">{label}</label>}
+      {label && <label className="block mb-[10px] text-[var(--color-white)] text-[14px] md:text-[16px]">{label}</label>}
       <div 
-        className={`relative rounded-[8px] p-[2px] bg-[#353542] ${isError} ${className}`}
+        className={`relative rounded-[8px] p-[1px] bg-[#353542] ${isError} ${className}`}
       > 
         <input 
           className={`w-full h-full outline-0 border-0 rounded-[8px] bg-[#252530] px-[20px] placeholder-[var(--color-deepGray)] text-[var(--color-white)] `}
