@@ -3,8 +3,6 @@ import { useState } from "react";
 type TextboxSize = 'S' | 'M' | 'L';
 
 interface TextboxProps {
-  size?: TextboxSize;
-  width?: number;
   placeholder?: string;
   error?: string;
   subText?: string;
@@ -14,8 +12,6 @@ interface TextboxProps {
 }
 
 export function Textbox({
-  size='L', 
-  width, 
   placeholder, 
   className, 
   error, 
@@ -30,25 +26,18 @@ export function Textbox({
   const message = error || subText;
   const isActive = 'focus-within:bg-gradient-to-r hover:bg-gradient-to-r from-[#5097fa] to-[#5363ff]' 
 
-  const large = 'h-[128px] text-[16px] '
-  const medium = 'h-[120px] text-[14px]'
-  const small = 'h-[120px] text-[14px]'
-
-  const sizeStyle = size === 'L' ? large : size === 'M' ? medium : small;
   const isError = error ? '!bg-[var(--color-red)] ' : isActive;
 
   return(
     <>
       <div 
-        className={`relative rounded-[8px] text-[0px] p-[1px] bg-[#353542] ${isError}  ${className}`}
-        style={{ width: width ? `${width}px` : '100%' }}
+        className={`relative rounded-[8px] p-[1px] h-[120px] bg-[#353542] ${isError}  ${className}`}
       > 
         <textarea
           className={`
-            w-full outline-0 resize-none overflow-y-auto break-words 
+            w-full h-full outline-0 resize-none overflow-y-auto break-words 
             rounded-[8px] bg-[#252530] p-[20px] 
             placeholder-[var(--color-deepGray)] text-[var(--color-white)] 
-            ${sizeStyle}
             `}
             onChange={(e) => setText(e.target.value)}
             placeholder={placeholder}  
