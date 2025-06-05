@@ -3,7 +3,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 import BaseButton from "@/components/shared/BaseButton";
 import TypeButton from "@/components/shared/TypeButton";
-import ProductCompareChangeModal from "@/features/productId/components/modal/ProductCompareModal/ProductCompareChangeModal";
+import ProductCompareChangeModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
 
 export default function ProductIdDetailButton() {
   // 모달 열기 및 닫기 로직 (이렇게 할 수 있다니...ㄷㄷ...)

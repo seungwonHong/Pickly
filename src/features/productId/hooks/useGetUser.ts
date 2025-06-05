@@ -1,6 +1,33 @@
-import { useUserStore } from "@/features/productId/libs/useUserStore";
+import { useUserStore } from "../libs/useUserStore";
 
 export default function useGetUser() {
   const user = useUserStore((state) => state.userData);
-  return { user };
+  const compareList = useUserStore((state) => state.compareList);
+  const addToCompare = useUserStore((state) => state.addToCompare);
+  const removeFromCompare = useUserStore((state) => state.removeFromCompare);
+  const clearCompare = useUserStore((state) => state.clearCompare);
+  const selectedCompareProductId = useUserStore(
+    (state) => state.selectedCompareProductId
+  );
+  const setSelectedCompareProductId = useUserStore(
+    (state) => state.setSelectedCompareProductId
+  );
+  const baseCompareProductId = useUserStore(
+    (state) => state.baseCompareProductId
+  );
+  const setBaseCompareProductId = useUserStore(
+    (state) => state.setBaseCompareProductId
+  );
+
+  return {
+    user,
+    compareList,
+    addToCompare,
+    removeFromCompare,
+    clearCompare,
+    selectedCompareProductId,
+    setSelectedCompareProductId,
+    baseCompareProductId,
+    setBaseCompareProductId,
+  };
 }

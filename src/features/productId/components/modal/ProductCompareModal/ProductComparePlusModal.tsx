@@ -1,7 +1,5 @@
-"use client";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import BaseButton from "@/components/shared/BaseButton";
 import CloseX from "../../../../../../public/icons/close-x.png";
@@ -9,19 +7,16 @@ import CloseX from "../../../../../../public/icons/close-x.png";
 interface ProductCompareChangeModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
+  message?: string;
+  buttonText?: string;
 }
 
-export default function ProductCompareChangeModal({
+export default function ProductComparePlusModal({
   open,
   setOpen,
+  message,
+  buttonText = "확인",
 }: ProductCompareChangeModalProps) {
-  const router = useRouter();
-
-  const handleConfirm = () => {
-    setOpen(false);
-    router.push("/compare");
-  };
-
   return (
     <AnimatePresence>
       {open && (
@@ -49,15 +44,14 @@ export default function ProductCompareChangeModal({
             />
 
             <p className="text-white text-[24px] font-semibold text-center mt-8">
-              비교 상품으로 교체되었습니다. <br />
-              바로 확인해 보시겠어요?
+              {message}
             </p>
 
             <BaseButton
               className="w-full mt-6 py-[14px] text-[16px] font-semibold"
-              onClick={handleConfirm}
+              onClick={() => setOpen(false)}
             >
-              확인
+              {buttonText}
             </BaseButton>
           </motion.div>
         </motion.div>

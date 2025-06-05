@@ -1,39 +1,86 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
+import { GetProductIdDetail } from "../../types";
 import BaseButton from "@/components/shared/BaseButton";
 import TypeButton from "@/components/shared/TypeButton";
-
 import useGetUser from "../../hooks/useGetUser";
 
 import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
+import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
+import ProductCompareChangeModal from "../modal/ProductCompareModal/ProductCompareChangeModal";
+import ProductComparePlusModal from "../modal/ProductCompareModal/ProductComparePlusModal";
 
 export default function ProductIdDetailButton({
-  productUserId,
+  product,
 }: {
-  productUserId: number;
+  product: GetProductIdDetail;
 }) {
   // useGetUser 훅을 사용하여 현재 사용자 정보를 가져옴
-  const { user } = useGetUser();
-  console.log("current user:", user);
-  const isOwner = user?.id === productUserId;
-  console.log("productUserId:", productUserId);
-  console.log("isOwner:", isOwner);
+  const { user, compareList, addToCompare } = useGetUser();
+  const isOwner = user?.id === product.writerId;
+
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  // 비교 교체 모달 상태
+  const [isCompareChangeModalOpen, setCompareChangeModalOpen] = useState(false);
+  const [isCompareModalOpen, setCompareModalOpen] = useState(false);
+
+  // 공통 모달
+  const [isComparePlusModalOpen, setComparePlusModalOpen] = useState("");
+  const [modalBaseOpen, setModalBaseOpen] = useState(false);
+
   // 리뷰 모달
   const isReviewModalOpen = searchParams.get("modal") === "review";
-  const openModal = () => {
+  const openReviewModal = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("modal", "review");
     router.replace(`?${params.toString()}`, { scroll: false });
   };
-  const closeModal = () => {
+  const closeReviewModal = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("modal");
     router.replace(`?${params.toString()}`, { scroll: false });
   };
+
+  // 비교하기 모달
+  console.log("compareList", product);
+  // 비교상품 추가 핸들러
+
+  const handleCompareClick = () => {
+    if (!product || !compareList) return;
+
+    if (user === null) {
+      setComparePlusModalOpen("로그인이 필요합니다.");
+      setModalBaseOpen(true);
+      return;
+    }
+
+    const isAlreadyInList = compareList.some(
+      (item) => Number(item.id) === Number(product.id)
+    );
+
+    if (isAlreadyInList) {
+      console.log("이미 비교 목록에 있는 상품입니다.");
+      setComparePlusModalOpen("이미 비교 목록에 있는 상품입니다.");
+      setModalBaseOpen(true);
+      return;
+    }
+
+    if (compareList.length === 0) {
+      addToCompare(product);
+      setComparePlusModalOpen("비교 상품으로 등록되었습니다!");
+      setModalBaseOpen(true);
+    } else if (compareList.length === 1) {
+      addToCompare(product);
+      setCompareChangeModalOpen(true);
+    } else {
+      setCompareModalOpen(true);
+    }
+  };
+
   // 쿠키 이용하면 로딩중 버튼 갯수 빠르게 로딩 가능
   return (
     <>
@@ -42,13 +89,14 @@ export default function ProductIdDetailButton({
           <BaseButton
             disabled={false}
             className="px-[43.5px] py-[22px] font-semibold text-[18px] "
-            onClick={openModal}
+            onClick={openReviewModal}
           >
             리뷰 작성하기
           </BaseButton>
           <TypeButton
             type="secondary"
             className="px-[43.5px] py-[22px] font-semibold text-[18px]"
+            onClick={handleCompareClick}
           >
             비교하기
           </TypeButton>
@@ -64,21 +112,55 @@ export default function ProductIdDetailButton({
           <BaseButton
             disabled={false}
             className="px-[123.5px] py-[22px] font-semibold text-[18px] "
-            onClick={openModal}
+            onClick={openReviewModal}
           >
             리뷰 작성하기
           </BaseButton>
           <TypeButton
             type="secondary"
             className="px-[58.5px] py-[22px] font-semibold text-[18px]"
+            onClick={handleCompareClick}
           >
             비교하기
           </TypeButton>
         </div>
       )}
       {isReviewModalOpen && (
-        <ProductReviewModal open={isReviewModalOpen} setOpen={closeModal} />
+        <ProductReviewModal
+          open={isReviewModalOpen}
+          setOpen={closeReviewModal}
+        />
+      )}
+      {isCompareModalOpen && (
+        <ProductCompareModal
+          open={isCompareModalOpen}
+          setOpen={setCompareModalOpen}
+        />
+      )}
+      {isComparePlusModalOpen && (
+        <ProductComparePlusModal
+          open={modalBaseOpen}
+          setOpen={setModalBaseOpen}
+          message={isComparePlusModalOpen}
+        />
+      )}
+      {isCompareChangeModalOpen && (
+        <ProductCompareChangeModal
+          open={isCompareChangeModalOpen}
+          setOpen={setCompareChangeModalOpen}
+        />
       )}
     </>
   );
 }
+// const isCompareModalOpen = searchParams.get("modal") === "compare";
+// const openCompareModal = () => {
+//   const params = new URLSearchParams(searchParams.toString());
+//   params.set("modal", "compare");
+//   router.replace(`?${params.toString()}`, { scroll: false });
+// };
+// const closeCompareModal = () => {
+//   const params = new URLSearchParams(searchParams.toString());
+//   params.delete("modal");
+//   router.replace(`?${params.toString()}`, { scroll: false });
+// };

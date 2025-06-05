@@ -14,8 +14,6 @@ export default function ProductReviewsListComponent({
   review: GetProductIdReviewsDetail;
 }) {
   const { user } = useGetUser();
-  console.log("current user:", user);
-  console.log("ProductReviewsListComponent:", review.userId);
   const isOwner = user?.id === review.userId;
   return (
     <div className="text-[#F1F1F5] flex justify-between p-[30px] bg-[#252530] rounded-2xl">
