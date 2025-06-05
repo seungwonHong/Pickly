@@ -22,7 +22,7 @@ export default function InputTestPage() {
         label="이메일"
         type="email"
         placeholder="이메일을 입력해주세요"
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
       />
       <br/>
       <InputField
@@ -31,7 +31,7 @@ export default function InputTestPage() {
         type="email"
         placeholder="이메일을 입력해주세요"
         error="잘못된 이메일입니다."
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
       />
       <br/>
       <InputField
@@ -39,7 +39,7 @@ export default function InputTestPage() {
         label="이메일"
         type="email"
         placeholder="이메일을 입력해주세요"
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
       />
       <br/>
       <InputField
@@ -47,7 +47,7 @@ export default function InputTestPage() {
         label="이메일"
         type="email"
         placeholder="이메일을 입력해주세요"
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
       />
       <br/>
       <InputField
@@ -55,7 +55,7 @@ export default function InputTestPage() {
         label="비밀번호"
         placeholder="비밀번호를 입력해주세요"
         withEyeToggle
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
       />
       <br/>
       <InputField
@@ -64,7 +64,7 @@ export default function InputTestPage() {
         subText="최소 8자 이상"
         placeholder="비밀번호를 입력해주세요"
         withEyeToggle
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
       />
       <br/>
       <InputField
@@ -74,14 +74,14 @@ export default function InputTestPage() {
         error="비밀번호가 일치하지 않습니다."
         placeholder="비밀번호를 입력해주세요"
         withEyeToggle
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
       />
       <br/>
       <InputField
         id="login_pwd"
         placeholder="비밀번호를 입력해주세요"
         withEyeToggle
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
       />
       <br/>
       <InputField
@@ -89,7 +89,7 @@ export default function InputTestPage() {
         subText="최소 8자 이상"
         placeholder="비밀번호를 입력해주세요"
         withEyeToggle
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
       />
       <br/>
       <InputField
@@ -98,31 +98,31 @@ export default function InputTestPage() {
         error="비밀번호가 일치하지 않습니다."
         placeholder="비밀번호를 입력해주세요"
         withEyeToggle
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
       />
       <br/><br/>
       <h2 className="text-[var(--color-white)]">Textbox</h2><br/>
       <Textbox 
         placeholder='리뷰를 작성해 주세요'
         maxLength={300}
-        className="mb-4 md:w-[360px] lg:h-[170px] md:h-[60px] w-[295px] h-[155px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[170px] md:h-[60px] w-[295px] h-[155px] md:mt-0 mt-[10px] "
       />
       <br/>
       <Textbox 
         placeholder='리뷰를 작성해 주세요'
         error="내용을 입력해주세요."
         maxLength={300}
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
       />
       <br/>
       <Textbox 
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
         placeholder='리뷰를 작성해 주세요'
         maxLength={300}
       />
       <br/>
       <Textbox 
-        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+        className="mb-4 md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] "
         placeholder='리뷰를 작성해 주세요'
         maxLength={300}
       />
