@@ -30,6 +30,7 @@ export default function ProductIdDetailButton({
 
   // 공통 모달
   const [isComparePlusModalOpen, setComparePlusModalOpen] = useState("");
+  const [isPlusButtonMessage, setPlusButtonMessage] = useState("");
   const [modalBaseOpen, setModalBaseOpen] = useState(false);
 
   // 리뷰 모달
@@ -44,7 +45,11 @@ export default function ProductIdDetailButton({
     params.delete("modal");
     router.replace(`?${params.toString()}`, { scroll: false });
   };
-
+  // 로그인 리다이렉트 핸들러
+  const handleLoginRedirect = () => {
+    setModalBaseOpen(false);
+    router.push("/signin");
+  };
   // 비교하기 모달
   // 비교상품 추가 핸들러
   const handleCompareClick = () => {
@@ -52,6 +57,7 @@ export default function ProductIdDetailButton({
 
     if (user === null) {
       setComparePlusModalOpen("로그인이 필요합니다.");
+      setPlusButtonMessage("로그인하러가기");
       setModalBaseOpen(true);
       return;
     }
@@ -139,6 +145,12 @@ export default function ProductIdDetailButton({
           open={modalBaseOpen}
           setOpen={setModalBaseOpen}
           message={isComparePlusModalOpen}
+          buttonText={isPlusButtonMessage}
+          onButtonClick={
+            isPlusButtonMessage === "로그인하러가기"
+              ? handleLoginRedirect
+              : undefined
+          }
         />
       )}
       {isCompareChangeModalOpen && (

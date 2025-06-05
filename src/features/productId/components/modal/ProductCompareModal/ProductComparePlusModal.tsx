@@ -9,6 +9,7 @@ interface ProductCompareChangeModalProps {
   setOpen: (open: boolean) => void;
   message?: string;
   buttonText?: string;
+  onButtonClick?: () => void;
 }
 
 export default function ProductComparePlusModal({
@@ -16,7 +17,9 @@ export default function ProductComparePlusModal({
   setOpen,
   message,
   buttonText = "확인",
+  onButtonClick,
 }: ProductCompareChangeModalProps) {
+  if (!open) return null;
   return (
     <AnimatePresence>
       {open && (
@@ -49,9 +52,15 @@ export default function ProductComparePlusModal({
 
             <BaseButton
               className="w-full mt-6 py-[14px] text-[16px] font-semibold"
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                if (onButtonClick) {
+                  onButtonClick();
+                } else {
+                  setOpen(false);
+                }
+              }}
             >
-              {buttonText}
+              {buttonText || "확인"}
             </BaseButton>
           </motion.div>
         </motion.div>

@@ -18,7 +18,7 @@ export default function BaseButton({
 
   const transformStyle = disabled
     ? ""
-    : "hover:scale-105 transition-transform duration-200 ease-in-out";
+    : "hover:scale-105 transition-transform duration-300 ease-in-out";
   return (
     <button
       className={`${className} ${textColor} ${transformStyle} rounded-lg px-6 py-2 hover:brightness-110 cursor-pointer `}
