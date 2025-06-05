@@ -3,6 +3,7 @@ import Image from "next/image";
 import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
 import { formatDate } from "../../../../lib/utils/datetime";
 import { GetProductIdReviewsDetail } from "../../types";
+import useGetUser from "../../hooks/useGetUser";
 
 import Star from "../../../../../public/icons/star.svg";
 import DefaultIProfileImage from "../../../../../public/defaultIProfileImage.jpeg";
@@ -12,6 +13,8 @@ export default function ProductReviewsListComponent({
 }: {
   review: GetProductIdReviewsDetail;
 }) {
+  const { user } = useGetUser();
+  const isOwner = user?.id === review.userId;
   return (
     <div className="text-[#F1F1F5] flex justify-between p-[30px] bg-[#252530] rounded-2xl">
       <div className="flex items-start gap-[10px]">
@@ -62,11 +65,14 @@ export default function ProductReviewsListComponent({
             <div className=" text-[#6E6E82]">
               {formatDate(review.createdAt)}
             </div>
-            <div className="flex gap-[10px] text-[#9FA6B2] ">
-              <div className="underline cursor-pointer">수정</div>
-              <div className="underline cursor-pointer">삭제</div>
-            </div>
+            {isOwner && (
+              <div className="flex gap-[10px] text-[#9FA6B2] ">
+                <div className="underline cursor-pointer">수정</div>
+                <div className="underline cursor-pointer">삭제</div>
+              </div>
+            )}
           </div>
+
           <div>
             <ThumbsUpButton
               reviewId={review.id}

@@ -19,7 +19,6 @@ export default async function ProductIdDetail({ params }: PageProps) {
   const response = await productService.getProductsId(productId);
   const product = response.data;
   if (!product) return <div>상품 정보가 없습니다.</div>;
-
   return (
     <div className="flex items-start justify-between gap-10 text-[#f1f1f5]">
       <img src={product.image} width={306} height={228} alt="상품 이미지" />
@@ -49,7 +48,7 @@ export default async function ProductIdDetail({ params }: PageProps) {
           {product.description}
         </div>
         {/* 여기는 csr로 해야함 -> 로그인 여부에 따라 모양이 달라짐 */}
-        <ProductIdReviewButton productUserId={product.userId} />
+        <ProductIdReviewButton product={product} />
       </div>
     </div>
   );
