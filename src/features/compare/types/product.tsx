@@ -5,5 +5,4 @@ export type Product = {
 
 export type ProductsResponse = {
   list: Product[];
-  nextCursor?: number;
 };

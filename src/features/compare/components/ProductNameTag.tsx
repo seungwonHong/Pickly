@@ -6,9 +6,7 @@ type ProductNameTagProps = {
 };
 
 export default function ProductNameTag({
-  productName,
   color,
-  handleDeleteButtonClick,
   inline = false,
 }: ProductNameTagProps) {
   const backgroundColor = color === "green" ? "#DCFCE7" : "#FCE7F3";

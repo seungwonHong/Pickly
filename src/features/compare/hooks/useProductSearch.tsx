@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { ProductsResponse } from "../types/product";
+import { productService } from "../api/api";
 
-export default function useProductSearch(teamId: string, inputValue: string) {
+export default function useProductSearch(inputValue: string) {
   const [productList, setProductList] = useState<ProductsResponse>({ list: [] });
 
   useEffect(() => {
@@ -11,16 +11,15 @@ export default function useProductSearch(teamId: string, inputValue: string) {
       return;
     }
 
-    axios
-      .get(`https://mogazoa-api.vercel.app/${"14-6"}/products`)
+    productService
+      .getProducts({ keyword: inputValue })
       .then((response) => {
-        const filteredList = response.data.list.filter((product: { name: string }) =>
-          product.name.toLowerCase().includes(inputValue.toLowerCase())
-        );
-        setProductList({ list: filteredList });
+        setProductList({ list: response.data.list });
       })
-      .catch((error) => console.error("Error fetching products:", error));
-  }, [teamId, inputValue]);
+      .catch((error) => {
+        console.error("검색 실패:", error);
+      });
+  }, [inputValue]);
 
   return productList;
 }

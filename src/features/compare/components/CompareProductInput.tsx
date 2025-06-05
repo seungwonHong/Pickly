@@ -3,13 +3,11 @@
 import { useRef, useState } from "react";
 import CompareDropdown from "./CompareDropdown";
 import useProductSearch from "../hooks/useProductSearch";
-import { ProductsResponse } from "../types/product";
 
-interface Props {
+type Props = {
   label: string;
   tagColor: "green" | "pink";
   teamId: string;
-  initialProducts: ProductsResponse;
   onProductSelect?: (productName: string) => void;
   dropdownRef?: React.RefObject<HTMLDivElement>;
   excludeName?: string;
@@ -19,7 +17,6 @@ export default function CompareProductInput({
   label,
   tagColor,
   teamId,
-  initialProducts,
   onProductSelect,
   excludeName,
 }: Props) {
@@ -28,7 +25,7 @@ export default function CompareProductInput({
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const productList = useProductSearch(teamId, inputValue);
+  const productList = useProductSearch(inputValue);
 
   const filteredProducts = productList.list.filter((product) =>
     product.name.toLowerCase().startsWith(inputValue.toLowerCase()) &&
@@ -55,7 +52,6 @@ export default function CompareProductInput({
     inputRef.current?.focus();
   };
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const tagStyles =
     tagColor === "green"
@@ -116,8 +112,6 @@ export default function CompareProductInput({
             inputValue={inputValue}
             productList={{list: filteredProducts}}
             handleAddProduct={handleAddProductInternal}
-            dropdownRef={dropdownRef}
-            focusIndex={0}
           />
         )}
       </div>
