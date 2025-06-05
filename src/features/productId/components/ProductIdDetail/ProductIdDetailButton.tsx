@@ -46,9 +46,7 @@ export default function ProductIdDetailButton({
   };
 
   // 비교하기 모달
-  console.log("compareList", product);
   // 비교상품 추가 핸들러
-
   const handleCompareClick = () => {
     if (!product || !compareList) return;
 
@@ -63,7 +61,6 @@ export default function ProductIdDetailButton({
     );
 
     if (isAlreadyInList) {
-      console.log("이미 비교 목록에 있는 상품입니다.");
       setComparePlusModalOpen("이미 비교 목록에 있는 상품입니다.");
       setModalBaseOpen(true);
       return;

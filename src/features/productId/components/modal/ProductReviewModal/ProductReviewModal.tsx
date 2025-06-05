@@ -51,7 +51,6 @@ export default function ProductReviewModal({
       alert("리뷰 등록에 실패했습니다.");
     },
   });
-
   const handleSubmit = () => {
     postReviewMutation.mutate();
   };
