@@ -1,4 +1,3 @@
-"use client";
 import Category from "@/features/home/components/Category";
 import Link from "next/link";
 import { useParams } from "next/navigation";

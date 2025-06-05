@@ -6,8 +6,8 @@ import Image from "next/image";
 import closeButton from "@../../../public/closeButton.png";
 import { createPortal } from "react-dom";
 import { useInView } from "react-intersection-observer";
-
-interface UserSummary {
+import defaultProfileImage from "@../../../public/defaultProfileImage.jpeg";
+export interface UserSummary {
   id: number;
   nickname: string;
   image: string;
@@ -15,7 +15,7 @@ interface UserSummary {
   teamId?: string;
 }
 
-interface FollowListModalProps {
+export interface FollowListModalProps {
   isOpen: boolean;
   onClose: () => void;
   type: "followers" | "followees";
@@ -23,7 +23,7 @@ interface FollowListModalProps {
   nickname: string;
 }
 
-interface FollowerResponseItem {
+export interface FollowerResponseItem {
   follower: {
     id: number;
     nickname: string;
@@ -34,7 +34,7 @@ interface FollowerResponseItem {
   id: number;
 }
 
-interface FolloweeResponseItem {
+export interface FolloweeResponseItem {
   followee: {
     id: number;
     nickname: string;
@@ -171,7 +171,7 @@ export default function FollowListModal({
                     src={
                       user.image && user.image !== "https://none"
                         ? user.image
-                        : "/defaultIProfileImage.jpeg"
+                        : defaultProfileImage
                     }
                     alt="유저 이미지"
                     fill

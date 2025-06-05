@@ -1,52 +1,45 @@
-// hooks/useUserProducts.ts
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import apiInstance from "@/lib/axios/index";
-import type { InfiniteData } from "@tanstack/react-query";
-
-export type ProductTabType = "created" | "reviewed" | "favorite";
-
-interface Product {
-  id: number;
-  name: string;
-  image: string;
-  categoryId: number;
-  favoriteCount: number;
-  reviewCount: number;
-  rating: number;
-}
-
-interface ProductApiResponse {
-  list: Product[];
-  nextCursor: number;
-}
+import apiInstance from "@/lib/axios";
+import { Product, ProductApiResponse, ProductTabType } from "../types/user";
 
 export function useUserProducts({
   userId,
   type,
+  initialData,
 }: {
   userId: number;
   type: ProductTabType;
+  initialData?: Product[];
 }) {
   const { ref, inView } = useInView();
 
-  const query = useInfiniteQuery<ProductApiResponse>({
+  const query = useInfiniteQuery<ProductApiResponse, Error>({
     queryKey: ["user-products", userId, type],
     queryFn: async ({ pageParam = 0 }) => {
-      const res = await apiInstance.get(`/users/${userId}/${type}-products`, {
-        params: { cursor: pageParam },
+      const url = `/users/${userId}/${type}-products`;
+      const res = await apiInstance.get(url, {
+        params: pageParam !== 0 ? { cursor: pageParam } : undefined,
       });
-      console.log("응답 받음:", res.data);
       return res.data;
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage) =>
       lastPage.nextCursor !== 0 ? lastPage.nextCursor : undefined,
-    enabled: userId > 0,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchOnMount: false,
+    initialData:
+      initialData !== undefined
+        ? {
+            pages: [
+              {
+                list: initialData,
+                nextCursor: 0,
+              },
+            ],
+            pageParams: [0],
+          }
+        : undefined,
+    enabled: !!userId,
   });
 
   useEffect(() => {
@@ -55,12 +48,12 @@ export function useUserProducts({
     }
   }, [inView, query.hasNextPage, query.isFetchingNextPage]);
 
+  const products: Product[] =
+    query.data?.pages.flatMap((page) => page.list) ?? [];
+
   return {
     ...query,
-    products:
-      (
-        query.data as unknown as InfiniteData<ProductApiResponse>
-      )?.pages.flatMap((page) => page.list) ?? [],
+    products,
     ref,
   };
 }

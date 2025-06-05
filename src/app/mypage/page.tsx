@@ -1,20 +1,15 @@
-"use client";
 import Header from "@/components/shared/Header";
-import ActivitySection from "@/features/Profile/componenets/ActivitySection";
-import ProductTabSection from "@/features/Profile/componenets/ProductTabSection";
-import ProfileCard from "@/features/Profile/componenets/ProfileCard";
-import { useMyProfile } from "@/features/Profile/hook/useMyProfile";
+import { getMyProfile } from "@/features/Profile/api/getMyProfile";
+import { getUserProducts } from "@/features/Profile/api/getUserProducts";
+import ActivitySection from "@/features/Profile/components/ActivitySection";
+import ProductTabSection from "@/features/Profile/components/ProductTabSection";
 
-const MyPagePage = () => {
-  const { data: user, isLoading, isError } = useMyProfile();
+import ProfileCard from "@/features/Profile/components/ProfileCard";
+
+export default async function MyPage() {
+  const user = await getMyProfile();
+  const initialProducts = await getUserProducts(user.id, "reviewed");
   // console.log(user);
-  if (isLoading) {
-    return <p className="text-gray-400">로딩 중...</p>;
-  }
-
-  if (isError || !user) {
-    return <p className="text-red-400">유저 정보를 불러오지 못했습니다.</p>;
-  }
 
   return (
     <>
@@ -28,11 +23,13 @@ const MyPagePage = () => {
             활동 내역
           </span>
           <ActivitySection user={user} />
-          <ProductTabSection userId={user.id} />
+          <ProductTabSection
+            userId={user.id}
+            initialTab="reviewed"
+            initialProducts={initialProducts}
+          />
         </div>
       </div>
     </>
   );
-};
-
-export default MyPagePage;
+}

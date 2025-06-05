@@ -1,14 +1,7 @@
 import axios from "axios";
 
-// const token = localStorage.getItem("accessToken");
-
-const apiInstance = axios.create({
-  // 임시api
-  baseURL: "https://mogazoa-api.vercel.app/14-6",
-
-  //   withCredentials: true,
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
+export const apiInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  // withCredentials: true,
 });
 export default apiInstance;
