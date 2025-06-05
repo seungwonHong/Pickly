@@ -9,7 +9,6 @@ type Props = {
   tagColor: "green" | "pink";
   teamId: string;
   onProductSelect?: (productName: string) => void;
-  dropdownRef?: React.RefObject<HTMLDivElement>;
   excludeName?: string;
 }
 
