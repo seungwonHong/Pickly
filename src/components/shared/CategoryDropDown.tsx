@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { RxTriangleDown } from "react-icons/rx";
 import { motion, AnimatePresence } from "framer-motion";
-import useModalStore from "@/features/modals/store/modalStore";
+import useModalStore from "@/features/home/modals/store/modalStore";
 
 type Props = {};
 

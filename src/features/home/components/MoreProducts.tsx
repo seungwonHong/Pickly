@@ -6,14 +6,15 @@ import SpinningWidget from "@/components/shared/SpinningWidget";
 import ProductCard from "@/components/shared/ProductCard";
 
 interface Props {
-  nextCursor: number | null;
+  nextCursor?: number | null;
   categoryId?: number;
-  queryKey: [string, number];
+  queryKey: [string, number | string];
+  keyword?: string;
 }
 
-const MoreProducts = ({ nextCursor, categoryId, queryKey }: Props) => {
+const MoreProducts = ({ nextCursor, categoryId, queryKey, keyword }: Props) => {
   const observerRef = useRef(null);
-  if (nextCursor === null) return;
+  if (nextCursor === null && keyword === undefined) return;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
@@ -23,6 +24,7 @@ const MoreProducts = ({ nextCursor, categoryId, queryKey }: Props) => {
           cursor: pageParam ?? undefined,
           order: "recent",
           categoryId,
+          keyword: keyword,
         }),
       initialPageParam: nextCursor,
       getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,

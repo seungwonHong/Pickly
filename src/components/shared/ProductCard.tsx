@@ -21,14 +21,14 @@ const ProductCard = ({ product }: Props) => {
             {product.name}
           </span>
 
-          <div className="flex lg:flex-row md:flex-row flex-col items-center justify-between lg:mt-[10px] md:mt-[10px] mt-[5px] lg:text-[16px] md:text-[14px] text-[12px] font-light">
+          <div className="flex lg:flex-row md:flex-row flex-col md:items-center items-start md:justify-between lg:mt-[10px] md:mt-[10px] mt-[5px] lg:text-[16px] md:text-[14px] text-[12px] font-light">
             <div className="flex flex-row items-center text-[#6E6E82] ">
               <span>리뷰 {product.reviewCount}</span>
-              <span className="lg:ml-[15px]">찜 {product.favoriteCount}</span>
+              <span className="md:ml-[15px] ml-[10px]">찜 {product.favoriteCount}</span>
             </div>
 
             <span className="text-[#9FA6B2]">
-              ⭐️ {product.rating.toFixed(2)}
+              ⭐️ {product.rating.toFixed(1)}
             </span>
           </div>
         </div>
