@@ -47,7 +47,7 @@ export default function ProductReviewsFetch({
           onChange={onSortChange}
         />
       </div>
-      <div className="min-h-[2000px]">
+      <div className="min-h-[1000px]">
         <ProductReviewsInfinite
           initialData={dataForSelectedOrder}
           productId={productId}

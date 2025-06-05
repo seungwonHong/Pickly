@@ -13,13 +13,16 @@ export default function ProductIdDetailButton({
 }: {
   productUserId: number;
 }) {
-  // useGetUser 훅을 사용하여 사용자 정보를 가져옴
+  // useGetUser 훅을 사용하여 현재 사용자 정보를 가져옴
   const { user } = useGetUser();
+  console.log("current user:", user);
   const isOwner = user?.id === productUserId;
-
-  // 모달 열기 및 닫기 로직 (이렇게 할 수 있다니...ㄷㄷ...)
+  console.log("productUserId:", productUserId);
+  console.log("isOwner:", isOwner);
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  // 리뷰 모달
   const isReviewModalOpen = searchParams.get("modal") === "review";
   const openModal = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -35,22 +38,6 @@ export default function ProductIdDetailButton({
   return (
     <>
       {isOwner ? (
-        <div className="flex items-center justify-between">
-          <BaseButton
-            disabled={false}
-            className="px-[123.5px] py-[22px] font-semibold text-[18px] "
-            onClick={openModal}
-          >
-            리뷰 작성하기
-          </BaseButton>
-          <TypeButton
-            type="secondary"
-            className="px-[58.5px] py-[22px] font-semibold text-[18px]"
-          >
-            비교하기
-          </TypeButton>
-        </div>
-      ) : (
         <div className="flex items-center justify-between">
           <BaseButton
             disabled={false}
@@ -70,6 +57,22 @@ export default function ProductIdDetailButton({
             className="px-[43.5px] py-[22px] font-semibold text-[18px]"
           >
             편집하기
+          </TypeButton>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between">
+          <BaseButton
+            disabled={false}
+            className="px-[123.5px] py-[22px] font-semibold text-[18px] "
+            onClick={openModal}
+          >
+            리뷰 작성하기
+          </BaseButton>
+          <TypeButton
+            type="secondary"
+            className="px-[58.5px] py-[22px] font-semibold text-[18px]"
+          >
+            비교하기
           </TypeButton>
         </div>
       )}
