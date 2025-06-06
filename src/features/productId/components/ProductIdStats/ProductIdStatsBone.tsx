@@ -17,24 +17,26 @@ export default function ProductIdStatsBone({
   unit,
 }: ProductIdStatsBoneProps) {
   return (
-    <div className="w-[300px] h-[190px] flex justify-center items-center mx-auto border-[1px] rounded-[12px] border-[#353542] bg-[#252530]">
-      <div className="w-[152px] h-[130px] flex justify-between items-center flex-col">
-        <div className="text-[18px] font-medium">{title}</div>
+    <div className="lg:w-[300px] md:w-[218px] lg:h-[190px] md:h-[169px] flex justify-center items-center mx-auto border-[1px] rounded-[12px] border-[#353542] bg-[#252530]">
+      <div className="lg:w-[152px] md:w-[139px] lg:h-[130px] md:h-[109px] flex justify-between items-center flex-col">
+        <div className="lg:text-[18px] md:text-[16px] font-medium">{title}</div>
         <div className="flex gap-[5px] items-center justify-between">
           <Image
             src={icon}
             alt="별 / 하트 / 말풍선 아이콘"
-            className="w-[24px] h-[24px]"
+            className="lg:w-[24px] md:w-[20px] lg:h-[24px] md:h-[20px]"
           />
-          <div className="text-[24px] font-[300] text-[#9FA6B2]">{score}</div>
+          <div className="lg:text-[24px] md:text-[20px] font-[300] text-[#9FA6B2]">
+            {score}
+          </div>
         </div>
-        <div className="text-[13px] font-[300] text-[#9FA6B2] text-center">
+        <div className="lg:text-[13px] md:text-[12px] font-[300] text-[#9FA6B2] text-center">
           {typeof diffValue === "number" &&
             (() => {
               const roundedDiff = parseFloat(diffValue.toFixed(1));
               return (
                 <>
-                  같은 카테고리의 제품들보다
+                  같은 카테고리의 제품들보다{" "}
                   <span className="text-[#f1f1f5] font-medium">
                     {Math.abs(roundedDiff)}
                     {unit}

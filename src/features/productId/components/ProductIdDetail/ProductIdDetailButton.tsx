@@ -142,17 +142,17 @@ export default function ProductIdDetailButton({
           </TypeButton>
         </div>
       ) : (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between md:flex-row flex-col">
           <BaseButton
             disabled={false}
-            className="px-[123.5px] py-[22px] font-semibold text-[18px] "
+            className="lg:px-[123.5px] lg:py-[22px] md:px-[70px] md:py-[18px] px-[123px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px]"
             onClick={openReviewModal}
           >
             리뷰 작성하기
           </BaseButton>
           <TypeButton
             type="secondary"
-            className="px-[58.5px] py-[22px] font-semibold text-[18px]"
+            className="lg:px-[58.5px] lg:py-[22px] md:px-[33px] md:py-[18px] px-[123px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px]"
             onClick={handleCompareClick}
           >
             비교하기

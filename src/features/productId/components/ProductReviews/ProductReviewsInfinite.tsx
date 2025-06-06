@@ -60,7 +60,7 @@ export default function ProductReviewsInfinite({
   return (
     <div>
       {data?.pages.map((page, i) => (
-        <div key={i} className="flex flex-col gap-[20px]">
+        <div key={i} className="flex flex-col gap-[20px] mb-[20px]">
           {page?.list?.map((review) => (
             <ProductReviewsListComponent key={review.id} review={review} />
           ))}
