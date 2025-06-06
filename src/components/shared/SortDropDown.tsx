@@ -54,7 +54,7 @@ const SortDropDown = ({ selectList, selected, onChange }: DropDownProps) => {
   return (
     <div className="relative" ref={selectRef}>
       <div
-        className="md:w-[200px] w-[155px] h-[24px] px-[20px] py-0 cursor-pointer flex items-center justify-between gap-[5px] text-[#6E6E82] md:text-[16px] text-[14px]"
+        className="md:w-[200px] w-[155px] h-[24px] p-[20px] cursor-pointer flex items-center justify-between gap-[5px] text-[#6E6E82] md:text-[16px] text-[14px] hover:bg-[#252530]  rounded-[8px] transition-colors duration-100"
         onClick={toggleDropdown}
       >
         {selectList.find((item) => item.value === selected)?.name}
@@ -69,7 +69,7 @@ const SortDropDown = ({ selectList, selected, onChange }: DropDownProps) => {
 
       {shouldRender && (
         <ul
-          className={`absolute left-0 top-[34px] md:w-full  w-[151px] z-30 border border-[#626282] rounded-[8px] bg-[#1C1C22] 
+          className={`absolute left-0 top-[46px] md:w-full  w-[151px] z-30 border border-[#626282] rounded-[8px] bg-[#1C1C22] 
           flex flex-col items-center justify-around list-none md:p-[10px] p-[5px] gap-[5px]
           transition-all duration-300 ease-in-out
           ${
