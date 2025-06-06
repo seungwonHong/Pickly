@@ -19,6 +19,8 @@ export default function useGetUser() {
     (state) => state.setBaseCompareProductId
   );
 
+  const groupedCompareList = useUserStore((state) => state.groupedCompareList);
+
   return {
     user,
     compareList,
@@ -29,5 +31,6 @@ export default function useGetUser() {
     setSelectedCompareProductId,
     baseCompareProductId,
     setBaseCompareProductId,
+    groupedCompareList,
   };
 }

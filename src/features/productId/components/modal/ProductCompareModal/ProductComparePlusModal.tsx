@@ -46,7 +46,7 @@ export default function ProductComparePlusModal({
               onClick={() => setOpen(false)}
             />
 
-            <p className="text-white text-[24px] font-semibold text-center mt-8 w-max">
+            <p className="text-white text-[24px] font-semibold text-center mt-8 w-max whitespace-pre-line">
               {message}
             </p>
 

@@ -1,11 +1,11 @@
 import { productService } from "@/features/productId/api";
 import ProductReviewsFetch from "./ProductReviewsFetch";
 
-interface Props {
+export default async function ProductReviewClient({
+  productId,
+}: {
   productId: number;
-}
-
-export default async function ProductReviewClient({ productId }: Props) {
+}) {
   const initialOrder = "recent";
 
   const initialData = await productService
