@@ -8,17 +8,20 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { useSearchParams } from "next/navigation";
 import SearchPage from "./SearchPage";
 import useAuthentication from "@/features/header/hooks/useAuthentication";
+import useResize from "@/features/header/hooks/useResize";
+import useBlockScroll from "@/features/header/hooks/useBlockScroll";
 
 const Header = () => {
-  const [clicked, setClicked] = useState(false);
   const [search, setSearch] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const [openSearch, setOpenSearch] = useState(false);
 
   const params = useParams();
   const categoryId = params?.id as string;
   const searchParams = useSearchParams();
   const { isAuthenticated } = useAuthentication();
+
+  const { clicked, setClicked } = useResize();
+  const { openSearch, setOpenSearch } = useBlockScroll();
 
   const handleClick = () => {
     setClicked(!clicked);
@@ -30,33 +33,6 @@ const Header = () => {
     setOpenSearch(true);
     setInputValue("");
   };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setClicked(false);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (openSearch) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [openSearch]);
 
   return (
     <div className="relative">
