@@ -10,7 +10,6 @@ import useGetUser from "../../hooks/useGetUser";
 import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
 import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
 import ProductComparePlusModal from "../modal/ProductCompareModal/ProductComparePlusModal";
-import { is } from "./../../../../../.next/server/vendor-chunks/next";
 
 export default function ProductIdDetailButton({
   product,
@@ -31,7 +30,6 @@ export default function ProductIdDetailButton({
   // 공통 모달
   const [isComparePlusModalOpen, setComparePlusModalOpen] = useState("");
   const [isPlusButtonMessage, setPlusButtonMessage] = useState("");
-  const [modalBaseOpen, setModalBaseOpen] = useState(false);
 
   // 리뷰 모달
   const isReviewModalOpen = searchParams.get("modal") === "review";
