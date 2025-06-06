@@ -26,8 +26,7 @@ export default function ProductCompareModal({
     addToCompare,
   } = useGetUser();
   const router = useRouter();
-  // console.log(groupedCompareList);
-  // console.log(product.category.id);
+
   const handleCompareChange = () => {
     setOpen(false);
     router.push(`/compare`);

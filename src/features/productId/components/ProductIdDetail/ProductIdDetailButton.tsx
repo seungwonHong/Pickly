@@ -10,6 +10,7 @@ import useGetUser from "../../hooks/useGetUser";
 import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
 import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
 import ProductComparePlusModal from "../modal/ProductCompareModal/ProductComparePlusModal";
+import { is } from "./../../../../../.next/server/vendor-chunks/next";
 
 export default function ProductIdDetailButton({
   product,
@@ -26,7 +27,6 @@ export default function ProductIdDetailButton({
     (item) => item.category.id === product?.category?.id
   );
   // 비교 교체 모달 상태
-  const [isCompareModalOpen, setCompareModalOpen] = useState(false);
 
   // 공통 모달
   const [isComparePlusModalOpen, setComparePlusModalOpen] = useState("");
@@ -45,14 +45,39 @@ export default function ProductIdDetailButton({
     params.delete("modal");
     router.replace(`?${params.toString()}`, { scroll: false });
   };
+  // 비교 모달
+  const isCompareModalOpen = searchParams.get("modal") === "compare";
+  const openCompareModal = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("modal", "compare");
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+  const closeCompareModal = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("modal");
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+  //  비교 모달 나머지
+  const isModalBaseOpen = searchParams.get("modal") === "comparePlus";
+  const openBaseModal = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("modal", "comparePlus");
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+  const closeBaseModal = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("modal");
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+
   // 로그인 리다이렉트 핸들러
   const handleLoginRedirect = () => {
-    setModalBaseOpen(false);
+    closeBaseModal();
     router.push("/signin");
   };
   // 비교하기 리다이렉트 핸들러
   const handleCompareRedirect = () => {
-    setModalBaseOpen(false);
+    closeBaseModal();
     router.push("/compare");
   };
   // 비교하기 모달
@@ -62,7 +87,7 @@ export default function ProductIdDetailButton({
     if (user === null) {
       setComparePlusModalOpen("로그인이 필요합니다.");
       setPlusButtonMessage("로그인하러가기");
-      setModalBaseOpen(true);
+      openBaseModal();
       return;
     }
 
@@ -72,23 +97,23 @@ export default function ProductIdDetailButton({
 
     if (isAlreadyInList) {
       setComparePlusModalOpen("이미 비교 목록에 있는 상품입니다.");
-      setModalBaseOpen(true);
+      openBaseModal();
       return;
     }
 
     if (sameCategoryCompareList.length === 0) {
       addToCompare(product);
       setComparePlusModalOpen("비교 상품으로 등록되었습니다!");
-      setModalBaseOpen(true);
+      openBaseModal();
     } else if (sameCategoryCompareList.length === 1) {
       addToCompare(product);
       setComparePlusModalOpen(
         "비교 상품으로 등록되었습니다.\n바로 확인해 보시겠어요?"
       );
       setPlusButtonMessage("확인하러가기");
-      setModalBaseOpen(true);
+      openBaseModal();
     } else {
-      setCompareModalOpen(true);
+      openCompareModal();
     }
   };
 
@@ -145,13 +170,13 @@ export default function ProductIdDetailButton({
       {isCompareModalOpen && (
         <ProductCompareModal
           open={isCompareModalOpen}
-          setOpen={setCompareModalOpen}
+          setOpen={closeCompareModal}
         />
       )}
-      {isComparePlusModalOpen && (
+      {isModalBaseOpen && (
         <ProductComparePlusModal
-          open={modalBaseOpen}
-          setOpen={setModalBaseOpen}
+          open={isModalBaseOpen}
+          setOpen={closeBaseModal}
           message={isComparePlusModalOpen}
           buttonText={isPlusButtonMessage}
           onButtonClick={
