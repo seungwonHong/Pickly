@@ -38,7 +38,7 @@ export default function ProductReviewsFetch({
   };
   return (
     <div>
-      <div className="text-[#f1f1f1] lg:text-[20px] md:text-[16px] font-semibold flex justify-between mb-[30px]">
+      <div className="text-[#f1f1f1] lg:text-[20px] text-[16px] font-medium flex justify-between mb-[30px]">
         <div>상품리뷰</div>
 
         <SortDropDown

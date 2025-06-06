@@ -16,7 +16,7 @@ export default function ProductReviewsListComponent({
   const { user } = useGetUser();
   const isOwner = user?.id === review.userId;
   return (
-    <div className="text-[#F1F1F5] flex justify-between lg:p-[30px] md:p-[20px] bg-[#252530] rounded-2xl">
+    <div className="text-[#F1F1F5] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
       <div className="flex items-start gap-[10px]">
         <Image
           src={review.user.image || DefaultIProfileImage}
@@ -26,7 +26,7 @@ export default function ProductReviewsListComponent({
           className="rounded-full md:w-[36px] md:h-[36px]"
         />
         <div>
-          <div className="lg:text-[16px] md:text-[14px] font-medium">
+          <div className="lg:text-[16px] text-[14px] font-medium">
             {review.user.nickname}
           </div>
           <div>
@@ -38,7 +38,7 @@ export default function ProductReviewsListComponent({
                   alt="별점"
                   width={20}
                   height={20}
-                  className="inline-block md:w-[12px] md:h-[12px]"
+                  className="inline-block w-[12px] h-[12px]"
                 />
               ))}
             </div>
@@ -46,12 +46,12 @@ export default function ProductReviewsListComponent({
         </div>
       </div>
       <div className="lg:w-[680px] md:w-[455px] flex flex-col gap-[20px]">
-        <div className="lg:text-[16px] md:text-[12px] font-medium">
+        <div className="lg:text-[16px] text-[12px] font-medium">
           {review.content}
         </div>
         <div>
           {review.reviewImages.length > 0 && (
-            <div className="flex lg:gap-[20px] md:gap-[10px]">
+            <div className="flex lg:gap-[20px] gap-[10px]">
               {review.reviewImages.map((image) => (
                 <img
                   key={image.id}
@@ -65,7 +65,7 @@ export default function ProductReviewsListComponent({
           <></>
         </div>
         <div className="flex justify-between items-end">
-          <div className="flex gap-[20px] lg:text-[14px] md:text-[12px]">
+          <div className="flex gap-[20px] lg:text-[14px] text-[12px] md:text-[12px]">
             <div className=" text-[#6E6E82]">
               {formatDate(review.createdAt)}
             </div>

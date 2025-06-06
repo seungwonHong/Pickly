@@ -44,7 +44,7 @@ export default async function ProductIdDetail({
         </div>
         <div className="flex flex-col justify-between gap-[20px]">
           <div className="flex items-center justify-between ">
-            <div className="flex items-center gap-[15px] justify-between">
+            <div className="flex items-center justify-between w-full">
               <div className="lg:text-2xl text-[20px] font-semibold">
                 {product.name}
               </div>

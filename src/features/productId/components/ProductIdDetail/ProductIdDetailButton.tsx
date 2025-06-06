@@ -119,24 +119,24 @@ export default function ProductIdDetailButton({
   return (
     <>
       {isOwner ? (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between md:flex-row flex-col">
           <BaseButton
             disabled={false}
-            className="px-[43.5px] py-[22px] font-semibold text-[18px] "
+            className="lg:px-[44.5px] lg:py-[22px] md:px-[24px] md:py-[18px] px-[126px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] mb-[15px] md:mb-[0px]"
             onClick={openReviewModal}
           >
             리뷰 작성하기
           </BaseButton>
           <TypeButton
             type="secondary"
-            className="px-[43.5px] py-[22px] font-semibold text-[18px]"
+            className="lg:px-[44.5px] lg:py-[22px] md:px-[24px] md:py-[18px] px-[139px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] "
             onClick={handleCompareClick}
           >
             비교하기
           </TypeButton>
           <TypeButton
             type="tertiary"
-            className="px-[43.5px] py-[22px] font-semibold text-[18px]"
+            className="lg:px-[44.5px] lg:py-[22px] md:px-[24px] md:py-[18px] px-[139px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] mt-[15px] md:mt-[0px]"
           >
             편집하기
           </TypeButton>
@@ -145,14 +145,14 @@ export default function ProductIdDetailButton({
         <div className="flex items-center justify-between md:flex-row flex-col">
           <BaseButton
             disabled={false}
-            className="lg:px-[123.5px] lg:py-[22px] md:px-[70px] md:py-[18px] px-[123px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px]"
+            className="lg:px-[123.5px] lg:py-[22px] md:px-[70px] md:py-[18px] px-[123px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] mb-[15px] md:mb-[0px]"
             onClick={openReviewModal}
           >
             리뷰 작성하기
           </BaseButton>
           <TypeButton
             type="secondary"
-            className="lg:px-[58.5px] lg:py-[22px] md:px-[33px] md:py-[18px] px-[123px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px]"
+            className="lg:px-[58.5px] lg:py-[22px] md:px-[33px] md:py-[18px] px-[136px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] "
             onClick={handleCompareClick}
           >
             비교하기
