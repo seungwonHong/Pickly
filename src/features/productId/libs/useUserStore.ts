@@ -61,7 +61,6 @@ export const useUserStore = create<UserState>()(
         set({
           compareList: newCompareList,
           baseCompareProductId: lastTwo[0]?.id ?? null,
-          selectedCompareProductId: lastTwo[1]?.id ?? lastTwo[0]?.id ?? null,
         });
       },
       removeFromCompare: (productId) => {

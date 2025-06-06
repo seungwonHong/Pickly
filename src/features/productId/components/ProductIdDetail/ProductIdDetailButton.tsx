@@ -9,7 +9,6 @@ import useGetUser from "../../hooks/useGetUser";
 
 import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
 import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
-import ProductCompareChangeModal from "../modal/ProductCompareModal/ProductCompareChangeModal";
 import ProductComparePlusModal from "../modal/ProductCompareModal/ProductComparePlusModal";
 
 export default function ProductIdDetailButton({
@@ -25,7 +24,6 @@ export default function ProductIdDetailButton({
   const router = useRouter();
 
   // 비교 교체 모달 상태
-  const [isCompareChangeModalOpen, setCompareChangeModalOpen] = useState(false);
   const [isCompareModalOpen, setCompareModalOpen] = useState(false);
 
   // 공통 모달
@@ -50,8 +48,12 @@ export default function ProductIdDetailButton({
     setModalBaseOpen(false);
     router.push("/signin");
   };
+  // 비교하기 리다이렉트 핸들러
+  const handleCompareRedirect = () => {
+    setModalBaseOpen(false);
+    router.push("/compare");
+  };
   // 비교하기 모달
-  // 비교상품 추가 핸들러
   const handleCompareClick = () => {
     if (!product || !compareList) return;
 
@@ -78,7 +80,11 @@ export default function ProductIdDetailButton({
       setModalBaseOpen(true);
     } else if (compareList.length === 1) {
       addToCompare(product);
-      setCompareChangeModalOpen(true);
+      setComparePlusModalOpen(
+        "비교 상품으로 등록되었습니다.\n바로 확인해 보시겠어요?"
+      );
+      setPlusButtonMessage("확인하러가기");
+      setModalBaseOpen(true);
     } else {
       setCompareModalOpen(true);
     }
@@ -149,27 +155,12 @@ export default function ProductIdDetailButton({
           onButtonClick={
             isPlusButtonMessage === "로그인하러가기"
               ? handleLoginRedirect
+              : isPlusButtonMessage === "확인하러가기"
+              ? handleCompareRedirect
               : undefined
           }
-        />
-      )}
-      {isCompareChangeModalOpen && (
-        <ProductCompareChangeModal
-          open={isCompareChangeModalOpen}
-          setOpen={setCompareChangeModalOpen}
         />
       )}
     </>
   );
 }
-// const isCompareModalOpen = searchParams.get("modal") === "compare";
-// const openCompareModal = () => {
-//   const params = new URLSearchParams(searchParams.toString());
-//   params.set("modal", "compare");
-//   router.replace(`?${params.toString()}`, { scroll: false });
-// };
-// const closeCompareModal = () => {
-//   const params = new URLSearchParams(searchParams.toString());
-//   params.delete("modal");
-//   router.replace(`?${params.toString()}`, { scroll: false });
-// };
