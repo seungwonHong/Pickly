@@ -57,7 +57,7 @@ const SortDropDown = ({ selectList, selected, onChange }: DropDownProps) => {
         />
       </div>
       {isOpen && (
-        <ul className="lg:absolute relative left-[44px] md:left-[0px] lg:top-[34px] top-[10px] md:w-full w-[130px]  border z-10 flex flex-col items-center justify-around list-none md:p-[10px] p-[5px] gap-[5px] border-[#626282] rounded-[8px] bg-[#252530] ">
+        <ul className="lg:absolute relative left-[44px] md:left-[0px] lg:top-[34px] top-[10px] md:w-full w-[130px]  border z-10 flex flex-col items-center justify-around list-none md:p-[10px] p-[5px] gap-[5px] border-[#626282] rounded-[8px] bg-[#1C1C22] ">
           {selectList.map((item) => {
             const isSelected = item.value === selected;
             return (
@@ -66,8 +66,8 @@ const SortDropDown = ({ selectList, selected, onChange }: DropDownProps) => {
                 className={`w-full px-[20px] py-[5px] cursor-pointer flex items-center rounded-[8px] transition-colors duration-100
             ${
               isSelected
-                ? "bg-[#3A3A48] text-[#F1F1F5] md:text-[16px] text-[14px]"
-                : "text-[#A0A0B0] md:text-[16px] text-[14px] hover:bg-[#3A3A48] hover:text-white"
+                ? "bg-[#252530] text-[#F1F1F5] md:text-[16px] text-[14px]"
+                : "text-[#6E6E82] md:text-[16px] text-[14px] hover:bg-[#252530] "
             }`}
                 onClick={() => handleSelect(item.value)}
               >
