@@ -34,11 +34,11 @@ interface UserState {
   setBaseCompareProductId: (id: number | null) => void;
 
   groupedCompareList: {
-    categoryId: string;
+    categoryId: number;
     products: UserProduct[];
   }[];
   setGroupedCompareList: (
-    grouped: { categoryId: string; products: UserProduct[] }[]
+    grouped: { categoryId: number; products: UserProduct[] }[]
   ) => void;
 
   clearAll: () => void;
@@ -50,14 +50,14 @@ export const useUserStore = create<UserState>()(
       // 그룹화 함수 분리
       const groupByCategory = (list: UserProduct[]) => {
         const grouped = list.reduce((acc, product) => {
-          const categoryId = String(product.category.id);
+          const categoryId = Number(product.category.id);
           if (!acc[categoryId]) acc[categoryId] = [];
           acc[categoryId].push(product);
           return acc;
-        }, {} as Record<string, UserProduct[]>);
+        }, {} as Record<number, UserProduct[]>);
 
         return Object.entries(grouped).map(([categoryId, products]) => ({
-          categoryId,
+          categoryId: Number(categoryId),
           products,
         }));
       };

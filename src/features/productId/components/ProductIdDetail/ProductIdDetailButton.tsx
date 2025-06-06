@@ -22,7 +22,9 @@ export default function ProductIdDetailButton({
 
   const searchParams = useSearchParams();
   const router = useRouter();
-
+  const sameCategoryCompareList = compareList.filter(
+    (item) => item.category.id === product?.category?.id
+  );
   // 비교 교체 모달 상태
   const [isCompareModalOpen, setCompareModalOpen] = useState(false);
 
@@ -55,7 +57,7 @@ export default function ProductIdDetailButton({
   };
   // 비교하기 모달
   const handleCompareClick = () => {
-    if (!product || !compareList) return;
+    if (!product || !sameCategoryCompareList) return;
 
     if (user === null) {
       setComparePlusModalOpen("로그인이 필요합니다.");
@@ -64,7 +66,7 @@ export default function ProductIdDetailButton({
       return;
     }
 
-    const isAlreadyInList = compareList.some(
+    const isAlreadyInList = sameCategoryCompareList.some(
       (item) => Number(item.id) === Number(product.id)
     );
 
@@ -74,11 +76,11 @@ export default function ProductIdDetailButton({
       return;
     }
 
-    if (compareList.length === 0) {
+    if (sameCategoryCompareList.length === 0) {
       addToCompare(product);
       setComparePlusModalOpen("비교 상품으로 등록되었습니다!");
       setModalBaseOpen(true);
-    } else if (compareList.length === 1) {
+    } else if (sameCategoryCompareList.length === 1) {
       addToCompare(product);
       setComparePlusModalOpen(
         "비교 상품으로 등록되었습니다.\n바로 확인해 보시겠어요?"

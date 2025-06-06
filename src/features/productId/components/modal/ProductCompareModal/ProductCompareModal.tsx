@@ -24,11 +24,10 @@ export default function ProductCompareModal({
     setBaseCompareProductId,
     baseCompareProductId,
     addToCompare,
-    groupedCompareList,
   } = useGetUser();
   const router = useRouter();
-  console.log(groupedCompareList);
-
+  // console.log(groupedCompareList);
+  // console.log(product.category.id);
   const handleCompareChange = () => {
     setOpen(false);
     router.push(`/compare`);
@@ -49,7 +48,9 @@ export default function ProductCompareModal({
     setBaseCompareProductId,
     addToCompare,
   ]);
-
+  const sameCategoryCompareList = compareList.filter(
+    (item) => item.category.id === product?.category?.id
+  );
   return (
     <AnimatePresence>
       {open && (
@@ -79,9 +80,10 @@ export default function ProductCompareModal({
             <p className="text-white text-[24px] font-semibold text-center mt-8">
               지금 보신 &#39;{product?.name}&#39; 어떤 상품과 비교할까요?
             </p>
-            {compareList.length > 0 && (
+
+            {sameCategoryCompareList.length > 0 && (
               <div className="flex gap-[20px] flex-col">
-                {compareList.slice(-3, -1).map((item) => (
+                {sameCategoryCompareList.slice(-3, -1).map((item) => (
                   <ModalProductName key={item.id} productId={item.id}>
                     {item.name}
                   </ModalProductName>

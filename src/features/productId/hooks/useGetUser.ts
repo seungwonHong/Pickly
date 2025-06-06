@@ -21,7 +21,6 @@ export default function useGetUser() {
 
   const groupedCompareList = useUserStore((state) => state.groupedCompareList);
 
-  console.log(groupedCompareList);
   return {
     user,
     compareList,
