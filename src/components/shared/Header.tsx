@@ -7,6 +7,7 @@ import { CiSearch } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useSearchParams } from "next/navigation";
 import SearchPage from "./SearchPage";
+import useAuthentication from "@/features/header/hooks/useAuthentication";
 
 const Header = () => {
   const [clicked, setClicked] = useState(false);
@@ -17,7 +18,7 @@ const Header = () => {
   const params = useParams();
   const categoryId = params?.id as string;
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const { isAuthenticated } = useAuthentication();
 
   const handleClick = () => {
     setClicked(!clicked);
@@ -102,18 +103,37 @@ const Header = () => {
             className="absolute lg:top-[16px] lg:left-[23px] md:top-[15px] md:left-[20px]"
             color="#9FA6B2"
           />
-          <Link
-            href=""
-            className="lg:text-[16px] md:text-[14px] text-[#F1F1F5] font-normal"
-          >
-            비교하기
-          </Link>
-          <Link
-            href="/mypage"
-            className="lg:text-[16px] md:text-[14px] text-[#F1F1F5] font-normal"
-          >
-            내 프로필
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link
+                href="/compare"
+                className="lg:text-[16px] md:text-[14px] text-[#F1F1F5] font-normal"
+              >
+                비교하기
+              </Link>
+              <Link
+                href="/mypage"
+                className="lg:text-[16px] md:text-[14px] text-[#F1F1F5] font-normal"
+              >
+                내 프로필
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/signin"
+                className="lg:text-[16px] md:text-[14px] text-[#F1F1F5] font-normal"
+              >
+                로그인
+              </Link>
+              <Link
+                href="/signup"
+                className="lg:text-[16px] md:text-[14px] text-[#F1F1F5] font-normal"
+              >
+                회원가입
+              </Link>
+            </>
+          )}
         </div>
 
         <CiSearch

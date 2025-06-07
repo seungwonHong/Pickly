@@ -30,7 +30,7 @@ export async function GET() {
       );
     }
 
-    return NextResponse.json({ success: true, accessToken });
+    return NextResponse.json({ success: true, accessToken }, { status: 200 });
   } catch (error) {
     console.log("쿠키 읽기 실패", error);
     return NextResponse.json(
