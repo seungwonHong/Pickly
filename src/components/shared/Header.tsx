@@ -1,3 +1,4 @@
+
 "use client";
 import Category from "@/features/home/components/Category";
 import Link from "next/link";
@@ -20,9 +21,11 @@ const Header = () => {
   const searchParams = useSearchParams();
   const { isAuthenticated } = useAuthentication();
 
+
   const handleClick = () => {
     setClicked(!clicked);
   };
+
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,6 +33,7 @@ const Header = () => {
     setOpenSearch(true);
     setInputValue("");
   };
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,6 +50,7 @@ const Header = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
 
   useEffect(() => {
     if (openSearch) {
@@ -89,6 +94,7 @@ const Header = () => {
         </Link>
 
         <div className="relative md:flex flex-row items-center justify-center lg:gap-[60px] md:gap-[30px] hidden">
+
           <form onSubmit={handleSearch}>
             <input
               type="text"
@@ -103,6 +109,7 @@ const Header = () => {
             className="absolute lg:top-[16px] lg:left-[23px] md:top-[15px] md:left-[20px]"
             color="#9FA6B2"
           />
+
           {isAuthenticated ? (
             <>
               <Link
@@ -134,6 +141,7 @@ const Header = () => {
               </Link>
             </>
           )}
+
         </div>
 
         <CiSearch
@@ -153,7 +161,6 @@ const Header = () => {
           <Category categoryId={categoryId} />
         </div>
       )}
-
       {openSearch && (
         <div className="fixed flex-col bg-[#000000B2] w-full h-full flex items-center p-[20px] overflow-y-auto">
           <SearchPage setOpenSearch={setOpenSearch} search={search} />

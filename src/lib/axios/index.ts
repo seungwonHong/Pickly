@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 // const token = localStorage.getItem("accessToken");
 
 const apiInstance = axios.create({
@@ -10,5 +11,6 @@ const apiInstance = axios.create({
   //   headers: {
   //     Authorization: `Bearer ${token}`,
   //   },
+
 });
 export default apiInstance;
