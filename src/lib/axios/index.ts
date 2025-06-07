@@ -1,7 +1,16 @@
 import axios from "axios";
 
-export const apiInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  // withCredentials: true,
+
+// const token = localStorage.getItem("accessToken");
+
+const apiInstance = axios.create({
+  
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+
+  //   withCredentials: true,
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //   },
+
 });
 export default apiInstance;

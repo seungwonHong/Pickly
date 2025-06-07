@@ -31,7 +31,7 @@ export default function TypeButton({
   return (
     <button
       onClick={onClick}
-      className={`rounded-lg cursor-pointer transition-transform duration-200 ease-in-out hover:brightness-110 hover:scale-105`}
+      className={`rounded-lg cursor-pointer transition-transform duration-200 ease-in-out hover:brightness-110 `}
     >
       <div
         className="rounded-lg p-[1.5px]"
