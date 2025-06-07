@@ -12,9 +12,6 @@ import useResize from "@/features/header/hooks/useResize";
 import useBlockScroll from "@/features/header/hooks/useBlockScroll";
 
 const Header = () => {
-  const [search, setSearch] = useState("");
-  const [inputValue, setInputValue] = useState("");
-
   const params = useParams();
   const categoryId = params?.id as string;
   const searchParams = useSearchParams();
@@ -25,13 +22,6 @@ const Header = () => {
 
   const handleClick = () => {
     setClicked(!clicked);
-  };
-
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSearch(inputValue);
-    setOpenSearch(true);
-    setInputValue("");
   };
 
   return (
@@ -65,20 +55,6 @@ const Header = () => {
         </Link>
 
         <div className="relative md:flex flex-row items-center justify-center lg:gap-[60px] md:gap-[30px] hidden">
-          <form onSubmit={handleSearch}>
-            <input
-              type="text"
-              placeholder="상품 이름을 검색해 보세요"
-              className="bg-[#252530] lg:w-[400px] lg:h-[56px] md:w-[300px] md:h-[50px] pr-[20px] pl-[60px] py-[16px] text-[#6E6E82] rounded-[28px]"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-          </form>
-          <CiSearch
-            size={24}
-            className="absolute lg:top-[16px] lg:left-[23px] md:top-[15px] md:left-[20px]"
-            color="#9FA6B2"
-          />
           {isAuthenticated ? (
             <>
               <Link
@@ -112,11 +88,12 @@ const Header = () => {
           )}
         </div>
 
-        <CiSearch
-          size={24}
-          className="md:hidden cursor-pointer"
-          color="#9FA6B2"
-        />
+        <Link
+          href="/signin"
+          className="md:hidden cursor-pointer lg:text-[16px] md:text-[14px] text-[#F1F1F5] font-normal"
+        >
+          로그인
+        </Link>
       </div>
 
       <div className="border-[1px] border-[#252530] w-full"></div>
@@ -127,12 +104,6 @@ const Header = () => {
           onClick={() => setClicked(false)}
         >
           <Category categoryId={categoryId} />
-        </div>
-      )}
-
-      {openSearch && (
-        <div className="fixed flex-col bg-[#000000B2] w-full h-full flex items-center p-[20px] overflow-y-auto">
-          <SearchPage setOpenSearch={setOpenSearch} search={search} />
         </div>
       )}
     </div>

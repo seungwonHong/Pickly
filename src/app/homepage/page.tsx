@@ -55,8 +55,9 @@ export default async function HomePage({
             <HighStarProduct products={starProduct} />
             <MoreProducts
               nextCursor={starProduct.nextCursor}
-              queryKey={["products", 0]}
+              queryKey={["products", 0, undefined]}
               key={"starProduct"}
+              order="recent"
             />
           </div>
         </div>
@@ -88,8 +89,9 @@ export default async function HomePage({
               <HighStarProduct products={starProduct} />
               <MoreProducts
                 nextCursor={starProduct.nextCursor}
-                queryKey={["products", 0]}
+                queryKey={["products", 0, undefined]}
                 key={"starProduct"}
+                order="recent"
               />
             </div>
           </div>
