@@ -102,7 +102,7 @@ export default async function HomePage({
 
       {sp.modal === "true" && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center">
-          <AddEditProductModal />
+          <AddEditProductModal buttonPlaceholder="추가하기" />
         </div>
       )}
     </div>
