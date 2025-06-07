@@ -69,7 +69,7 @@ const SortDropDown = ({ selectList, selected, onChange }: DropDownProps) => {
 
       {shouldRender && (
         <ul
-          className={`absolute left-0 top-[46px] md:w-full  w-[151px] z-30 border border-[#626282] rounded-[8px] bg-[#1C1C22] 
+          className={`absolute left-0 top-[46px] md:w-full  w-[151px] z-30  rounded-[8px] bg-[#353542bd] 
           flex flex-col items-center justify-around list-none md:p-[10px] p-[5px] gap-[5px]
           transition-all duration-300 ease-in-out
           ${

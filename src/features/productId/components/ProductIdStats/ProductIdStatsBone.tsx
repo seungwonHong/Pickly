@@ -19,11 +19,11 @@ export default function ProductIdStatsBone({
   return (
     <div className="lg:w-[300px] md:w-[218px] w-full lg:h-[190px] md:h-[169px] h-[82px] flex justify-center items-center mx-auto border-[1px] rounded-[12px] border-[#353542] bg-[#252530]">
       <div className="lg:w-[152px] md:w-[139px] w-[292px] lg:h-[130px] md:h-[109px] h-[42px] flex justify-between md:items-center items-start flex-col gap-[5px]">
-        <div className="flex align-center gap-[10px] md:flex-col flex-row">
+        <div className="flex items-center gap-[10px] md:flex-col flex-row">
           <div className="lg:text-[18px] md:text-[16px] text-[14px] font-medium">
             {title}
           </div>
-          <div className="flex gap-[5px] items-center justify-between">
+          <div className="flex gap-[5px] items-center justify-between w-fit">
             <Image
               src={icon}
               alt="별 / 하트 / 말풍선 아이콘"
