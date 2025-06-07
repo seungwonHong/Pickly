@@ -31,9 +31,9 @@ export default function ProductStatsClient({
   }, [product]);
 
   return (
-    <div className="w-[940px] h-[244px] text-amber-50 flex flex-col gap-[29px]">
-      <div className="text-[20px] font-normal">상품통계</div>
-      <div className="flex justify-between align-center">
+    <div className=" md:h-[244px] h-full text-amber-50 flex items-center justify-center flex-col gap-[29px]">
+      <div className="lg:text-[20px] md:text-[16px] font-normal">상품통계</div>
+      <div className="flex justify-between align-center md:flex-row flex-col gap-[15px]">
         <ProductIdStatsBone
           title="별점 평균"
           icon={Star}

@@ -1,6 +1,8 @@
-import { User } from "@/types/user";
-import defaultIProfileImage from "../../../../public/defaultIProfileImage.jpeg"; //임시 defaultImage//
+import { User } from "@/features/Profile/types/user";
+import defaultProfileImage from "../../../../public/defaultProfileImage.jpeg"; //임시 defaultImage//
 import Image from "next/image";
+
+import FollowCounts from "./FollowCounts";
 
 interface Props {
   user: User;
@@ -25,7 +27,7 @@ export default function ProfileCard({ user, isMe }: Props) {
             {user?.image && user.image !== "https://none" ? (
               <Image src={user.image} alt="유저 이미지" fill />
             ) : (
-              <Image src={defaultIProfileImage} alt="유저 이미지" fill />
+              <Image src={defaultProfileImage} alt="유저 기본 이미지" fill />
             )}
           </div>
         </div>
@@ -41,27 +43,7 @@ export default function ProfileCard({ user, isMe }: Props) {
           </span>
         )}
       </div>
-
-      <div className="w-full px-[51px] flex justify-between relative md:px-[108px] lg:px-[58px]">
-        <div className="flex flex-col items-center gap-[5px]">
-          <span className="text-[18px] font-semibold text-white lg:text-[20px]">
-            {user.followersCount}
-          </span>
-          <span className="text-[14px] font-normal text-lightGray lg:text-[16px]">
-            팔로워
-          </span>
-        </div>
-        <div className="absolute left-1/2 top-1 w-px h-[80%] bg-[#353542] "></div>
-        <div className="flex flex-col items-center gap-[5px]">
-          <span className="text-[18px] font-semibold text-white lg:text-[20px]">
-            {user.followeesCount}
-          </span>
-          <span className="text-[14px] font-normal text-lightGray lg:text-[16px]">
-            팔로잉
-          </span>
-        </div>
-      </div>
-
+      <FollowCounts user={user} />
       <div className="mt-6">
         {isMe ? (
           <div className="w-full flex flex-col gap-[10px] md:gap-[15px] lg:gap-5">
