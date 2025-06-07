@@ -8,7 +8,7 @@ const useAuthentication = () => {
       try {
         const res = await fetch("/api/cookie", {
           method: "GET",
-          credentials: "include",
+          credentials: "include", // 쿠키 포함 옵션
         });
 
         const data = await res.json();

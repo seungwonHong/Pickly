@@ -8,13 +8,23 @@ import ProductCard from "@/components/shared/ProductCard";
 interface Props {
   nextCursor?: number | null;
   categoryId?: number;
-  queryKey: [string, number | string];
+  queryKey: [
+    string,
+    number | string,
+    "recent" | "rating" | "reviewCount" | undefined
+  ];
   keyword?: string;
+  order: "recent" | "rating" | "reviewCount";
 }
 
-const MoreProducts = ({ nextCursor, categoryId, queryKey, keyword }: Props) => {
+const MoreProducts = ({
+  nextCursor,
+  categoryId,
+  queryKey,
+  keyword,
+  order,
+}: Props) => {
   const observerRef = useRef(null);
-  if (nextCursor === null && keyword === undefined) return;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
@@ -22,7 +32,7 @@ const MoreProducts = ({ nextCursor, categoryId, queryKey, keyword }: Props) => {
       queryFn: ({ pageParam }) =>
         getProducts({
           cursor: pageParam ?? undefined,
-          order: "recent",
+          order: order,
           categoryId,
           keyword: keyword,
         }),
@@ -49,6 +59,8 @@ const MoreProducts = ({ nextCursor, categoryId, queryKey, keyword }: Props) => {
 
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if ((nextCursor === null && keyword === undefined) || keyword === "") return;
 
   return (
     <>
