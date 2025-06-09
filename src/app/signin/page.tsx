@@ -75,6 +75,7 @@ const SigninPage = () => {
               <BaseButton
                 disabled={!isValid}
                 className="w-full h-[65px] font-semibold text-lg"
+                type="submit"
               >
                 로그인
               </BaseButton>

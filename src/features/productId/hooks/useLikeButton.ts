@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { reviewService } from "../api";
 import { AxiosError } from "axios";
+import { getCookie } from "cookies-next";
 
 export default function useLikeButton(
   reviewId: number,
@@ -21,14 +22,8 @@ export default function useLikeButton(
       setShowLoginModal(false);
     },
     onError: (error) => {
-      console.log("Like/Unlike API Error:", error);
-      if (error instanceof AxiosError) {
-        if (
-          error.response?.status === 401 ||
-          error.response?.data?.success === false
-        ) {
-          setShowLoginModal(true);
-        }
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        setShowLoginModal(true);
       }
     },
   });
@@ -41,19 +36,28 @@ export default function useLikeButton(
       setShowLoginModal(false);
     },
     onError: (error) => {
-      console.log("Like/Unlike API Error:", error);
-      if (error instanceof AxiosError) {
-        if (
-          error.response?.status === 401 ||
-          error.response?.data?.success === false
-        ) {
-          setShowLoginModal(true);
-        }
+      if (error instanceof AxiosError && error.response?.status === 401) {
       }
     },
   });
 
-  const toggleLike = () => {
+  // 쿠키 검증과 좋아요
+  const toggleLike = async () => {
+    const csrfToken = (await getCookie("csrf-token")) ?? "";
+
+    const res = await fetch("/api/cookie", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "x-csrf-token": csrfToken,
+      },
+    });
+
+    if (!res.ok) {
+      setShowLoginModal(true);
+      return;
+    }
+
     if (isLikedState) {
       unlikeMutation.mutate();
     } else {

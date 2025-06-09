@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { getCookie } from "cookies-next";
@@ -24,9 +24,16 @@ export default function ProductIdDetailHeart({
   const router = useRouter();
 
   const handleLike = async () => {
-    const accessToken = getCookie("access-token");
+    const csrfToken = (await getCookie("csrf-token")) ?? "";
 
-    if (!accessToken) {
+    const res = await fetch("/api/cookie", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "x-csrf-token": csrfToken,
+      },
+    });
+    if (!res.ok) {
       setShowLoginModal(true); // 로그인되어 있지 않으면 모달 표시
       return;
     }
@@ -40,21 +47,6 @@ export default function ProductIdDetailHeart({
     }
     setIsLiked(!isLiked);
   };
-
-  useEffect(() => {
-    const checkLikeStatus = async () => {
-      const accessToken = getCookie("access-token");
-      if (accessToken) {
-        try {
-          const response = await productService.getProductsId(productId);
-          setIsLiked(response.data.isFavorite);
-        } catch (error) {
-          console.error("Failed to check like status:", error);
-        }
-      }
-    };
-    checkLikeStatus();
-  }, [productId]);
 
   return (
     <>
@@ -73,8 +65,8 @@ export default function ProductIdDetailHeart({
         message={"로그인이 필요한 서비스입니다."}
         buttonText="로그인하러가기"
         onButtonClick={() => {
-          setShowLoginModal(false); // 모달을 닫고
-          router.push("/signin"); // 로그인 페이지로 이동
+          setShowLoginModal(false);
+          router.push("/signin");
         }}
       />
     </>

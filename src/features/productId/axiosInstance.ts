@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
-// import { triggerShowSigninModal } from "@/lib/utils/triggerShowSigninModal";
 
 const axiosInstance = axios.create({
   baseURL:
@@ -19,6 +18,7 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
+    // post delete patch 요청에 CSRF 토큰 추가
     if (
       config.method &&
       ["post", "delete", "patch"].includes(config.method.toLowerCase())
@@ -35,7 +35,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// 응답 인터셉터 (필요에 따라 추가)
+// 응답 인터셉터
 axiosInstance.interceptors.response.use(
   (response) => {
     if (response.data?.success === false) {

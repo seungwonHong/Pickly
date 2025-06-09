@@ -22,7 +22,6 @@ export default function ProductIdDetailButton({
   // useGetUser 훅을 사용하여 현재 사용자 정보를 가져옴
   const { user, compareList, addToCompare } = useGetUser();
   const isOwner = user?.id === product.writerId;
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -56,11 +55,25 @@ export default function ProductIdDetailButton({
     closeModal();
     router.push("/compare");
   };
-  // 비교하기 모달
-  const handleCompareClick = () => {
-    const accessToken = getCookie("access-token");
 
-    if (!accessToken) {
+  // 쿠키 토큰 확인
+  const checkLogin = async () => {
+    const csrfToken = (await getCookie("csrf-token")) ?? "";
+    const res = await fetch("/api/cookie", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "x-csrf-token": csrfToken,
+      },
+    });
+    const data = await res.json();
+    return data.isLoggedIn;
+  };
+
+  // 비교하기 모달
+  const handleCompareClick = async () => {
+    const isLoggedIn = await checkLogin();
+    if (!isLoggedIn) {
       setComparePlusModalMessage("로그인이 필요합니다.");
       setComparePlusButtonMessage("로그인하러가기");
       openModal("comparePlus");
@@ -92,9 +105,10 @@ export default function ProductIdDetailButton({
       openModal("compare");
     }
   };
-  // 리뷰 작성하기 모달 핸들러
-  const handleReviewClick = () => {
-    if (user === null) {
+  // 리뷰 작성하기 모달 핸들러 쿠키
+  const handleReviewClick = async () => {
+    const isLoggedIn = await checkLogin();
+    if (!isLoggedIn) {
       setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
       setComparePlusButtonMessage("로그인하러가기");
       openModal("comparePlus");
