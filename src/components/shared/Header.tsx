@@ -1,15 +1,12 @@
 "use client";
 import Category from "@/features/home/components/Category";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { CiSearch } from "react-icons/ci";
+import { useParams } from "next/navigation";
+import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useSearchParams } from "next/navigation";
-import SearchPage from "./SearchPage";
 import useAuthentication from "@/features/header/hooks/useAuthentication";
 import useResize from "@/features/header/hooks/useResize";
-import useBlockScroll from "@/features/header/hooks/useBlockScroll";
 
 const Header = () => {
   const params = useParams();
@@ -18,7 +15,6 @@ const Header = () => {
   const { isAuthenticated } = useAuthentication();
 
   const { clicked, setClicked } = useResize();
-  const { openSearch, setOpenSearch } = useBlockScroll();
 
   const handleClick = () => {
     setClicked(!clicked);
