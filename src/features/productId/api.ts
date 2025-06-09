@@ -17,16 +17,16 @@ class ProductService {
     order?: "recent" | "rating" | "reviewCount";
     cursor?: number;
   }) {
-    let url = `/products`;
+    let url = `${BaseURL}/products`;
     if (keyword) url += `?keyword=${keyword}`;
     if (category) url += `&category=${category}`;
     if (order) url += `&order=${order}`;
     if (cursor) url += `&cursor=${cursor}`;
-    return axiosInstance.get(url);
+    return axios.get(url);
   }
 
   getProductsId(productId: number) {
-    return axiosInstance.get(`/products/${productId}`);
+    return axios.get(`${BaseURL}/products/${productId}`);
   }
   getProductsIdReviews(
     productId: number,
@@ -52,7 +52,7 @@ class ProductService {
 
 class UserService {
   getUser() {
-    return axiosInstance.get(`/users/me`);
+    return axios.get(`${BaseURL}/users/me`);
   }
 }
 

@@ -27,13 +27,19 @@ export default function ProductReviewsFetch({
     { name: "평점 낮은 순", value: "ratingAsc" },
     { name: "좋아요 많은 순", value: "likeCount" },
   ];
-  const [selectedOption, setSelectedOption] = useState<"recent" | "ratingDesc" | "ratingAsc" | "likeCount">("recent");
+  const [selectedOption, setSelectedOption] = useState<
+    "recent" | "ratingDesc" | "ratingAsc" | "likeCount"
+  >("recent");
   const [dataForSelectedOrder, setDataForSelectedOrder] = useState<
     GetProductIdReviews | undefined
   >(initialOrder === selectedOption ? initialData : undefined);
 
   const onSortChange = (value: string) => {
-    const newSort = value as "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
+    const newSort = value as
+      | "recent"
+      | "ratingDesc"
+      | "ratingAsc"
+      | "likeCount";
     setSelectedOption(newSort);
     setDataForSelectedOrder(undefined);
   };
@@ -48,9 +54,11 @@ export default function ProductReviewsFetch({
           onChange={onSortChange}
         />
       </div>
-      <div className="min-h-[1000px]">
+      <div>
         <ProductReviewsInfinite
-          initialData={dataForSelectedOrder}
+          initialData={
+            selectedOption === initialOrder ? initialData : undefined
+          }
           productId={productId}
           order={selectedOption}
         />

@@ -17,7 +17,7 @@ export default function ProductReviewsInfinite({
   productId,
   order,
 }: ProductIdReviewProps) {
-  const ref = useRef(null);
+  const observerRef = useRef(null);
 
   // useInfiniteQuery를 사용하여 무한 스크롤 구현
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -47,7 +47,7 @@ export default function ProductReviewsInfinite({
 
   // IntersectionObserver를 사용하여 스크롤이 마지막 요소에 도달했을 때 다음 페이지를 가져옴
   useEffect(() => {
-    if (!ref.current || !hasNextPage || isFetchingNextPage) return;
+    if (!observerRef.current || !hasNextPage || isFetchingNextPage) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -55,13 +55,16 @@ export default function ProductReviewsInfinite({
           fetchNextPage();
         }
       },
-      { threshold: 1.0 }
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px 30px 0px",
+      }
     );
 
-    observer.observe(ref.current);
+    observer.observe(observerRef.current);
 
     return () => observer.disconnect();
-  }, [ref, hasNextPage, isFetchingNextPage, order]);
+  }, [observerRef, hasNextPage, isFetchingNextPage, order]);
 
   return (
     <div>
@@ -76,7 +79,7 @@ export default function ProductReviewsInfinite({
         </div>
       ))}
 
-      <div ref={ref} />
+      {hasNextPage && <div ref={observerRef} className="h-[40px]"></div>}
       {isFetchingNextPage && <p>로딩 중...</p>}
     </div>
   );

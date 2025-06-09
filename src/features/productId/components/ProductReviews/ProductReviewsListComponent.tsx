@@ -7,6 +7,7 @@ import useGetUser from "../../hooks/useGetUser";
 import ProductReviewEditDelete from "./ProductReviewEditDelete";
 
 import Star from "../../../../../public/icons/star.svg";
+import Link from "next/link";
 
 export default function ProductReviewsListComponent({
   review,
@@ -19,13 +20,15 @@ export default function ProductReviewsListComponent({
   return (
     <div className="text-[#F1F1F5] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
       <div className="flex items-start gap-[10px]">
-        <Image
-          src={review.user.image || "/defaultProfileImage.jpeg"}
-          alt="프로필 이미지"
-          width={43}
-          height={43}
-          className="rounded-full md:w-[36px] md:h-[36px]"
-        />
+        <Link href={`/user/${review.userId}`}>
+          <Image
+            src={review.user.image || "/defaultProfileImage.jpeg"}
+            alt="프로필 이미지"
+            width={43}
+            height={43}
+            className="rounded-full md:w-[36px] md:h-[36px]"
+          />
+        </Link>
         <div>
           <div className="lg:text-[16px] text-[14px] font-medium">
             {review.user.nickname}
