@@ -1,5 +1,5 @@
 "use client";
-import { useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 
 import ProductReviewsListComponent from "./ProductReviewsListComponent";
@@ -7,6 +7,12 @@ import { productService } from "../../api";
 import { GetProductIdReviews } from "../../types";
 
 interface ProductIdReviewProps {
+  nextCursor?: number | null;
+  queryKey?: [
+    string,
+    number | string,
+    "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined
+  ];
   initialData?: GetProductIdReviews;
   productId: number;
   order: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
@@ -14,28 +20,24 @@ interface ProductIdReviewProps {
 
 export default function ProductReviewsInfinite({
   initialData,
+  queryKey,
+  nextCursor,
   productId,
   order,
 }: ProductIdReviewProps) {
   const observerRef = useRef(null);
 
-  // useInfiniteQuery를 사용하여 무한 스크롤 구현
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery<
-      GetProductIdReviews,
-      Error,
-      InfiniteData<GetProductIdReviews, number | undefined>,
-      readonly (string | number | undefined)[],
-      number | undefined
-    >({
-      queryKey: ["reviews", productId, order],
+    useInfiniteQuery({
+      queryKey,
       queryFn: ({ pageParam }) =>
         productService
           .getProductsIdReviews(productId, order, pageParam)
           .then((res) => res.data),
-      initialPageParam: undefined,
+      initialPageParam: nextCursor ?? undefined,
+      keepPreviousData: true,
       getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
-      ...(order === "recent" && initialData
+      ...(initialData
         ? {
             initialData: {
               pages: [initialData],
@@ -45,13 +47,10 @@ export default function ProductReviewsInfinite({
         : {}),
     });
 
-  // IntersectionObserver를 사용하여 스크롤이 마지막 요소에 도달했을 때 다음 페이지를 가져옴
   useEffect(() => {
-    if (!observerRef.current || !hasNextPage || isFetchingNextPage) return;
-
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
@@ -61,10 +60,12 @@ export default function ProductReviewsInfinite({
       }
     );
 
-    observer.observe(observerRef.current);
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
 
     return () => observer.disconnect();
-  }, [observerRef, hasNextPage, isFetchingNextPage, order]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div>

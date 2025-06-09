@@ -14,6 +14,10 @@ export default async function ProductReviewClient({
 
   if (!initialData) return <p className="text-gray-400">리뷰 로딩 중...</p>;
 
+  if (!initialData.list || initialData.list.length === 0) {
+    return <p className="text-gray-400">리뷰가 없습니다.</p>;
+  }
+
   return (
     <ProductReviewsFetch
       initialData={initialData}

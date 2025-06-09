@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import ProductReviewsInfinite from "./ProductReviewsInfinite";
 import { GetProductIdReviews } from "../../types";
@@ -27,27 +27,28 @@ export default function ProductReviewsFetch({
     { name: "평점 낮은 순", value: "ratingAsc" },
     { name: "좋아요 많은 순", value: "likeCount" },
   ];
-  const [selectedOption, setSelectedOption] = useState<
-    "recent" | "ratingDesc" | "ratingAsc" | "likeCount"
-  >("recent");
-  const [dataForSelectedOrder, setDataForSelectedOrder] = useState<
-    GetProductIdReviews | undefined
-  >(initialOrder === selectedOption ? initialData : undefined);
+  const [selectedOption, setSelectedOption] = useState(
+    initialOrder || "recent"
+  );
+  const isFirstRender = useRef(true);
 
   const onSortChange = (value: string) => {
-    const newSort = value as
-      | "recent"
-      | "ratingDesc"
-      | "ratingAsc"
-      | "likeCount";
-    setSelectedOption(newSort);
-    setDataForSelectedOrder(undefined);
+    setSelectedOption(
+      value as "recent" | "ratingDesc" | "ratingAsc" | "likeCount"
+    );
+    isFirstRender.current = false; // 옵션 바꿀 때만 false로!
   };
+
+  // 최초 렌더에만 initialData 전달
+  const reviewsInitialData =
+    isFirstRender.current && selectedOption === initialOrder
+      ? initialData
+      : undefined;
+
   return (
     <div>
       <div className="text-[#f1f1f1] lg:text-[20px] text-[16px] font-medium flex justify-between mb-[30px]">
         <div>상품리뷰</div>
-
         <SortDropDown
           selectList={selectList}
           selected={selectedOption}
@@ -56,11 +57,11 @@ export default function ProductReviewsFetch({
       </div>
       <div>
         <ProductReviewsInfinite
-          initialData={
-            selectedOption === initialOrder ? initialData : undefined
-          }
+          initialData={reviewsInitialData}
           productId={productId}
           order={selectedOption}
+          queryKey={["reviews", productId, selectedOption]}
+          nextCursor={undefined}
         />
       </div>
     </div>
