@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { useState } from "react";
-
 const eyeOpen = "/icons/eye_open.svg";
 const eyeClose = "/icons/eye_close.svg";
 

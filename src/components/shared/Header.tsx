@@ -1,62 +1,24 @@
 "use client";
 import Category from "@/features/home/components/Category";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { CiSearch } from "react-icons/ci";
+import { useParams } from "next/navigation";
+import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useSearchParams } from "next/navigation";
-import SearchPage from "./SearchPage";
 import useAuthentication from "@/features/header/hooks/useAuthentication";
+import useResize from "@/features/header/hooks/useResize";
 
 const Header = () => {
-  const [clicked, setClicked] = useState(false);
-  const [search, setSearch] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [openSearch, setOpenSearch] = useState(false);
-
   const params = useParams();
   const categoryId = params?.id as string;
   const searchParams = useSearchParams();
   const { isAuthenticated } = useAuthentication();
 
+  const { clicked, setClicked } = useResize();
+
   const handleClick = () => {
     setClicked(!clicked);
   };
-
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSearch(inputValue);
-    setOpenSearch(true);
-    setInputValue("");
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setClicked(false);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (openSearch) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [openSearch]);
 
   return (
     <div className="relative">
@@ -89,20 +51,6 @@ const Header = () => {
         </Link>
 
         <div className="relative md:flex flex-row items-center justify-center lg:gap-[60px] md:gap-[30px] hidden">
-          <form onSubmit={handleSearch}>
-            <input
-              type="text"
-              placeholder="상품 이름을 검색해 보세요"
-              className="bg-[#252530] lg:w-[400px] lg:h-[56px] md:w-[300px] md:h-[50px] pr-[20px] pl-[60px] py-[16px] text-[#6E6E82] rounded-[28px]"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-          </form>
-          <CiSearch
-            size={24}
-            className="absolute lg:top-[16px] lg:left-[23px] md:top-[15px] md:left-[20px]"
-            color="#9FA6B2"
-          />
           {isAuthenticated ? (
             <>
               <Link
@@ -136,11 +84,12 @@ const Header = () => {
           )}
         </div>
 
-        <CiSearch
-          size={24}
-          className="md:hidden cursor-pointer"
-          color="#9FA6B2"
-        />
+        <Link
+          href="/signin"
+          className="md:hidden cursor-pointer lg:text-[16px] md:text-[14px] text-[#F1F1F5] font-normal"
+        >
+          로그인
+        </Link>
       </div>
 
       <div className="border-[1px] border-[#252530] w-full"></div>
@@ -151,12 +100,6 @@ const Header = () => {
           onClick={() => setClicked(false)}
         >
           <Category categoryId={categoryId} />
-        </div>
-      )}
-
-      {openSearch && (
-        <div className="fixed flex-col bg-[#000000B2] w-full h-full flex items-center p-[20px] overflow-y-auto">
-          <SearchPage setOpenSearch={setOpenSearch} search={search} />
         </div>
       )}
     </div>
