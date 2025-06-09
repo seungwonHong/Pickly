@@ -85,6 +85,9 @@ const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
 
           handleClose();
         }
+        else {
+          // 상품 추가 실패했다는 모달
+        }
       }
     } else {
       console.error("로그인이 되어 있지 않음: 상품 넣기 실패");

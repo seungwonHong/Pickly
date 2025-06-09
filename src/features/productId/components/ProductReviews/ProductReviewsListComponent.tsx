@@ -4,9 +4,7 @@ import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
 import { formatDate } from "../../../../lib/utils/datetime";
 import { GetProductIdReviewsDetail } from "../../types";
 import useGetUser from "../../hooks/useGetUser";
-
 import Star from "../../../../../public/icons/star.svg";
-import DefaultIProfileImage from "../../../../../public/defaultIProfileImage.jpeg";
 
 export default function ProductReviewsListComponent({
   review,
@@ -19,7 +17,7 @@ export default function ProductReviewsListComponent({
     <div className="text-[#F1F1F5] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
       <div className="flex items-start gap-[10px]">
         <Image
-          src={review.user.image || DefaultIProfileImage}
+          src={review.user.image || '/defaultProfileImage.jpeg'}
           alt="프로필 이미지"
           width={43}
           height={43}
