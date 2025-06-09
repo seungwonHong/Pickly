@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 import ProductReviewsListComponent from "./ProductReviewsListComponent";
 import { productService } from "../../api";
-import { GetProductIdReviews, GetProductIdDetail } from "../../types";
+import { GetProductIdReviews } from "../../types";
 
 interface ProductIdReviewProps {
   initialData?: GetProductIdReviews;
@@ -19,6 +19,7 @@ export default function ProductReviewsInfinite({
 }: ProductIdReviewProps) {
   const ref = useRef(null);
 
+  // useInfiniteQuery를 사용하여 무한 스크롤 구현
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["reviews", productId, order],
@@ -38,6 +39,7 @@ export default function ProductReviewsInfinite({
         : {}),
     });
 
+  // IntersectionObserver를 사용하여 스크롤이 마지막 요소에 도달했을 때 다음 페이지를 가져옴
   useEffect(() => {
     if (!ref.current || !hasNextPage || isFetchingNextPage) return;
 
@@ -59,7 +61,7 @@ export default function ProductReviewsInfinite({
     <div>
       {data?.pages.map((page, i) => (
         <div key={i} className="flex flex-col gap-[20px]">
-          {page?.list?.map((review: GetProductIdDetail) => (
+          {page?.list?.map((review) => (
             <ProductReviewsListComponent key={review.id} review={review} />
           ))}
         </div>

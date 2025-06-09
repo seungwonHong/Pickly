@@ -1,25 +1,28 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 
 import { Textbox } from "@/components/input/Textbox";
-
+import { imageService } from "@/features/productId/api";
 import ImageDelete from "../../../../../../public/icons/image-delete.png";
 import PlusImage from "../../../../../../public/icons/plus-image.png";
 
-interface PreviewImage {
+interface ImageData {
   id: string;
   url: string;
   file: File;
 }
+
 interface ProductReviewInputModalProps {
   onTextChange: (text: string) => void;
+  onImageUrlsChange: (images: string[]) => void;
 }
 export default function ProductReviewInputModal({
   onTextChange,
+  onImageUrlsChange,
 }: ProductReviewInputModalProps) {
   const [text, setText] = useState("");
-  const [images, setImages] = useState<PreviewImage[]>([]);
+  const [images, setImages] = useState<ImageData[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -30,47 +33,55 @@ export default function ProductReviewInputModal({
   };
 
   // 이미지 변경 핸들러
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
+    if (!file) return;
+
+    try {
+      const uploadedUrl = await imageService.postImage(file);
+
       setImages((prev) => {
         if (editingId) {
           return prev.map((img) =>
-            img.id === editingId ? { ...img, file, url: imageUrl } : img
+            img.id === editingId ? { ...img, file, url: uploadedUrl } : img
           );
+        } else {
+          if (prev.length >= 3) return prev;
+          return [...prev, { id: String(Date.now()), file, url: uploadedUrl }];
         }
-        if (prev.length >= 3) return prev;
-        return [
-          ...prev,
-          {
-            id: String(Date.now()),
-            url: imageUrl,
-            file,
-          },
-        ];
       });
+
       setEditingId(null);
+    } catch (err) {
+      console.error("이미지 업로드 실패:", err);
+      alert("이미지 업로드에 실패했습니다.");
     }
   };
 
+  // 이미지 삭제 핸들러
   const handleDeleteClick = (id: string) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
   };
 
+  // 이미지 클릭 핸들러
   const handleImageClick = (id: string) => {
     setEditingId(id);
     fileInputRef.current?.click();
   };
 
+  // 이미지 추가 핸들러
   const handleAddClick = () => {
     setEditingId(null);
     fileInputRef.current?.click();
   };
 
+  // 이미지 URL 변경 시 콜백 호출
+  useEffect(() => {
+    onImageUrlsChange(images.map((img) => img.url));
+  }, [images, onImageUrlsChange]);
   return (
     <div className="flex flex-col gap-[20px] h-fit">
-      {/* 텍스트 입력 나중에 컴포넌트로 교체예쩡*/}
+      {/* 텍스트 입력 나중에 컴포넌트로 교체예쩡 텍스트필드 오류 있음 */}
       <Textbox
         size="S"
         placeholder="리뷰를 입력해주세요"
@@ -79,14 +90,6 @@ export default function ProductReviewInputModal({
         maxLength={500}
         className="h-[150px] w-[540px] text-[16px]"
       />
-      {/* // <textarea
-      //   value={text}
-      //   onChange={handleTextChange}
-      //   placeholder="리뷰를 입력해주세요"
-      //   className="w-full outline-0 resize-none overflow-y-auto break-words 
-      //              rounded-[8px] bg-[#252530] p-[20px] 
-      //              placeholder-[var(--color-deepGray)] text-[var(--color-white)]"
-      // /> */}
 
       {/* 이미지 업로드 섹션 */}
       <div className="flex flex-row-reverse gap-[20px] w-full justify-end">
