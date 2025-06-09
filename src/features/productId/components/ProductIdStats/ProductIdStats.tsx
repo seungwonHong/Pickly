@@ -1,15 +1,11 @@
 import ProductIdStatsClient from "./ProductIdStatsClient";
 import { productService } from "../../api";
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function ProductIdStats({ params }: PageProps) {
-  const { data: product } = await productService.getProductsId(
-    Number(params.id)
-  );
+export default async function ProductIdStats({
+  productId,
+}: {
+  productId: number;
+}) {
+  const { data: product } = await productService.getProductsId(productId);
   return <ProductIdStatsClient product={product} />;
 }

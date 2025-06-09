@@ -12,7 +12,7 @@ const ReviewerRanking = async () => {
       </span>
 
       <div className="flex overflow-x-scroll scrollbar-hide lg:flex-col lg:mt-[30px] mt-[20px]">
-        {ranking.map((rank, index) => (
+        {ranking.slice(0, 5).map((rank, index) => (
           <ReviewerTab key={rank.id} rank={rank} rankNum={index + 1} />
         ))}
       </div>

@@ -1,6 +1,6 @@
 import CategoryChip from "@/components/CategoryChip";
 import ActivityCard from "./ActivityCard";
-import { User } from "@/types/user";
+import { User } from "@/features/Profile/types/user";
 
 interface Props {
   user: User;

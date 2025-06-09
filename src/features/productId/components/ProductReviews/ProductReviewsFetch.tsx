@@ -27,18 +27,19 @@ export default function ProductReviewsFetch({
     { name: "평점 낮은 순", value: "ratingAsc" },
     { name: "좋아요 많은 순", value: "likeCount" },
   ];
-  const [selectedOption, setSelectedOption] = useState("recent");
+  const [selectedOption, setSelectedOption] = useState<"recent" | "ratingDesc" | "ratingAsc" | "likeCount">("recent");
   const [dataForSelectedOrder, setDataForSelectedOrder] = useState<
     GetProductIdReviews | undefined
   >(initialOrder === selectedOption ? initialData : undefined);
 
-  const onSortChange = (newSort: typeof selectedOption) => {
+  const onSortChange = (value: string) => {
+    const newSort = value as "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
     setSelectedOption(newSort);
     setDataForSelectedOrder(undefined);
   };
   return (
-    <div className="mt-[60px]">
-      <div className="text-[#f1f1f1] text-[20px] font-semibold flex justify-between mb-[30px]">
+    <div>
+      <div className="text-[#f1f1f1] lg:text-[20px] text-[16px] font-medium flex justify-between mb-[30px]">
         <div>상품리뷰</div>
 
         <SortDropDown
@@ -47,7 +48,7 @@ export default function ProductReviewsFetch({
           onChange={onSortChange}
         />
       </div>
-      <div className="min-h-[2000px]">
+      <div className="min-h-[1000px]">
         <ProductReviewsInfinite
           initialData={dataForSelectedOrder}
           productId={productId}
