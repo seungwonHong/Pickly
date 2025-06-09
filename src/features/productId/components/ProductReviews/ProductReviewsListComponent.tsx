@@ -4,6 +4,8 @@ import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
 import { formatDate } from "../../../../lib/utils/datetime";
 import { GetProductIdReviewsDetail } from "../../types";
 import useGetUser from "../../hooks/useGetUser";
+import ProductReviewEditDelete from "./ProductReviewEditDelete";
+
 import Star from "../../../../../public/icons/star.svg";
 
 export default function ProductReviewsListComponent({
@@ -68,10 +70,10 @@ export default function ProductReviewsListComponent({
               {formatDate(review.createdAt)}
             </div>
             {isOwner && (
-              <div className="flex gap-[10px] text-[#9FA6B2] ">
-                <div className="underline cursor-pointer">수정</div>
-                <div className="underline cursor-pointer">삭제</div>
-              </div>
+              <ProductReviewEditDelete
+                reviewId={review.id}
+                initialReviewData={review}
+              />
             )}
           </div>
 
