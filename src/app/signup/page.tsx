@@ -5,20 +5,52 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import BaseButton from "@/components/shared/BaseButton";
-import Header from "@/components/shared/Header";
 
 import { useSignUp } from "./useSignUp";
 import { JoinForm, joinFormSchema } from "./validationSchema";
 import { AuthResponse } from "../signin/validationSchema";
+import { useState } from "react";
+import NoticeModal from "@/components/shared/NoticeModal";
+import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
+import { useRouter } from "next/router";
+import { useUserStore } from "@/features/productId/libs/useUserStore";
 
 const SignUpPage = () => {
+    const router = useRouter();
+  
+    const [modalOpen, setModalOpen] = useState(false);
+    const [massage, setMassage] = useState("");
+    
+    const [noticeModalOpen, setNoticeModalOpen] = useState(false);
+    const [noticeMassage, setNoticeMassage] = useState("");
+  
+
+  // 모달 닫기
+  const closeModal = () => {
+    setModalOpen(false);
+    setMassage("");
+  };
+
   const { mutate: signUp } = useSignUp({
     onSuccess: (data: AuthResponse) => {
-      console.log('회원가입 완료되었습니다!');
-      console.log(data);
+      //로그인 성공시 '닉네임님 회원가입 되었습니다! ' 모달 활성화 후 1초 뒤 홈으로 이동 
+      //zustand store에 유저 정보 저장
+      setNoticeModalOpen(true);  
+      setNoticeMassage(`${data.user.nickname}님 회원가입 되었습니다!`);
+
+      useUserStore.getState().setUserData({
+        id: data.user.id,
+        nickname: data.user.nickname,
+      });
+
+      setTimeout(() => {
+        router.push("/"); 
+      }, 1000);    
+      
     },
     onError: (error: any) => {
-      console.error(error?.response?.data?.message || '회원가입 실패');
+      setModalOpen(true);
+      setMassage(error?.response?.data?.message || "회원가입에 실패했습니다. 다시 시도해 주세요.");
     }
   });
    
@@ -93,6 +125,7 @@ const SignUpPage = () => {
                 className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
               />
               </div>
+              {/* RHF 사용시 별다른 옵션없이도 엔터시 submit */}
               <BaseButton
                 disabled={!isValid}
                 className="w-full h-[65px] font-semibold text-lg"
@@ -103,6 +136,18 @@ const SignUpPage = () => {
             </form>
           </div>
         </div>
+        <NoticeModal
+          open={noticeModalOpen}
+          setOpen={setNoticeModalOpen}
+          message={noticeMassage}
+        />
+        <ProductComparePlusModal
+          open={modalOpen}
+          setOpen={setModalOpen}
+          message={massage}
+          buttonText="확인"
+          onButtonClick={closeModal}
+        />
       </div>
     </>
   );
