@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 import BaseButton from "@/components/shared/BaseButton";
-import CloseX from "../../../../../../public/icons/close-x.png";
+import CloseX from "../../../public/icons/close-x.png";
 
 interface ProductCompareChangeModalProps {
   open: boolean;

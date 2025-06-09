@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { reviewService } from "../api";
+import { AxiosError } from "axios";
 
 export default function useLikeButton(
   reviewId: number,
@@ -10,12 +11,25 @@ export default function useLikeButton(
 ) {
   const [isLikedState, setIsLikedState] = useState(initialIsLiked);
   const [isLikeCount, setIsLikeCount] = useState(initialLikeCount);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const likeMutation = useMutation({
     mutationFn: () => reviewService.postReviewsLike(reviewId),
     onSuccess: () => {
       setIsLikedState(true);
       setIsLikeCount((prev) => prev + 1);
+      setShowLoginModal(false);
+    },
+    onError: (error) => {
+      console.log("Like/Unlike API Error:", error);
+      if (error instanceof AxiosError) {
+        if (
+          error.response?.status === 401 ||
+          error.response?.data?.success === false
+        ) {
+          setShowLoginModal(true);
+        }
+      }
     },
   });
 
@@ -24,6 +38,18 @@ export default function useLikeButton(
     onSuccess: () => {
       setIsLikedState(false);
       setIsLikeCount((prev) => prev - 1);
+      setShowLoginModal(false);
+    },
+    onError: (error) => {
+      console.log("Like/Unlike API Error:", error);
+      if (error instanceof AxiosError) {
+        if (
+          error.response?.status === 401 ||
+          error.response?.data?.success === false
+        ) {
+          setShowLoginModal(true);
+        }
+      }
     },
   });
 
@@ -35,5 +61,11 @@ export default function useLikeButton(
     }
   };
 
-  return { isLikedState, isLikeCount, toggleLike };
+  return {
+    isLikedState,
+    isLikeCount,
+    toggleLike,
+    showLoginModal,
+    setShowLoginModal,
+  };
 }

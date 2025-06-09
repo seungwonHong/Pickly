@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import useLikeButton from "../../features/productId/hooks/useLikeButton";
+import ProductComparePlusModal from "./ProductComparePlusModal";
 
 import ThumbsInactive from "../../../public/icons/thumbs-inactive.png";
 import ThumbsActive from "../../../public/icons/thumbs-active.png";
@@ -14,11 +15,13 @@ export default function ThumbsUpButton({
   initialLikeCount: number;
   initialIsLiked: boolean;
 }) {
-  const { isLikedState, isLikeCount, toggleLike } = useLikeButton(
-    reviewId,
-    initialLikeCount,
-    initialIsLiked
-  );
+  const {
+    isLikedState,
+    isLikeCount,
+    toggleLike,
+    showLoginModal,
+    setShowLoginModal,
+  } = useLikeButton(reviewId, initialLikeCount, initialIsLiked);
 
   return (
     <button
@@ -35,6 +38,16 @@ export default function ThumbsUpButton({
       <div className="lg:text-[14px] text-[12px] text-[#5363FF] font-normal">
         {isLikeCount}
       </div>
+      {/* <ProductComparePlusModal
+        open={showLoginModal}
+        setOpen={setShowLoginModal}
+        message="로그인이 필요한 서비스입니다."
+        buttonText="로그인하러 가기"
+        onButtonClick={() => {
+          setShowLoginModal(false);
+          window.location.href = "/signin";
+        }}
+      /> */}
     </button>
   );
 }

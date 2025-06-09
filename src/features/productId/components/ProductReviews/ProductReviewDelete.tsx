@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import ProductComparePlusModal from "../modal/ProductCompareModal/ProductComparePlusModal";
+import ProductComparePlusModal from "../../../../components/shared/ProductComparePlusModal";
 
 import useGetProductId from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";

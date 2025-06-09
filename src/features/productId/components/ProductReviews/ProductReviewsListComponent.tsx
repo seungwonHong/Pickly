@@ -15,11 +15,12 @@ export default function ProductReviewsListComponent({
 }) {
   const { user } = useGetUser();
   const isOwner = user?.id === review.userId;
+
   return (
     <div className="text-[#F1F1F5] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
       <div className="flex items-start gap-[10px]">
         <Image
-          src={review.user.image || '/defaultProfileImage.jpeg'}
+          src={review.user.image || "/defaultProfileImage.jpeg"}
           alt="프로필 이미지"
           width={43}
           height={43}
