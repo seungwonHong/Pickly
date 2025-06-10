@@ -21,7 +21,6 @@ export function Textbox({
   const noSpaceCount = text.replace(/\s/g, "").length; // 공백제외하고 카운트
 
   const message = error || subText;
-  
   const isActive = 'focus-within:bg-gradient-to-r from-[#5097fa] to-[#5363ff]' ;
 
   const isError = error ? "!bg-[var(--color-red)] " : isActive;
