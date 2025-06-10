@@ -21,6 +21,7 @@ export default function ProductIdDetailButton({
 }) {
   // useGetUser 훅을 사용하여 현재 사용자 정보를 가져옴
   const { user, compareList, addToCompare } = useGetUser();
+
   const isOwner = user?.id === product.writerId;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -71,15 +72,7 @@ export default function ProductIdDetailButton({
   };
 
   // 비교하기 모달
-  const handleCompareClick = async () => {
-    const isLoggedIn = await checkLogin();
-    if (!isLoggedIn) {
-      setComparePlusModalMessage("로그인이 필요합니다.");
-      setComparePlusButtonMessage("로그인하러가기");
-      openModal("comparePlus");
-      return;
-    }
-
+  const handleCompareClick = () => {
     const isAlreadyInList = sameCategoryCompareList.some(
       (item) => Number(item.id) === Number(product.id)
     );
@@ -105,6 +98,7 @@ export default function ProductIdDetailButton({
       openModal("compare");
     }
   };
+
   // 리뷰 작성하기 모달 핸들러 쿠키
   const handleReviewClick = async () => {
     const isLoggedIn = await checkLogin();
