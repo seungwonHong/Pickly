@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import SortDropDown from "@/components/shared/SortDropDown";
 
@@ -11,11 +11,20 @@ interface SelectOption {
   name: string;
 }
 
-export default function ProductReviewSort() {
-  const [selectedOption, setSelectedOption] = useState("recent");
-
+export default function ProductReviewSort({
+  sort,
+}: {
+  sort?: ReviewSortOrder;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const sortParam = searchParams.get("sort") as ReviewSortOrder | null;
+  const [selectedOption, setSelectedOption] = useState(sort ?? "recent");
+
+  useEffect(() => {
+    setSelectedOption(sortParam ?? "recent");
+  }, [sortParam]);
 
   const selectList: SelectOption[] = [
     { name: "최신순", value: "recent" },
@@ -25,10 +34,10 @@ export default function ProductReviewSort() {
   ];
 
   const handleSelect = (value: string) => {
-    setSelectedOption(value);
+    setSelectedOption(value as ReviewSortOrder);
     const params = new URLSearchParams(searchParams.toString());
     params.set("sort", value);
-    router.replace(`?${params.toString()}`);
+    router.push(`?${params.toString()}`, { scroll: false });
   };
 
   return (

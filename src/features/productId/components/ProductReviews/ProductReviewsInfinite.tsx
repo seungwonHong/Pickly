@@ -16,6 +16,10 @@ interface ProductIdReviewProps {
   ];
   productId: number;
   order: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
+  initialData?: {
+    list: GetProductIdReviewsDetail[];
+    nextCursor?: number | null;
+  } | null;
 }
 
 export default function ProductReviewsInfinite({
@@ -23,6 +27,7 @@ export default function ProductReviewsInfinite({
   nextCursor,
   productId,
   order,
+  initialData,
 }: ProductIdReviewProps) {
   const observerRef = useRef(null);
 
@@ -35,6 +40,9 @@ export default function ProductReviewsInfinite({
           .then((res) => res.data),
       initialPageParam: nextCursor ?? undefined,
       getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+      initialData: initialData
+        ? { pages: [initialData], pageParams: [undefined] }
+        : undefined,
     });
 
   useEffect(() => {
@@ -60,16 +68,11 @@ export default function ProductReviewsInfinite({
   return (
     <>
       <div>
-        {data?.pages.map((page, i) => (
-          <div
-            key={i}
-            className="flex flex-col md:gap-[20px] gap-[15px] md:mb-[20px] mb-[15px]"
-          >
-            {page?.list?.map((review: GetProductIdReviewsDetail) => (
-              <ProductReviewsListComponent key={review.id} review={review} />
-            ))}
-          </div>
-        ))}
+        {data?.pages
+          .flatMap((page) => page.list)
+          .map((review: GetProductIdReviewsDetail) => (
+            <ProductReviewsListComponent key={review.id} review={review} />
+          ))}
 
         {hasNextPage && <div ref={observerRef} className="h-[40px]"></div>}
         {isFetchingNextPage && <p>로딩 중...</p>}

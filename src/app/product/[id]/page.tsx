@@ -13,8 +13,10 @@ export default async function ProductIdPage({
   }>;
 }) {
   const productId = Number((await params).id);
+
   if (isNaN(productId)) return null;
   const sp = await searchParams;
+
   return (
     <div>
       <header className="fixed top-0 left-0 right-0 z-999">
