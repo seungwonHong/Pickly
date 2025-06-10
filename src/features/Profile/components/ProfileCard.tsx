@@ -1,8 +1,9 @@
 import { User } from "@/features/Profile/types/user";
 import defaultProfileImage from "../../../../public/defaultProfileImage.jpeg"; //임시 defaultImage//
 import Image from "next/image";
-
 import FollowCounts from "./FollowCounts";
+import EditProfileModalClient from "./EditProfileModalClient";
+import TypeButton from "@/components/shared/TypeButton";
 
 interface Props {
   user: User;
@@ -46,19 +47,15 @@ export default function ProfileCard({ user, isMe }: Props) {
       <FollowCounts user={user} />
       <div className="mt-6">
         {isMe ? (
-          <div className="w-full flex flex-col gap-[10px] md:gap-[15px] lg:gap-5">
-            <button
-              className="w-full h-[50px] flex justify-center items-center rounded-lg bg-[#5097fa] text-white text-[16px] font-semibold hover:cursor-pointer
-            md:h-[55px] lg:h-[65px] lg:text-[18px]"
-            >
-              프로필 편집
-            </button>
-            <button
-              className="w-full h-[50px] flex justify-center items-center rounded-lg border border-[#9FA6B2] text-[#9FA6B2] text-[16px] font-semibold hover:cursor-pointer
-            md:h-[55px] lg:h-[65px] lg:text-[18px]"
+          <div className="w-full flex flex-col gap-[10px] md:gap-[15px] lg:gap-5 ">
+            <EditProfileModalClient />
+
+            <TypeButton
+              className=" hover:bg-[#BF0C0C] hover:border-none  font-semibold md:h-[55px] lg:h-[65px] lg:text-[18px] h-[50px]"
+              type="tertiary"
             >
               로그아웃
-            </button>
+            </TypeButton>
           </div>
         ) : (
           <button className="w-full bg-[blue] text-white py-2 rounded-xl font-semibold hover:bg-[indigo]">

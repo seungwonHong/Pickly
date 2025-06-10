@@ -14,7 +14,7 @@ export default async function MyPage() {
   return (
     <>
       <Header />
-      <div className="mt-[40px] px-[20px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-0 lg:flex lg:justify-center lg:gap-[70px] max-w-[1340px] ">
+      <div className="mt-[40px] px-[30px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-[20px] lg:flex lg:justify-center lg:gap-[70px] max-w-[1340px] ">
         <div className="h-auto">
           <ProfileCard user={user} isMe={true} />
         </div>

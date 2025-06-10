@@ -22,7 +22,7 @@ export default function ProductCard({
   const [error, setError] = useState(false);
   return (
     <Link href={`/product/${id}`}>
-      <div className="flex flex-col p-[15px] justify-center relative  border border-[#353542] bg-[#252530]  w-full rounded-[8px]">
+      <div className="flex flex-col p-[15px] justify-center relative  border border-[#353542] bg-[#252530]  w-full rounded-[8px] z-[-1]">
         <div className="flex justify-center relative items-center overflow-hidden w-full h-[98px] mb-[10px] md:mb-[20px] md:h-[160px] lg:h=[200px] lg:mb-[25px] rounded-[8px]">
           {/* 이미지데이터없거나 꺠지면 defaultProductImage */}
           <img

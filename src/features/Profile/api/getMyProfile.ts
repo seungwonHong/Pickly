@@ -1,5 +1,5 @@
 // import { cookies } from "next/headers";
-import apiServerInstance from "@/lib/axios/index";
+import apiInstance from "@/lib/axios/index";
 
 export async function getMyProfile() {
   //   const cookieStore = cookies();
@@ -11,7 +11,7 @@ export async function getMyProfile() {
   //     throw new Error("Access token is missing");
   //   }
 
-  const res = await apiServerInstance.get("/users/me", {
+  const res = await apiInstance.get("/users/me", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

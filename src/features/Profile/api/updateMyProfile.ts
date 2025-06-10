@@ -1,11 +1,11 @@
-import apiInstance from "@/lib/axios/index"; // 서버 전용 Axios 인스턴스
-// import { cookies } from "next/headers";
-import { ProductTabType } from "../types/user";
+"use server";
 
-export async function getUserProducts(
-  userId: number,
-  type: ProductTabType,
-  cursor = 0
+// import { cookies } from "next/headers";
+import { apiInstance } from "@/lib/axios";
+import { User } from "../types/user";
+
+export async function updateMyProfile(
+  data: Pick<User, "nickname" | "description" | "image">
 ) {
   //   const cookieStore = cookies();
   const token =
@@ -14,15 +14,12 @@ export async function getUserProducts(
   //   (await cookieStore).get("accessToken")?.value;
 
   //   if (!token) {
-  //     throw new Error("인증 토큰이 없습니다.");
+  //     throw new Error("No access token");
   //   }
 
-  const res = await apiInstance.get(`/users/${userId}/${type}-products`, {
-    params: { cursor },
+  await apiInstance.patch("/users/me", data, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-
-  return res.data.list;
 }
