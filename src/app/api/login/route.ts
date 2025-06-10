@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       secure: true, // https에서만 사용
       sameSite: "none", // csrf 공격 노출
       path: "/",
-      maxAge: 60 * 60 * 24 * 5,
+      maxAge: 60 * 30,
     });
 
     // csrf 공영 방어를 위한 백업
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       secure: true,
       sameSite: "strict",
       path: "/",
-      maxAge: 60 * 60 * 24 * 5,
+      maxAge: 60 * 30,
     });
 
     return response;

@@ -1,15 +1,42 @@
 "use client";
+import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 
 const FloatingButton = () => {
   const router = useRouter();
+  const [isLogin, setIsLogin] = useState(false);
 
-  const handleModalOpen = () => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("modal", "true");
-    router.push(`?${params.toString()}`, { scroll: false });
+  const handleModalOpen = async () => {
+    try {
+      const csrfToken =
+        document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("csrf-token="))
+          ?.split("=")[1] ?? "";
+
+      const res = await fetch("/api/cookie", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "x-csrf-token": csrfToken,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        // 로그인이 안 되었다는 모달 띄우기 위한 상태 변경
+        setIsLogin(true);
+      } else {
+        const params = new URLSearchParams(window.location.search);
+        params.set("modal", "true");
+        router.push(`?${params.toString()}`, { scroll: false });
+      }
+    } catch (error) {
+      console.error("상품 추가를 위한 로그인 인증 중 실패", error);
+    }
   };
 
   return (
@@ -19,6 +46,18 @@ const FloatingButton = () => {
       onClick={handleModalOpen}
     >
       <FaPlus color="#F1F1F5" size={22} />
+
+      {isLogin && (
+        <ProductComparePlusModal
+          open={isLogin}
+          setOpen={setIsLogin}
+          message="로그인이 필요합니다."
+          buttonText="로그인"
+          onButtonClick={() => {
+            router.push("/signin");
+          }}
+        />
+      )}
     </div>
   );
 };

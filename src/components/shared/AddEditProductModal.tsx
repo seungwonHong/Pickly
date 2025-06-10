@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { InputField } from "../input/InputField";
 import CategoryDropDown from "./CategoryDropDown";
@@ -10,6 +10,7 @@ import useModalStore from "@/features/home/modals/store/modalStore";
 import postProduct from "@/features/home/services/postProduct";
 import { getCookie } from "cookies-next";
 import postImage from "@/features/home/services/postImage";
+import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
 
 interface Props {
   buttonPlaceholder: string;
@@ -17,6 +18,11 @@ interface Props {
 
 const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
   const [file, setFile] = useState<File | null>(null);
+  const [addProduct, setAddProduct] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  // 모달에 데이터 안 넣었을 경우
+  const [isMessage, setIsMessage] = useState(false);
+  const [message, setMessage] = useState("");
 
   const router = useRouter();
 
@@ -48,7 +54,16 @@ const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
   };
 
   const handleSubmit = async () => {
-    const csrfToken = (await getCookie("csrf-token")) ?? "";
+    // 모달에 내용을 한개라도 안 썼을 경우 경고 모달 띄우기
+    if (!name || !categoryId || !description || !file) {
+      setIsMessage(true);
+      return;
+    }
+    const csrfToken =
+      document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("csrf-token="))
+        ?.split("=")[1] ?? "";
 
     const res = await fetch("/api/cookie", {
       method: "GET",
@@ -84,19 +99,22 @@ const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
           setFile(null);
 
           handleClose();
-        }
-        else {
+        } else {
           // 상품 추가 실패했다는 모달
+          setAddProduct(true);
+          setMessage("상품 등록에 실패하였습니다. 다시 시도해주세요.");
         }
       }
     } else {
       console.error("로그인이 되어 있지 않음: 상품 넣기 실패");
       // 로그인 해달라는 모달 설정
+      setIsLogin(true);
+      setMessage("로그인이 필요합니다.");
     }
   };
 
   return (
-    <div className="flex w-full h-full justify-center items-center bg-[#000000B2]">
+    <div className="relative flex w-full h-full justify-center items-center bg-[#000000B2]">
       <div className="flex flex-col lg:w-[620px] lg:h-[614px] md:w-[590px] md:h-[569px] w-[335px] h-[578px] bg-[#1C1C22] rounded-2xl lg:p-[20px] p-[20px]">
         <IoClose
           color="#F1F1F5"
@@ -201,9 +219,6 @@ const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
         <Textbox
           maxLength={500}
           placeholder="상품 설명을 입력해 주세요"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setDescription(e.target.value)
-          }
           className="lg:w-[540px] lg:h-[160px] md:w-[510px] md:h-[160px] w-[295px] h-[120px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
         />
 
@@ -214,6 +229,38 @@ const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
           {buttonPlaceholder}
         </BaseButton>
       </div>
+
+      {isLogin && (
+        <ProductComparePlusModal
+          open={isLogin}
+          setOpen={setIsLogin}
+          message={message}
+          buttonText="로그인"
+          onButtonClick={() => {
+            router.push("/signin");
+          }}
+        />
+      )}
+      {addProduct && (
+        <ProductComparePlusModal
+          open={addProduct}
+          setOpen={setAddProduct}
+          message={message}
+          buttonText="확인"
+          onButtonClick={() => {
+            setAddProduct(false);
+          }}
+        />
+      )}
+      {isMessage && (
+        <ProductComparePlusModal
+          open={isMessage}
+          setOpen={setIsMessage}
+          buttonText="확인"
+          message="모든 항목을 채워주세요"
+          onButtonClick={() => setIsMessage(false)}
+        />
+      )}
     </div>
   );
 };
