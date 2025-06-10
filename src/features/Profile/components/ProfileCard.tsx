@@ -1,9 +1,12 @@
+"use client";
 import { User } from "@/features/Profile/types/user";
 import defaultProfileImage from "../../../../public/defaultProfileImage.jpeg"; //임시 defaultImage//
 import Image from "next/image";
 import FollowCounts from "./FollowCounts";
 import EditProfileModalClient from "./EditProfileModalClient";
 import TypeButton from "@/components/shared/TypeButton";
+import FollowButton from "./FollowButton";
+import { useState } from "react";
 
 interface Props {
   user: User;
@@ -11,8 +14,11 @@ interface Props {
 }
 
 export default function ProfileCard({ user, isMe }: Props) {
+  const [isFollowing, setIsFollowing] = useState(user.isFollowing);
+  const [followersCount, setFollowersCount] = useState(user.followersCount);
+
   return (
-    <div className="mb-[60px] px-[20px] py-[30px] w-full h-auto rounded-lg bg-[#252530] md:px-[30px] lg:w-[340px] lg:mb-0 lg:sticky lg:top-[120px]">
+    <div className="mb-[60px] px-[20px] py-[30px] w-full h-auto rounded-lg bg-[#252530] border border-[#353542] md:px-[30px] lg:w-[340px] lg:mb-0 lg:sticky lg:top-[120px]">
       <div className="w-full h-auto flex flex-col items-center gap-[30px] lg:gap-10">
         <div className="relative flex items-center justify-center w-[120px] h-[120px] lg:w-[180px] lg:h-[180px] mb-7">
           <div
@@ -34,8 +40,8 @@ export default function ProfileCard({ user, isMe }: Props) {
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-[10px] lg:gap-5">
-        <span className="text-center text-[20px] font-semibold text-[white] hover:cursor-pointer lg:text-[24px]">
+      <div className="w-full flex flex-col  ">
+        <span className="text-center text-[20px] font-semibold text-[white] hover:cursor-pointer lg:text-[24px] mb-7">
           {user.nickname}
         </span>
         {user.description && (
@@ -44,8 +50,8 @@ export default function ProfileCard({ user, isMe }: Props) {
           </span>
         )}
       </div>
-      <FollowCounts user={user} />
-      <div className="mt-6">
+      <FollowCounts user={{ ...user, followersCount }} />
+      <div className="mt-12">
         {isMe ? (
           <div className="w-full flex flex-col gap-[10px] md:gap-[15px] lg:gap-5 ">
             <EditProfileModalClient />
@@ -58,9 +64,12 @@ export default function ProfileCard({ user, isMe }: Props) {
             </TypeButton>
           </div>
         ) : (
-          <button className="w-full bg-[blue] text-white py-2 rounded-xl font-semibold hover:bg-[indigo]">
-            팔로우
-          </button>
+          <FollowButton
+            userId={user.id}
+            isFollowing={isFollowing}
+            setIsFollowing={setIsFollowing}
+            setFollowersCount={setFollowersCount}
+          />
         )}
       </div>
     </div>

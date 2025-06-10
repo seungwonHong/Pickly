@@ -23,7 +23,11 @@ export default function ActivityCard({
               <Image src={icon} alt="아이콘" fill />
             </div>
             <span className="text-xl font-normal text-gray-50 leading-[100%] lg:text-2xl">
-              {activityData}
+              {typeof activityData === "number"
+                ? Number.isInteger(activityData)
+                  ? activityData
+                  : activityData.toFixed(1)
+                : "0"}
             </span>
           </div>
         ) : null}
