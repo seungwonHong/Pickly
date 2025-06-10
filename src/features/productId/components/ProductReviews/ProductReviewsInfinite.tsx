@@ -1,5 +1,5 @@
 "use client";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 
 import ProductReviewsListComponent from "./ProductReviewsListComponent";
@@ -21,14 +21,20 @@ export default function ProductReviewsInfinite({
 
   // useInfiniteQuery를 사용하여 무한 스크롤 구현
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
+    useInfiniteQuery<
+      GetProductIdReviews,
+      Error,
+      InfiniteData<GetProductIdReviews, number | undefined>,
+      readonly (string | number | undefined)[],
+      number | undefined
+    >({
       queryKey: ["reviews", productId, order],
-      queryFn: ({ pageParam = undefined }) =>
+      queryFn: ({ pageParam }) =>
         productService
           .getProductsIdReviews(productId, order, pageParam)
           .then((res) => res.data),
-      getNextPageParam: (lastPage) => lastPage?.nextCursor ?? null,
-      keepPreviousData: true,
+      initialPageParam: undefined,
+      getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
       ...(order === "recent" && initialData
         ? {
             initialData: {
