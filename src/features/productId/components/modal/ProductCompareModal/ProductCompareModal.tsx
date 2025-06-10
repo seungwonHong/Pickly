@@ -19,6 +19,7 @@ export default function ProductCompareModal({
   setOpen,
 }: ProductCompareChangeModalProps) {
   const { product } = useGetProductId();
+
   const {
     compareList,
     setBaseCompareProductId,
