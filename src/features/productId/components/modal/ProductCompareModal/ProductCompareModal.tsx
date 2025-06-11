@@ -19,6 +19,7 @@ export default function ProductCompareModal({
   setOpen,
 }: ProductCompareChangeModalProps) {
   const { product } = useGetProductId();
+
   const {
     compareList,
     setBaseCompareProductId,
@@ -76,7 +77,7 @@ export default function ProductCompareModal({
               onClick={() => setOpen(false)}
             />
 
-            <p className="text-white text-[24px] font-semibold text-center mt-8">
+            <p className="text-white text-[20px] font-semibold text-center mt-8">
               지금 보신 &#39;{product?.name}&#39; 어떤 상품과 비교할까요?
             </p>
 
