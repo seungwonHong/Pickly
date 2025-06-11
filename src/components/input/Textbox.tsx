@@ -1,4 +1,5 @@
-import { useState } from "react";
+"use client";
+import useModalStore from "@/features/home/modals/store/modalStore";
 
 interface TextboxProps {
   placeholder?: string;
@@ -17,18 +18,19 @@ export function Textbox({
   maxLength,
   ...rest
 }: TextboxProps) {
-  const [text, setText] = useState("");
-  const noSpaceCount = text.replace(/\s/g, "").length; // 공백제외하고 카운트
+  const { description, setDescription } = useModalStore();
+  const noSpaceCount = description?.replace(/\s/g, "").length; // 공백제외하고 카운트
 
   const message = error || subText;
-  const isActive = 'focus-within:bg-gradient-to-r from-[#5097fa] to-[#5363ff]' ;
+
+  const isActive = "focus-within:bg-gradient-to-r from-[#5097fa] to-[#5363ff]";
 
   const isError = error ? "!bg-[var(--color-red)] " : isActive;
 
   return (
     <>
       <div
-        className={`relative rounded-[8px] p-[1px] h-[120px] bg-[#353542] ${isError}  ${className}`}
+        className={`relative rounded-[8px] p-[1px] h-[120px] bg-[#353542] ${isError} ${className}`}
       >
         <textarea
           className={`
@@ -36,7 +38,7 @@ export function Textbox({
             rounded-[8px] bg-[#252530] p-[20px] 
             placeholder-[var(--color-deepGray)] text-[var(--color-white)] 
             `}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => setDescription(e.target.value)}
           placeholder={placeholder}
           {...rest}
         />
