@@ -10,9 +10,7 @@ import Link from "next/link";
 
 import BaseButton from "@/components/shared/BaseButton";
 import Image from "next/image";
-import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import toast from "react-hot-toast";
 
 const login_logo = "/signup_logo.svg";
@@ -20,9 +18,6 @@ const login_logo = "/signup_logo.svg";
 const SigninPage = () => {
   const router = useRouter();
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [massage, setMassage] = useState("");
-  
   const {
     register,
     handleSubmit,
@@ -34,12 +29,6 @@ const SigninPage = () => {
   });
 
 
-  // 모달 닫기
-  const closeModal = () => {
-    setModalOpen(false);
-    setMassage("");
-  };
-
   const { mutate: login } = useLoginMutation({
     onSuccess: (data: AuthResponse) => {
       //로그인 성공시 '닉네임님 로그인 되었습니다! ' 모달 활성화 후 1초 뒤 홈으로 이동 
@@ -50,8 +39,7 @@ const SigninPage = () => {
       }, 1000);     
     },
     onError: () => {
-      setModalOpen(true);
-      setMassage("이메일 혹은 비밀번호를 확인해주세요.");
+      toast.error("이메일 혹은 비밀번호를 확인해주세요.");
       reset({ email: '', password: '' });
     },
   });
@@ -155,13 +143,6 @@ const SigninPage = () => {
             </div>
           </div>
         </div>
-        <ProductComparePlusModal
-          open={modalOpen}
-          setOpen={setModalOpen}
-          message={massage}
-          buttonText="확인"
-          onButtonClick={closeModal}
-        />
       </div>
     </>
   );
