@@ -10,19 +10,24 @@ import Link from "next/link";
 
 import BaseButton from "@/components/shared/BaseButton";
 import Image from "next/image";
-import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import toast from "react-hot-toast";
 
 const login_logo = "/signup_logo.svg";
 
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+const GOOGLE_REDIRECT_URI = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
+
+const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+
 const SigninPage = () => {
   const router = useRouter();
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [massage, setMassage] = useState("");
-  
+  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email`;
+
+  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}`;
+
 
   const {
     register,
@@ -35,11 +40,6 @@ const SigninPage = () => {
   });
 
 
-  // 모달 닫기
-  const closeModal = () => {
-    setModalOpen(false);
-    setMassage("");
-  };
 
   const { mutate: login } = useLoginMutation({
     onSuccess: (data: AuthResponse) => {
@@ -51,8 +51,7 @@ const SigninPage = () => {
       }, 1000);     
     },
     onError: () => {
-      setModalOpen(true);
-      setMassage("이메일 혹은 비밀번호를 확인해주세요.");
+      toast.error("이메일 혹은 비밀번호를 확인해주세요.");
       reset({ email: '', password: '' });
     },
   });
@@ -113,7 +112,7 @@ const SigninPage = () => {
               <ul className="flex justify-center gap-5 mt-[19px]">
                 <li>
                   <Link
-                    href=""
+                    href={googleAuthUrl}
                     className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span className="
@@ -133,7 +132,7 @@ const SigninPage = () => {
                 </li>
                 <li>
                   <Link
-                    href=""
+                    href={kakaoLoginUrl}
                     className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span className="
@@ -156,13 +155,6 @@ const SigninPage = () => {
             </div>
           </div>
         </div>
-        <ProductComparePlusModal
-          open={modalOpen}
-          setOpen={setModalOpen}
-          message={massage}
-          buttonText="확인"
-          onButtonClick={closeModal}
-        />
       </div>
     </>
   );

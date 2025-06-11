@@ -10,29 +10,15 @@ import BaseButton from "@/components/shared/BaseButton";
 import { useSignUp } from "./useSignUp";
 import { JoinForm, joinFormSchema } from "./validationSchema";
 import { AuthResponse } from "../signin/validationSchema";
-import { useState } from "react";
-import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-
-const login_icon_google = "/icons/login_sns_google.svg";
-const login_icon_kakao = "/icons/login_sns_kakao.svg";
 
 const login_logo = "/signup_logo.svg";
 
 const SignUpPage = () => {
     const router = useRouter();
   
-    const [modalOpen, setModalOpen] = useState(false);
-    const [massage, setMassage] = useState("");
-
-  // 모달 닫기
-  const closeModal = () => {
-    setModalOpen(false);
-    setMassage("");
-  };
-
   const { mutate: signUp } = useSignUp({
     onSuccess: (data: AuthResponse) => {
       toast.success(`${data.user.nickname}님 회원가입 되었습니다!`);
@@ -42,8 +28,7 @@ const SignUpPage = () => {
       
     },
     onError: (error: any) => {
-      setModalOpen(true);
-      setMassage(error?.response?.data?.message || "회원가입에 실패했습니다. 다시 시도해 주세요.");
+      toast.error(error?.response?.data?.message || "회원가입에 실패했습니다. 다시 시도해 주세요.");
     }
   });
    
@@ -185,13 +170,6 @@ const SignUpPage = () => {
             </div>
           </div>
         </div>
-        <ProductComparePlusModal
-          open={modalOpen}
-          setOpen={setModalOpen}
-          message={massage}
-          buttonText="확인"
-          onButtonClick={closeModal}
-        />
       </div>
     </>
   );
