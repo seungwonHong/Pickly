@@ -3,54 +3,33 @@
 import { InputField } from "@/components/input/InputField";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import Link from "next/link";
 
 import BaseButton from "@/components/shared/BaseButton";
 
 import { useSignUp } from "./useSignUp";
 import { JoinForm, joinFormSchema } from "./validationSchema";
 import { AuthResponse } from "../signin/validationSchema";
-import { useState } from "react";
-import NoticeModal from "@/components/shared/NoticeModal";
-import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
-import { useRouter } from "next/router";
-import { useUserStore } from "@/features/productId/libs/useUserStore";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
+const login_logo = "/signup_logo.svg";
 
 const SignUpPage = () => {
     const router = useRouter();
   
-    const [modalOpen, setModalOpen] = useState(false);
-    const [massage, setMassage] = useState("");
-    
-    const [noticeModalOpen, setNoticeModalOpen] = useState(false);
-    const [noticeMassage, setNoticeMassage] = useState("");
-  
-
-  // 모달 닫기
-  const closeModal = () => {
-    setModalOpen(false);
-    setMassage("");
-  };
 
   const { mutate: signUp } = useSignUp({
     onSuccess: (data: AuthResponse) => {
-      //로그인 성공시 '닉네임님 회원가입 되었습니다! ' 모달 활성화 후 1초 뒤 홈으로 이동 
-      //zustand store에 유저 정보 저장
-      setNoticeModalOpen(true);  
-      setNoticeMassage(`${data.user.nickname}님 회원가입 되었습니다!`);
-
-      useUserStore.getState().setUserData({
-        id: data.user.id,
-        nickname: data.user.nickname,
-      });
-
+      toast.success(`${data.user.nickname}님 회원가입 되었습니다!`);
       setTimeout(() => {
-        router.push("/"); 
+         router.replace("/signin"); 
       }, 1000);    
       
     },
     onError: (error: any) => {
-      setModalOpen(true);
-      setMassage(error?.response?.data?.message || "회원가입에 실패했습니다. 다시 시도해 주세요.");
+      toast.error(error?.response?.data?.message || "회원가입에 실패했습니다. 다시 시도해 주세요.");
     }
   });
    
@@ -69,9 +48,19 @@ const SignUpPage = () => {
 
   return (
     <>
-      <div className="min-h-dvh">
+      <div className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center`}>
         <div className="max-w-[440px] md:max-w-[640px] w-full pt-[93px] pb-[93px] mx-auto min-h-[100dvh] flex justify-center items-center">
-          <div className="w-full">
+          <div className="w-full px-[20px] lg:px-[0px]">
+            <div className="flex justify-center items-center mb-[25px]">
+              <Link href="/" >
+                <Image
+                  src={login_logo}
+                  width={193}
+                  height={133}
+                  alt="홈으로이동"
+                />
+              </Link>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div 
                 className="mb-[39px]"
@@ -83,7 +72,7 @@ const SignUpPage = () => {
                 placeholder="이메일을 입력해주세요"
                 error={errors.email?.message}
                 {...register('email')}
-                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
+                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px] "
               />
               </div>
               <div 
@@ -134,20 +123,54 @@ const SignUpPage = () => {
                 회원가입
               </BaseButton>
             </form>
+            <div className="text-[var(--color-deepGray)] mt-[60px] text-center text-base">
+              <span>SNS로 바로 시작하기</span>
+              <ul className="flex justify-center gap-5 mt-[19px]">
+                <li>
+                  <Link
+                    href=""
+                    className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[var(--color-white)] transition-transform duration-200 ease-in-out shadow-lg"
+                  >
+                    <span className="
+                      block 
+                      bg-[var(--color-deepGray)] 
+                      h-[56px] w-[56px] 
+                      transition-all 
+                      duration-300 
+                      mask-[url('/icons/login_sns_google.svg')] 
+                      mask-no-repeat 
+                      mask-center 
+                      hover:bg-[url('/sns_gg_bg.png')] bg-cover bg-center bg-no-repeat 
+                      text-[0px]">
+                      구글 로그인하기
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href=""
+                    className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[#f3e21f] transition-transform duration-200 ease-in-out shadow-lg"
+                  >
+                    <span className="
+                      block 
+                      h-[56px] w-[56px] 
+                      bg-[var(--color-deepGray)] 
+                      hover:bg-[#361d1e] 
+                      transition-colors 
+                      duration-300 
+                      mask-[url('/icons/login_sns_kakao.svg')] 
+                      mask-no-repeat 
+                      mask-center 
+                      text-[0px] 
+                      hover:animate-spin-slow">
+                      카카오톡 로그인하기
+                    </span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-        <NoticeModal
-          open={noticeModalOpen}
-          setOpen={setNoticeModalOpen}
-          message={noticeMassage}
-        />
-        <ProductComparePlusModal
-          open={modalOpen}
-          setOpen={setModalOpen}
-          message={massage}
-          buttonText="확인"
-          onButtonClick={closeModal}
-        />
       </div>
     </>
   );

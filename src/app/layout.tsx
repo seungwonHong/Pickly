@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { M_PLUS_Rounded_1c } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./providers/QueryProvider";
+import { Toaster } from 'react-hot-toast';
 
 const mplus = M_PLUS_Rounded_1c({
   variable: "--font-mplus",
@@ -23,6 +24,15 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${mplus.variable} antialiased`}>
         <QueryProvider>{children}</QueryProvider>
+        <Toaster position="top-center"
+          toastOptions={{
+            style: {
+              background: 'rgba(37, 37, 48, 0.8)',
+              color: '#F1F1F5',
+              borderRadius: '8px',
+              border: '1px solid #353542',
+            }
+          }} />
       </body>
     </html>
   );

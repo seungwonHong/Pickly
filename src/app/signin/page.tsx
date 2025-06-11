@@ -2,31 +2,21 @@
 
 import { InputField } from "@/components/input/InputField";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler, useFormContext } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 import { AuthResponse, LoginForm, loginFormSchema } from "./validationSchema";
 import { useLoginMutation } from "./useSignIn";
-import { useUserStore } from "@/features/productId/libs/useUserStore";
+import Link from "next/link";
 
 import BaseButton from "@/components/shared/BaseButton";
 import Image from "next/image";
-import Link from "next/link";
-import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import NoticeModal from "@/components/shared/NoticeModal";
+import toast from "react-hot-toast";
 
-const login_icon_google = "/icons/login_sns_google.svg";
-const login_icon_kakao = "/icons/login_sns_kakao.svg";
+const login_logo = "/signup_logo.svg";
 
 const SigninPage = () => {
   const router = useRouter();
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [massage, setMassage] = useState("");
-  
-  const [noticeModalOpen, setNoticeModalOpen] = useState(false);
-  const [noticeMassage, setNoticeMassage] = useState("");
 
   const {
     register,
@@ -39,36 +29,17 @@ const SigninPage = () => {
   });
 
 
-  // 모달 닫기
-  const closeModal = () => {
-    setModalOpen(false);
-    setMassage("");
-  };
-
   const { mutate: login } = useLoginMutation({
     onSuccess: (data: AuthResponse) => {
       //로그인 성공시 '닉네임님 로그인 되었습니다! ' 모달 활성화 후 1초 뒤 홈으로 이동 
       //zustand store에 유저 정보 저장
-      setNoticeModalOpen(true);  
-      setNoticeMassage(`${data.user.nickname}님 로그인 되었습니다!`);
-
-      useUserStore.getState().setUserData({
-        id: data.user.id,
-        nickname: data.user.nickname,
-      });
-
+      toast.success(`${data.user.nickname}님 로그인 되었습니다!`);
       setTimeout(() => {
-        router.push("/"); 
+         router.replace("/"); 
       }, 1000);     
     },
-    onError: (error: any) => {
-      //에러시 '에러메세지' 모달 열기
-      //에러 메시지 출력 
-      setModalOpen(true);
-      // setMassage(error?.response?.data?.message || "로그인에 실패했습니다.");  -> 활용시 비밀번호가 틀렸는지 이메일이 틀렸는지 구분할 수 있음
-      // 아래 내용은 요구사항 내용
-      setMassage("이메일 혹은 비밀번호를 확인해주세요.");
-      // useFormContext 활용 form 리셋
+    onError: () => {
+      toast.error("이메일 혹은 비밀번호를 확인해주세요.");
       reset({ email: '', password: '' });
     },
   });
@@ -79,9 +50,19 @@ const SigninPage = () => {
 
   return (
     <>
-      <div className="min-h-dvh">
+      <div className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center bg-no-repeat`}>
         <div className="max-w-[440px] md:max-w-[640px] w-full mx-auto pt-[93px] pb-[93px] min-h-[100dvh] flex justify-center items-center">
-          <div className="w-full">
+          <div className="w-full px-[20px] lg:px-[0px]">
+            <div className="flex justify-center items-center mb-[25px]">
+              <Link href="/" >
+                <Image
+                  src={login_logo}
+                  width={193}
+                  height={133}
+                  alt="홈으로이동"
+                />
+              </Link>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-[39px]">
                 <InputField
@@ -91,7 +72,7 @@ const SigninPage = () => {
                   placeholder="이메일을 입력해주세요"
                   error={errors.email?.message}
                   {...register("email")}
-                  className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
+                  className="h-[55px] md:h-[70px] text-[14px] md:text-[16px] shadow-lg"
                 />
               </div>
               <div className="mb-[59px]">
@@ -102,7 +83,7 @@ const SigninPage = () => {
                   withEyeToggle
                   error={errors.password?.message}
                   {...register("password")}
-                  className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
+                  className="h-[55px] md:h-[70px] text-[14px] md:text-[16px] shadow-lg"
                 />
               </div>
               {/* RHF 사용시 별다른 옵션없이도 엔터시 submit */}
@@ -120,45 +101,48 @@ const SigninPage = () => {
                 <li>
                   <Link
                     href=""
-                    className="block border border-[#353542] rounded-full p-[13px] hover:scale-105 transition-transform duration-200 ease-in-out"
+                    className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[var(--color-white)] transition-transform duration-200 ease-in-out shadow-lg"
                   >
-                    <Image
-                      src={login_icon_google}
-                      width={28}
-                      height={28}
-                      alt="구글로 로그인하기"
-                    />
+                    <span className="
+                      block 
+                      bg-[var(--color-deepGray)] 
+                      h-[56px] w-[56px] 
+                      transition-all 
+                      duration-300 
+                      mask-[url('/icons/login_sns_google.svg')] 
+                      mask-no-repeat 
+                      mask-center 
+                      hover:bg-[url('/sns_gg_bg.png')] bg-cover bg-center bg-no-repeat 
+                      text-[0px]">
+                      구글 로그인하기
+                    </span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href=""
-                    className="block border border-[#353542] rounded-full p-[13px] hover:scale-105 transition-transform duration-200 ease-in-out"
+                    className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[#f3e21f] transition-transform duration-200 ease-in-out shadow-lg"
                   >
-                    <Image
-                      src={login_icon_kakao}
-                      width={28}
-                      height={28}
-                      alt="카카오로 로그인하기"
-                    />
+                    <span className="
+                      block 
+                      h-[56px] w-[56px] 
+                      bg-[var(--color-deepGray)] 
+                      hover:bg-[#361d1e] 
+                      transition-colors 
+                      duration-300 
+                      mask-[url('/icons/login_sns_kakao.svg')] 
+                      mask-no-repeat 
+                      mask-center 
+                      text-[0px] 
+                      hover:animate-spin-slow">
+                      카카오톡 로그인하기
+                    </span>
                   </Link>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <NoticeModal
-          open={noticeModalOpen}
-          setOpen={setNoticeModalOpen}
-          message={noticeMassage}
-        />
-        <ProductComparePlusModal
-          open={modalOpen}
-          setOpen={setModalOpen}
-          message={massage}
-          buttonText="확인"
-          onButtonClick={closeModal}
-        />
       </div>
     </>
   );
