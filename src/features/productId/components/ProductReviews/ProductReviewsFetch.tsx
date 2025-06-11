@@ -1,60 +1,45 @@
-"use client";
-import { useState } from "react";
-
+import ProductReviewSort from "./ProductReviewSort";
 import ProductReviewsInfinite from "./ProductReviewsInfinite";
-import { GetProductIdReviews } from "../../types";
-import SortDropDown from "@/components/shared/SortDropDown";
+
+import { productService } from "../../api";
+import ProductReviewClient from "./ProductReviewClient";
 
 interface ProductReviewsClientProps {
-  initialData: GetProductIdReviews;
   productId: number;
-  initialOrder?:
-    | "recent"
-    | "ratingDesc"
-    | "ratingAsc"
-    | "likeCount"
-    | undefined;
+  searchParams: {
+    [key: string]: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
+  };
 }
 
-export default function ProductReviewsFetch({
-  initialData,
+export default async function ProductReviewsFetch({
   productId,
-  initialOrder,
+  searchParams,
 }: ProductReviewsClientProps) {
-  const selectList = [
-    { name: "최신순", value: "recent" },
-    { name: "평점 높은 순", value: "ratingDesc" },
-    { name: "평점 낮은 순", value: "ratingAsc" },
-    { name: "좋아요 많은 순", value: "likeCount" },
-  ];
-  const [selectedOption, setSelectedOption] = useState<"recent" | "ratingDesc" | "ratingAsc" | "likeCount">("recent");
-  const [dataForSelectedOrder, setDataForSelectedOrder] = useState<
-    GetProductIdReviews | undefined
-  >(initialOrder === selectedOption ? initialData : undefined);
+  const sort = searchParams?.sort ?? "recent";
 
-  const onSortChange = (value: string) => {
-    const newSort = value as "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
-    setSelectedOption(newSort);
-    setDataForSelectedOrder(undefined);
-  };
+  const initialData = await productService
+    .getProductsIdReviews(productId, sort)
+    .then((res) => res.data);
+  console.log("initialData", initialData);
+
   return (
     <div>
-      <div className="text-[#f1f1f1] lg:text-[20px] text-[16px] font-medium flex justify-between mb-[30px]">
-        <div>상품리뷰</div>
+      <div className="text-[#f1f1f1]  lg:text-[20px] text-[16px] font-medium flex justify-between mb-[30px]">
+        <ProductReviewSort sort={sort} />
+      </div>
 
-        <SortDropDown
-          selectList={selectList}
-          selected={selectedOption}
-          onChange={onSortChange}
-        />
-      </div>
-      <div className="min-h-[1000px]">
-        <ProductReviewsInfinite
-          initialData={dataForSelectedOrder}
-          productId={productId}
-          order={selectedOption}
-        />
-      </div>
+      <ProductReviewClient initialData={initialData} />
+      {initialData.nextCursor && (
+        <div className="w-full">
+          <ProductReviewsInfinite
+            nextCursor={initialData?.nextCursor}
+            productId={productId}
+            queryKey={["reviews", productId, sort]}
+            order={sort}
+            initialData={initialData}
+          />
+        </div>
+      )}
     </div>
   );
 }
