@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 import BaseButton from "@/components/shared/BaseButton";
-import CloseX from "../../../../../../public/icons/close-x.png";
+import CloseX from "../../../public/icons/close-x.png";
 
 interface ProductCompareChangeModalProps {
   open: boolean;
@@ -46,7 +46,7 @@ export default function ProductComparePlusModal({
               onClick={() => setOpen(false)}
             />
 
-            <p className="text-white text-[24px] font-semibold text-center mt-8 w-max whitespace-pre-line">
+            <p className="text-white text-[20px] font-semibold text-center mt-8 w-max whitespace-pre-line">
               {message}
             </p>
 

@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import ProductComparePlusModal from "../modal/ProductCompareModal/ProductComparePlusModal";
+import ProductComparePlusModal from "../../../../components/shared/ProductComparePlusModal";
 
 import useGetProductId from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
@@ -25,7 +25,7 @@ export default function ProductReviewDelete({
 
   // 리뷰 patch 요청을 위한 useMutation 훅
   const deleteReviewMutation = useMutation({
-    mutationFn: () => reviewService.deleteReviews(reviewId),
+    mutationFn: () => reviewService.deleteReviewsLike(reviewId),
     onSuccess: () => {
       alert("리뷰가 삭제되었습니다!");
       closeModal();

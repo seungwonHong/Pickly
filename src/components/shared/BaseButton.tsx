@@ -3,7 +3,9 @@ interface BaseButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
+
   type?: "button" | "submit" | "reset";
+
 }
 
 export default function BaseButton({
@@ -11,7 +13,7 @@ export default function BaseButton({
   onClick,
   disabled = false,
   className = "",
-  type
+  type = "button",
 }: BaseButtonProps) {
   const backgroundStyle = disabled
     ? "#353542"
