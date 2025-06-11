@@ -11,10 +11,10 @@ import { useSignUp } from "./useSignUp";
 import { JoinForm, joinFormSchema } from "./validationSchema";
 import { AuthResponse } from "../signin/validationSchema";
 import { useState } from "react";
-import NoticeModal from "@/components/shared/NoticeModal";
 import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const login_icon_google = "/icons/login_sns_google.svg";
 const login_icon_kakao = "/icons/login_sns_kakao.svg";
@@ -26,10 +26,6 @@ const SignUpPage = () => {
   
     const [modalOpen, setModalOpen] = useState(false);
     const [massage, setMassage] = useState("");
-    
-    const [noticeModalOpen, setNoticeModalOpen] = useState(false);
-    const [noticeMassage, setNoticeMassage] = useState("");
-  
 
   // 모달 닫기
   const closeModal = () => {
@@ -39,9 +35,7 @@ const SignUpPage = () => {
 
   const { mutate: signUp } = useSignUp({
     onSuccess: (data: AuthResponse) => {
-      setNoticeModalOpen(true);  
-      setNoticeMassage(`${data.user.nickname}님 회원가입 되었습니다!`);
-
+      toast.success(`${data.user.nickname}님 회원가입 되었습니다!`);
       setTimeout(() => {
          router.replace("/signin"); 
       }, 1000);    
@@ -68,9 +62,9 @@ const SignUpPage = () => {
 
   return (
     <>
-      <div className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center bg-no-repeat`}>
+      <div className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center`}>
         <div className="max-w-[440px] md:max-w-[640px] w-full pt-[93px] pb-[93px] mx-auto min-h-[100dvh] flex justify-center items-center">
-          <div className="w-full">
+          <div className="w-full px-[20px] lg:px-[0px]">
             <div className="flex justify-center items-center mb-[25px]">
               <Link href="/" >
                 <Image
@@ -191,11 +185,6 @@ const SignUpPage = () => {
             </div>
           </div>
         </div>
-        <NoticeModal
-          open={noticeModalOpen}
-          setOpen={setNoticeModalOpen}
-          message={noticeMassage}
-        />
         <ProductComparePlusModal
           open={modalOpen}
           setOpen={setModalOpen}

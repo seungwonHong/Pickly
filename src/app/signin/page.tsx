@@ -13,7 +13,7 @@ import Image from "next/image";
 import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import NoticeModal from "@/components/shared/NoticeModal";
+import toast from "react-hot-toast";
 
 const login_logo = "/signup_logo.svg";
 
@@ -23,8 +23,6 @@ const SigninPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [massage, setMassage] = useState("");
   
-  const [noticeModalOpen, setNoticeModalOpen] = useState(false);
-  const [noticeMassage, setNoticeMassage] = useState("");
 
   const {
     register,
@@ -47,9 +45,7 @@ const SigninPage = () => {
     onSuccess: (data: AuthResponse) => {
       //로그인 성공시 '닉네임님 로그인 되었습니다! ' 모달 활성화 후 1초 뒤 홈으로 이동 
       //zustand store에 유저 정보 저장
-      setNoticeModalOpen(true);  
-      setNoticeMassage(`${data.user.nickname}님 로그인 되었습니다!`);
-
+      toast.success(`${data.user.nickname}님 로그인 되었습니다!`);
       setTimeout(() => {
          router.replace("/"); 
       }, 1000);     
@@ -69,7 +65,7 @@ const SigninPage = () => {
     <>
       <div className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center bg-no-repeat`}>
         <div className="max-w-[440px] md:max-w-[640px] w-full mx-auto pt-[93px] pb-[93px] min-h-[100dvh] flex justify-center items-center">
-          <div className="w-full">
+          <div className="w-full px-[20px] lg:px-[0px]">
             <div className="flex justify-center items-center mb-[25px]">
               <Link href="/" >
                 <Image
@@ -160,11 +156,6 @@ const SigninPage = () => {
             </div>
           </div>
         </div>
-        <NoticeModal
-          open={noticeModalOpen}
-          setOpen={setNoticeModalOpen}
-          message={noticeMassage}
-        />
         <ProductComparePlusModal
           open={modalOpen}
           setOpen={setModalOpen}
