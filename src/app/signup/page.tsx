@@ -1,18 +1,15 @@
 'use client';
-
 import { InputField } from "@/components/input/InputField";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
-
 import BaseButton from "@/components/shared/BaseButton";
-
 import { useSignUp } from "./useSignUp";
 import { JoinForm, joinFormSchema } from "./validationSchema";
 import { AuthResponse } from "../signin/validationSchema";
 import { useState } from "react";
 import NoticeModal from "@/components/shared/NoticeModal";
 import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useUserStore } from "@/features/productId/libs/useUserStore";
 
 const SignUpPage = () => {
