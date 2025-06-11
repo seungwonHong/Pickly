@@ -143,7 +143,7 @@ const SignUpPage = () => {
                 <li>
                   <Link
                     href=""
-                    className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+                    className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[var(--color-white)] transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span className="
                       block 
@@ -163,13 +163,13 @@ const SignUpPage = () => {
                 <li>
                   <Link
                     href=""
-                    className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+                    className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[#f3e21f] transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span className="
                       block 
                       h-[56px] w-[56px] 
                       bg-[var(--color-deepGray)] 
-                      hover:bg-[#f7e600] 
+                      hover:bg-[#361d1e] 
                       transition-colors 
                       duration-300 
                       mask-[url('/icons/login_sns_kakao.svg')] 
