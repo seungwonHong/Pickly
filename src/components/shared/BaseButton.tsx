@@ -3,7 +3,9 @@ interface BaseButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
-  type?: "button" | "submit";
+
+  type?: "button" | "submit" | "reset";
+
 }
 
 export default function BaseButton({

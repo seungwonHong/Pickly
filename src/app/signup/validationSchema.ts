@@ -3,28 +3,28 @@ import { z } from 'zod';
 
 export const joinFormSchema = z.object({
   email: z
-    .string({ required_error: '이메일은 필수입니다.' })
+    .string({ required_error: '이메일은 필수 입력입니다.' })
     .regex(
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      '유효한 이메일을 입력해주세요.',
+      '이메일 형식으로 작성해 주세요.',
     ),
 
   nickname: z
-    .string({ required_error: '닉네임을 입력해주세요.' })
-    .min(1, '1자 이상 입력해주세요.')
-    .max(20, '20자 이하로 입력해주세요.'),
+    .string({ required_error: '닉네임은 필수 입력입니다.' })
+    .min(1, '닉네임은 최소 1자부터 가능합니다.')
+    .max(20, '닉네임은 최대 20자까지 가능합니다.'),
 
   password: z
-    .string({ required_error: '비밀번호는 필수입니다.' })
-    .min(8, '8자 이상 입력해주세요.')
-    .max(20, '20자 이하로 입력해주세요.')
+    .string({ required_error: '비밀번호는 필수 입력입니다.' })
+    .min(8, '비밀번호는 최소 8자 이상입니다.')
+    .max(20, '비밀번호는 최대 20자 이하입니다.')
     .regex(
       /^([a-z]|[A-Z]|[0-9]|[!@#$%^&*])+$/,
-      '영문, 숫자, 특수문자(!@#$%^&*)만 입력 가능합니다.',
+      '비밀번호는 숫자, 영문, 특수문자로만 가능합니다.',
     ),
 
   passwordConfirmation: z
-    .string({ required_error: '비밀번호 확인은 필수입니다.' }),
+    .string({ required_error: '비밀번호 확인을 입력해주세요.' }),
 
 }).refine(
   (data) => data.password === data.passwordConfirmation,

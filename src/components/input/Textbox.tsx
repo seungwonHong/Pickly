@@ -22,7 +22,8 @@ export function Textbox({
 
   const message = error || subText;
 
-  const isActive = "focus-within:bg-gradient-to-r from-[#5097fa] to-[#5363ff]";
+
+  const isActive = 'focus-within:bg-gradient-to-r from-[#5097fa] to-[#5363ff]' ;
 
   const isError = error ? "!bg-[var(--color-red)] " : isActive;
 
