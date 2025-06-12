@@ -6,8 +6,6 @@ interface Props {
   file: File | null;
   setFile: React.Dispatch<React.SetStateAction<File | null>>;
   handleClose: () => void;
-  setIsMessage: React.Dispatch<React.SetStateAction<boolean>>;
-  setSuccessAddProduct: React.Dispatch<React.SetStateAction<boolean>>;
   setAddProduct: React.Dispatch<React.SetStateAction<boolean>>;
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
@@ -26,8 +24,6 @@ export const handleSubmit = async ({
   file,
   setFile,
   handleClose,
-  setIsMessage,
-  setSuccessAddProduct,
   setAddProduct,
   setIsLogin,
   setMessage,
@@ -43,7 +39,7 @@ export const handleSubmit = async ({
 }: Props) => {
   // 모달에 내용을 한개라도 안 썼을 경우 경고 모달 띄우기
   if (!name || !categoryId || !description || !file) {
-    setIsMessage(true);
+    toast.success("내용을 모두 작성해주세요.");
     return;
   }
   const csrfToken =
@@ -82,7 +78,6 @@ export const handleSubmit = async ({
         });
 
         if (response?.status === 200 || response?.status === 201) {
-          setSuccessAddProduct(true);
           toast.success("상품이 등록되었습니다.");
           console.log("포스트 등록됨");
           setName(null);

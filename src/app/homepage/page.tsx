@@ -7,6 +7,7 @@ import { getProductsFetch } from "@/features/home/services/getProduct";
 import HighStarProduct from "@/features/home/components/HighStarProduct";
 import MoreProducts from "@/features/home/components/MoreProducts";
 import AddEditProductModal from "@/components/shared/AddEditProductModal";
+import { Toaster } from "react-hot-toast";
 
 export default async function HomePage({
   params,
@@ -104,9 +105,19 @@ export default async function HomePage({
 
       {sp.modal === "true" && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center">
-          <AddEditProductModal buttonPlaceholder="추가하기" modalType="addProduct" purpose="상품 추가"/>
+          <AddEditProductModal
+            buttonPlaceholder="추가하기"
+            modalType="addProduct"
+            purpose="상품 추가"
+          />
         </div>
       )}
+
+      <Toaster
+        position="top-center"
+        reverseOrder={true}
+        toastOptions={{ style: { zIndex: 9999 } }}
+      />
     </div>
   );
 }

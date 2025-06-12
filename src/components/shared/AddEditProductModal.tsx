@@ -11,6 +11,7 @@ import { ProductInfo } from "@/features/home/types/productType";
 import { handleSubmit } from "@/lib/utils/addProductFunction";
 import editProductFunction from "@/lib/utils/editProductFunction";
 import ProductComparePlusModal from "./ProductComparePlusModal";
+import { Toaster } from "react-hot-toast";
 
 interface Props {
   buttonPlaceholder: string;
@@ -28,9 +29,6 @@ const AddEditProductModal = ({
   const [file, setFile] = useState<File | null>(null);
   const [addProduct, setAddProduct] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [successAddProduct, setSuccessAddProduct] = useState(false);
-  // 모달에 데이터 안 넣었을 경우
-  const [isMessage, setIsMessage] = useState(false);
   const [message, setMessage] = useState("");
 
   const router = useRouter();
@@ -190,8 +188,6 @@ const AddEditProductModal = ({
                   file,
                   setFile,
                   handleClose,
-                  setIsMessage,
-                  setSuccessAddProduct,
                   setAddProduct,
                   setIsLogin,
                   setMessage,
@@ -234,15 +230,11 @@ const AddEditProductModal = ({
           }}
         />
       )}
-      {isMessage && (
-        <ProductComparePlusModal
-          open={isMessage}
-          setOpen={setIsMessage}
-          buttonText="확인"
-          message="모든 항목을 채워주세요"
-          onButtonClick={() => setIsMessage(false)}
-        />
-      )}
+      <Toaster
+        position="top-center"
+        reverseOrder={true}
+        toastOptions={{ style: { zIndex: 9999 } }}
+      />
     </div>
   );
 };
