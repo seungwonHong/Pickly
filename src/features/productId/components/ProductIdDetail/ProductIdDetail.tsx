@@ -4,8 +4,6 @@ import { productService } from "../../api";
 import ProductIdReviewButton from "./ProductIdDetailButton";
 import CategoryChip from "@/components/CategoryChip";
 import ProductIdDetailHeart from "./ProductIdDetailHeart";
-import getMusicvideo from "../../hooks/useGetMusicvideo";
-import fetchArtistAlbum from "../../hooks/fetchArtistAlbum";
 
 import KakaoLink from "../../../../../public/images/kakao-link.png";
 import LinkShare from "../../../../../public/images/link-share.png";
