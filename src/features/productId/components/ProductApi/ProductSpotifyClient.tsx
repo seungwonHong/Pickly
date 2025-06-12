@@ -25,6 +25,7 @@ export default function ProductSpotifyClient({
 
     const query = `album:${albumName} artist:${artistName}`;
 
+    // 스포티파이 API를 사용하여 앨범 검색
     const albumRes = await fetch(
       `https://api.spotify.com/v1/search?q=${encodeURIComponent(
         query
@@ -35,7 +36,8 @@ export default function ProductSpotifyClient({
     );
 
     const albumData = await albumRes.json();
-    console.log("albumData:", albumData);
+
+    // 앨범이 존재하는지 확인하면 해당 스포티파이 링크로 이동
     if (
       albumData.albums &&
       albumData.albums.items &&
@@ -44,16 +46,42 @@ export default function ProductSpotifyClient({
       const albumId = albumData.albums.items[0].id;
       window.open(`https://open.spotify.com/album/${albumId}`, "_blank");
     } else {
-      // 검색 결과가 없을 경우, 아티스트 페이지로 이동하거나 다른 대체 링크를 제공할 수 있습니다.
-      // 여기서는 간단히 알림을 표시합니다.
       console.warn(
-        "Spotify에서 해당 앨범을 찾을 수 없습니다. 아티스트 페이지로 이동을 시도합니다."
+        "Spotify에서 해당 앨범을 찾을 수 없습니다. 해당 검색어와 관련된 곳으로 이동합니다."
       );
-      const artistQuery = `artist:${artistName}`;
-      window.open(
-        `https://open.spotify.com/search/${encodeURIComponent(artistQuery)}`,
-        "_blank"
+
+      const broaderQuery = `${artistName} ${albumName}`;
+      const broaderAlbumRes = await fetch(
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(
+          broaderQuery
+        )}&type=album&limit=1&market=KR`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
       );
+      const broaderAlbumData = await broaderAlbumRes.json();
+
+      if (
+        broaderAlbumData.albums &&
+        broaderAlbumData.albums.items &&
+        broaderAlbumData.albums.items.length > 0
+      ) {
+        // 일반 검색으로 앨범을 찾은 경우
+        const albumId = broaderAlbumData.albums.items[0].id;
+        console.warn(
+          "일반 검색으로 앨범을 찾았습니다. 해당 앨범 페이지로 이동합니다."
+        );
+        window.open(`https://open.spotify.com/album/${albumId}`, "_blank");
+      } else {
+        // 일반 검색으로도 앨범을 찾지 못한 경우, Spotify 검색 페이지로 이동
+        console.warn(
+          "Spotify에서 일반 검색으로도 앨범을 찾을 수 없습니다. 검색 페이지로 이동합니다."
+        );
+        window.open(
+          `https://open.spotify.com/search/${encodeURIComponent(broaderQuery)}`,
+          "_blank"
+        );
+      }
     }
   };
 
@@ -62,7 +90,7 @@ export default function ProductSpotifyClient({
       onClick={handleGoToSpotifyAlbum}
       className="group cursor-pointer text-white flex flex-col items-center justify-end p-5 gap-2 bg-[#1F1F1F] rounded-lg hover:bg-[#282828] transition-all duration-300 ease-in-out"
     >
-      <div className="relative w-[200px] h-[200px]">
+      <div className="relative w-[250px] h-[250px]">
         <img
           src={product.image}
           alt={`${artistName} - ${albumName}`}

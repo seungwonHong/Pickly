@@ -10,17 +10,13 @@ export default async function ProductApiDetail({
 }) {
   const response = await productService.getProductsId(productId);
   const product = response.data;
-
   if (!product) return <div>상품 정보가 없습니다.</div>;
+  console.log("product", product);
 
   const combinedText = `${product.name}\n${product.description}`;
 
+  // 아티스트 이름과 설명을 추출하여 ai에게 전달
   const albumInfo = await fetchArtistAlbum(combinedText);
-
-  if (!albumInfo) {
-    console.error("fetchArtistAlbum 실패");
-    return <div>아티스트 정보를 찾을 수 없습니다.</div>;
-  }
 
   let artistName = "";
   let albumName = "";
@@ -35,17 +31,11 @@ export default async function ProductApiDetail({
       }
     }
 
-    const match = jsonStr.match(/\{[\s\S]*\}/);
-    if (match) {
-      jsonStr = match[0];
-    } else {
-      throw new Error("JSON 부분을 찾을 수 없음");
-    }
-
+    // JSON 문자열 파싱
     const albumInfoObj = JSON.parse(jsonStr);
 
-    artistName = albumInfoObj.artist ?? "";
-    albumName = albumInfoObj.album ?? "";
+    artistName = albumInfoObj.artist?.replace(/\(.*?\)/g, "").trim() ?? "";
+    albumName = albumInfoObj.album?.trim() ?? "";
   } catch (error) {
     console.error("albumInfo JSON 파싱 실패:", error, "응답값:", albumInfo);
     return <div>아티스트 정보를 파싱할 수 없습니다.</div>;
@@ -53,19 +43,22 @@ export default async function ProductApiDetail({
 
   const searchQuery =
     artistName.length > 0
-      ? `${artistName} ${
-          albumName ? albumName : ""
-        } official music video`.trim()
+      ? `${artistName} ${albumName} official music video`.trim()
       : combinedText;
 
   return (
-    <div className="flex items-center justify-between">
-      <ProductApiClient searchQuery={searchQuery} />
-      <ProductSpotifyClient
-        artistName={artistName}
-        albumName={albumName}
-        product={product}
-      />
+    <div className="flex gap-[20px] flex-col ">
+      <div className="text-white lg:text-[20px] md:text-[16px] font-normal">
+        음악 들으러 가기
+      </div>
+      <div className="flex items-center gap-[20px]">
+        <ProductApiClient searchQuery={searchQuery} />
+        <ProductSpotifyClient
+          artistName={artistName}
+          albumName={albumName}
+          product={product}
+        />
+      </div>
     </div>
   );
 }
