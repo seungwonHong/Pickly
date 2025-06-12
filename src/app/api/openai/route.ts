@@ -1,24 +1,27 @@
 import { NextResponse } from "next/server";
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 
 export async function POST(request: Request) {
   try {
     const { text } = await request.json();
     if (!text) {
-      return NextResponse.json({ error: "Missing text in request body" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing text in request body" },
+        { status: 400 }
+      );
     }
 
-    const configuration = new Configuration({
+    const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
-    const openai = new OpenAIApi(configuration);
 
-    const completion = await openai.createChatCompletion({
-      model: "gpt-4o-mini",
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
       messages: [
         {
           role: "system",
-          content: "You are an assistant that extracts artist and album name from the given text.",
+          content:
+            "You are an assistant that extracts artist and album name from the given text.",
         },
         {
           role: "user",
@@ -27,11 +30,19 @@ export async function POST(request: Request) {
       ],
     });
 
-    const result = completion.data.choices[0].message?.content || "";
-
+    const result = completion.choices[0].message?.content || "";
+    console.log("OpenAI API 응답:", result);
     return NextResponse.json({ result });
   } catch (error: any) {
-    console.error("OpenAI API 호출 실패:", error);
-    return NextResponse.json({ error: "OpenAI API 호출 실패" }, { status: 500 });
+    console.error("OpenAI API 호출 실패:", {
+      message: error.message,
+      name: error.name,
+      stack: error.stack,
+      cause: error.cause,
+    });
+    return NextResponse.json(
+      { error: "OpenAI API 호출 실패", detail: error.message },
+      { status: 500 }
+    );
   }
 }

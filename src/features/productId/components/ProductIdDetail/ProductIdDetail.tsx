@@ -5,6 +5,7 @@ import ProductIdReviewButton from "./ProductIdDetailButton";
 import CategoryChip from "@/components/CategoryChip";
 import ProductIdDetailHeart from "./ProductIdDetailHeart";
 import getMusicvideo from "../../hooks/useGetMusicvideo";
+import fetchArtistAlbum from "../../hooks/fetchArtistAlbum";
 
 import KakaoLink from "../../../../../public/images/kakao-link.png";
 import LinkShare from "../../../../../public/images/link-share.png";
@@ -16,9 +17,32 @@ export default async function ProductIdDetail({
 }) {
   const response = await productService.getProductsId(productId);
   const product = response.data;
-  console.log(product);
-  const videos = await getMusicvideo(product.name);
-  console.log(videos);
+
+  const combinedText = `${product.name}\n${product.description}`;
+
+  const albumInfo = await fetchArtistAlbum(combinedText);
+
+  if (!albumInfo) {
+    console.error("fetchArtistAlbum 실패");
+    return [];
+  }
+
+  const artistMatch = albumInfo.match(/아티스트명:\s*(.+)/);
+  const albumMatch = albumInfo.match(/앨범명:\s*(.+)/);
+
+  const artistName = artistMatch ? artistMatch[1].trim() : "";
+  const albumName = albumMatch ? albumMatch[1].trim() : "";
+
+  const searchQuery = artistName
+    ? `${artistName} ${albumName ? albumName : ""} official music video`.trim()
+    : "official music video";
+
+  console.log("albumInfo:", albumInfo);
+  console.log("artistName:", artistName);
+  console.log("albumName:", albumName);
+  console.log("searchQuery:", searchQuery);
+
+  const videos = await getMusicvideo(searchQuery);
 
   if (!product) return <div>상품 정보가 없습니다.</div>;
   return (
