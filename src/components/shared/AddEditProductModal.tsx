@@ -7,10 +7,10 @@ import { Textbox } from "../input/Textbox";
 import BaseButton from "./BaseButton";
 import { useRouter } from "next/navigation";
 import useModalStore from "@/features/home/modals/store/modalStore";
-import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
 import { ProductInfo } from "@/features/home/types/productType";
 import { handleSubmit } from "@/lib/utils/addProductFunction";
 import editProductFunction from "@/lib/utils/editProductFunction";
+import ProductComparePlusModal from "./ProductComparePlusModal";
 
 interface Props {
   buttonPlaceholder: string;
