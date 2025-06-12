@@ -1,5 +1,5 @@
 "use client";
-import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
+import ProductComparePlusModal from "./ProductComparePlusModal";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
