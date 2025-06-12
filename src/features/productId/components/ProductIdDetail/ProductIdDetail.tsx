@@ -18,32 +18,6 @@ export default async function ProductIdDetail({
   const response = await productService.getProductsId(productId);
   const product = response.data;
 
-  const combinedText = `${product.name}\n${product.description}`;
-
-  const albumInfo = await fetchArtistAlbum(combinedText);
-
-  if (!albumInfo) {
-    console.error("fetchArtistAlbum 실패");
-    return [];
-  }
-
-  const artistMatch = albumInfo.match(/아티스트명:\s*(.+)/);
-  const albumMatch = albumInfo.match(/앨범명:\s*(.+)/);
-
-  const artistName = artistMatch ? artistMatch[1].trim() : "";
-  const albumName = albumMatch ? albumMatch[1].trim() : "";
-
-  const searchQuery = artistName
-    ? `${artistName} ${albumName ? albumName : ""} official music video`.trim()
-    : "official music video";
-
-  console.log("albumInfo:", albumInfo);
-  console.log("artistName:", artistName);
-  console.log("albumName:", albumName);
-  console.log("searchQuery:", searchQuery);
-
-  const videos = await getMusicvideo(searchQuery);
-
   if (!product) return <div>상품 정보가 없습니다.</div>;
   return (
     <>
@@ -90,18 +64,6 @@ export default async function ProductIdDetail({
           </div>
         </div>
       </div>
-      {(videos ?? []).map((video) => (
-        <div key={video.id.videoId}>
-          <iframe
-            width="516"
-            height="288"
-            src={`https://www.youtube.com/embed/${video.id.videoId}`}
-            title={video.snippet.title}
-            frameBorder="0"
-            allowFullScreen
-          />
-        </div>
-      ))}
     </>
   );
 }

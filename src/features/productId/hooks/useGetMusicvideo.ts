@@ -1,6 +1,7 @@
 import { YoutubeVideo } from "../youtube-video";
+import { useQuery } from "@tanstack/react-query";
 
-export default async function useGetMusicvideo(
+export default async function getMusicvideo(
   searchQuery: string
 ): Promise<YoutubeVideo[]> {
   const baseUrl =
@@ -14,9 +15,7 @@ export default async function useGetMusicvideo(
   )}&maxResults=1&type=video&order=viewCount`;
 
   try {
-    const res = await fetch(url, {
-      // cache: "no-store", -> 임시 제거 ㅠㅠ
-    });
+    const res = await fetch(url, {});
 
     if (!res.ok) {
       const errorText = await res.text();
@@ -32,4 +31,16 @@ export default async function useGetMusicvideo(
     console.error("useGetMusicvideo error:", error);
     throw error;
   }
+}
+
+export function useYouTubeQuery(searchQuery: string) {
+  return useQuery(
+    ["youtube-video", searchQuery],
+    () => getMusicvideo(searchQuery),
+    {
+      staleTime: 1000 * 60 * 5, // 5분 동안 캐시 유지
+      cacheTime: 1000 * 60 * 60, // 캐시는 1시간 유지
+      enabled: !!searchQuery, // searchQuery가 있을 때만 실행
+    }
+  );
 }
