@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { InputField } from "../input/InputField";
 import CategoryDropDown from "./CategoryDropDown";
@@ -7,19 +7,28 @@ import { Textbox } from "../input/Textbox";
 import BaseButton from "./BaseButton";
 import { useRouter } from "next/navigation";
 import useModalStore from "@/features/home/modals/store/modalStore";
-import postProduct from "@/features/home/services/postProduct";
-import { getCookie } from "cookies-next";
-import postImage from "@/features/home/services/postImage";
 import ProductComparePlusModal from "@/features/productId/components/modal/ProductCompareModal/ProductComparePlusModal";
+import { ProductInfo } from "@/features/home/types/productType";
+import { handleSubmit } from "@/lib/utils/addProductFunction";
+import editProductFunction from "@/lib/utils/editProductFunction";
 
 interface Props {
   buttonPlaceholder: string;
+  modalType: "addProduct" | "editProduct";
+  productinfo?: ProductInfo;
+  purpose: string;
 }
 
-const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
+const AddEditProductModal = ({
+  buttonPlaceholder,
+  modalType,
+  productinfo,
+  purpose,
+}: Props) => {
   const [file, setFile] = useState<File | null>(null);
   const [addProduct, setAddProduct] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+  const [successAddProduct, setSuccessAddProduct] = useState(false);
   // 모달에 데이터 안 넣었을 경우
   const [isMessage, setIsMessage] = useState(false);
   const [message, setMessage] = useState("");
@@ -42,6 +51,8 @@ const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
     const params = new URLSearchParams(window.location.search);
     params.delete("modal");
     router.replace(`?${params.toString()}`, { scroll: false });
+    setClickedValue("카테고리 선택");
+    setImage(null);
   };
 
   const chooseFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,65 +64,12 @@ const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
     }
   };
 
-  const handleSubmit = async () => {
-    // 모달에 내용을 한개라도 안 썼을 경우 경고 모달 띄우기
-    if (!name || !categoryId || !description || !file) {
-      setIsMessage(true);
-      return;
+  useEffect(() => {
+    if (productinfo) {
+      setClickedValue(productinfo.category.name);
+      setImage(productinfo.image);
     }
-    const csrfToken =
-      document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("csrf-token="))
-        ?.split("=")[1] ?? "";
-
-    const res = await fetch("/api/cookie", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "x-csrf-token": csrfToken,
-      },
-    });
-
-    if (res.status === 200) {
-      const { accessToken } = await res.json();
-
-      const responseFile = await postImage({
-        file,
-        accessToken,
-      });
-
-      if (responseFile) {
-        const response = await postProduct({
-          categoryId,
-          name,
-          description,
-          image: responseFile.url,
-          accessToken,
-        });
-
-        if (response?.status === 200) {
-          setName(null);
-          setCategoryId(null);
-          setClickedValue("카테고리 선택");
-          setDescription(null);
-          setImage(null);
-          setFile(null);
-
-          handleClose();
-        } else {
-          // 상품 추가 실패했다는 모달
-          setAddProduct(true);
-          setMessage("상품 등록에 실패하였습니다. 다시 시도해주세요.");
-        }
-      }
-    } else {
-      console.error("로그인이 되어 있지 않음: 상품 넣기 실패");
-      // 로그인 해달라는 모달 설정
-      setIsLogin(true);
-      setMessage("로그인이 필요합니다.");
-    }
-  };
+  }, []);
 
   return (
     <div className="relative flex w-full h-full justify-center items-center bg-[#000000B2]">
@@ -122,7 +80,7 @@ const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
           onClick={handleClose}
         />
         <span className="lg:text-[24px] text-[20px] text-[#F1F1F5] font-semibold md:ml-[20px]">
-          상품 추가
+          {purpose}
         </span>
 
         <div className="flex md:flex-row flex-col md:mt-[40px] mt-[20px] md:ml-[20px]">
@@ -169,6 +127,7 @@ const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
               className="md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
               placeholder="상품명 (상품 등록 여부를 확인해 주세요)"
               type="text"
+              value={productinfo && productinfo.name}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setName(e.target.value)
               }
@@ -220,11 +179,34 @@ const AddEditProductModal = ({ buttonPlaceholder }: Props) => {
           maxLength={500}
           placeholder="상품 설명을 입력해 주세요"
           className="lg:w-[540px] lg:h-[160px] md:w-[510px] md:h-[160px] w-[295px] h-[120px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
+          value={productinfo && productinfo.description}
         />
 
         <BaseButton
           className="lg:w-[540px] lg:h-[65px] md:w-[510px] md:h-[55px] md:mt-[40px] mt-[20px] md:ml-[20px] lg:text-[18px] text-[16px] font-semibold rounded-lg"
-          onClick={handleSubmit}
+          onClick={() => {
+            modalType === "addProduct"
+              ? handleSubmit({
+                  file,
+                  setFile,
+                  handleClose,
+                  setIsMessage,
+                  setSuccessAddProduct,
+                  setAddProduct,
+                  setIsLogin,
+                  setMessage,
+                  name,
+                  description,
+                  categoryId,
+                  setName,
+                  setDescription,
+                  setImage,
+                  setCategoryId,
+                  setClickedValue,
+                  image,
+                })
+              : editProductFunction(); // 편집 함수 호출
+          }}
         >
           {buttonPlaceholder}
         </BaseButton>

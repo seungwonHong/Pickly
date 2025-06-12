@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { createPortal } from "react-dom";
-
 import BaseButton from "@/components/shared/BaseButton";
 import CloseX from "../../../../../../public/icons/close-x.png";
 
