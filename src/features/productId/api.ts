@@ -1,9 +1,7 @@
 import axiosInstance from "./axiosInstance";
 import axios from "axios";
 
-const BaseURL =
-  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000/api/proxy";
-// 로그인시 지워야 함, 좋아요버튼 테스트 용
+const BaseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 class ProductService {
   getProducts({
@@ -41,12 +39,20 @@ class ProductService {
     return axios.get(url);
   }
 
-  postProductsFavorite(productId: number) {
-    return axiosInstance.post(`/products/${productId}/favorite`, {});
+  postProductsFavorite(productId: number, accessToken: string) {
+    return axios.post(`${BaseURL}/products/${productId}/favorite`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   }
 
-  deleteProductsFavorite(productId: number) {
-    return axiosInstance.delete(`/products/${productId}/favorite`);
+  deleteProductsFavorite(productId: number, accessToken: string) {
+    return axios.delete(`${BaseURL}/products/${productId}/favorite`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   }
 }
 

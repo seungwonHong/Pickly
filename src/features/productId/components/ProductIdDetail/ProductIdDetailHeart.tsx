@@ -38,14 +38,23 @@ export default function ProductIdDetailHeart({
       return;
     }
 
-    if (!isLiked) {
-      await productService.postProductsFavorite(productId);
-      setFavoriteCount(favoriteCount + 1);
-    } else {
-      await productService.deleteProductsFavorite(productId);
-      setFavoriteCount(favoriteCount - 1);
+    try {
+      if (!isLiked) {
+        await productService.postProductsFavorite(productId);
+        setFavoriteCount(favoriteCount + 1);
+      } else {
+        await productService.deleteProductsFavorite(productId);
+        setFavoriteCount(favoriteCount - 1);
+      }
+      setIsLiked(!isLiked);
+    } catch (error: any) {
+      console.error("Like/Unlike API 에러:", error);
+      // Axios 에러인 경우, 더 자세한 정보를 확인할 수 있습니다.
+      if (error.isAxiosError) {
+        console.error("Axios 에러 응답:", error.response);
+        console.error("Axios 에러 요청 설정:", error.config);
+      }
     }
-    setIsLiked(!isLiked);
   };
 
   return (
