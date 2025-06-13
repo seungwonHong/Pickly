@@ -32,55 +32,64 @@ const CategoryGrid = (props: Props) => {
           description="Discover the rhythm that moves you."
           img="/images/music.png"
           color="#C5D17C"
+          url="/homepage/음악?sort=recent"
         />
         <CategoryCard
           category="Movie/Drama"
           description="Discover films and series that move you."
           img="/images/movie:drama.png"
           color="#F75532"
+          url="/homepage/영화%2F드라마?sort=recent"
         />
         <CategoryCard
           category="Lecture/Book"
           description="Find curated content from books and
-lectures to ignite creativity and action."
+          lectures to ignite creativity and action."
           img="/images/lecture:book.png"
           color="#A953FF"
+          url="/homepage/강의%2F책?sort=recent"
         />
         <CategoryCard
           category="Hotel"
           description="Unique stays and hidden gems for your next trip."
           img="/images/hotel.png"
           color="#49AF1A"
+          url="/homepage/호텔?sort=recent"
         />
         <CategoryCard
           category="Furniture/Interior"
           description="Design ideas and cozy styles to upgrade your space."
           img="/images/furniture:interior.png"
           color="#D676C1"
+          url="/homepage/가구%2F인테리어?sort=recent"
         />
         <CategoryCard
           category="Restaurant"
           description="Uncover dining spots that blend taste, ambiance, and unforgettable moments."
           img="/images/restaurant.png"
           color="#FF7E46"
+          url="/homepage/식당?sort=recent"
         />
         <CategoryCard
           category="Electronic Devices"
           description="New gadgets that enhance your daily life."
           img="/images/electronicdevices.png"
           color="#23B581"
+          url="/homepage/전자기기?sort=recent"
         />
         <CategoryCard
           category="Makeups"
           description="Beauty tips and must-haves for your best look."
           img="/images/makeups.png"
           color="#FD529A"
+          url="/homepage/화장품?sort=recent"
         />
         <CategoryCard
           category="Clothes/Accessories"
           description="Style picks that express who you are."
           img="/images/clothes:accessories.png"
           color="#757AFF"
+          url="/homepage/의류%2F악세서리?sort=recent"
         />
       </div>
 

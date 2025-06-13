@@ -12,7 +12,6 @@ export default function Home({
     <div>
       <main>
         <LandingPage />
-        {/* <HomePage params={params} searchParams={searchParams} /> */}
       </main>
     </div>
   );

@@ -9,11 +9,12 @@ interface Props {
   img: string;
   description: string;
   color: string;
+  url: string;
 }
 
-const CategoryCard = ({ category, img, description, color }: Props) => {
+const CategoryCard = ({ category, img, description, color, url }: Props) => {
   return (
-    <Link href="">
+    <Link href={url}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileHover={{ scale: 1.03 }}
