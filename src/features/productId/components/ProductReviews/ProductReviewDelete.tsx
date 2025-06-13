@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import ProductComparePlusModal from "../../../../components/shared/ProductComparePlusModal";
 
+import { checkLoginStatus } from "../../hooks/checkLogin";
 import useGetProductId from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
 
@@ -25,14 +26,32 @@ export default function ProductReviewDelete({
 
   // 리뷰 patch 요청을 위한 useMutation 훅
   const deleteReviewMutation = useMutation({
-    mutationFn: () => reviewService.deleteReviewsLike(reviewId),
+    mutationFn: ({ accessToken }: { accessToken: string }) =>
+      reviewService.deleteReviews(reviewId, accessToken),
     onSuccess: () => {
       alert("리뷰가 삭제되었습니다!");
       closeModal();
+
       if (product) {
-        queryClient.invalidateQueries({
-          queryKey: ["reviews", product.id, "recent"],
+        const queryKey = ["reviews", product.id, "recent"];
+
+        // ✅ 먼저 UI에서 즉시 제거
+        queryClient.setQueryData(queryKey, (oldData: any) => {
+          console.log("Old review data:", oldData);
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              list: page.list.filter((review: any) => review.id !== reviewId),
+            })),
+          };
         });
+
+        setTimeout(() => {
+          queryClient.invalidateQueries({ queryKey });
+        }, 500);
       }
     },
     onError: () => {
@@ -40,9 +59,14 @@ export default function ProductReviewDelete({
     },
   });
   // 리뷰 삭제
-  const handleDeleteConfirm = () => {
-    if (!product) return;
-    deleteReviewMutation.mutate();
+  const handleDeleteConfirm = async () => {
+    const { accessToken } = await checkLoginStatus();
+    if (!accessToken) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    deleteReviewMutation.mutate({ accessToken });
   };
 
   // 모달 닫기

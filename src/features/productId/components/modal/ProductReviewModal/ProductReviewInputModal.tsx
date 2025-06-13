@@ -2,6 +2,8 @@
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 
+import useModalStore from "@/features/home/modals/store/modalStore";
+import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { Textbox } from "@/components/input/Textbox";
 import { imageService } from "@/features/productId/api";
 import ImageDelete from "../../../../../../public/icons/image-delete.png";
@@ -19,12 +21,15 @@ interface ProductReviewInputModalProps {
   initialText?: string;
   initialImages?: string[];
 }
+
 export default function ProductReviewInputModal({
   onTextChange,
   onImageUrlsChange,
   initialText = "",
   initialImages = [],
 }: ProductReviewInputModalProps) {
+  const { description, setDescription } = useModalStore();
+
   const [text, setText] = useState(initialText);
   const [images, setImages] = useState<ImageData[]>(() =>
     initialImages.map((url) => ({
@@ -40,15 +45,17 @@ export default function ProductReviewInputModal({
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
     onTextChange(e.target.value);
+    setDescription(e.target.value);
   };
 
   // 이미지 변경 핸들러
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { accessToken } = await checkLoginStatus();
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
-      const uploadedUrl = await imageService.postImage(file);
+      const uploadedUrl = await imageService.postImage(file, accessToken ?? "");
 
       setImages((prev) => {
         if (editingId) {
@@ -96,7 +103,7 @@ export default function ProductReviewInputModal({
       <Textbox
         size="S"
         placeholder="리뷰를 입력해주세요"
-        value={text}
+        value={description && text}
         onChange={handleTextChange}
         maxLength={500}
         className="h-[150px] w-[540px] text-[16px]"

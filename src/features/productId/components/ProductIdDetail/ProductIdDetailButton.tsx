@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect, use } from "react";
+import { useState } from "react";
 
 import { checkLoginStatus } from "../../hooks/checkLogin";
 import { GetProductIdDetail } from "../../types";
@@ -20,27 +20,6 @@ export default function ProductIdDetailButton({
   product: GetProductIdDetail;
 }) {
   // useGetUser 훅을 사용하여 현재 사용자 정보를 가져옴
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const { accessToken } = await checkLoginStatus();
-        if (!accessToken) {
-          console.warn("accessToken이 없습니다.");
-        }
-        const res = await productService.getProductsId(
-          product.id,
-          accessToken ?? ""
-        );
-        console.log("상품 상세 정보:", res.data);
-      } catch (error) {
-        console.error("상품 상세 정보 에러:", error);
-      }
-    };
-
-    fetchProduct();
-  }, [product.id]);
-
   const { user, compareList, addToCompare } = useGetUser();
 
   const isOwner = user?.id === product.writerId;

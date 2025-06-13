@@ -9,6 +9,7 @@ import ProductReviewInputModal from "../modal/ProductReviewModal/ProductReviewIn
 import BaseButton from "@/components/shared/BaseButton";
 import ReviewBaseModal from "../modal/ProductReviewModal/ReviewBaseModal";
 
+import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { GetProductIdReviewsDetail } from "../../types";
 import useGetProductId from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
@@ -37,12 +38,13 @@ export default function ProductReviewEdit({
 
   // 리뷰 patch 요청을 위한 useMutation 훅
   const patchReviewMutation = useMutation({
-    mutationFn: () =>
+    mutationFn: ({ accessToken }: { accessToken: string }) =>
       reviewService.patchReviews({
         reviewId,
         content: reviewText,
         rating: rating,
         images: images,
+        accessToken,
       }),
     onSuccess: () => {
       alert("리뷰가 수정되었습니다!");
@@ -55,9 +57,14 @@ export default function ProductReviewEdit({
       alert("리뷰 수정에 실패했습니다.");
     },
   });
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const { accessToken } = await checkLoginStatus();
+    if (!accessToken) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
     if (!product) return;
-    patchReviewMutation.mutate();
+    patchReviewMutation.mutate({ accessToken });
   };
 
   const isSubmitEnabled = reviewText.trim().length > 0;
