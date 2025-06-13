@@ -39,7 +39,7 @@ export const handleSubmit = async ({
 }: Props) => {
   // 모달에 내용을 한개라도 안 썼을 경우 경고 모달 띄우기
   if (!name || !categoryId || !description || !file) {
-    toast.success("내용을 모두 작성해주세요.");
+    toast.error("내용을 모두 작성해주세요.");
     return;
   }
   const csrfToken =

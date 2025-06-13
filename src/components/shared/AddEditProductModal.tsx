@@ -230,11 +230,6 @@ const AddEditProductModal = ({
           }}
         />
       )}
-      <Toaster
-        position="top-center"
-        reverseOrder={true}
-        toastOptions={{ style: { zIndex: 9999 } }}
-      />
     </div>
   );
 };
