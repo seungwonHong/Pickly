@@ -17,7 +17,7 @@ const HomePagePreview = (props: Props) => {
         height={766}
         src={"/images/homepageDesktop.png"}
         alt="homepagePreview"
-        className="mt-[90px] lg:flex hidden"
+        className="mt-[90px] lg:flex hidden mx-auto"
       />
       <Image
         width={458}
