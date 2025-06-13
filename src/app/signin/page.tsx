@@ -25,9 +25,7 @@ const SigninPage = () => {
   const router = useRouter();
 
   const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email`;
-
   const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}`;
-
 
   const {
     register,
@@ -38,7 +36,6 @@ const SigninPage = () => {
     mode: "onBlur", // blur 시 유효성 검사
     resolver: zodResolver(loginFormSchema),
   });
-
 
 
   const { mutate: login } = useLoginMutation({
@@ -114,6 +111,7 @@ const SigninPage = () => {
                   <Link
                     href={googleAuthUrl}
                     className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+
                   >
                     <span className="
                       block 
@@ -139,7 +137,7 @@ const SigninPage = () => {
                       block 
                       h-[56px] w-[56px] 
                       bg-[var(--color-deepGray)] 
-                      hover:bg-[#f7e600] 
+                      hover:bg-[#361d1e] 
                       transition-colors 
                       duration-300 
                       mask-[url('/icons/login_sns_kakao.svg')] 
