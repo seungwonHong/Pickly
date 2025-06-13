@@ -39,8 +39,7 @@ const MovingCategories = (props: Props) => {
   }, [controls, categories.length]);
 
   return (
-    // overflow-x-hidden 논의 후 결정
-    <div className="overflow-x-hidden overflow-y-visible h-[60px] w-full lg:mt-[462px] md:mt-[176px] mt-[120px]">
+    <div className="w-full lg:mt-[462px] md:mt-[176px] mt-[120px]">
       <motion.div
         ref={listRef}
         animate={controls}
