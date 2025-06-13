@@ -2,6 +2,7 @@ import ProductIdStats from "@/features/productId/components/ProductIdStats/Produ
 import Header from "@/components/shared/Header";
 import ProductIdDetail from "@/features/productId/components/ProductIdDetail/ProductIdDetail";
 import ProductReviewsFetch from "@/features/productId/components/ProductReviews/ProductReviewsFetch";
+import ProductApiDetail from "@/features/productId/components/ProductApi/ProductApiDetail";
 
 export default async function ProductIdPage({
   params,
@@ -24,6 +25,8 @@ export default async function ProductIdPage({
       </header>
       <div className="lg:w-[940px] mx-auto lg:mb-[120px] lg:my-[160px] md:w-[684px] w-[335px] md:mt-[140px] md:mb-[147px] mt-[130px] mb-[200px] flex flex-col gap-[60px]">
         <ProductIdDetail productId={productId} />
+
+        <ProductApiDetail productId={productId} />
         <ProductIdStats productId={productId} />
         <ProductReviewsFetch searchParams={sp} productId={productId} />
       </div>
