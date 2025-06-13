@@ -94,10 +94,10 @@ export default function ProductSpotifyClient({
       </div>
 
       <div className="flex flex-col items-start justify-center gap-1 w-fit md:w-full">
-        <div className="text-white lg:text-[16px] md:text-[14px] font-bold">
+        <div className="text-white lg:text-[16px] text-[14px] font-bold">
           {albumName}
         </div>
-        <div className="text-[#ABABAB] lg:text-[14px] md:text-[12px] ">
+        <div className="text-[#ABABAB] lg:text-[14px] text-[12px] ">
           {artistName}
         </div>
       </div>
