@@ -8,7 +8,7 @@ export default function ProductYouTubeSection({ query }: { query: string }) {
   if (!videos || videos.length === 0)
     return (
       <div className="animate-pulse">
-        <div className="w-[620px] h-[350px] bg-gray-300 rounded-xl mb-4" />
+        <div className="lg:w-[620px] md:w-[460px] lg:h-[350px] md:h-[260px] w-[330px] h-[190px]  bg-gray-300 rounded-xl " />
       </div>
     );
   return (
@@ -16,11 +16,9 @@ export default function ProductYouTubeSection({ query }: { query: string }) {
       {videos.map((video) => (
         <div key={video.id.videoId}>
           <iframe
-            width="620"
-            height="350"
             src={`https://www.youtube.com/embed/${video.id.videoId}`}
             title={video.snippet.title}
-            className="rounded-xl"
+            className="rounded-xl lg:w-[620px] md:w-[460px] lg:h-[350px] md:h-[260px] w-[330px] h-[190px] "
             allowFullScreen
           />
         </div>

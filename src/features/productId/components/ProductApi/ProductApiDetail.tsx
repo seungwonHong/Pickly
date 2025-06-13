@@ -47,18 +47,22 @@ export default async function ProductApiDetail({
       : combinedText;
 
   return (
-    <div className="flex gap-[20px] flex-col ">
-      <div className="text-white lg:text-[20px] md:text-[16px] font-normal">
-        음악 들으러 가기
-      </div>
-      <div className="flex items-center gap-[20px]">
-        <ProductApiClient searchQuery={searchQuery} />
-        <ProductSpotifyClient
-          artistName={artistName}
-          albumName={albumName}
-          product={product}
-        />
-      </div>
-    </div>
+    <>
+      {product.category?.id === 1 && (
+        <div className="flex gap-[20px] flex-col ">
+          <div className="text-white lg:text-[20px] md:text-[16px] font-normal">
+            음악 들으러 가기
+          </div>
+          <div className="flex items-center lg:gap-[20px] gap-[15px] flex-col md:flex-row">
+            <ProductApiClient searchQuery={searchQuery} />
+            <ProductSpotifyClient
+              artistName={artistName}
+              albumName={albumName}
+              product={product}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
