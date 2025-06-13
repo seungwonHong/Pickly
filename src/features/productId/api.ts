@@ -1,4 +1,3 @@
-import axiosInstance from "./axiosInstance";
 import axios from "axios";
 
 const BaseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -40,11 +39,15 @@ class ProductService {
   }
 
   postProductsFavorite(productId: number, accessToken: string) {
-    return axios.post(`${BaseURL}/products/${productId}/favorite`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    return axios.post(
+      `${BaseURL}/products/${productId}/favorite`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
   }
 
   deleteProductsFavorite(productId: number, accessToken: string) {
@@ -60,6 +63,9 @@ class UserService {
   getUser() {
     return axios.get(`${BaseURL}/users/me`);
   }
+  getUserIdFavoriteProduct(userId: number) {
+    return axios.get(`${BaseURL}/users/${userId}/favorite-products`);
+  }
 }
 
 class ReviewService {
@@ -74,7 +80,7 @@ class ReviewService {
     rating: number;
     images: string[];
   }) {
-    return axiosInstance.post(`/reviews`, {
+    return axios.post(`${BaseURL}/reviews`, {
       productId,
       content,
       rating,
@@ -83,29 +89,29 @@ class ReviewService {
   }
 
   postReviewsLike(reviewId: number) {
-    return axiosInstance.post(`/reviews/${reviewId}/like`, {});
+    return axios.post(`${BaseURL}/reviews/${reviewId}/like`, {});
   }
 
   deleteReviewsLike(reviewId: number) {
-    return axiosInstance.delete(`/reviews/${reviewId}/like`);
+    return axios.delete(`${BaseURL}/reviews/${reviewId}/like`);
   }
 }
 
 class ImageService {
-  async postImage(file: File): Promise<string> {
+  async postImage(file: File, accessToken: string): Promise<string> {
     const formData = new FormData();
     formData.append("image", file);
 
-    const response = await axiosInstance.post<{ url: string }>(
-      `/images/upload`,
-      formData
-      // {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //     Accept: "application/json",
-      //     Authorization: `Bearer ${TOKEN}`,
-      //   },
-      // }
+    const response = await axios.post<{ url: string }>(
+      `${BaseURL}/images/upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
 
     return response.data.url;

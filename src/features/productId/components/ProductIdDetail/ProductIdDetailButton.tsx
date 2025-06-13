@@ -1,8 +1,8 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { getCookie } from "cookies-next";
 
+import { checkLoginStatus } from "../../hooks/checkLogin";
 import { GetProductIdDetail } from "../../types";
 import BaseButton from "@/components/shared/BaseButton";
 import TypeButton from "@/components/shared/TypeButton";
@@ -57,20 +57,6 @@ export default function ProductIdDetailButton({
     router.push("/compare");
   };
 
-  // 쿠키 토큰 확인
-  const checkLogin = async () => {
-    const csrfToken = (await getCookie("csrf-token")) ?? "";
-    const res = await fetch("/api/cookie", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "x-csrf-token": csrfToken,
-      },
-    });
-    const data = await res.json();
-    return data.isLoggedIn;
-  };
-
   // 비교하기 모달
   const handleCompareClick = () => {
     const isAlreadyInList = sameCategoryCompareList.some(
@@ -101,7 +87,8 @@ export default function ProductIdDetailButton({
 
   // 리뷰 작성하기 모달 핸들러 쿠키
   const handleReviewClick = async () => {
-    const isLoggedIn = await checkLogin();
+    // 쿠키 확인
+    const { isLoggedIn } = await checkLoginStatus();
     if (!isLoggedIn) {
       setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
       setComparePlusButtonMessage("로그인하러가기");

@@ -1,11 +1,13 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { getCookie } from "cookies-next";
 
-import { productService } from "../../api";
+import { useUserStore } from "../../libs/useUserStore";
+import useGetProductId from "../../hooks/useGetProductId";
+import { checkLoginStatus } from "../../hooks/checkLogin";
+import { productService, userService } from "../../api";
 import { useProductStatsStore } from "../../libs/useProductStatsStore";
 import ProductComparePlusModal from "@/components/shared/ProductComparePlusModal";
 
@@ -22,36 +24,55 @@ export default function ProductIdDetailHeart({
   const { favoriteCount, setFavoriteCount } = useProductStatsStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
+  // const { product } = useGetProductId(productId);
+  // console.log("productIdDetailHeart product", product);
+  // const userId = useUserStore((state) => state.userData?.id);
+  // console.log("userId", userId);
+
+  // useEffect(() => {
+  //   const fetchFavorite = async () => {
+  //     if (!userId) {
+  //       console.warn("userId 없음, 요청 생략");
+  //       return;
+  //     }
+
+  //     try {
+  //       const res = await userService.getUserIdFavoriteProduct(userId);
+  //       console.log("찜 정보", res.data);
+  //       setIsLiked(res.data.isFavorite);
+  //       setFavoriteCount(res.data.favoriteCount);
+  //     } catch (error) {
+  //       console.error("찜 정보 가져오기 실패:", error);
+  //     }
+  //   };
+
+  //   fetchFavorite();
+  // }, [userId]);
 
   const handleLike = async () => {
-    const csrfToken = (await getCookie("csrf-token")) ?? "";
-
-    const res = await fetch("/api/cookie", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "x-csrf-token": csrfToken,
-      },
-    });
-    if (!res.ok) {
-      setShowLoginModal(true); // 로그인되어 있지 않으면 모달 표시
+    const { isLoggedIn, accessToken } = await checkLoginStatus();
+    // console.log("isLoggedIn", isLoggedIn);
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
       return;
     }
 
     try {
       if (!isLiked) {
-        await productService.postProductsFavorite(productId);
+        await productService.postProductsFavorite(productId, accessToken ?? "");
         setFavoriteCount(favoriteCount + 1);
       } else {
-        await productService.deleteProductsFavorite(productId);
+        await productService.deleteProductsFavorite(
+          productId,
+          accessToken ?? ""
+        );
         setFavoriteCount(favoriteCount - 1);
       }
       setIsLiked(!isLiked);
     } catch (error: any) {
-      console.error("Like/Unlike API 에러:", error);
-      // Axios 에러인 경우, 더 자세한 정보를 확인할 수 있습니다.
+      console.error("Axios 에러 응답:", error.response.data);
       if (error.isAxiosError) {
-        console.error("Axios 에러 응답:", error.response);
+        console.error("Axios 에러 응답:", error.response.data);
         console.error("Axios 에러 요청 설정:", error.config);
       }
     }
