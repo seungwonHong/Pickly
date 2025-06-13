@@ -26,7 +26,7 @@ const CategoryGrid = (props: Props) => {
         </span>
       </motion.div>
 
-      <div className="grid grid-cols-3 lg:gap-[24px] gap-[16px] lg:mt-[102px] md:mt-[51px] mt-[27px]">
+      <div className="grid grid-cols-3 lg:gap-[24px] gap-[16px] lg:mt-[102px] md:mt-[51px] mt-[27px] mx-auto">
         <CategoryCard
           category="Music"
           description="Discover the rhythm that moves you."
