@@ -20,6 +20,7 @@ export default async function ProductReviewsFetch({
   const initialData = await productService
     .getProductsIdReviews(productId, sort)
     .then((res) => res.data);
+  console.log("initialData", initialData);
 
   return (
     <div>

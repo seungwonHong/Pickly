@@ -9,10 +9,12 @@ import { GetProductIdReviewsDetail } from "../../types";
 interface ProductReviewEditDeleteProps {
   reviewId: number;
   initialReviewData: GetProductIdReviewsDetail;
+  sort: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
 }
 export default function ProductReviewEditDelete({
   reviewId,
   initialReviewData,
+  sort,
 }: ProductReviewEditDeleteProps) {
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -36,6 +38,7 @@ export default function ProductReviewEditDelete({
           open={editOpen}
           setOpen={setEditOpen}
           reviewId={reviewId}
+          sort={sort}
           initialReviewData={initialReviewData}
         />
       )}
@@ -44,7 +47,7 @@ export default function ProductReviewEditDelete({
           open={deleteOpen}
           setOpen={setDeleteOpen}
           reviewId={reviewId}
-          initialReviewData={initialReviewData}
+          sort={sort}
         />
       )}
     </div>

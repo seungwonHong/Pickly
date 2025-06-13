@@ -12,12 +12,14 @@ interface ProductReviewModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   reviewId: number;
+  sort: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
 }
 
 export default function ProductReviewDelete({
   open,
   setOpen,
   reviewId,
+  sort,
 }: ProductReviewModalProps) {
   const queryClient = useQueryClient();
 
@@ -31,27 +33,13 @@ export default function ProductReviewDelete({
     onSuccess: () => {
       alert("리뷰가 삭제되었습니다!");
       closeModal();
-
       if (product) {
-        const queryKey = ["reviews", product.id, "recent"];
-
-        // ✅ 먼저 UI에서 즉시 제거
-        queryClient.setQueryData(queryKey, (oldData: any) => {
-          console.log("Old review data:", oldData);
-          if (!oldData) return oldData;
-
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page: any) => ({
-              ...page,
-              list: page.list.filter((review: any) => review.id !== reviewId),
-            })),
-          };
+        queryClient.invalidateQueries({
+          queryKey: ["reviews", product.id, sort],
         });
-
-        setTimeout(() => {
-          queryClient.invalidateQueries({ queryKey });
-        }, 500);
+        queryClient.refetchQueries({
+          queryKey: ["reviews", product.id, sort],
+        });
       }
     },
     onError: () => {
