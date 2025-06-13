@@ -4,10 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import { useUserStore } from "../../libs/useUserStore";
-import useGetProductId from "../../hooks/useGetProductId";
 import { checkLoginStatus } from "../../hooks/checkLogin";
-import { productService, userService } from "../../api";
+import { productService } from "../../api";
 import { useProductStatsStore } from "../../libs/useProductStatsStore";
 import ProductComparePlusModal from "@/components/shared/ProductComparePlusModal";
 
@@ -24,34 +22,31 @@ export default function ProductIdDetailHeart({
   const { favoriteCount, setFavoriteCount } = useProductStatsStore();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
-  // const { product } = useGetProductId(productId);
-  // console.log("productIdDetailHeart product", product);
-  // const userId = useUserStore((state) => state.userData?.id);
-  // console.log("userId", userId);
 
-  // useEffect(() => {
-  //   const fetchFavorite = async () => {
-  //     if (!userId) {
-  //       console.warn("userId 없음, 요청 생략");
-  //       return;
-  //     }
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const { accessToken } = await checkLoginStatus();
+        if (!accessToken) {
+          console.warn("accessToken이 없습니다.");
+        }
+        const res = await productService.getProductsId(
+          productId,
+          accessToken ?? ""
+        );
+        setIsLiked(res.data.isFavorite);
+        setFavoriteCount(res.data.favoriteCount);
+      } catch (error) {
+        console.error("상품 상세 정보 에러:", error);
+      }
+    };
 
-  //     try {
-  //       const res = await userService.getUserIdFavoriteProduct(userId);
-  //       console.log("찜 정보", res.data);
-  //       setIsLiked(res.data.isFavorite);
-  //       setFavoriteCount(res.data.favoriteCount);
-  //     } catch (error) {
-  //       console.error("찜 정보 가져오기 실패:", error);
-  //     }
-  //   };
-
-  //   fetchFavorite();
-  // }, [userId]);
+    fetchProduct();
+  }, [productId]);
 
   const handleLike = async () => {
     const { isLoggedIn, accessToken } = await checkLoginStatus();
-    // console.log("isLoggedIn", isLoggedIn);
+    //  console.log("isLoggedIn", isLoggedIn);
     if (!isLoggedIn) {
       setShowLoginModal(true);
       return;

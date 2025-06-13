@@ -22,8 +22,11 @@ class ProductService {
     return axios.get(url);
   }
 
-  getProductsId(productId: number) {
-    return axios.get(`${BaseURL}/products/${productId}`);
+  getProductsId(productId: number, accessToken?: string) {
+    const headers = accessToken
+      ? { Authorization: `Bearer ${accessToken}` }
+      : {};
+    return axios.get(`${BaseURL}/products/${productId}`, { headers });
   }
   getProductsIdReviews(
     productId: number,
