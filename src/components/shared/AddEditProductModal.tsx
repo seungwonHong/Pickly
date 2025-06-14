@@ -65,15 +65,7 @@ const AddEditProductModal = ({
       setFile(selected);
     }
   };
-  // useEffect(() => {
-  //   if (productinfo) {
-  //     setName(productinfo.name);
-  //     setDescription(productinfo.description);
-  //     setCategoryId(productinfo.category.id);
-  //     setClickedValue(productinfo.category.name);
-  //     setImage(productinfo.image);
-  //   }
-  // }, [productinfo, setName, setDescription, setCategoryId, setClickedValue, setImage]);
+
   useEffect(() => {
     if (productinfo) {
       setClickedValue(productinfo.category.name);
@@ -217,6 +209,7 @@ const AddEditProductModal = ({
                   productId: Number(productId),
                   file: null,
                   name,
+                  handleClose,
                   description,
                   categoryId,
                   setName,

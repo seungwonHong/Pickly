@@ -14,7 +14,7 @@ export default function CopyLinkImage() {
       !window.Kakao.isInitialized()
     ) {
       const kakaoKey = process.env.NEXT_PUBLIC_KAKAO_JS_KEY;
-      console.log("카카오 키:", kakaoKey);
+
       if (kakaoKey) {
         window.Kakao.init(kakaoKey);
       } else {

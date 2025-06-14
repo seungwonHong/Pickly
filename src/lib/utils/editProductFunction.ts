@@ -3,6 +3,7 @@ import postImage from "@/features/home/services/postImage";
 import { productService } from "@/features/productId/api";
 
 interface EditProps {
+  handleClose: () => void;
   productId: number;
   file?: File | null;
   name: string | null;
@@ -19,6 +20,7 @@ interface EditProps {
 }
 
 const editProductFunction = async ({
+  handleClose,
   productId,
   file,
   name,
@@ -94,13 +96,7 @@ const editProductFunction = async ({
     image: imageUrl || "",
     accessToken: accessToken.value,
   });
-  console.log("PATCH 요청 데이터", {
-    productId,
-    name,
-    description,
-    categoryId,
-    image: imageUrl,
-  });
+
   if (response?.status === 200 || response?.status === 201) {
     toast.success("상품이 수정되었습니다.");
     setName(null);
@@ -109,6 +105,8 @@ const editProductFunction = async ({
     setDescription(null);
     setImage(null);
     setFile?.(null);
+
+    handleClose();
   } else {
     toast.error("상품 수정에 실패하였습니다.");
   }
