@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { M_PLUS_Rounded_1c } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./providers/QueryProvider";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
+import Script from "next/script";
 
 const mplus = M_PLUS_Rounded_1c({
   variable: "--font-mplus",
@@ -22,17 +23,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        {/* 카카오 SDK */}
+        <Script
+          src="https://developers.kakao.com/sdk/js/kakao.js"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body className={`${mplus.variable} antialiased`}>
         <QueryProvider>{children}</QueryProvider>
-        <Toaster position="top-center"
+        <Toaster
+          position="top-center"
           toastOptions={{
             style: {
-              background: 'rgba(37, 37, 48, 0.8)',
-              color: '#F1F1F5',
-              borderRadius: '8px',
-              border: '1px solid #353542',
-            }
-          }} />
+              background: "rgba(37, 37, 48, 0.8)",
+              color: "#F1F1F5",
+              borderRadius: "8px",
+              border: "1px solid #353542",
+            },
+          }}
+        />
       </body>
     </html>
   );
