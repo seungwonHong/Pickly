@@ -28,6 +28,37 @@ class ProductService {
       : {};
     return axios.get(`${BaseURL}/products/${productId}`, { headers });
   }
+
+  patchProductsId({
+    productId,
+    categoryId,
+    image,
+    description,
+    name,
+    accessToken,
+  }: {
+    productId: number;
+    name: string;
+    description: string;
+    categoryId: number;
+    image: string;
+    accessToken: string;
+  }) {
+    return axios.patch(
+      `${BaseURL}/products/${productId}`,
+      {
+        name,
+        description,
+        categoryId,
+        image,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+  }
   getProductsIdReviews(
     productId: number,
     order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined,
