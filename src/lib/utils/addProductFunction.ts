@@ -49,7 +49,7 @@ export const handleSubmit = async ({
     toast.error(
       "상품명, 설명(10~500자), 카테고리, 이미지를 모두 입력해주세요."
     );
-    // 위에 조건에 맞춰야 상품 post가 가능해지는군요... 일단 스웨거 보고 이런식으로 에러 메세지 임시로 했습니다. 고치셔도 돼요.
+    // 위 조건에 맞춰야 상품 post가 가능해지는군요... 일단 스웨거 보고 이런식으로 에러 메세지 임시로 했습니다. 고치셔도 돼요.
     return;
   }
   const csrfToken =
@@ -101,9 +101,6 @@ export const handleSubmit = async ({
         } else {
           setAddProduct(true);
           setMessage("상품 등록에 실패하였습니다.");
-          if (response?.data?.details) {
-            console.log("서버 details:", response.data.details);
-          }
         }
       }
     }
