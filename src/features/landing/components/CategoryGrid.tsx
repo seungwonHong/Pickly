@@ -37,7 +37,7 @@ const CategoryGrid = (props: Props) => {
         <CategoryCard
           category="Movie/Drama"
           description="Discover films and series that move you."
-          img="/images/movie:drama.png"
+          img="/images/moviedrama.png"
           color="#F75532"
           url="/homepage/영화%2F드라마?sort=recent"
         />
@@ -45,7 +45,7 @@ const CategoryGrid = (props: Props) => {
           category="Lecture/Book"
           description="Find curated content from books and
           lectures to ignite creativity and action."
-          img="/images/lecture:book.png"
+          img="/images/lecturebook.png"
           color="#A953FF"
           url="/homepage/강의%2F책?sort=recent"
         />
@@ -59,7 +59,7 @@ const CategoryGrid = (props: Props) => {
         <CategoryCard
           category="Furniture/Interior"
           description="Design ideas and cozy styles to upgrade your space."
-          img="/images/furniture:interior.png"
+          img="/images/furnitureinterior.png"
           color="#D676C1"
           url="/homepage/가구%2F인테리어?sort=recent"
         />
@@ -87,7 +87,7 @@ const CategoryGrid = (props: Props) => {
         <CategoryCard
           category="Clothes/Accessories"
           description="Style picks that express who you are."
-          img="/images/clothes:accessories.png"
+          img="/images/clothesaccessories.png"
           color="#757AFF"
           url="/homepage/의류%2F악세서리?sort=recent"
         />

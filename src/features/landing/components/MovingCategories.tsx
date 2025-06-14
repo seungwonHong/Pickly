@@ -39,7 +39,7 @@ const MovingCategories = (props: Props) => {
   }, [controls, categories.length]);
 
   return (
-    <div className="w-full lg:mt-[462px] md:mt-[176px] mt-[120px]">
+    <div className="lg:mt-[462px] md:mt-[176px] mt-[120px]">
       <motion.div
         ref={listRef}
         animate={controls}
