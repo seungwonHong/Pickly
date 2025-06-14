@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-
+import { createPortal } from "react-dom";
 import BaseButton from "@/components/shared/BaseButton";
 import CloseX from "../../../public/icons/close-x.png";
 
@@ -20,7 +20,7 @@ export default function ProductComparePlusModal({
   onButtonClick,
 }: ProductCompareChangeModalProps) {
   if (!open) return null;
-  return (
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
@@ -65,6 +65,7 @@ export default function ProductComparePlusModal({
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

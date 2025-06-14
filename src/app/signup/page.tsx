@@ -1,44 +1,41 @@
-'use client';
-
+"use client";
 import { InputField } from "@/components/input/InputField";
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler } from "react-hook-form";
 import Link from "next/link";
-
 import BaseButton from "@/components/shared/BaseButton";
-
 import { useSignUp } from "./useSignUp";
 import { JoinForm, joinFormSchema } from "./validationSchema";
 import { AuthResponse } from "../signin/validationSchema";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import toast from "react-hot-toast";
-
 const login_logo = "/signup_logo.svg";
 
 const SignUpPage = () => {
-    const router = useRouter();
-  
+  const router = useRouter();
 
   const { mutate: signUp } = useSignUp({
     onSuccess: (data: AuthResponse) => {
       toast.success(`${data.user.nickname}님 회원가입 되었습니다!`);
       setTimeout(() => {
-         router.replace("/signin"); 
-      }, 1000);    
-      
+        router.replace("/signin");
+      }, 1000);
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "회원가입에 실패했습니다. 다시 시도해 주세요.");
-    }
+      toast.error(
+        error?.response?.data?.message ||
+          "회원가입에 실패했습니다. 다시 시도해 주세요."
+      );
+    },
   });
-   
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<JoinForm>({
-    mode: 'onBlur', // blur 시 유효성 검사
+    mode: "onBlur", // blur 시 유효성 검사
     resolver: zodResolver(joinFormSchema),
   });
 
@@ -48,7 +45,9 @@ const SignUpPage = () => {
 
   return (
     <>
-      <div className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center`}>
+      <div
+        className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center`}
+      >
         <div className="max-w-[440px] md:max-w-[640px] w-full pt-[93px] pb-[93px] mx-auto min-h-[100dvh] flex justify-center items-center">
           <div className="w-full px-[20px] lg:px-[0px]">
             <div className="flex justify-center items-center mb-[25px]">
@@ -62,57 +61,49 @@ const SignUpPage = () => {
               </Link>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div 
-                className="mb-[39px]"
-              >
-              <InputField
-                id="login_email"
-                label="이메일"
-                type="email"
-                placeholder="이메일을 입력해주세요"
-                error={errors.email?.message}
-                {...register('email')}
-                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px] "
-              />
+              <div className="mb-[39px]">
+                <InputField
+                  id="login_email"
+                  label="이메일"
+                  type="email"
+                  placeholder="이메일을 입력해주세요"
+                  error={errors.email?.message}
+                  {...register("email")}
+                  className="h-[55px] md:h-[70px] text-[14px] md:text-[16px] "
+                />
               </div>
-              <div 
-                className="mb-[39px]"
-              >
-              <InputField
-                id="login_name"
-                label="닉네임"
-                type="text"
-                placeholder="닉네임을 입력해주세요"
-                error={errors.nickname?.message}
-                {...register('nickname')}
-                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
-              />
+              <div className="mb-[39px]">
+                <InputField
+                  id="login_name"
+                  label="닉네임"
+                  type="text"
+                  placeholder="닉네임을 입력해주세요"
+                  error={errors.nickname?.message}
+                  {...register("nickname")}
+                  className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
+                />
               </div>
-              <div 
-                className="mb-[39px]"
-              >
-              <InputField
-                id="login_pwd"
-                label="비밀번호"
-                placeholder="비밀번호를 입력해주세요"
-                withEyeToggle
-                error={errors.password?.message}
-                {...register('password')}
-                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
-              />
+              <div className="mb-[39px]">
+                <InputField
+                  id="login_pwd"
+                  label="비밀번호"
+                  placeholder="비밀번호를 입력해주세요"
+                  withEyeToggle
+                  error={errors.password?.message}
+                  {...register("password")}
+                  className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
+                />
               </div>
-              <div 
-                className="mb-[59px]"
-              >
-              <InputField
-                id="login_pwd_check"
-                label="비밀번호 확인"
-                placeholder="비밀번호를 다시 입력해주세요"
-                withEyeToggle
-                error={errors.passwordConfirmation?.message}
-                {...register('passwordConfirmation')}
-                className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
-              />
+              <div className="mb-[59px]">
+                <InputField
+                  id="login_pwd_check"
+                  label="비밀번호 확인"
+                  placeholder="비밀번호를 다시 입력해주세요"
+                  withEyeToggle
+                  error={errors.passwordConfirmation?.message}
+                  {...register("passwordConfirmation")}
+                  className="h-[55px] md:h-[70px] text-[14px] md:text-[16px]"
+                />
               </div>
               {/* RHF 사용시 별다른 옵션없이도 엔터시 submit */}
               <BaseButton
@@ -131,7 +122,8 @@ const SignUpPage = () => {
                     href=""
                     className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[var(--color-white)] transition-transform duration-200 ease-in-out shadow-lg"
                   >
-                    <span className="
+                    <span
+                      className="
                       block 
                       bg-[var(--color-deepGray)] 
                       h-[56px] w-[56px] 
@@ -141,7 +133,8 @@ const SignUpPage = () => {
                       mask-no-repeat 
                       mask-center 
                       hover:bg-[url('/sns_gg_bg.png')] bg-cover bg-center bg-no-repeat 
-                      text-[0px]">
+                      text-[0px]"
+                    >
                       구글 로그인하기
                     </span>
                   </Link>
@@ -151,7 +144,8 @@ const SignUpPage = () => {
                     href=""
                     className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[#f3e21f] transition-transform duration-200 ease-in-out shadow-lg"
                   >
-                    <span className="
+                    <span
+                      className="
                       block 
                       h-[56px] w-[56px] 
                       bg-[var(--color-deepGray)] 
@@ -162,7 +156,8 @@ const SignUpPage = () => {
                       mask-no-repeat 
                       mask-center 
                       text-[0px] 
-                      hover:animate-spin-slow">
+                      hover:animate-spin-slow"
+                    >
                       카카오톡 로그인하기
                     </span>
                   </Link>

@@ -17,6 +17,13 @@ export default async function postProduct({
   name,
   accessToken,
 }: Props) {
+  console.log("상품 등록 요청 payload", {
+    categoryId,
+    image,
+    description,
+    name,
+  });
+  
   try {
     const res = await axios.post(
       `${Base_URL}/products`,
@@ -35,5 +42,8 @@ export default async function postProduct({
     return res;
   } catch (error) {
     console.error("상품 등록 실패", error);
+    if (axios.isAxiosError(error)) {
+      console.error("상품 등록 실패 - 응답 내용:", error.response?.data);
+    }
   }
 }

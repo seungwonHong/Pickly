@@ -22,7 +22,7 @@ export default async function HomePage({
 
   return (
     <div className="relative">
-      <header className="fixed top-0 left-0 right-0 z-999">
+      <header className="fixed top-0 left-0 right-0 z-40">
         <Header />
       </header>
 
@@ -104,7 +104,11 @@ export default async function HomePage({
 
       {sp.modal === "true" && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center">
-          <AddEditProductModal buttonPlaceholder="추가하기" />
+          <AddEditProductModal
+            buttonPlaceholder="추가하기"
+            modalType="addProduct"
+            purpose="상품 추가"
+          />
         </div>
       )}
     </div>
