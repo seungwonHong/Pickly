@@ -2,9 +2,9 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import ProductComparePlusModal from "../../../../components/shared/ProductComparePlusModal";
+import ProductComparePlusModal from "@/components/shared/ProductComparePlusModal";
 
-import { checkLoginStatus } from "../../hooks/checkLogin";
+import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import useGetProductId from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
 
@@ -12,14 +12,12 @@ interface ProductReviewModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   reviewId: number;
-  sort: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
 }
 
 export default function ProductReviewDelete({
   open,
   setOpen,
   reviewId,
-  sort,
 }: ProductReviewModalProps) {
   const queryClient = useQueryClient();
 
@@ -35,10 +33,7 @@ export default function ProductReviewDelete({
       closeModal();
       if (product) {
         queryClient.invalidateQueries({
-          queryKey: ["reviews", product.id, sort],
-        });
-        queryClient.refetchQueries({
-          queryKey: ["reviews", product.id, sort],
+          queryKey: ["reviews", product.id, "recent"],
         });
       }
     },
@@ -53,7 +48,7 @@ export default function ProductReviewDelete({
       alert("로그인이 필요합니다.");
       return;
     }
-
+    if (!product) return;
     deleteReviewMutation.mutate({ accessToken });
   };
 
