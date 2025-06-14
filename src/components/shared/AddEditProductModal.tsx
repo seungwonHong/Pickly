@@ -11,7 +11,6 @@ import { ProductInfo } from "@/features/home/types/productType";
 import { handleSubmit } from "@/lib/utils/addProductFunction";
 import editProductFunction from "@/lib/utils/editProductFunction";
 import ProductComparePlusModal from "./ProductComparePlusModal";
-import { Toaster } from "react-hot-toast";
 
 interface Props {
   buttonPlaceholder: string;
