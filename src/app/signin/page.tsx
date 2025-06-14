@@ -54,7 +54,7 @@ const SigninPage = () => {
         <div className="max-w-[440px] md:max-w-[640px] w-full mx-auto pt-[93px] pb-[93px] min-h-[100dvh] flex justify-center items-center">
           <div className="w-full px-[20px] lg:px-[0px]">
             <div className="flex justify-center items-center mb-[25px]">
-              <Link href="/" >
+              <Link href="/landingpage" >
                 <Image
                   src={login_logo}
                   width={193}
