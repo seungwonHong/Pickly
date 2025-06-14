@@ -12,7 +12,7 @@ import SometimesWin from "@/features/landing/components/SometimesWin";
 export default function LandingPage() {
   return (
     <>
-      <main className="relative flex flex-col lg:px-[160px] px-[24px]">
+      <main className="relative overflow-x-hidden flex flex-col lg:px-[160px] px-[24px]">
         <img
           src="/signup_bg.jpg"
           alt="bgImage"

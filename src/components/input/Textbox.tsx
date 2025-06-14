@@ -41,7 +41,7 @@ export function Textbox({
             `}
           onChange={(e) => {
             const value = e.target.value;
-            const allowedPattern = /^[a-zA-Z0-9가-힣\s]*$/;
+            const allowedPattern = /^[a-zA-Z0-9가-힣\s?!]*$/;
             if (allowedPattern.test(value)) {
               if (value.length <= 500) {
                 setDescription(value);
