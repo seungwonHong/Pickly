@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 import useModalStore from "@/features/home/modals/store/modalStore";
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
@@ -71,7 +72,7 @@ export default function ProductReviewInputModal({
       setEditingId(null);
     } catch (err) {
       console.error("이미지 업로드 실패:", err);
-      alert("이미지 업로드에 실패했습니다.");
+      toast.error("이미지 업로드에 실패했습니다.");
     }
   };
 

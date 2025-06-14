@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import ProductComparePlusModal from "@/components/shared/ProductComparePlusModal";
 
@@ -29,7 +30,7 @@ export default function ProductReviewDelete({
     mutationFn: ({ accessToken }: { accessToken: string }) =>
       reviewService.deleteReviews(reviewId, accessToken),
     onSuccess: () => {
-      alert("리뷰가 삭제되었습니다!");
+      toast.success("리뷰가 삭제되었습니다!");
       closeModal();
       if (product) {
         queryClient.invalidateQueries({
@@ -38,14 +39,14 @@ export default function ProductReviewDelete({
       }
     },
     onError: () => {
-      alert("리뷰 삭제에 실패했습니다.");
+      toast.error("리뷰 삭제에 실패했습니다.");
     },
   });
   // 리뷰 삭제
   const handleDeleteConfirm = async () => {
     const { accessToken } = await checkLoginStatus();
     if (!accessToken) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
     if (!product) return;

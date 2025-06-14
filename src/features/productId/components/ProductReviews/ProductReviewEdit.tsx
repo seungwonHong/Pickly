@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import ProductReviewStarModal from "../modal/ProductReviewModal/ProductReviewStarModal";
 import ProductIdGetModal from "../modal/ProductReviewModal/ProductIdGetModal";
@@ -47,20 +48,20 @@ export default function ProductReviewEdit({
         accessToken,
       }),
     onSuccess: () => {
-      alert("리뷰가 수정되었습니다!");
+      toast.success("리뷰가 수정되었습니다!");
       setOpen(false);
       queryClient.invalidateQueries({
         queryKey: ["reviews", product.id, "recent"],
       });
     },
     onError: () => {
-      alert("리뷰 수정에 실패했습니다.");
+      toast.error("리뷰 수정에 실패했습니다.");
     },
   });
   const handleSubmit = async () => {
     const { accessToken } = await checkLoginStatus();
     if (!accessToken) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
     if (!product) return;

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import { checkLoginStatus } from "../../../hooks/checkLogin";
 import ProductReviewStarModal from "./ProductReviewStarModal";
@@ -40,21 +41,21 @@ export default function ProductReviewModal({
         accessToken: accessToken,
       }),
     onSuccess: () => {
-      alert("리뷰가 등록되었습니다!");
+      toast.success("리뷰가 등록되었습니다!");
       setOpen(false);
       queryClient.invalidateQueries({
         queryKey: ["reviews", product.id, "recent"],
       });
     },
     onError: () => {
-      alert("리뷰 등록에 실패했습니다.");
+      toast.error("별점과 내용을 입력해주세요.");
     },
   });
   // 리뷰 작성 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
     const { accessToken } = await checkLoginStatus();
     if (!accessToken) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
 

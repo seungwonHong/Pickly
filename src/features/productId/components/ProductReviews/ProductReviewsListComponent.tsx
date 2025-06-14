@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
-import { formatDate } from "../../../../lib/utils/datetime";
+import { formatDate, diffDate } from "../../../../lib/utils/datetime";
 import { GetProductIdReviewsDetail } from "../../types";
 import useGetUser from "../../hooks/useGetUser";
 import ProductReviewEditDelete from "./ProductReviewEditDelete";
@@ -67,7 +67,17 @@ export default function ProductReviewsListComponent({
         <div className="flex justify-between items-end">
           <div className="flex gap-[20px] lg:text-[14px] text-[12px] md:text-[12px]">
             <div className=" text-[#6E6E82]">
-              {formatDate(review.createdAt)}
+              {/*리뷰 작성일이 31 전일 경우 3일전, 4일전 이런식으로 표시*/}
+              {diffDate(review.createdAt) > 31 ? (
+                <>
+                  <span>{formatDate(review.createdAt)}</span>
+                </>
+              ) : (
+                <>
+                  <span>{diffDate(review.createdAt)}</span>
+                  <span>일 전</span>
+                </>
+              )}
             </div>
             {isOwner && (
               <ProductReviewEditDelete
