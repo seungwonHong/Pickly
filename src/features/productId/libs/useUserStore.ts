@@ -80,37 +80,54 @@ export const useUserStore = create<UserState>()(
           set({ groupedCompareList: grouped }),
 
         addToCompare: (product) => {
-          const current = get().compareList;
-          const existingIndex = current.findIndex((p) => p.id === product.id);
+          const currentCompareList = get().compareList;
+          const updatedCompareList = [...currentCompareList];
+          const existingIndex = updatedCompareList.findIndex(
+            (p) => p.id === product.id
+          );
 
-          const newCompareList = [...current];
           if (existingIndex !== -1) {
-            newCompareList[existingIndex] = product;
+            updatedCompareList[existingIndex] = product;
           } else {
-            newCompareList.push(product);
+            updatedCompareList.push(product);
           }
 
-          const lastTwo = newCompareList.slice(-2);
-          const groupedCompareList = groupByCategory(newCompareList);
+          const groupedCompareList = groupByCategory(updatedCompareList);
+          const newBaseCompareProductId =
+            updatedCompareList.length > 0
+              ? updatedCompareList[updatedCompareList.length - 1].id
+              : null;
 
           set({
-            compareList: newCompareList,
-            baseCompareProductId: lastTwo[0]?.id ?? null,
+            compareList: updatedCompareList,
+            baseCompareProductId: newBaseCompareProductId,
             groupedCompareList,
           });
         },
 
         removeFromCompare: (productId) => {
-          const filtered = get().compareList.filter((p) => p.id !== productId);
-          const groupedCompareList = groupByCategory(filtered);
+          const updatedCompareList = get().compareList.filter(
+            (p) => p.id !== productId
+          );
+          const groupedCompareList = groupByCategory(updatedCompareList);
+          const newBaseCompareProductId =
+            updatedCompareList.length > 0
+              ? updatedCompareList[updatedCompareList.length - 1].id
+              : null;
 
           set({
-            compareList: filtered,
+            compareList: updatedCompareList,
             groupedCompareList,
+            baseCompareProductId: newBaseCompareProductId,
           });
         },
 
-        clearCompare: () => set({ compareList: [], groupedCompareList: [] }),
+        clearCompare: () =>
+          set({
+            compareList: [],
+            groupedCompareList: [],
+            baseCompareProductId: null,
+          }),
 
         clearAll: () =>
           set({
