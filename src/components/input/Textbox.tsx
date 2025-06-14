@@ -1,5 +1,6 @@
 "use client";
 import useModalStore from "@/features/home/modals/store/modalStore";
+import toast from "react-hot-toast";
 
 interface TextboxProps {
   placeholder?: string;
@@ -38,7 +39,17 @@ export function Textbox({
             rounded-[8px] bg-[#252530] p-[20px] 
             placeholder-[var(--color-deepGray)] text-[var(--color-white)] 
             `}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            const allowedPattern = /^[a-zA-Z0-9가-힣\s]*$/;
+            if (allowedPattern.test(value)) {
+              if (value.length <= 500) {
+                setDescription(value);
+              } else {
+                toast.error("500자 이내로 입력해주세요.");
+              }
+            }
+          }}
           placeholder={placeholder}
           {...rest}
         />
