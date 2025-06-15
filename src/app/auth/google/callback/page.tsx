@@ -33,16 +33,33 @@ export default function GoogleCallback() {
 
         const { access_token } = tokenRes.data;
 
+        console.log('구글 토큰:', access_token);
+        
         const userInfoRes = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
         });
 
-        console.log('구글 사용자 정보:', userInfoRes.data);
 
+        // 우리 서비스에서 이 유저가 없는 경우 → 회원가입
+        const { email } = userInfoRes.data;
+
+        const userCheckRes = await axios.post(`/auth/signIn/google`, {
+          redirectUri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI,
+          token: access_token, // 또는 id_token
+        });
+
+        if (userCheckRes.data.exists) {
+          // 로그인 처리 후 메인 이동
+          // router.push('/');
+          console.log('구글 사용자 정보:', userInfoRes.data);
+        } else {
+          // 회원가입 페이지로 이동, 필요한 정보 전달
+          router.push(`/signup/oauth?email=${email}&provider=google`);
+        }
         // 로그인 후 메인으로 이동
-        router.push('/');
+        // router.push('/');
       } catch (err) {
         console.error('구글 로그인 실패 😢', err);
       }
