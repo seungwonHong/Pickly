@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import closeButton from "@../../../public/closeButton.png";
 import revertButton from "@../../../public/RevertButton.png";
 import defaultProfileImage from "@../../../public/defaultProfileImage.jpeg";
+import addImage from "@../../../public/addImage.svg";
 import { uploadProfileImage } from "../api/uploadImage";
 
 const DEFAULT_IMAGE_URL = defaultProfileImage.src;
@@ -15,11 +16,13 @@ interface Props {
 }
 
 export default function ImageUpload({ onImageSelect, defaultPreview }: Props) {
-  const [preview, setPreview] = useState<string | null>(
-    defaultPreview || DEFAULT_IMAGE_URL
-  );
+  const [preview, setPreview] = useState<string>("");
   const [isUpdated, setIsUpdated] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setPreview(defaultPreview ?? DEFAULT_IMAGE_URL);
+  }, [defaultPreview]);
 
   const handleImageClick = () => inputRef.current?.click();
 
@@ -32,7 +35,6 @@ export default function ImageUpload({ onImageSelect, defaultPreview }: Props) {
       setPreview(uploadedUrl);
       setIsUpdated(true);
       onImageSelect(uploadedUrl);
-      console.log("이미지 preview src:", uploadedUrl);
     } catch (err) {
       console.error("이미지 업로드 실패", err);
     }
@@ -66,12 +68,18 @@ export default function ImageUpload({ onImageSelect, defaultPreview }: Props) {
           className="object-cover w-full h-full"
         />
       ) : (
-        <div className="lg:w-[34px] lg:h-[34px] w-[24px] h-[24px]">
-          <img src={DEFAULT_IMAGE_URL} alt="디폴트 이미지" className="w-full" />
+        <div className="lg:w-[34px] lg:h-[34px] w-[25px] h-[25px] flex justify-center items-center">
+          <Image
+            src={addImage}
+            alt="디폴트 이미지"
+            width={34}
+            height={34}
+            className="w-full"
+          />
         </div>
       )}
 
-      {isUpdated && (
+      {isImageValid && (
         <>
           {/* 이미지 제거 */}
           <button
@@ -82,7 +90,7 @@ export default function ImageUpload({ onImageSelect, defaultPreview }: Props) {
             }}
             className="absolute top-2 right-2 p-1 bg-black/60 rounded-full"
           >
-            <Image src={closeButton} alt="이미지 제거" width={20} height={20} />
+            <Image src={closeButton} alt="이미지 제거" width={18} height={18} />
           </button>
 
           {/* 디폴트 이미지로 되돌리기 */}

@@ -3,11 +3,12 @@ import { User } from "@/features/Profile/types/user";
 import defaultProfileImage from "../../../../public/defaultProfileImage.jpeg"; //임시 defaultImage//
 import Image from "next/image";
 import FollowCounts from "./FollowCounts";
-import EditProfileModalClient from "./EditProfileModalClient";
 import FollowButton from "./FollowButton";
 import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 import useAuthentication from "@/features/header/hooks/useAuthentication";
+import BaseButton from "@/components/shared/BaseButton";
+import EditProfileModal from "./EditProfileModal";
 
 interface Props {
   user: User;
@@ -18,6 +19,7 @@ export default function ProfileCard({ user, isMe }: Props) {
   const [isFollowing, setIsFollowing] = useState(user.isFollowing);
   const [followersCount, setFollowersCount] = useState(user.followersCount);
   const { isAuthenticated } = useAuthentication();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   console.log("rr", isAuthenticated);
   return (
     <div className="mb-[60px] px-[20px] py-[30px] w-full h-auto rounded-lg bg-[#252530] border border-[#353542] md:px-[30px] lg:w-[340px] lg:mb-0 lg:sticky lg:top-[120px]">
@@ -42,21 +44,30 @@ export default function ProfileCard({ user, isMe }: Props) {
         </div>
       </div>
 
-      <div className="w-full flex flex-col  ">
+      <div className="w-full flex flex-col ">
         <span className="text-center text-[20px] font-semibold text-[white] hover:cursor-pointer lg:text-[24px] mb-7">
           {user.nickname}
         </span>
         {user.description && (
-          <span className="text-[14px] font-normal text-[#6E6E82] lg:text-[16px] mb-7">
+          <div className="text-[14px] font-normal text-[#6E6E82] lg:text-[16px] mb-7 break-words ">
             {user.description}
-          </span>
+          </div>
         )}
       </div>
       <FollowCounts user={{ ...user, followersCount }} />
       <div className="mt-12">
         {isMe ? (
           <div className="w-full flex flex-col gap-[10px] md:gap-[15px] lg:gap-5 ">
-            <EditProfileModalClient />
+            <BaseButton
+              className="  font-semibold md:h-[55px] lg:h-[65px] h-[50px] lg:text-[18px] "
+              onClick={() => setIsModalOpen(true)}
+            >
+              프로필 편집
+            </BaseButton>
+            <EditProfileModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+            />
             {isAuthenticated && <LogoutButton />}
           </div>
         ) : (

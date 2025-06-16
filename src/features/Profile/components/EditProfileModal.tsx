@@ -23,10 +23,8 @@ export default function EditProfileModal({ isOpen, onClose }: Props) {
   const [nickname, setNickname] = useState("");
   const [description, setDescription] = useState("");
   const [preview, setPreview] = useState<string>(DEFAULT_IMAGE_URL);
-  const [originalImage, setOriginalImage] = useState<string>(DEFAULT_IMAGE_URL);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isPending, setIsPending] = useState(false);
-  const [hasTyped, setHasTyped] = useState(false);
   const [nicknameError, setNicknameError] = useState<string | null>(null);
 
   const router = useRouter();
@@ -40,14 +38,11 @@ export default function EditProfileModal({ isOpen, onClose }: Props) {
         setNickname(user.nickname ?? "");
         setDescription(user.description ?? "");
 
-        const userImage =
-          user.image === "https://none" || !user.image
-            ? DEFAULT_IMAGE_URL
-            : user.image;
-
-        setPreview(userImage);
-        setOriginalImage(userImage);
-        setSelectedFile(null);
+        if (user.image === "https://none" || !user.image) {
+          setPreview(DEFAULT_IMAGE_URL);
+        } else {
+          setPreview(user.image);
+        }
       } catch (err) {
         console.error("프로필 조회 실패", err);
       }
@@ -115,13 +110,19 @@ export default function EditProfileModal({ isOpen, onClose }: Props) {
         </div>
 
         <ImageUpload
-          defaultPreview={preview ?? "https://none"}
-          onImageSelect={(value) => {
-            setPreview(value); // 여기서 string URL이 넘어오므로 바로 상태만 세팅
+          defaultPreview={preview ?? DEFAULT_IMAGE_URL}
+          onImageSelect={(url) => {
+            if (url) {
+              setPreview(url);
+            } else {
+              setPreview(DEFAULT_IMAGE_URL);
+            }
           }}
         />
+
         <div className="w-[295px] h-[55px] md:w-[510px] md:h-[60px] lg:w-[540px] rounded-[8px] bg-[#252530] border border-[#353542] my-[12px] focus-within:border-[#3B82F6] flex pl-[20px]">
           <input
+            value={nickname}
             onChange={(e) => {
               const value = e.target.value;
               setNickname(value);
@@ -153,18 +154,18 @@ export default function EditProfileModal({ isOpen, onClose }: Props) {
   `}
         >
           <textarea
+            value={description}
             onChange={(e) => {
               const value = e.target.value;
               if (value.length <= 300) {
-                setHasTyped(true);
                 setDescription(value);
               }
             }}
             placeholder="프로필 소개를 입력해주세요"
-            className="w-full h-full outline-0 resize-none overflow-y-auto break-words rounded-[8px] bg-[#252530] p-[20px] placeholder-[var(--color-deepGray)] text-[var(--color-white)]"
+            className="w-full h-full  outline-0 resize-none overflow-y-auto break-words rounded-[8px] bg-[#252530] p-[20px] placeholder-[var(--color-deepGray)] text-[var(--color-white)]"
           />
           <span className="absolute bottom-[20px] right-[20px] text-sm text-[var(--color-deepGray)]">
-            {hasTyped ? description.length : 0}/300
+            {description.length}/300
           </span>
         </div>
 
