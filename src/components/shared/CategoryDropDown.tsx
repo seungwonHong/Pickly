@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RxTriangleDown } from "react-icons/rx";
 import { motion, AnimatePresence } from "framer-motion";
 import useModalStore from "@/features/home/modals/store/modalStore";
@@ -7,8 +7,33 @@ import useModalStore from "@/features/home/modals/store/modalStore";
 type Props = {};
 
 const CategoryDropDown = (props: Props) => {
-  const { isClicked, setIsClicked, clickedValue, setClickedValue } =
-    useModalStore();
+  const {
+    isClicked,
+    setIsClicked,
+    clickedValue,
+    setClickedValue,
+    setCategoryId,
+  } = useModalStore();
+
+  useEffect(() => {
+    const categoryMap: Record<string, number> = {
+      음악: 1,
+      "영화/드라마": 2,
+      "강의/책": 3,
+      호텔: 4,
+      "가구/인테리어": 5,
+      식당: 6,
+      전자기기: 7,
+      화장품: 8,
+      "의류/악세서리": 9,
+      앱: 10,
+    };
+
+    const id = categoryMap[clickedValue];
+    if (id !== undefined) {
+      setCategoryId(id);
+    }
+  }, [clickedValue]);
 
   return (
     <div

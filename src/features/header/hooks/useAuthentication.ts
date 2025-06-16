@@ -6,9 +6,18 @@ const useAuthentication = () => {
   useEffect(() => {
     const fetchCookieStatus = async () => {
       try {
+        const csrfToken =
+          document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("csrf-token="))
+            ?.split("=")[1] ?? "";
+        
         const res = await fetch("/api/cookie", {
           method: "GET",
-          credentials: "include",
+          credentials: "include", // 쿠키 포함 옵션
+          headers: {
+            "x-csrf-token": csrfToken,
+          },
         });
 
         const data = await res.json();

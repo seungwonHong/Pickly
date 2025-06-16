@@ -1,6 +1,7 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { getCookie } from "cookies-next";
 
 import { GetProductIdDetail } from "../../types";
 import BaseButton from "@/components/shared/BaseButton";
@@ -9,7 +10,9 @@ import useGetUser from "../../hooks/useGetUser";
 
 import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
 import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
-import ProductComparePlusModal from "../modal/ProductCompareModal/ProductComparePlusModal";
+import ProductComparePlusModal from "../../../../components/shared/ProductComparePlusModal";
+
+type ModalTypes = "review" | "compare" | "comparePlus";
 
 export default function ProductIdDetailButton({
   product,
@@ -18,51 +21,26 @@ export default function ProductIdDetailButton({
 }) {
   // useGetUser 훅을 사용하여 현재 사용자 정보를 가져옴
   const { user, compareList, addToCompare } = useGetUser();
-  const isOwner = user?.id === product.writerId;
 
-  const searchParams = useSearchParams();
+  const isOwner = user?.id === product.writerId;
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const sameCategoryCompareList = compareList.filter(
     (item) => item.category.id === product?.category?.id
   );
-  // 비교 교체 모달 상태
 
-  // 공통 모달
-  const [isComparePlusModalOpen, setComparePlusModalOpen] = useState("");
-  const [isPlusButtonMessage, setPlusButtonMessage] = useState("");
+  //ProductComparePlusModal 관련 상태
+  const [comparePlusModalMessage, setComparePlusModalMessage] = useState("");
+  const [comparePlusButtonMessage, setComparePlusButtonMessage] = useState("");
+  const activieModal = searchParams.get("modal") as ModalTypes | null;
 
-  // 리뷰 모달
-  const isReviewModalOpen = searchParams.get("modal") === "review";
-  const openReviewModal = () => {
+  const openModal = (modalName: ModalTypes) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("modal", "review");
+    params.set("modal", modalName);
     router.replace(`?${params.toString()}`, { scroll: false });
   };
-  const closeReviewModal = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("modal");
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
-  // 비교 모달
-  const isCompareModalOpen = searchParams.get("modal") === "compare";
-  const openCompareModal = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("modal", "compare");
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
-  const closeCompareModal = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("modal");
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
-  //  비교 모달 나머지
-  const isModalBaseOpen = searchParams.get("modal") === "comparePlus";
-  const openBaseModal = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("modal", "comparePlus");
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
-  const closeBaseModal = () => {
+  const closeModal = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("modal");
     router.replace(`?${params.toString()}`, { scroll: false });
@@ -70,49 +48,67 @@ export default function ProductIdDetailButton({
 
   // 로그인 리다이렉트 핸들러
   const handleLoginRedirect = () => {
-    closeBaseModal();
+    closeModal();
     router.push("/signin");
   };
   // 비교하기 리다이렉트 핸들러
   const handleCompareRedirect = () => {
-    closeBaseModal();
+    closeModal();
     router.push("/compare");
   };
+
+  // 쿠키 토큰 확인
+  const checkLogin = async () => {
+    const csrfToken = (await getCookie("csrf-token")) ?? "";
+    const res = await fetch("/api/cookie", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "x-csrf-token": csrfToken,
+      },
+    });
+    const data = await res.json();
+    return data.isLoggedIn;
+  };
+
   // 비교하기 모달
   const handleCompareClick = () => {
-    if (!product || !sameCategoryCompareList) return;
-
-    if (user === null) {
-      setComparePlusModalOpen("로그인이 필요합니다.");
-      setPlusButtonMessage("로그인하러가기");
-      openBaseModal();
-      return;
-    }
-
     const isAlreadyInList = sameCategoryCompareList.some(
       (item) => Number(item.id) === Number(product.id)
     );
 
     if (isAlreadyInList) {
-      setComparePlusModalOpen("이미 비교 목록에 있는 상품입니다.");
-      openBaseModal();
+      setComparePlusModalMessage("이미 비교 목록에 있는 상품입니다.");
+      openModal("comparePlus");
       return;
     }
 
     if (sameCategoryCompareList.length === 0) {
       addToCompare(product);
-      setComparePlusModalOpen("비교 상품으로 등록되었습니다!");
-      openBaseModal();
+      setComparePlusModalMessage("비교 상품으로 등록되었습니다!");
+      openModal("comparePlus");
     } else if (sameCategoryCompareList.length === 1) {
       addToCompare(product);
-      setComparePlusModalOpen(
+      setComparePlusModalMessage(
         "비교 상품으로 등록되었습니다.\n바로 확인해 보시겠어요?"
       );
-      setPlusButtonMessage("확인하러가기");
-      openBaseModal();
+      setComparePlusButtonMessage("확인하러가기");
+      openModal("comparePlus");
     } else {
-      openCompareModal();
+      openModal("compare");
     }
+  };
+
+  // 리뷰 작성하기 모달 핸들러 쿠키
+  const handleReviewClick = async () => {
+    const isLoggedIn = await checkLogin();
+    if (!isLoggedIn) {
+      setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
+      setComparePlusButtonMessage("로그인하러가기");
+      openModal("comparePlus");
+      return;
+    }
+    openModal("review");
   };
 
   // 쿠키 이용하면 로딩중 버튼 갯수 빠르게 로딩 가능
@@ -123,7 +119,7 @@ export default function ProductIdDetailButton({
           <BaseButton
             disabled={false}
             className="lg:px-[44.5px] lg:py-[22px] md:px-[24px] md:py-[18px] px-[126px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] mb-[15px] md:mb-[0px]"
-            onClick={openReviewModal}
+            onClick={handleReviewClick}
           >
             리뷰 작성하기
           </BaseButton>
@@ -146,7 +142,7 @@ export default function ProductIdDetailButton({
           <BaseButton
             disabled={false}
             className="lg:px-[123.5px] lg:py-[22px] md:px-[70px] md:py-[18px] px-[123px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] mb-[15px] md:mb-[0px]"
-            onClick={openReviewModal}
+            onClick={handleReviewClick}
           >
             리뷰 작성하기
           </BaseButton>
@@ -159,28 +155,28 @@ export default function ProductIdDetailButton({
           </TypeButton>
         </div>
       )}
-      {isReviewModalOpen && (
+      {activieModal === "review" && (
         <ProductReviewModal
-          open={isReviewModalOpen}
-          setOpen={closeReviewModal}
+          open={activieModal === "review"}
+          setOpen={closeModal}
         />
       )}
-      {isCompareModalOpen && (
+      {activieModal === "compare" && (
         <ProductCompareModal
-          open={isCompareModalOpen}
-          setOpen={closeCompareModal}
+          open={activieModal === "compare"}
+          setOpen={closeModal}
         />
       )}
-      {isModalBaseOpen && (
+      {activieModal === "comparePlus" && (
         <ProductComparePlusModal
-          open={isModalBaseOpen}
-          setOpen={closeBaseModal}
-          message={isComparePlusModalOpen}
-          buttonText={isPlusButtonMessage}
+          open={activieModal === "comparePlus"}
+          setOpen={closeModal}
+          message={comparePlusModalMessage}
+          buttonText={comparePlusButtonMessage}
           onButtonClick={
-            isPlusButtonMessage === "로그인하러가기"
+            comparePlusButtonMessage === "로그인하러가기"
               ? handleLoginRedirect
-              : isPlusButtonMessage === "확인하러가기"
+              : comparePlusButtonMessage === "확인하러가기"
               ? handleCompareRedirect
               : undefined
           }

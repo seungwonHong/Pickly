@@ -1,5 +1,7 @@
 {
   "cSpell.words": [
     "kakao"
-  ]
+  ],
+  "CodeGPT.apiKey": "CodeGPT Plus Beta",
+  "svn.ignoreMissingSvnWarning": true
 }

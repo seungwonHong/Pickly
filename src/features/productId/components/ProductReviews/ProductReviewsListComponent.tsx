@@ -1,12 +1,15 @@
+"use client";
+
 import Image from "next/image";
 
 import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
 import { formatDate } from "../../../../lib/utils/datetime";
 import { GetProductIdReviewsDetail } from "../../types";
 import useGetUser from "../../hooks/useGetUser";
+import ProductReviewEditDelete from "./ProductReviewEditDelete";
 
 import Star from "../../../../../public/icons/star.svg";
-import DefaultIProfileImage from "../../../../../public/defaultIProfileImage.jpeg";
+import Link from "next/link";
 
 export default function ProductReviewsListComponent({
   review,
@@ -15,16 +18,19 @@ export default function ProductReviewsListComponent({
 }) {
   const { user } = useGetUser();
   const isOwner = user?.id === review.userId;
+
   return (
-    <div className="text-[#F1F1F5] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
+    <div className="text-[#F1F1F5] mb-[20px] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
       <div className="flex items-start gap-[10px]">
-        <Image
-          src={review.user.image || DefaultIProfileImage}
-          alt="프로필 이미지"
-          width={43}
-          height={43}
-          className="rounded-full md:w-[36px] md:h-[36px]"
-        />
+        <Link href={`/user/${review.userId}`}>
+          <Image
+            src={review.user.image || "/defaultProfileImage.jpeg"}
+            alt="프로필 이미지"
+            width={43}
+            height={43}
+            className="rounded-full md:w-[36px] md:h-[36px]"
+          />
+        </Link>
         <div>
           <div className="lg:text-[16px] text-[14px] font-medium">
             {review.user.nickname}
@@ -70,10 +76,10 @@ export default function ProductReviewsListComponent({
               {formatDate(review.createdAt)}
             </div>
             {isOwner && (
-              <div className="flex gap-[10px] text-[#9FA6B2] ">
-                <div className="underline cursor-pointer">수정</div>
-                <div className="underline cursor-pointer">삭제</div>
-              </div>
+              <ProductReviewEditDelete
+                reviewId={review.id}
+                initialReviewData={review}
+              />
             )}
           </div>
 

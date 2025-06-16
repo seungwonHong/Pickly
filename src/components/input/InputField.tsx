@@ -1,17 +1,16 @@
 import Image from "next/image";
 import { useState } from "react";
 
-const eyeOpen = "/icons/eye_open.svg";
-const eyeClose = "/icons/eye_close.svg";
+const eyeOpen = '/icons/eye_open.svg';
+const eyeClose = '/icons/eye_close.svg';
 
 interface InputFieldProps {
+  id?: string;
   label?: string;
   placeholder?: string;
   className?: string;
   subText?: string;
   withEyeToggle?: boolean;
-  eyeState?: boolean;
-  onEyeToggle?: () => void;
   error?: string;
   [key: string]: any;
 }
