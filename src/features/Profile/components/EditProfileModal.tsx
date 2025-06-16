@@ -100,7 +100,7 @@ export default function EditProfileModal({ isOpen, onClose }: Props) {
   return (
     <div className="fixed inset-0 bg-[#000000]/50 z-[100] flex items-center justify-center overflow-hidden">
       <div
-        className="bg-[#1C1C22] rounded-xl w-[335px] h-[513px] md:w-[590px] md:h-[640px] lg:w-[620px] lg:h-[704px] relative pl-[20px] md:pl-[40px] pt-[40px] md:pt-[60px] pr-[18px] pb-[6px] md:pb-[40px]"
+        className="bg-[#1C1C22] rounded-xl w-[335px] h-[550px] md:w-[590px] md:h-[640px] lg:w-[620px] lg:h-[704px] relative pl-[20px] md:pl-[40px] pt-[40px] md:pt-[60px] pr-[18px] pb-[6px] md:pb-[40px]"
         ref={modalRef}
       >
         <Image
@@ -134,10 +134,9 @@ export default function EditProfileModal({ isOpen, onClose }: Props) {
             className="w-full focus:outline-none placeholder-[var(--color-deepGray)] font-normal text-white"
             placeholder="닉네임을 입력해주세요"
           />
-          <div></div>
         </div>
         {nicknameError && (
-          <p className="text-sm text-[var(--color-red)] mb-[12px]">
+          <p className="text-[12px] md:text-[12px] lg:text-[14px] text-[var(--color-red)] mb-[10px]">
             {nicknameError}
           </p>
         )}

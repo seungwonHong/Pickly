@@ -1,10 +1,8 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { apiInstance } from "@/lib/axios";
 import { User } from "../types/user";
-
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nzk3LCJ0ZWFtSWQiOiIxNC02IiwiaWF0IjoxNzQ4NjczMzEwLCJpc3MiOiJzcC1tb2dhem9hIn0.Almry9H8io3c3gR61WPBuy_sXosdjsL3QgZBvLUy0Bw";
 
 /**
  * 사용자 프로필 수정 API
@@ -13,7 +11,14 @@ const token =
 export async function updateMyProfile(
   data: Pick<User, "nickname" | "description" | "image">
 ) {
-  // 🚫 서버 요구사항: image는 유효한 URL이어야 하므로, 비어 있거나 none이면 null 처리
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access-token")?.value;
+
+  if (!token) {
+    throw new Error("로그인 토큰이 없습니다.");
+  }
+
+  // 이미지 유효성 체크 (빈 값 or https가 아니면 null 처리)
   const safeImage =
     data.image && /^https?:\/\//.test(data.image) ? data.image : null;
 

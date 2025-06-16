@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 interface ProductCardProps {
@@ -21,7 +20,7 @@ export default function ProductCard({
   return (
     <Link href={`/product/${id}`}>
       <div className="flex flex-col p-[15px] justify-center relative  border border-[#353542] bg-[#252530]  w-full rounded-[8px] z-[-1]">
-        <div className="flex justify-center relative items-center overflow-hidden w-full h-[98px] mb-[10px] md:mb-[20px] md:h-[160px] lg:h=[200px] lg:mb-[25px] rounded-[8px]">
+        <div className="flex justify-center relative items-center overflow-hidden w-full  h-[98px] mb-[10px] md:mb-[20px] md:h-[160px] lg:h=[200px] lg:mb-[25px] rounded-[8px]">
           <img
             src={image}
             alt="productImage"
@@ -37,11 +36,8 @@ export default function ProductCard({
             <p>찜 {favoriteCount}</p>
           </div>
           <div className="flex items-center gap-[3px]">
-            <div className="relative w-[12px] h-[12px]">
-              <Image src="/icons/star-icon.png" alt="productGrade" fill />
-            </div>
             <p className="text-[#9FA6B2] text-[12px] font-normal md:text-[14px] lg:text-[16px]">
-              {Math.round(rating * 10) / 10}
+              ⭐️ {Math.round(rating * 10) / 10}
             </p>
           </div>
         </div>

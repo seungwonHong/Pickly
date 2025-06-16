@@ -5,9 +5,14 @@ import ActivitySection from "@/features/Profile/components/ActivitySection";
 import ProductTabSection from "@/features/Profile/components/ProductTabSection";
 
 import ProfileCard from "@/features/Profile/components/ProfileCard";
+import { redirect } from "next/navigation";
 
 export default async function MyPage() {
   const user = await getMyProfile();
+
+  if (!user) {
+    redirect("/signin");
+  }
   const initialProducts = await getUserProducts(user.id, "reviewed");
   // console.log(user);
 

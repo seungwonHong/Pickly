@@ -4,9 +4,10 @@ import defaultProfileImage from "../../../../public/defaultProfileImage.jpeg"; /
 import Image from "next/image";
 import FollowCounts from "./FollowCounts";
 import EditProfileModalClient from "./EditProfileModalClient";
-import TypeButton from "@/components/shared/TypeButton";
 import FollowButton from "./FollowButton";
 import { useState } from "react";
+import LogoutButton from "./LogoutButton";
+import useAuthentication from "@/features/header/hooks/useAuthentication";
 
 interface Props {
   user: User;
@@ -16,7 +17,8 @@ interface Props {
 export default function ProfileCard({ user, isMe }: Props) {
   const [isFollowing, setIsFollowing] = useState(user.isFollowing);
   const [followersCount, setFollowersCount] = useState(user.followersCount);
-
+  const { isAuthenticated } = useAuthentication();
+  console.log("rr", isAuthenticated);
   return (
     <div className="mb-[60px] px-[20px] py-[30px] w-full h-auto rounded-lg bg-[#252530] border border-[#353542] md:px-[30px] lg:w-[340px] lg:mb-0 lg:sticky lg:top-[120px]">
       <div className="w-full h-auto flex flex-col items-center gap-[30px] lg:gap-10">
@@ -55,13 +57,7 @@ export default function ProfileCard({ user, isMe }: Props) {
         {isMe ? (
           <div className="w-full flex flex-col gap-[10px] md:gap-[15px] lg:gap-5 ">
             <EditProfileModalClient />
-
-            <TypeButton
-              className=" hover:bg-[#BF0C0C] hover:border-none  font-semibold md:h-[55px] lg:h-[65px] lg:text-[18px] h-[50px]"
-              type="tertiary"
-            >
-              로그아웃
-            </TypeButton>
+            {isAuthenticated && <LogoutButton />}
           </div>
         ) : (
           <FollowButton

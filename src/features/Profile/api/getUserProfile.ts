@@ -1,15 +1,19 @@
+"use server";
 import { apiInstance } from "@/lib/axios";
+import { cookies } from "next/headers";
 import { User } from "../types/user";
 
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nzk3LCJ0ZWFtSWQiOiIxNC02IiwiaWF0IjoxNzQ4NjczMzEwLCJpc3MiOiJzcC1tb2dhem9hIn0.Almry9H8io3c3gR61WPBuy_sXosdjsL3QgZBvLUy0Bw";
-
 export async function getUserProfile(userId: number): Promise<User> {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access-token")?.value;
+
   const res = await apiInstance.get(`/users/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: token
+      ? {
+          Authorization: `Bearer ${token}`,
+        }
+      : {}, // 비로그인일 경우 빈 헤더로 호출
   });
-  console.log(res.data);
+
   return res.data;
 }

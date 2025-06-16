@@ -1,9 +1,12 @@
-import apiInstance from "@/lib/axios";
+"use server";
 
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nzk3LCJ0ZWFtSWQiOiIxNC02IiwiaWF0IjoxNzQ4NjczMzEwLCJpc3MiOiJzcC1tb2dhem9hIn0.Almry9H8io3c3gR61WPBuy_sXosdjsL3QgZBvLUy0Bw";
+import { cookies } from "next/headers";
+import { apiInstance } from "@/lib/axios";
 
 export async function followUser(userId: number) {
+  const token = (await cookies()).get("access-token")?.value;
+  if (!token) throw new Error("로그인 토큰이 없습니다.");
+
   const res = await apiInstance.post(
     `/follow`,
     { userId },
@@ -18,6 +21,9 @@ export async function followUser(userId: number) {
 }
 
 export async function unfollowUser(userId: number) {
+  const token = (await cookies()).get("access-token")?.value;
+  if (!token) throw new Error("로그인 토큰이 없습니다.");
+
   const res = await apiInstance.delete(`/follow`, {
     data: { userId },
     headers: {
