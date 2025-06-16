@@ -11,6 +11,7 @@ import { ProductInfo } from "@/features/home/types/productType";
 import { handleSubmit } from "@/lib/utils/addProductFunction";
 import editProductFunction from "@/lib/utils/editProductFunction";
 import ProductComparePlusModal from "./ProductComparePlusModal";
+import toast from "react-hot-toast";
 
 interface Props {
   buttonPlaceholder: string;
@@ -51,11 +52,23 @@ const AddEditProductModal = ({
     router.replace(`?${params.toString()}`, { scroll: false });
     setClickedValue("카테고리 선택");
     setImage(null);
+    setName(null);
+    setDescription(null);
+    setCategoryId(null);
+    setFile(null);
   };
 
   const chooseFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (selected) {
+      const fileName = selected.name;
+      const hasKorean = /[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(fileName.normalize("NFC"));
+      if (hasKorean) {
+        toast.error(
+          "파일 이름에 한글이 포함되어 있습니다. 다른 이름을 사용해주세요."
+        );
+        return;
+      }
       const fileURL = URL.createObjectURL(selected);
       setImage(fileURL);
       setFile(selected);

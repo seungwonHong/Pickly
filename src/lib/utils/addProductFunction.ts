@@ -52,6 +52,7 @@ export const handleSubmit = async ({
     // 위 조건에 맞춰야 상품 post가 가능해지는군요... 일단 스웨거 보고 이런식으로 에러 메세지 임시로 했습니다. 고치셔도 돼요.
     return;
   }
+
   const csrfToken =
     document.cookie
       .split("; ")
