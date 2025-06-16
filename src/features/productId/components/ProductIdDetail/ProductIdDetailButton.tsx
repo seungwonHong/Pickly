@@ -9,7 +9,7 @@ import TypeButton from "@/components/shared/TypeButton";
 import useGetUser from "../../hooks/useGetUser";
 
 import AddEditProductModal from "@/components/shared/AddEditProductModal";
-import editProductFunction from "@/lib/utils/editProductFunction";
+
 import useModalStore from "@/features/home/modals/store/modalStore";
 import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
 import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";

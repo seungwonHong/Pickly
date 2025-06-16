@@ -40,13 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <head>
-        {/* 카카오 SDK */}
-        <Script
-          src="https://developers.kakao.com/sdk/js/kakao.js"
-          strategy="beforeInteractive"
-        />
-      </head>
+      <head>{/* 카카오 SDK */}</head>
       <body className={`${mplus.variable} antialiased`}>
         <QueryProvider>{children}</QueryProvider>
         <Toaster
