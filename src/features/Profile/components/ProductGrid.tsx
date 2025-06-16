@@ -13,6 +13,7 @@ export default function ProductGrid({ userId, type, initialProducts }: Props) {
     type,
     initialData: initialProducts,
   });
+  console.log("ProductGrid", products);
   return (
     <>
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">

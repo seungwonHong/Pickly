@@ -22,12 +22,14 @@ export const metadata: Metadata = {
     siteName: "Pickly",
     url: "https://pickly.vercel.app",
     type: "website",
-    images: [{
-      url: "https://pickly.vercel.app/images/opengraph.png",
-      width: 1200,
-      height: 630,
-      alt: "Pickly image",
-    }]
+    images: [
+      {
+        url: "https://pickly.vercel.app/images/opengraph.png",
+        width: 1200,
+        height: 630,
+        alt: "Pickly image",
+      },
+    ],
   },
 };
 
@@ -38,6 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>{/* 카카오 SDK */}</head>
       <body className={`${mplus.variable} antialiased`}>
         <QueryProvider>{children}</QueryProvider>
         <Toaster

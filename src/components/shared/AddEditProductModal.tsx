@@ -1,11 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { IoClose } from "react-icons/io5";
+
 import { InputField } from "../input/InputField";
 import CategoryDropDown from "./CategoryDropDown";
 import { Textbox } from "../input/Textbox";
 import BaseButton from "./BaseButton";
-import { useRouter } from "next/navigation";
+
 import useModalStore from "@/features/home/modals/store/modalStore";
 import { ProductInfo } from "@/features/home/types/productType";
 import { handleSubmit } from "@/lib/utils/addProductFunction";
@@ -29,8 +32,9 @@ const AddEditProductModal = ({
   const [addProduct, setAddProduct] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
-
   const router = useRouter();
+
+  const productId = productinfo?.id || null;
 
   const {
     name,
@@ -178,7 +182,6 @@ const AddEditProductModal = ({
           maxLength={500}
           placeholder="상품 설명을 입력해 주세요"
           className="lg:w-[540px] lg:h-[160px] md:w-[510px] md:h-[160px] w-[295px] h-[120px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
-          value={description ?? null}
         />
 
         <BaseButton
@@ -202,7 +205,21 @@ const AddEditProductModal = ({
                   setClickedValue,
                   image,
                 })
-              : editProductFunction(); // 편집 함수 호출
+              : editProductFunction({
+                  productId: Number(productId),
+                  file,
+                  name,
+                  handleClose,
+                  description,
+                  categoryId,
+                  setName,
+                  setDescription,
+                  setImage,
+                  setCategoryId,
+                  setClickedValue,
+                  image,
+                  setFile,
+                });
           }}
         >
           {buttonPlaceholder}

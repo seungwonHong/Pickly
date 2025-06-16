@@ -38,8 +38,18 @@ export const handleSubmit = async ({
   image,
 }: Props) => {
   // 모달에 내용을 한개라도 안 썼을 경우 경고 모달 띄우기
-  if (!name || !categoryId || !description || !file) {
-    toast.error("내용을 모두 작성해주세요.");
+  if (
+    !name ||
+    !description ||
+    description.length < 10 ||
+    description.length > 500 ||
+    !categoryId ||
+    !image
+  ) {
+    toast.error(
+      "상품명, 설명(10~500자), 카테고리, 이미지를 모두 입력해주세요."
+    );
+    // 위 조건에 맞춰야 상품 post가 가능해지는군요... 일단 스웨거 보고 이런식으로 에러 메세지 임시로 했습니다. 고치셔도 돼요.
     return;
   }
   const csrfToken =
@@ -89,7 +99,6 @@ export const handleSubmit = async ({
 
           handleClose();
         } else {
-          // 상품 추가 실패했다는 모달
           setAddProduct(true);
           setMessage("상품 등록에 실패하였습니다.");
         }

@@ -44,7 +44,6 @@ export default function ProductReviewEditDelete({
           open={deleteOpen}
           setOpen={setDeleteOpen}
           reviewId={reviewId}
-          initialReviewData={initialReviewData}
         />
       )}
     </div>
