@@ -1,18 +1,21 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { getCookie } from "cookies-next";
 
+import { checkLoginStatus } from "../../hooks/checkLogin";
 import { GetProductIdDetail } from "../../types";
 import BaseButton from "@/components/shared/BaseButton";
 import TypeButton from "@/components/shared/TypeButton";
 import useGetUser from "../../hooks/useGetUser";
 
+import AddEditProductModal from "@/components/shared/AddEditProductModal";
+
+import useModalStore from "@/features/home/modals/store/modalStore";
 import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
 import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
 import ProductComparePlusModal from "../../../../components/shared/ProductComparePlusModal";
 
-type ModalTypes = "review" | "compare" | "comparePlus";
+type ModalTypes = "review" | "compare" | "comparePlus" | "editProduct";
 
 export default function ProductIdDetailButton({
   product,
@@ -34,7 +37,17 @@ export default function ProductIdDetailButton({
   const [comparePlusModalMessage, setComparePlusModalMessage] = useState("");
   const [comparePlusButtonMessage, setComparePlusButtonMessage] = useState("");
   const activieModal = searchParams.get("modal") as ModalTypes | null;
-
+  const {
+    name,
+    setName,
+    categoryId,
+    description,
+    setDescription,
+    setImage,
+    image,
+    setCategoryId,
+    setClickedValue,
+  } = useModalStore();
   const openModal = (modalName: ModalTypes) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("modal", modalName);
@@ -55,20 +68,6 @@ export default function ProductIdDetailButton({
   const handleCompareRedirect = () => {
     closeModal();
     router.push("/compare");
-  };
-
-  // 쿠키 토큰 확인
-  const checkLogin = async () => {
-    const csrfToken = (await getCookie("csrf-token")) ?? "";
-    const res = await fetch("/api/cookie", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "x-csrf-token": csrfToken,
-      },
-    });
-    const data = await res.json();
-    return data.isLoggedIn;
   };
 
   // 비교하기 모달
@@ -101,7 +100,8 @@ export default function ProductIdDetailButton({
 
   // 리뷰 작성하기 모달 핸들러 쿠키
   const handleReviewClick = async () => {
-    const isLoggedIn = await checkLogin();
+    // 쿠키 확인
+    const { isLoggedIn } = await checkLoginStatus();
     if (!isLoggedIn) {
       setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
       setComparePlusButtonMessage("로그인하러가기");
@@ -110,7 +110,23 @@ export default function ProductIdDetailButton({
     }
     openModal("review");
   };
+  const handleProductEdit = async () => {
+    const { isLoggedIn } = await checkLoginStatus();
+    if (!isLoggedIn) {
+      setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
+      setComparePlusButtonMessage("로그인하러가기");
+      openModal("comparePlus");
+      return;
+    }
 
+    setName(product.name || "");
+    setDescription(product.description || "");
+
+    setImage(product.image || "");
+    setClickedValue("수정하기");
+
+    openModal("editProduct");
+  };
   // 쿠키 이용하면 로딩중 버튼 갯수 빠르게 로딩 가능
   return (
     <>
@@ -133,6 +149,7 @@ export default function ProductIdDetailButton({
           <TypeButton
             type="tertiary"
             className="lg:px-[44.5px] lg:py-[22px] md:px-[24px] md:py-[18px] px-[139px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] mt-[15px] md:mt-[0px]"
+            onClick={handleProductEdit}
           >
             편집하기
           </TypeButton>
@@ -181,6 +198,16 @@ export default function ProductIdDetailButton({
               : undefined
           }
         />
+      )}
+      {activieModal === "editProduct" && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 bg-black/40">
+          <AddEditProductModal
+            buttonPlaceholder="수정하기"
+            modalType="editProduct"
+            purpose="상품 수정"
+            productinfo={product}
+          />
+        </div>
       )}
     </>
   );

@@ -1,12 +1,8 @@
-import Image from "next/image";
-
 import { productService } from "../../api";
+import CopyLinkImage from "./CopyLinkImage";
 import ProductIdReviewButton from "./ProductIdDetailButton";
 import CategoryChip from "@/components/CategoryChip";
 import ProductIdDetailHeart from "./ProductIdDetailHeart";
-
-import KakaoLink from "../../../../../public/images/kakao-link.png";
-import LinkShare from "../../../../../public/images/link-share.png";
 
 export default async function ProductIdDetail({
   productId,
@@ -17,6 +13,7 @@ export default async function ProductIdDetail({
   const product = response.data;
 
   if (!product) return <div>상품 정보가 없습니다.</div>;
+
   return (
     <>
       <div className="flex md:items-start items-center justify-between lg:gap-[60px] md:gap-[40px] text-[#f1f1f5] md:flex-row flex-col gap-[20px]">
@@ -34,15 +31,7 @@ export default async function ProductIdDetail({
               category={product.category.name}
               className="text-[12px] "
             />
-            <div className="flex items-center justify-between gap-[10px] ">
-              <Image
-                src={KakaoLink}
-                alt="카카오 공유 링크"
-                width={28}
-                height={28}
-              />
-              <Image src={LinkShare} alt="링크 공유" width={28} height={28} />
-            </div>
+            <CopyLinkImage />
           </div>
           <div className="flex flex-col justify-between gap-[20px]">
             <div className="flex items-center justify-between ">

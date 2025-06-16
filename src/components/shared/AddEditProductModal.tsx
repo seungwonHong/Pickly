@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { IoClose } from "react-icons/io5";
 import { InputField } from "../input/InputField";
 import CategoryDropDown from "./CategoryDropDown";
 import { Textbox } from "../input/Textbox";
 import BaseButton from "./BaseButton";
-import { useRouter } from "next/navigation";
 import useModalStore from "@/features/home/modals/store/modalStore";
 import { ProductInfo } from "@/features/home/types/productType";
 import { handleSubmit } from "@/lib/utils/addProductFunction";
@@ -29,8 +29,9 @@ const AddEditProductModal = ({
   const [addProduct, setAddProduct] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
-
   const router = useRouter();
+
+  const productId = productinfo?.id || null;
 
   const {
     name,
@@ -147,10 +148,11 @@ const AddEditProductModal = ({
                     alt="previewImage"
                     className="w-full h-full object-cover rounded-lg"
                   />
-                  <IoClose
-                    size={24}
+                  <img
+                    src={"/icons/cancel.png"}
+                    alt="cancel"
                     color="#FFFFF"
-                    className="absolute z-999 top-[5px] right-[5px] cursor-pointer"
+                    className="absolute w-[28px] h-[28px] z-999 top-[5px] right-[5px] cursor-pointer"
                     onClick={(e) => {
                       e.preventDefault();
                       setImage(null);
@@ -202,7 +204,21 @@ const AddEditProductModal = ({
                   setClickedValue,
                   image,
                 })
-              : editProductFunction(); // 편집 함수 호출
+              : editProductFunction({
+                  productId: Number(productId),
+                  file,
+                  name,
+                  handleClose,
+                  description,
+                  categoryId,
+                  setName,
+                  setDescription,
+                  setImage,
+                  setCategoryId,
+                  setClickedValue,
+                  image,
+                  setFile,
+                });
           }}
         >
           {buttonPlaceholder}

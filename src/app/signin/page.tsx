@@ -4,6 +4,7 @@ import { InputField } from "@/components/input/InputField";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+import { useUserStore } from "@/features/productId/libs/useUserStore";
 import { AuthResponse, LoginForm, loginFormSchema } from "./validationSchema";
 import { useLoginMutation } from "./useSignIn";
 import Link from "next/link";
@@ -12,7 +13,7 @@ import BaseButton from "@/components/shared/BaseButton";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import ErrorPage  from "./error";
+import ErrorPage from "./error";
 
 const login_logo = "/signup_logo.svg";
 
@@ -25,34 +26,37 @@ const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 const SigninPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const error = searchParams.get('error');
+  const error = searchParams.get("error");
 
   const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email openid`;
   const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email,profile_nickname,profile_image&prompt=consent`;
- 
+
   const {
     register,
     handleSubmit,
-    reset,   
+    reset,
     formState: { errors, isValid },
   } = useForm<LoginForm>({
     mode: "onBlur", // blur 시 유효성 검사
     resolver: zodResolver(loginFormSchema),
   });
 
-
   const { mutate: login } = useLoginMutation({
     onSuccess: (data: AuthResponse) => {
-      //로그인 성공시 '닉네임님 로그인 되었습니다! ' 모달 활성화 후 1초 뒤 홈으로 이동 
+      //로그인 성공시 '닉네임님 로그인 되었습니다! ' 모달 활성화 후 1초 뒤 홈으로 이동
       //zustand store에 유저 정보 저장
       toast.success(`${data.user.nickname}님 로그인 되었습니다!`);
       setTimeout(() => {
-         router.replace("/homepage"); 
-      }, 1000);     
+        router.replace("/homepage");
+      }, 1000);
+      useUserStore.getState().setUserData({
+        id: data.user.id,
+        nickname: data.user.nickname,
+      });
     },
     onError: () => {
       toast.error("이메일 혹은 비밀번호를 확인해주세요.");
-      reset({ email: '', password: '' });
+      reset({ email: "", password: "" });
     },
   });
 
@@ -60,17 +64,19 @@ const SigninPage = () => {
     login(data);
   };
 
-  if (error === 'oauth') {
-    return <ErrorPage/>;
+  if (error === "oauth") {
+    return <ErrorPage />;
   }
 
   return (
     <>
-      <div className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center bg-no-repeat`}>
+      <div
+        className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center bg-no-repeat`}
+      >
         <div className="max-w-[440px] md:max-w-[640px] w-full mx-auto pt-[93px] pb-[93px] min-h-[100dvh] flex justify-center items-center">
           <div className="w-full px-[20px] lg:px-[0px]">
             <div className="flex justify-center items-center mb-[25px]">
-              <Link href="/landingpage" >
+              <Link href="/landingpage">
                 <Image
                   src={login_logo}
                   width={193}
@@ -118,9 +124,9 @@ const SigninPage = () => {
                   <Link
                     href={googleAuthUrl}
                     className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
-
                   >
-                    <span className="
+                    <span
+                      className="
                       block 
                       bg-[var(--color-deepGray)] 
                       h-[56px] w-[56px] 
@@ -130,7 +136,8 @@ const SigninPage = () => {
                       mask-no-repeat 
                       mask-center 
                       hover:bg-[url('/sns_gg_bg.png')] bg-cover bg-center bg-no-repeat 
-                      text-[0px]">
+                      text-[0px]"
+                    >
                       구글 로그인하기
                     </span>
                   </Link>
