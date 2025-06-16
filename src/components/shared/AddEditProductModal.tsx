@@ -182,10 +182,6 @@ const AddEditProductModal = ({
           maxLength={500}
           placeholder="상품 설명을 입력해 주세요"
           className="lg:w-[540px] lg:h-[160px] md:w-[510px] md:h-[160px] w-[295px] h-[120px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
-          value={description ?? null}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setDescription(e.target.value)
-          }
         />
 
         <BaseButton
