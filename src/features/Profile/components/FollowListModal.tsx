@@ -7,6 +7,7 @@ import closeButton from "@../../../public/closeButton.png";
 import { createPortal } from "react-dom";
 import { useInView } from "react-intersection-observer";
 import defaultProfileImage from "@../../../public/defaultProfileImage.jpeg";
+import Link from "next/link";
 export interface UserSummary {
   id: number;
   nickname: string;
@@ -164,20 +165,25 @@ export default function FollowListModal({
             {users.map((user, index) => (
               <li
                 key={`${user.id}-${index}`}
-                className="flex items-center gap-3"
+                className="flex items-center gap-3 hover:bg-[#2A2A2F] transition-colors rounded-[8px]"
               >
-                <div className="relative w-10 h-10 rounded-full overflow-hidden ">
-                  <Image
-                    src={
-                      user.image && user.image !== "https://none"
-                        ? user.image
-                        : defaultProfileImage
-                    }
-                    alt="유저 이미지"
-                    fill
-                  />
-                </div>
-                <span className="text-white text-sm">{user.nickname}</span>
+                <Link
+                  href={`/users/${user.id}`}
+                  className="flex items-center gap-3  p-2  "
+                >
+                  <div className="relative w-10 h-10 rounded-full overflow-hidden ">
+                    <Image
+                      src={
+                        user.image && user.image !== "https://none"
+                          ? user.image
+                          : defaultProfileImage
+                      }
+                      alt="유저 이미지"
+                      fill
+                    />
+                  </div>
+                  <span className="text-white text-sm">{user.nickname}</span>
+                </Link>
               </li>
             ))}
             <div ref={observerRef} className="h-6" />

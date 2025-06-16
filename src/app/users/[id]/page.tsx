@@ -1,27 +1,45 @@
 import Header from "@/components/shared/Header";
-import { getMyProfile } from "@/features/Profile/api/getMyProfile";
+import { getUserProfile } from "@/features/Profile/api/getUserProfile";
 import { getUserProducts } from "@/features/Profile/api/getUserProducts";
 import ActivitySection from "@/features/Profile/components/ActivitySection";
 import ProductTabSection from "@/features/Profile/components/ProductTabSection";
-
 import ProfileCard from "@/features/Profile/components/ProfileCard";
 import { redirect } from "next/navigation";
+import { getMyProfile } from "@/features/Profile/api/getMyProfile";
 
-export default async function MyPage() {
-  const user = await getMyProfile();
+interface Props {
+  params: { id: string };
+}
 
-  if (!user) {
-    redirect("/signin");
+export default async function UserPage({ params }: Props) {
+  const userId = Number(params.id);
+
+  // 기본적으로 유저 프로필 정보는 조회
+  const user = await getUserProfile(userId);
+
+  // 내 프로필 정보는 "로그인했을 때만" 가져옴
+  let myProfile = null;
+  try {
+    myProfile = await getMyProfile();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (e) {
+    // 비로그인 사용자라면 무시
+    myProfile = null;
   }
+
+  // 로그인했고, URL의 id와 내 id가 같으면 마이페이지로 리다이렉트
+  if (myProfile?.id === userId) {
+    redirect("/mypage");
+  }
+
   const initialProducts = await getUserProducts(user.id, "reviewed");
-  // console.log(user);
 
   return (
     <>
       <Header />
       <div className="mt-[40px] px-[30px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-[20px] lg:flex lg:justify-center lg:gap-[70px] max-w-[1340px] ">
         <div className="h-auto">
-          <ProfileCard user={user} isMe={true} />
+          <ProfileCard user={user} isMe={user.isMe} />
         </div>
         <div className="w-full flex flex-col mb-[60px]">
           <span className="text-[#F1F1F5] font-semibold text-[18px] lg:text-[20px]">

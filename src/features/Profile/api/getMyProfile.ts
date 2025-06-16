@@ -1,21 +1,22 @@
-// import { cookies } from "next/headers";
-import apiServerInstance from "@/lib/axios/index";
+"use server";
 
-export async function getMyProfile() {
-  //   const cookieStore = cookies();
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nzk3LCJ0ZWFtSWQiOiIxNC02IiwiaWF0IjoxNzQ4NjczMzEwLCJpc3MiOiJzcC1tb2dhem9hIn0.Almry9H8io3c3gR61WPBuy_sXosdjsL3QgZBvLUy0Bw";
-  //   (await cookieStore).get("accessToken")?.value;
+import { cookies } from "next/headers";
+import { apiInstance } from "@/lib/axios";
+import { User } from "../types/user";
 
-  //   if (!token) {
-  //     throw new Error("Access token is missing");
-  //   }
+export async function getMyProfile(): Promise<User | null> {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access-token")?.value;
 
-  const res = await apiServerInstance.get("/users/me", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  if (!token) return null;
 
-  return res.data;
+  try {
+    const res = await apiInstance.get("/users/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("인증 실패:", error);
+    return null;
+  }
 }
