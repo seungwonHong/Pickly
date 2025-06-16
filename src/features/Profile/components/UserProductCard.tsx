@@ -17,6 +17,7 @@ export default function ProductCard({
   favoriteCount,
   rating,
 }: ProductCardProps) {
+  console.log(id);
   return (
     <Link href={`/product/${id}`}>
       <div className="flex flex-col p-[15px] justify-center relative  border border-[#353542] bg-[#252530]  w-full rounded-[8px] z-[-1]">

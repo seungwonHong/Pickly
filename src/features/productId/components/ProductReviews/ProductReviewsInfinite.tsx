@@ -1,83 +1,87 @@
 "use client";
-import { useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React, { useEffect, useRef } from "react";
 
+import SpinningWidget from "@/components/shared/SpinningWidget";
 import ProductReviewsListComponent from "./ProductReviewsListComponent";
 import { productService } from "../../api";
-import { GetProductIdReviews } from "../../types";
+import { GetProductIdReviewsDetail } from "../../types";
 
 interface ProductIdReviewProps {
-  initialData?: GetProductIdReviews;
+  nextCursor?: number | null;
+  queryKey: [
+    string,
+    number | string,
+    "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined
+  ];
   productId: number;
   order: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
+  initialData?: {
+    list: GetProductIdReviewsDetail[];
+    nextCursor?: number | null;
+  } | null;
 }
 
 export default function ProductReviewsInfinite({
-  initialData,
+  queryKey,
+  nextCursor,
   productId,
   order,
+  initialData,
 }: ProductIdReviewProps) {
-  const ref = useRef(null);
+  const observerRef = useRef(null);
 
-  // useInfiniteQuery를 사용하여 무한 스크롤 구현
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery<
-      GetProductIdReviews,
-      Error,
-      InfiniteData<GetProductIdReviews, number | undefined>,
-      readonly (string | number | undefined)[],
-      number | undefined
-    >({
-      queryKey: ["reviews", productId, order],
+    useInfiniteQuery({
+      queryKey,
       queryFn: ({ pageParam }) =>
         productService
           .getProductsIdReviews(productId, order, pageParam)
           .then((res) => res.data),
-      initialPageParam: undefined,
+      initialPageParam: nextCursor ?? undefined,
       getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
-      ...(order === "recent" && initialData
-        ? {
-            initialData: {
-              pages: [initialData],
-              pageParams: [undefined],
-            },
-          }
-        : {}),
+      initialData: initialData
+        ? { pages: [initialData], pageParams: [undefined] }
+        : undefined,
     });
 
-  // IntersectionObserver를 사용하여 스크롤이 마지막 요소에 도달했을 때 다음 페이지를 가져옴
   useEffect(() => {
-    if (!ref.current || !hasNextPage || isFetchingNextPage) return;
-
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
-      { threshold: 1.0 }
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px 30px 0px",
+      }
     );
 
-    observer.observe(ref.current);
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
 
     return () => observer.disconnect();
-  }, [ref, hasNextPage, isFetchingNextPage, order]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div>
-      {data?.pages.map((page, i) => (
-        <div
-          key={i}
-          className="flex flex-col md:gap-[20px] gap-[15px] md:mb-[20px] mb-[15px]"
-        >
-          {page?.list?.map((review) => (
+    <>
+      <div>
+        {data?.pages
+          .flatMap((page) => page.list)
+          .map((review: GetProductIdReviewsDetail) => (
             <ProductReviewsListComponent key={review.id} review={review} />
           ))}
-        </div>
-      ))}
 
-      <div ref={ref} />
-      {isFetchingNextPage && <p>로딩 중...</p>}
-    </div>
+        {hasNextPage && <div ref={observerRef} className="h-[40px]"></div>}
+        {isFetchingNextPage && <p>로딩 중...</p>}
+      </div>
+      {isFetchingNextPage && (
+        <div className="flex justify-center w-full mt-[10px]">
+          <SpinningWidget />
+        </div>
+      )}
+    </>
   );
 }

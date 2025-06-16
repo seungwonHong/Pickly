@@ -1,12 +1,15 @@
+"use client";
+
 import Image from "next/image";
 
 import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
-import { formatDate, diffDate } from "../../../../lib/utils/datetime";
+import { formatDate } from "../../../../lib/utils/datetime";
 import { GetProductIdReviewsDetail } from "../../types";
 import useGetUser from "../../hooks/useGetUser";
 import ProductReviewEditDelete from "./ProductReviewEditDelete";
 
 import Star from "../../../../../public/icons/star.svg";
+import Link from "next/link";
 
 export default function ProductReviewsListComponent({
   review,
@@ -15,16 +18,19 @@ export default function ProductReviewsListComponent({
 }) {
   const { user } = useGetUser();
   const isOwner = user?.id === review.userId;
+
   return (
-    <div className="text-[#F1F1F5] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
+    <div className="text-[#F1F1F5] mb-[20px] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
       <div className="flex items-start gap-[10px]">
-        <Image
-          src={review.user.image || "/defaultProfileImage.jpeg"}
-          alt="프로필 이미지"
-          width={43}
-          height={43}
-          className="rounded-full md:w-[36px] md:h-[36px]"
-        />
+        <Link href={`/users/${review.userId}`}>
+          <Image
+            src={review.user.image || "/defaultProfileImage.jpeg"}
+            alt="프로필 이미지"
+            width={43}
+            height={43}
+            className="rounded-full md:w-[36px] md:h-[36px]"
+          />
+        </Link>
         <div>
           <div className="lg:text-[16px] text-[14px] font-medium">
             {review.user.nickname}
@@ -67,17 +73,7 @@ export default function ProductReviewsListComponent({
         <div className="flex justify-between items-end">
           <div className="flex gap-[20px] lg:text-[14px] text-[12px] md:text-[12px]">
             <div className=" text-[#6E6E82]">
-              {/*리뷰 작성일이 31 전일 경우 3일전, 4일전 이런식으로 표시*/}
-              {diffDate(review.createdAt) > 31 ? (
-                <>
-                  <span>{formatDate(review.createdAt)}</span>
-                </>
-              ) : (
-                <>
-                  <span>{diffDate(review.createdAt)}</span>
-                  <span>일 전</span>
-                </>
-              )}
+              {formatDate(review.createdAt)}
             </div>
             {isOwner && (
               <ProductReviewEditDelete
