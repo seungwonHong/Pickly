@@ -11,7 +11,7 @@ const mplus = M_PLUS_Rounded_1c({
 });
 
 export const metadata: Metadata = {
-  title: "Create Next App",
+  title: "Pickly",
   description:
     " Pickly is a next-generation product discovery platform where quality meets curation. Whether you’re searching for the latest gadgets, everyday essentials, or hidden gems, Pickly connects you with handpicked items trusted by real users.",
   icons: "/icons/favicon.png",
@@ -22,12 +22,14 @@ export const metadata: Metadata = {
     siteName: "Pickly",
     url: "https://pickly.vercel.app",
     type: "website",
-    images: [{
-      url: "https://pickly.vercel.app/images/opengraph.png",
-      width: 1200,
-      height: 630,
-      alt: "Pickly image",
-    }]
+    images: [
+      {
+        url: "https://pickly.vercel.app/images/opengraph.png",
+        width: 1200,
+        height: 630,
+        alt: "Pickly image",
+      },
+    ],
   },
 };
 
