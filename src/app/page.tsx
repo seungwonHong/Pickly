@@ -1,4 +1,4 @@
-import HomePage from "./homepage/page";
+import LandingPage from "./landingpage/page";
 
 export default function Home({
   params,
@@ -10,7 +10,7 @@ export default function Home({
   return (
     <div>
       <main>
-        <HomePage params={params} searchParams={searchParams} />
+        <LandingPage />
       </main>
     </div>
   );

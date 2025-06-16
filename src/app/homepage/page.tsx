@@ -7,7 +7,6 @@ import { getProductsFetch } from "@/features/home/services/getProduct";
 import HighStarProduct from "@/features/home/components/HighStarProduct";
 import MoreProducts from "@/features/home/components/MoreProducts";
 import AddEditProductModal from "@/components/shared/AddEditProductModal";
-import { Toaster } from "react-hot-toast";
 
 export default async function HomePage({
   params,
@@ -112,12 +111,6 @@ export default async function HomePage({
           />
         </div>
       )}
-
-      <Toaster
-        position="top-center"
-        reverseOrder={true}
-        toastOptions={{ style: { zIndex: 9999 } }}
-      />
     </div>
   );
 }

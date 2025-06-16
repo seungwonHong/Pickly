@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Toaster } from "react-hot-toast";
+
 import { IoClose } from "react-icons/io5";
 
 import { InputField } from "../input/InputField";
@@ -69,6 +69,8 @@ const AddEditProductModal = ({
     if (productinfo) {
       setClickedValue(productinfo.category.name);
       setImage(productinfo.image);
+      setName(productinfo.name);
+      setDescription(productinfo.description);
       setName(productinfo.name);
       setDescription(productinfo.description);
     }
@@ -249,11 +251,6 @@ const AddEditProductModal = ({
           }}
         />
       )}
-      <Toaster
-        position="top-center"
-        reverseOrder={true}
-        toastOptions={{ style: { zIndex: 9999 } }}
-      />
     </div>
   );
 };

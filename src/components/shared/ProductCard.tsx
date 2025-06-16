@@ -36,7 +36,7 @@ const ProductCard = ({ product }: Props) => {
         />
 
         <div className="flex flex-col lg:mt-[20px] md:mt-[20px] mt-[10px] w-full lg:px-[6px]">
-          <span className="lg:text-[18px] md:text-[16px] text-[14px] text-[#F1F1F5] font-medium">
+          <span className="lg:text-[18px] md:text-[16px] text-[14px] text-[#F1F1F5] font-medium w-full truncate">
             {product.name}
           </span>
 

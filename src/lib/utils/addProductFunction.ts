@@ -38,6 +38,7 @@ export const handleSubmit = async ({
   image,
 }: Props) => {
   // 모달에 내용을 한개라도 안 썼을 경우 경고 모달 띄우기
+<<<<<<< HEAD
   if (
     !name ||
     !description ||
@@ -50,6 +51,10 @@ export const handleSubmit = async ({
       "상품명, 설명(10~500자), 카테고리, 이미지를 모두 입력해주세요."
     );
     // 위 조건에 맞춰야 상품 post가 가능해지는군요... 일단 스웨거 보고 이런식으로 에러 메세지 임시로 했습니다. 고치셔도 돼요.
+=======
+  if (!name || !categoryId || !description || !file) {
+    toast.error("내용을 모두 작성해주세요.");
+>>>>>>> origin/main
     return;
   }
   const csrfToken =

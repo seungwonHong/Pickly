@@ -11,13 +11,25 @@ import Link from "next/link";
 
 import BaseButton from "@/components/shared/BaseButton";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import ErrorPage from "./error";
 
 const login_logo = "/signup_logo.svg";
 
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+const GOOGLE_REDIRECT_URI = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
+
+const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+
 const SigninPage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
+
+  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email openid`;
+  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email,profile_nickname,profile_image&prompt=consent`;
 
   const {
     register,
@@ -37,12 +49,6 @@ const SigninPage = () => {
       setTimeout(() => {
         router.replace("/");
       }, 1000);
-
-      // 유저 정보 저장 토큰 아닙니다
-      useUserStore.getState().setUserData({
-        id: data.user.id,
-        nickname: data.user.nickname,
-      });
     },
     onError: () => {
       toast.error("이메일 혹은 비밀번호를 확인해주세요.");
@@ -53,6 +59,10 @@ const SigninPage = () => {
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
     login(data);
   };
+
+  if (error === "oauth") {
+    return <ErrorPage />;
+  }
 
   return (
     <>
@@ -108,8 +118,8 @@ const SigninPage = () => {
               <ul className="flex justify-center gap-5 mt-[19px]">
                 <li>
                   <Link
-                    href=""
-                    className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[var(--color-white)] transition-transform duration-200 ease-in-out shadow-lg"
+                    href={googleAuthUrl}
+                    className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span
                       className="
@@ -130,8 +140,8 @@ const SigninPage = () => {
                 </li>
                 <li>
                   <Link
-                    href=""
-                    className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[#f3e21f] transition-transform duration-200 ease-in-out shadow-lg"
+                    href={kakaoLoginUrl}
+                    className="block border  border-[#353542] rounded-full hover:bg-[#f3e21f]  hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span
                       className="

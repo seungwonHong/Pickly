@@ -5,16 +5,21 @@ import ActivitySection from "@/features/Profile/components/ActivitySection";
 import ProductTabSection from "@/features/Profile/components/ProductTabSection";
 
 import ProfileCard from "@/features/Profile/components/ProfileCard";
+import { redirect } from "next/navigation";
 
 export default async function MyPage() {
   const user = await getMyProfile();
+
+  if (!user) {
+    redirect("/signin");
+  }
   const initialProducts = await getUserProducts(user.id, "reviewed");
   // console.log(user);
 
   return (
     <>
       <Header />
-      <div className="mt-[40px] px-[20px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-0 lg:flex lg:justify-center lg:gap-[70px] max-w-[1340px] ">
+      <div className="mt-[40px] px-[30px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-[20px] lg:flex lg:justify-center lg:gap-[70px] max-w-[1340px] ">
         <div className="h-auto">
           <ProfileCard user={user} isMe={true} />
         </div>

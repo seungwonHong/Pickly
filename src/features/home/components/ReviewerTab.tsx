@@ -24,7 +24,7 @@ const ReviewerTab = ({ rank, rankNum }: Props) => {
   return (
     <div className="flex flex-row lg:mb-[30px] lg:mr-0 md:mr-[20px] mr-[15px] shrink-0">
       <img
-        src={rank.image}
+        src={rank.image || "/defaultProfileImage.jpeg"}
         alt="profileImage"
         className="lg:w-[42px] lg:h-[42px] w-[36px] h-[36px] rounded-full"
       />
