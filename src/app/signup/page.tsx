@@ -7,15 +7,18 @@ import BaseButton from "@/components/shared/BaseButton";
 import { useSignUp } from "./useSignUp";
 import { JoinForm, joinFormSchema } from "./validationSchema";
 import { AuthResponse } from "../signin/validationSchema";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import ErrorPage from "./error";
 
 
 const login_logo = "/signup_logo.svg";
 
 const SignUpPage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
 
   const { mutate: signUp } = useSignUp({
     onSuccess: (data: AuthResponse) => {
@@ -45,6 +48,10 @@ const SignUpPage = () => {
     signUp(data);
   };
 
+  if (error === 'oauth') {
+    return <ErrorPage/>;
+  }
+  
   return (
     <>
       <div

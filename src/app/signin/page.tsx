@@ -10,8 +10,9 @@ import Link from "next/link";
 
 import BaseButton from "@/components/shared/BaseButton";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import ErrorPage  from "./error";
 
 const login_logo = "/signup_logo.svg";
 
@@ -23,10 +24,12 @@ const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 
 const SigninPage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
 
-  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email`;
-  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}`;
-
+  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email openid`;
+  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email,profile_nickname,profile_image&prompt=consent`;
+const logoutUrl = `https://kauth.kakao.com/oauth/logout?client_id=${KAKAO_REST_API_KEY}&logout_redirect_uri=${KAKAO_REDIRECT_URI}`;
   const {
     register,
     handleSubmit,
@@ -44,7 +47,7 @@ const SigninPage = () => {
       //zustand store에 유저 정보 저장
       toast.success(`${data.user.nickname}님 로그인 되었습니다!`);
       setTimeout(() => {
-         router.replace("/"); 
+         router.replace("/homepage"); 
       }, 1000);     
     },
     onError: () => {
@@ -56,6 +59,10 @@ const SigninPage = () => {
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
     login(data);
   };
+
+  if (error === 'oauth') {
+    return <ErrorPage/>;
+  }
 
   return (
     <>
@@ -146,6 +153,14 @@ const SigninPage = () => {
                       text-[0px] 
                       hover:animate-spin-slow">
                       카카오톡 로그인하기
+                    </span>
+                  </Link>
+                  <Link
+                    href={logoutUrl}
+                    className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+                  >
+                    <span >
+                      카카오톡 로그아웃하기
                     </span>
                   </Link>
                 </li>
