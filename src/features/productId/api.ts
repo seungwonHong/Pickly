@@ -47,10 +47,10 @@ class ProductService {
     return axios.patch(
       `${BaseURL}/products/${productId}`,
       {
-        name,
-        description,
-        categoryId,
-        image,
+        name: name ?? "",
+        description: description ?? "",
+        categoryId: categoryId ?? 0,
+        image: image ?? "",
       },
       {
         headers: {

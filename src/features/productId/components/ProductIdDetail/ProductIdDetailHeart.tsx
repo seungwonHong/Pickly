@@ -64,11 +64,11 @@ export default function ProductIdDetailHeart({
         setFavoriteCount(favoriteCount - 1);
       }
       setIsLiked(!isLiked);
-    } catch (error: any) {
-      console.error("Axios 에러 응답:", error.response.data);
-      if (error.isAxiosError) {
-        console.error("Axios 에러 응답:", error.response.data);
-        console.error("Axios 에러 요청 설정:", error.config);
+    } catch (error) {
+      const err = error as Error;
+      console.error("Axios 에러 응답:", err.message);
+      if (err.message) {
+        console.error("Axios 에러 응답:", err.message);
       }
     }
   };

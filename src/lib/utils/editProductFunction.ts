@@ -36,8 +36,8 @@ const editProductFunction = async ({
   image,
 }: EditProps) => {
   if (
-    !name ||
-    !description ||
+    !name?.trim().length ||
+    !description?.trim() ||
     description.length < 10 ||
     description.length > 500 ||
     !categoryId ||
@@ -77,6 +77,7 @@ const editProductFunction = async ({
 
   // 이미지가 새로 업로드된 경우
   let imageUrl = image;
+
   if (file) {
     const responseFile = await postImage({
       file,
@@ -85,12 +86,21 @@ const editProductFunction = async ({
     if (responseFile) {
       imageUrl = responseFile.url;
     }
+  } else if (image?.startsWith("blob:")) {
+    imageUrl = "";
   }
+  console.log("입력된 name:", JSON.stringify(name));
 
+  const trimmedName = name?.trim() || "";
+
+  if (!trimmedName) {
+    toast.error("상품명을 정확히 입력해주세요.");
+    return;
+  }
   // 실제 상품 수정 API 호출
   const response = await productService.patchProductsId({
     productId,
-    name,
+    name: trimmedName,
     description,
     categoryId: categoryId ?? 0, // null/undefined 방어
     image: imageUrl || "",
@@ -108,6 +118,7 @@ const editProductFunction = async ({
 
     handleClose();
   } else {
+    console.error("상품 수정 실패:", response);
     toast.error("상품 수정에 실패하였습니다.");
   }
 };

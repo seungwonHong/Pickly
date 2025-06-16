@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Toaster } from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
 
@@ -32,10 +32,9 @@ const AddEditProductModal = ({
   const [addProduct, setAddProduct] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
-
   const router = useRouter();
-  const params = useParams();
-  const productId = params.id;
+
+  const productId = productinfo?.id || null;
 
   const {
     name,
@@ -70,6 +69,8 @@ const AddEditProductModal = ({
     if (productinfo) {
       setClickedValue(productinfo.category.name);
       setImage(productinfo.image);
+      setName(productinfo.name);
+      setDescription(productinfo.description);
     }
   }, []);
 
@@ -207,7 +208,7 @@ const AddEditProductModal = ({
                 })
               : editProductFunction({
                   productId: Number(productId),
-                  file: null,
+                  file,
                   name,
                   handleClose,
                   description,
@@ -218,6 +219,7 @@ const AddEditProductModal = ({
                   setCategoryId,
                   setClickedValue,
                   image,
+                  setFile,
                 });
           }}
         >
