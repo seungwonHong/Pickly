@@ -1,13 +1,22 @@
+"use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { FaPlus } from "react-icons/fa6";
 
-type Props = {};
+const FloatingButton = () => {
+  const router = useRouter();
 
-const FloatingButton = (props: Props) => {
+  const handleModalOpen = () => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("modal", "true");
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
   return (
     <div
-      className="flex flex-row items-center justify-center w-[60px] h-[60px] rounded-full cursor-pointer"
+      className="transition-transform duration-300 hover:scale-110 flex flex-row items-center justify-center w-[60px] h-[60px] rounded-full cursor-pointer"
       style={{ background: "var(--gradient-main_gradiation)" }}
+      onClick={handleModalOpen}
     >
       <FaPlus color="#F1F1F5" size={22} />
     </div>

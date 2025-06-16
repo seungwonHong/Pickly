@@ -1,63 +1,63 @@
 "use client";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-
 import { reviewService } from "../api";
+import { AxiosError } from "axios";
+import { getCookie } from "cookies-next";
 
-export default function useLikeButton() {
-  // id도 추가로 받아와야 함. +  토큰도 받아와야 함
-
-  // 목데이터 삭제 예정
-  const mockData = {
-    list: [
-      {
-        id: 1574,
-        rating: 5,
-        content: "와 이거 진짜 좋아요",
-        likeCount: 0,
-        createdAt: "2025-05-28T12:25:57.611Z",
-        updatedAt: "2025-05-28T12:25:57.611Z",
-        userId: 793,
-        productId: 1231,
-        user: {
-          id: 793,
-          nickname: "라몽이",
-          image: null,
-        },
-        reviewImages: [
-          {
-            id: 1816,
-            source: "https://image.yes24.com/goods/125993371/XL",
-          },
-        ],
-        isLiked: false,
-      },
-    ],
-    nextCursor: null,
-  };
-
-  const [isLikedState, setIsLikedState] = useState(false);
-  const [islikeCount, setIsLikeCount] = useState(mockData.list[0].likeCount);
-
-  //   const { reviews } = useGetProductsIdReviews(); -> 로그인 되면 다시 수정
+export default function useLikeButton(
+  reviewId: number,
+  initialLikeCount: number,
+  initialIsLiked: boolean = false
+) {
+  const [isLikedState, setIsLikedState] = useState(initialIsLiked);
+  const [isLikeCount, setIsLikeCount] = useState(initialLikeCount);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const likeMutation = useMutation({
-    mutationFn: () => reviewService.postReviewsLike(mockData.list[0].id),
+    mutationFn: () => reviewService.postReviewsLike(reviewId),
     onSuccess: () => {
       setIsLikedState(true);
-      setIsLikeCount((prevCount) => prevCount + 1);
+      setIsLikeCount((prev) => prev + 1);
+      setShowLoginModal(false);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        setShowLoginModal(true);
+      }
     },
   });
 
   const unlikeMutation = useMutation({
-    mutationFn: () => reviewService.deleteReviews(mockData.list[0].id),
+    mutationFn: () => reviewService.deleteReviewsLike(reviewId),
     onSuccess: () => {
       setIsLikedState(false);
-      setIsLikeCount((prevCount) => prevCount - 1);
+      setIsLikeCount((prev) => prev - 1);
+      setShowLoginModal(false);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError && error.response?.status === 401) {
+      }
     },
   });
 
-  const toggleLike = () => {
+  // 쿠키 검증과 좋아요
+  const toggleLike = async () => {
+    const csrfToken = (await getCookie("csrf-token")) ?? "";
+
+    const res = await fetch("/api/cookie", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "x-csrf-token": csrfToken,
+      },
+    });
+
+    if (!res.ok) {
+      setShowLoginModal(true);
+      return;
+    }
+
     if (isLikedState) {
       unlikeMutation.mutate();
     } else {
@@ -65,5 +65,11 @@ export default function useLikeButton() {
     }
   };
 
-  return { isLikedState, islikeCount, toggleLike };
+  return {
+    isLikedState,
+    isLikeCount,
+    toggleLike,
+    showLoginModal,
+    setShowLoginModal,
+  };
 }

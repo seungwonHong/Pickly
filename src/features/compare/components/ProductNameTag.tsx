@@ -1,7 +1,5 @@
 type ProductNameTagProps = {
-  productName: string;
   color: "green" | "pink";
-  handleDeleteButtonClick: () => void;
   inline?: boolean;
 };
 
@@ -22,8 +20,6 @@ export default function ProductNameTag({
         color: textColor,
         pointerEvents: inline ? "none" : "auto",
       }}
-    >
-
-    </span>
+    ></span>
   );
 }

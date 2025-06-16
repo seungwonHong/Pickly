@@ -1,37 +1,76 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CompareDropdown from "./CompareDropdown";
-import useProductSearch from "../hooks/useProductSearch";
+import useGetUser from "@/features/productId/hooks/useGetUser";
+import { productService } from "../api/api";
+import { useProductStatsStore } from "@/features/productId/libs/useProductStatsStore";
 
 type Props = {
   label: string;
   tagColor: "green" | "pink";
   teamId: string;
-  onProductSelect?: (productName: string) => void;
-  excludeName?: string;
-}
+  onProductSelectId?: (id: number | null) => void;
+  onCategorySelect?: (categoryId: number | null) => void;
+  excludeId?: number | null;
+  defaultProductId?: number | null | undefined;
+  setShowResult?: (value: boolean) => void;
+  onProductNameChange?: (name: string) => void;
+};
 
 export default function CompareProductInput({
   label,
   tagColor,
   teamId,
-  onProductSelect,
-  excludeName,
+  onProductSelectId,
+  onCategorySelect,
+  excludeId,
+  defaultProductId,
+  onProductNameChange,
+  setShowResult
 }: Props) {
   const [inputValue, setInputValue] = useState("");
   const [selected, setSelected] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const productList = useProductSearch(inputValue);
+  const { baseCompareProductId, compareList } = useGetUser();
 
-  const filteredProducts = productList.list.filter((product) =>
-    product.name.toLowerCase().startsWith(inputValue.toLowerCase()) &&
-    product.name !== excludeName
+  const {
+    setRating,
+    setReviewCount,
+    setFavoriteCount
+  } = useProductStatsStore();
+
+  useEffect(() => {
+    const productId = defaultProductId != null ? defaultProductId : baseCompareProductId;
+
+    if (productId != null) {
+      productService.getProductsId(productId)
+        .then(async (res) => {
+          const product = res.data;
+          setInputValue(product.name);
+          setSelected(true);
+          onProductSelectId?.(product.id);
+          onCategorySelect?.(product.categoryId);
+
+          const statsRes = await productService.getStats(teamId, product.id);
+          const stats = statsRes.data;
+          setRating(stats.rating);
+          setReviewCount(stats.reviewCount);
+          setFavoriteCount(stats.favoriteCount);
+        })
+        .catch((error) => console.error("상품 정보를 가져오는 중 오류 발생:", error));
+    }
+  }, [defaultProductId, baseCompareProductId, onProductSelectId, onCategorySelect]);
+
+  const filteredProducts = compareList.filter(
+    (product) =>
+      product.name.toLowerCase().startsWith(inputValue.toLowerCase()) &&
+      product.id !== excludeId
   );
 
-  const showDropdown = !selected && inputValue && filteredProducts.length > 0;
+  const showDropdown = !selected && inputValue.trim() !== "" && filteredProducts.length > 0;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -39,18 +78,34 @@ export default function CompareProductInput({
   };
 
   const handleAddProductInternal = (id: number, name: string) => {
-    setInputValue(name);
-    setSelected(true);
-    onProductSelect?.(name);
+    productService.getProductsId(id)
+      .then(async (res) => {
+        const product = res.data;
+        setInputValue(product.name);
+        setSelected(true);
+        onProductSelectId?.(product.id);
+        onCategorySelect?.(product.categoryId);
+        onProductNameChange?.(product.name);
+
+        const statsRes = await productService.getStats(teamId, product.id);
+        const stats = statsRes.data;
+        setRating(stats.rating);
+        setReviewCount(stats.reviewCount);
+        setFavoriteCount(stats.favoriteCount);
+      })
+      .catch((error) => {
+        console.error("제품 상세정보 또는 통계정보 로드 실패:", error);
+      });
   };
 
   const handleDelete = () => {
     setInputValue("");
     setSelected(false);
-    onProductSelect?.("");
+    onProductSelectId?.(null);
+    onCategorySelect?.(null);
     inputRef.current?.focus();
+    setShowResult?.(false);
   };
-
 
   const tagStyles =
     tagColor === "green"
@@ -59,19 +114,14 @@ export default function CompareProductInput({
 
   return (
     <div className="flex flex-col w-[500px] sm:w-[350px]">
-      <label
-        htmlFor="productInput"
-        className="text-[16px] lg:text-base mb-2 font-light text-white"
-      >
+      <label htmlFor="productInput" className="text-[16px] lg:text-base mb-2 font-light text-white">
         {label}
       </label>
 
       <div className="relative w-full">
         {selected && (
           <div className="absolute z-10 flex items-center space-x-2 top-[15px] left-4">
-            <div
-              className={`flex items-center px-3 py-2 rounded-[6px] text-[16px] ${tagStyles}`}
-            >
+            <div className={`flex items-center px-3 py-2 rounded-[6px] text-[16px] ${tagStyles}`}>
               {inputValue}
               <button
                 onClick={handleDelete}
@@ -84,13 +134,7 @@ export default function CompareProductInput({
           </div>
         )}
 
-        <div
-          className={`relative rounded-[8px] border w-full h-[70px] ${
-            isFocused || showDropdown
-              ? "border-transparent bg-gradient-to-r from-[#5097fa] to-[#5363ff] p-[1px]"
-              : "border-[#353542]"
-          }`}
-        >
+        <div className={`relative rounded-[8px] border w-full h-[70px] ${isFocused || showDropdown ? "border-transparent bg-gradient-to-r from-[#5097fa] to-[#5363ff] p-[1px]" : "border-[#353542]"}`}>
           <div className="w-full h-full rounded-[8px] bg-[#252530]">
             <input
               ref={inputRef}
@@ -109,7 +153,7 @@ export default function CompareProductInput({
         {showDropdown && (
           <CompareDropdown
             inputValue={inputValue}
-            productList={{list: filteredProducts}}
+            productList={{ list: filteredProducts }}
             handleAddProduct={handleAddProductInternal}
           />
         )}

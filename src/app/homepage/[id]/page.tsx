@@ -1,21 +1,32 @@
 import FloatingButton from "@/components/shared/FloatingButton";
 import Header from "@/components/shared/Header";
 import Category from "@/features/home/components/Category";
-import ProductCard from "@/components/shared/ProductCard";
 import ReviewerRanking from "@/features/home/components/ReviewerRanking";
 import { getProductsFetch } from "@/features/home/services/getProduct";
+import HighStarProduct from "@/features/home/components/HighStarProduct";
+import MoreProducts from "@/features/home/components/MoreProducts";
+import AddEditProductModal from "@/components/shared/AddEditProductModal";
+import SortComponent from "@/features/home/components/SortComponent";
+import SearchPage from "@/components/shared/SearchPage";
 
 // next 15 부터 동적 라우팅은 비동기로 처리된다
 // 따라서 params도 promise 형태로 감싸야 한다
 export default async function CategoryPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{
+    [key: string]: "recent" | "reviewCount" | "rating";
+  }>;
 }) {
   const { id: categoryId } = await params;
   const decodeParams = decodeURIComponent(categoryId);
+  const sp = await searchParams;
+  let products;
 
   const categoryIndexMap: Record<string, number> = {
+    검색: 0,
     음악: 1,
     "영화/드라마": 2,
     "강의/책": 3,
@@ -28,15 +39,16 @@ export default async function CategoryPage({
     앱: 10,
   };
 
-  const categoryNumber = categoryIndexMap[decodeParams] ?? 0;
-
-  console.log("현재 카테고리:", decodeParams); // "전자기기"
+  console.log("현재 카테고리:", decodeParams);
+  const categoryNumber = categoryIndexMap[decodeParams] ?? undefined;
   console.log("매핑된 번호:", categoryNumber);
 
-  const products = await getProductsFetch({
-    order: "recent",
-    categoryId: categoryNumber,
-  });
+  if (categoryNumber >= 1) {
+    products = await getProductsFetch({
+      order: sp.sort,
+      categoryId: categoryNumber,
+    });
+  }
 
   console.log(products);
 
@@ -51,44 +63,72 @@ export default async function CategoryPage({
           <Category categoryId={categoryId} />
         </div>
 
-        <div className="lg:flex flex-col mt-[60px] hidden lg:mb-[50px] mb-[30px] lg:w-[950px] md:w-[510px] w-[340px]">
-          <span className="lg:text-[24px] text-[#F1F1F5] font-semibold">
-            {decodeParams}의 모든 상품
-          </span>
-
-          <div
-            className="grid lg:grid-cols-3 grid-cols-2 lg:gap-[20px]
-          lg:mt-[30px]"
-          >
-            {products.list.slice(0, 9).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+        {categoryNumber === 0 ? (
+          <div className="lg:flex flex-col mt-[60px] hidden lg:mb-[50px] mb-[30px] lg:w-[950px] md:w-[510px] w-[340px]">
+            <SearchPage searchParams={searchParams} />
           </div>
-        </div>
+        ) : (
+          <div className="lg:flex flex-col mt-[60px] hidden lg:mb-[50px] mb-[30px] lg:w-[950px] md:w-[510px] w-[340px]">
+            <div className="flex flex-row items-center justify-between">
+              <span className="lg:text-[24px] text-[#F1F1F5] font-semibold">
+                {decodeParams}의 모든 상품
+              </span>
+              <SortComponent />
+            </div>
 
-        <div className="flex flex-col lg:ml-0 md:ml-[180px]">
+            <HighStarProduct products={products} />
+            <MoreProducts
+              key={decodeParams}
+              nextCursor={products?.nextCursor}
+              categoryId={categoryNumber}
+              queryKey={["products", categoryNumber, undefined]}
+              order={sp.sort}
+            />
+          </div>
+        )}
+
+        <div className="flex flex-col overflow-x-hidden lg:ml-0 md:ml-[180px]">
           <div className="lg:fixed 2xl:right-[180px]">
             <ReviewerRanking />
           </div>
 
           {/* 데스크톱 사이즈가 아닌 경우 */}
-          <div className="lg:hidden flex flex-col mt-[60px] md:ml-[25px] md:w-[510px] w-[335px] lg:mb-[50px] mb-[30px]">
-            <span className="text-[20px] text-[#F1F1F5] font-semibold">
-              {decodeParams}의 모든 상품
-            </span>
-
-            <div className="grid grid-cols-2 gap-[15px] items-center justify-center mt-[30px]">
-              {products.list.slice(0, 9).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+          {categoryNumber === 0 ? (
+            <div className="lg:hidden flex flex-col mt-[60px] md:ml-[25px] md:w-[510px] w-full max-w-[335px] lg:mb-[50px] mb-[30px]">
+              <SearchPage searchParams={searchParams} />
             </div>
-          </div>
+          ) : (
+            <div className="lg:hidden flex flex-col mt-[60px] md:ml-[25px] md:w-[510px] w-[335px] lg:mb-[50px] mb-[30px]">
+              <div className="flex md:flex-row flex-col items-center justify-between">
+                <span className="lg:text-[24px] text-[#F1F1F5] font-semibold mr-auto">
+                  {decodeParams}의 모든 상품
+                </span>
+                <div className="ml-auto md:mt-0 mt-[30px]">
+                  <SortComponent />
+                </div>
+              </div>
+
+              <HighStarProduct products={products} />
+              <MoreProducts
+                key={decodeParams}
+                nextCursor={products?.nextCursor}
+                categoryId={categoryNumber}
+                queryKey={["products", categoryNumber, undefined]}
+                order={sp.sort}
+              />
+            </div>
+          )}
         </div>
 
         <div className="fixed lg:right-[180px] md:right-[30px] right-[20px] lg:bottom-[90px] md:bottom-[90px] bottom-[40px]">
           <FloatingButton />
         </div>
       </div>
+      {sp.modal?.toString() === "true" && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center">
+          <AddEditProductModal buttonPlaceholder="추가하기" />
+        </div>
+      )}
     </div>
   );
 }

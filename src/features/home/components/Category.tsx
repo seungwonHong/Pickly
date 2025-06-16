@@ -1,5 +1,6 @@
 import React from "react";
 import CategoryTab from "./CategoryTab";
+import { CiSearch } from "react-icons/ci";
 
 const Category = ({ categoryId }: { categoryId: string }) => {
   const decodedId =
@@ -14,6 +15,11 @@ const Category = ({ categoryId }: { categoryId: string }) => {
       </span>
 
       <div className="flex flex-col lg:mt-[20px] lg:w-[200px] md:w-[160px] gap-[4px]">
+        <CategoryTab
+          placeholder="검색"
+          selected={decodedId === "검색"}
+          icon={<CiSearch className="mr-[10px]"/>}
+        />
         <CategoryTab placeholder="음악" selected={decodedId === "음악"} />
         <CategoryTab
           placeholder="영화/드라마"

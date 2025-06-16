@@ -1,40 +1,45 @@
+import ProductReviewSort from "./ProductReviewSort";
 import ProductReviewsInfinite from "./ProductReviewsInfinite";
-import { productService } from "../../api";
 
-interface ProductIdReviewProps {
-  params: {
-    id: string;
-  };
-  searchParams?: {
-    order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
+import { productService } from "../../api";
+import ProductReviewClient from "./ProductReviewClient";
+
+interface ProductReviewsClientProps {
+  productId: number;
+  searchParams: {
+    [key: string]: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
   };
 }
 
-export default async function ProductReviewsList({
-  params,
+export default async function ProductReviewsFetch({
+  productId,
   searchParams,
-}: ProductIdReviewProps) {
-  const productId = Number(params.id);
-  const order = searchParams?.order || "recent";
-
-  if (isNaN(productId)) return null;
+}: ProductReviewsClientProps) {
+  const sort = searchParams?.sort ?? "recent";
 
   const initialData = await productService
-    .getProductsIdReviews(productId, order)
+    .getProductsIdReviews(productId, sort)
     .then((res) => res.data);
-
   console.log("initialData", initialData);
+
   return (
-    <div className="mt-[60px]">
-      <div className="text-[#f1f1f1] text-[20px] font-semibold flex justify-between mb-[30px]">
-        <div>상품리뷰</div>
-        <div>드롭다운 와야함</div>
+    <div>
+      <div className="text-[#f1f1f1]  lg:text-[20px] text-[16px] font-medium flex justify-between mb-[30px]">
+        <ProductReviewSort sort={sort} />
       </div>
-      <ProductReviewsInfinite
-        initialData={initialData}
-        productId={productId}
-        order={order}
-      />
+
+      <ProductReviewClient initialData={initialData} />
+      {initialData.nextCursor && (
+        <div className="w-full">
+          <ProductReviewsInfinite
+            nextCursor={initialData?.nextCursor}
+            productId={productId}
+            queryKey={["reviews", productId, sort]}
+            order={sort}
+            initialData={initialData}
+          />
+        </div>
+      )}
     </div>
   );
 }

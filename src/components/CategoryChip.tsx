@@ -17,8 +17,9 @@ const isValidCategory = (value: string): value is ValidCategory => {
   return VALID_CATEGORIES.includes(value as ValidCategory);
 };
 
-export interface CategoryChiProps {
+export interface CategoryChipProps {
   category: string;
+  className?: string;
 }
 
 const categoryColors: Record<ValidCategory, string> = {
@@ -34,7 +35,10 @@ const categoryColors: Record<ValidCategory, string> = {
   앱: "bg-[#3098E31A] text-[#3098E3]",
 };
 
-export default function CategoryChip({ category }: CategoryChiProps) {
+export default function CategoryChip({
+  category,
+  className,
+}: CategoryChipProps) {
   if (!isValidCategory(category)) {
     return null;
   }
@@ -43,7 +47,7 @@ export default function CategoryChip({ category }: CategoryChiProps) {
 
   return (
     <div
-      className={`inline-flex justify-center items-center rounded-md font-normal text-[12px] px-1 py-2 h-[22px] lg:rounded-lg lg:font-medium lg:text-[18px] lg:h-[29px] ${chipStyle}`}
+      className={`inline-flex justify-center items-center rounded-md font-normal  px-[8px] py-[4px] h-[22px] lg:rounded-lg lg:font-medium  lg:h-[29px] ${chipStyle} ${className}`}
     >
       {category}
     </div>

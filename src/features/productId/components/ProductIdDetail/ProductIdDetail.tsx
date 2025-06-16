@@ -2,36 +2,36 @@ import Image from "next/image";
 
 import { productService } from "../../api";
 import ProductIdReviewButton from "./ProductIdDetailButton";
+import CategoryChip from "@/components/CategoryChip";
+import ProductIdDetailHeart from "./ProductIdDetailHeart";
 
-import HeartInactive from "../../../../../public/icons/heart-inactive.svg";
 import KakaoLink from "../../../../../public/images/kakao-link.png";
 import LinkShare from "../../../../../public/images/link-share.png";
 
-interface ProductIdReviewProps {
-  params: Promise<{ id: string }>;
-}
-
 export default async function ProductIdDetail({
-  params,
-}: ProductIdReviewProps) {
-  const { data: product } = await productService.getProductsId(
-    Number((await params).id)
-  );
-
+  productId,
+}: {
+  productId: number;
+}) {
+  const response = await productService.getProductsId(productId);
+  const product = response.data;
   if (!product) return <div>상품 정보가 없습니다.</div>;
-
   return (
-    <div className="flex items-start justify-between gap-10 text-[#f1f1f5]">
-      <img src={product.image} width={306} height={228} alt="상품 이미지" />
+    <div className="flex md:items-start items-center justify-between lg:gap-[60px] md:gap-[40px] text-[#f1f1f5] md:flex-row flex-col gap-[20px]">
+      <div className="lg:w-[306px] lg:h-[306px] md:w-[242px] md:h-[242px]  w-[220px] h-[220px] flex justify-center items-center overflow-hidden bg-[#1C1C22">
+        <img
+          src={product.image}
+          alt="상품 이미지"
+          className="lg:max-w-[306px] lg:max-h-[306px] md:w-[242px] md:h-[242px] w-auto h-auto object-contain"
+        />
+      </div>
 
-      <div className="w-[545px] ">
-        <div className="pb-[9.5px]">{product.category.name}</div>
-        <div className="flex items-center justify-between pb-[49px]">
-          <div className="flex items-center gap-[15px] justify-between">
-            <div className="text-2xl font-semibold">{product.name}</div>
-            {/* 토큰 완료되면 좋아요 활성화 / 비활성화화 */}
-            <Image src={HeartInactive} alt="좋아요" width={28} height={28} />
-          </div>
+      <div className="lg:w-[545px] md:w-[384px]">
+        <div className="flex items-center justify-between mb-[9.5px]">
+          <CategoryChip
+            category={product.category.name}
+            className="text-[12px] "
+          />
           <div className="flex items-center justify-between gap-[10px] ">
             <Image
               src={KakaoLink}
@@ -42,11 +42,22 @@ export default async function ProductIdDetail({
             <Image src={LinkShare} alt="링크 공유" width={28} height={28} />
           </div>
         </div>
-        <div className="text-[16px] pb-[60px] font-normal">
-          {product.description}
+        <div className="flex flex-col justify-between gap-[20px]">
+          <div className="flex items-center justify-between ">
+            <div className="flex items-center justify-between w-full">
+              <div className="lg:text-2xl text-[20px] font-semibold">
+                {product.name}
+              </div>
+              {/* 찜 하트는 csr이라 따로 컴포넌트 팜 */}
+              <ProductIdDetailHeart productId={productId} />
+            </div>
+          </div>
+          <div className="lg:text-[16px] md:text-[14px] font-normal">
+            {product.description}
+          </div>
+          {/* 여기는 csr로 해야함 -> 로그인 여부에 따라 모양이 달라짐 */}
+          <ProductIdReviewButton product={product} />
         </div>
-        {/* 여기는 csr로 해야함 -> 로그인 여부에 따라 모양이 달라짐 */}
-        <ProductIdReviewButton productUserId={product.userId} />
       </div>
     </div>
   );

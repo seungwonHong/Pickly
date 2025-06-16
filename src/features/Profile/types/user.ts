@@ -6,7 +6,6 @@ export interface User {
   nickname: string;
   createdAt: string;
   updatedAt: string;
-
   mostFavoriteCategory: {
     id: number;
     name: string;
@@ -17,4 +16,20 @@ export interface User {
   followersCount: number;
   isFollowing: boolean;
   isMe: boolean;
+}
+
+export type ProductTabType = "reviewed" | "created" | "favorite";
+
+export interface Product {
+  reviewCount: number;
+  favoriteCount: number;
+  rating: number;
+  id: number;
+  name: string;
+  image: string;
+}
+
+export interface ProductApiResponse {
+  list: Product[];
+  nextCursor: number;
 }

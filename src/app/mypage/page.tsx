@@ -1,24 +1,20 @@
-"use client";
 import Header from "@/components/shared/Header";
-import ActivitySection from "@/components/shared/Profile/ActivitySection";
-import ProfileCard from "@/components/shared/Profile/ProfileCard";
-import { useMyProfile } from "@/components/shared/Profile/useMyProfile";
+import { getMyProfile } from "@/features/Profile/api/getMyProfile";
+import { getUserProducts } from "@/features/Profile/api/getUserProducts";
+import ActivitySection from "@/features/Profile/components/ActivitySection";
+import ProductTabSection from "@/features/Profile/components/ProductTabSection";
 
-const MyPagePage = () => {
-  const { data: user, isLoading, isError } = useMyProfile();
+import ProfileCard from "@/features/Profile/components/ProfileCard";
 
-  if (isLoading) {
-    return <p className="text-gray-400">로딩 중...</p>;
-  }
-
-  if (isError || !user) {
-    return <p className="text-red-400">유저 정보를 불러오지 못했습니다.</p>;
-  }
+export default async function MyPage() {
+  const user = await getMyProfile();
+  const initialProducts = await getUserProducts(user.id, "reviewed");
+  // console.log(user);
 
   return (
     <>
       <Header />
-      <div className="mt-[40px] px-[20px] min-h-screen md:px-[117px] lg:mx-auto lg:px-0 lg:flex lg:justify-center lg:gap-[70px] max-w-[1340px] ">
+      <div className="mt-[40px] px-[20px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-0 lg:flex lg:justify-center lg:gap-[70px] max-w-[1340px] ">
         <div className="h-auto">
           <ProfileCard user={user} isMe={true} />
         </div>
@@ -27,10 +23,13 @@ const MyPagePage = () => {
             활동 내역
           </span>
           <ActivitySection user={user} />
+          <ProductTabSection
+            userId={user.id}
+            initialTab="reviewed"
+            initialProducts={initialProducts}
+          />
         </div>
       </div>
     </>
   );
-};
-
-export default MyPagePage;
+}

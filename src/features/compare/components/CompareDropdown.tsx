@@ -4,9 +4,7 @@ import { Product, ProductsResponse } from "../types/product";
 type Props = {
   productList: ProductsResponse;
   handleAddProduct: (id: number, name: string) => void;
-  inputValue: string;
 };
-
 
 export default function CompareDropdown({
   productList,
@@ -22,11 +20,11 @@ export default function CompareDropdown({
       {productList.list.map(({ id, name }) => (
         <li key={id}>
           <button
-            className={`
+            className="
               w-full rounded-[6px] px-[15px] py-[10px] text-left 
               text-[14px] lg:text-[16px] leading-[20px] lg:leading-[22px]
               text-[var(--color-deepGray)] hover:bg-[#353542] hover:text-white focus:outline-none
-            `}
+            "
             onClick={() => handleAddProduct(id, name)}
             type="button"
           >
