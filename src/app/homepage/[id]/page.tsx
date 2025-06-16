@@ -8,7 +8,24 @@ import MoreProducts from "@/features/home/components/MoreProducts";
 import AddEditProductModal from "@/components/shared/AddEditProductModal";
 import SortComponent from "@/features/home/components/SortComponent";
 import SearchPage from "@/components/shared/SearchPage";
-import { Toaster } from "react-hot-toast";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const decodeParams = decodeURIComponent(params.id);
+
+  return {
+    title: `Pickly | ${decodeParams}`,
+    description: `${decodeParams}와 관련된 모든 상품을 확인해보세요.`,
+    openGraph: {
+      title: `Pickly | ${decodeParams}`,
+      description: `${decodeParams}와 관련된 모든 상품을 Pickly에서 확인해보세요.`,
+    },
+  };
+}
 
 // next 15 부터 동적 라우팅은 비동기로 처리된다
 // 따라서 params도 promise 형태로 감싸야 한다

@@ -92,28 +92,6 @@ const CategoryGrid = (props: Props) => {
           url="/homepage/의류%2F악세서리?sort=recent"
         />
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="flex flex-row items-center lg:mt-[69px] md:mt-[25px] mt-[15px]"
-      >
-        <span className="text-white ml-auto lg:text-[64px] md:text-[32px] text-[16px] font-extrabold">
-          Explore More
-        </span>
-
-        <Link
-          href=""
-          className="flex items-center justify-center lg:w-[64px] lg:h-[64px] md:w-[32px] md:h-[32px] w-[16px] h-[16px] lg:ml-[65px] md:ml-[25px] ml-[10px] rounded-full  bg-gradient-to-r from-[#5097fa] to-[#5363ff] hover:scale-110 transition-transform duration-300 ease-in-out"
-        >
-          <FaArrowRight
-            className="lg:w-[20px] lg:h-[20px] md:w-[10px] md:h-[10px] w-[5px] h-[5px]"
-            color="#000000"
-          />
-        </Link>
-      </motion.div>
     </div>
   );
 };
