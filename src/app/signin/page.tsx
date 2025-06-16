@@ -29,7 +29,7 @@ const SigninPage = () => {
 
   const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email openid`;
   const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email,profile_nickname,profile_image&prompt=consent`;
-  const logoutUrl = `https://kauth.kakao.com/oauth/logout?client_id=${KAKAO_REST_API_KEY}&logout_redirect_uri=${KAKAO_REDIRECT_URI}`;
+ 
   const {
     register,
     handleSubmit,
@@ -153,14 +153,6 @@ const SigninPage = () => {
                       text-[0px] 
                       hover:animate-spin-slow">
                       카카오톡 로그인하기
-                    </span>
-                  </Link>
-                  <Link
-                    href={logoutUrl}
-                    className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
-                  >
-                    <span >
-                      카카오톡 로그아웃하기
                     </span>
                   </Link>
                 </li>

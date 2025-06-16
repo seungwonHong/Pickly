@@ -15,11 +15,20 @@ import ErrorPage from "./error";
 
 const login_logo = "/signup_logo.svg";
 
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+const GOOGLE_REDIRECT_URI = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
+
+const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+
 const SignUpPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
 
+  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email openid`;
+  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email,profile_nickname,profile_image&prompt=consent`;
+ 
   const { mutate: signUp } = useSignUp({
     onSuccess: (data: AuthResponse) => {
       toast.success(`${data.user.nickname}님 회원가입 되었습니다!`);
@@ -128,11 +137,11 @@ const SignUpPage = () => {
               <ul className="flex justify-center gap-5 mt-[19px]">
                 <li>
                   <Link
-                    href=""
-                    className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[var(--color-white)] transition-transform duration-200 ease-in-out shadow-lg"
+                    href={googleAuthUrl}
+                    className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+
                   >
-                    <span
-                      className="
+                    <span className="
                       block 
                       bg-[var(--color-deepGray)] 
                       h-[56px] w-[56px] 
@@ -142,19 +151,17 @@ const SignUpPage = () => {
                       mask-no-repeat 
                       mask-center 
                       hover:bg-[url('/sns_gg_bg.png')] bg-cover bg-center bg-no-repeat 
-                      text-[0px]"
-                    >
+                      text-[0px]">
                       구글 로그인하기
                     </span>
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href=""
-                    className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[#f3e21f] transition-transform duration-200 ease-in-out shadow-lg"
+                    href={kakaoLoginUrl}
+                    className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
-                    <span
-                      className="
+                    <span className="
                       block 
                       h-[56px] w-[56px] 
                       bg-[var(--color-deepGray)] 
@@ -165,8 +172,7 @@ const SignUpPage = () => {
                       mask-no-repeat 
                       mask-center 
                       text-[0px] 
-                      hover:animate-spin-slow"
-                    >
+                      hover:animate-spin-slow">
                       카카오톡 로그인하기
                     </span>
                   </Link>
