@@ -8,8 +8,34 @@ import LandingPageTop from "@/features/landing/components/LandingPageTop";
 import MovingCategories from "@/features/landing/components/MovingCategories";
 import SometimesTie from "@/features/landing/components/SometimesTie";
 import SometimesWin from "@/features/landing/components/SometimesWin";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const cookieStore = await cookies();
+  const csrfToken = cookieStore.get("csrf-token")?.value ?? "";
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
+
+  const res = await fetch(`${process.env.BASE_URL}/api/cookie`, {
+    method: "GET",
+    headers: {
+      cookie: cookieHeader,
+      "x-csrf-token": csrfToken,
+    },
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    console.log("로그인 된 상태여서 홈페이지로 이동합니다");
+    redirect("/homepage");
+  } else {
+    console.log("랜딩페이지에서 로그인 돼있지 않음");
+  }
+
   return (
     <>
       <main className="relative overflow-x-hidden flex flex-col lg:px-[160px] px-[24px]">
