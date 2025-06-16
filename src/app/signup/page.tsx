@@ -159,9 +159,10 @@ const SignUpPage = () => {
                 <li>
                   <Link
                     href={kakaoLoginUrl}
-                    className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+                    className="block border  border-[#353542] rounded-full hover:bg-[#f3e21f]  hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
-                    <span className="
+                    <span
+                      className="
                       block 
                       h-[56px] w-[56px] 
                       bg-[var(--color-deepGray)] 
@@ -172,7 +173,8 @@ const SignUpPage = () => {
                       mask-no-repeat 
                       mask-center 
                       text-[0px] 
-                      hover:animate-spin-slow">
+                      hover:animate-spin-slow"
+                    >
                       카카오톡 로그인하기
                     </span>
                   </Link>
