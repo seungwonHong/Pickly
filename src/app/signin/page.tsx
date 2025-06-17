@@ -40,7 +40,6 @@ const SigninPage = () => {
     resolver: zodResolver(loginFormSchema),
   });
 
-
   const { mutate: login } = useLoginMutation({
     onSuccess: (data: AuthResponse) => {
       //로그인 성공시 '닉네임님 로그인 되었습니다! ' 모달 활성화 후 1초 뒤 홈으로 이동 
@@ -70,7 +69,7 @@ const SigninPage = () => {
         <div className="max-w-[440px] md:max-w-[640px] w-full mx-auto pt-[93px] pb-[93px] min-h-[100dvh] flex justify-center items-center">
           <div className="w-full px-[20px] lg:px-[0px]">
             <div className="flex justify-center items-center mb-[25px]">
-              <Link href="/landingpage" >
+              <Link href="/" >
                 <Image
                   src={login_logo}
                   width={193}
@@ -111,14 +110,15 @@ const SigninPage = () => {
                 로그인
               </BaseButton>
             </form>
-            <div className="text-[var(--color-deepGray)] mt-[60px] text-center text-base">
-              <span>SNS로 바로 시작하기</span>
+            <div className="text-[var(--color-deepGray)] mt-[40px] text-center text-base">
+              <span>아직 회원이 아니신가요? <Link href="/signup" className="hover:text-[var(--color-white)]">회원가입</Link></span>
+            </div>
+            <div className="text-[var(--color-deepGray)] mt-[20px] text-center text-base">
               <ul className="flex justify-center gap-5 mt-[19px]">
                 <li>
                   <Link
                     href={googleAuthUrl}
-                    className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
-
+                    className="group relative block border border-[#353542] rounded-full hover:bg-[var(--color-white)] hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span className="
                       block 
@@ -131,14 +131,17 @@ const SigninPage = () => {
                       mask-center 
                       hover:bg-[url('/sns_gg_bg.png')] bg-cover bg-center bg-no-repeat 
                       text-[0px]">
-                      구글 로그인하기
+                      구글 로그인
+                    </span>
+                    <span className="absolute block  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                      구글 로그인
                     </span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href={kakaoLoginUrl}
-                    className="block border  border-[#353542] rounded-full hover:bg-[#f3e21f]  hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+                    className="group relative block border border-[#353542] rounded-full hover:bg-[#f3e21f]  hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span
                       className="
@@ -154,7 +157,10 @@ const SigninPage = () => {
                       text-[0px] 
                       hover:animate-spin-slow"
                     >
-                      카카오톡 로그인하기
+                      카카오톡 로그인
+                    </span>
+                    <span className="absolute block  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                      카카오톡 로그인
                     </span>
                   </Link>
                 </li>
