@@ -11,6 +11,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import ErrorPage from "./error";
+import { AxiosError } from "axios";
+
 
 const login_logo = "/signup_logo.svg";
 
@@ -23,11 +25,11 @@ const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 const SignUpPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const error = searchParams.get("error");
+  const error = searchParams.get('error');
 
   const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email openid`;
   const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email,profile_nickname,profile_image&prompt=consent`;
-
+ 
   const { mutate: signUp } = useSignUp({
     onSuccess: (data: AuthResponse) => {
       toast.success(`${data.user.nickname}님 회원가입 되었습니다!`);
@@ -35,10 +37,10 @@ const SignUpPage = () => {
         router.replace("/signin");
       }, 1000);
     },
-    onError: (error) => {
-      const err = error as Error;
+    onError: (error:  AxiosError | any) => {
       toast.error(
-        err?.message || "회원가입에 실패했습니다. 다시 시도해 주세요."
+        error?.response?.data?.message ||
+          "회원가입에 실패했습니다. 다시 시도해 주세요."
       );
     },
   });
@@ -56,10 +58,10 @@ const SignUpPage = () => {
     signUp(data);
   };
 
-  if (error === "oauth") {
-    return <ErrorPage />;
+  if (error === 'oauth') {
+    return <ErrorPage/>;
   }
-
+  
   return (
     <>
       <div
@@ -68,7 +70,7 @@ const SignUpPage = () => {
         <div className="max-w-[440px] md:max-w-[640px] w-full pt-[93px] pb-[93px] mx-auto min-h-[100dvh] flex justify-center items-center">
           <div className="w-full px-[20px] lg:px-[0px]">
             <div className="flex justify-center items-center mb-[25px]">
-              <Link href="/landingpage">
+              <Link href="/" >
                 <Image
                   src={login_logo}
                   width={193}
@@ -131,16 +133,18 @@ const SignUpPage = () => {
                 회원가입
               </BaseButton>
             </form>
+            <div className="text-[var(--color-deepGray)] mt-[40px] text-center text-base">
+              <span>이미 회원이신가요? <Link href="/signin" className="hover:text-[var(--color-white)]">로그인</Link></span>
+            </div>
             <div className="text-[var(--color-deepGray)] mt-[60px] text-center text-base">
               <span>SNS로 바로 시작하기</span>
               <ul className="flex justify-center gap-5 mt-[19px]">
                 <li>
                   <Link
                     href={googleAuthUrl}
-                    className="block border  border-[#353542] rounded-full hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+                    className="group relative block border border-[#353542] rounded-full  hover:bg-[var(--color-white)] hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
-                    <span
-                      className="
+                    <span className="
                       block 
                       bg-[var(--color-deepGray)] 
                       h-[56px] w-[56px] 
@@ -150,16 +154,18 @@ const SignUpPage = () => {
                       mask-no-repeat 
                       mask-center 
                       hover:bg-[url('/sns_gg_bg.png')] bg-cover bg-center bg-no-repeat 
-                      text-[0px]"
-                    >
-                      구글 로그인하기
+                      text-[0px]">
+                      구글 회원가입하기
+                    </span>
+                    <span className="absolute block  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                      구글 회원가입하기
                     </span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href={kakaoLoginUrl}
-                    className="block border  border-[#353542] rounded-full hover:bg-[#f3e21f]  hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+                    className="block border border-[#353542] rounded-full hover:bg-[#f3e21f]  hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span
                       className="
@@ -175,7 +181,10 @@ const SignUpPage = () => {
                       text-[0px] 
                       hover:animate-spin-slow"
                     >
-                      카카오톡 로그인하기
+                      카카오톡 회원가입
+                    </span>
+                    <span className="absolute block  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                      카카오톡 회원가입
                     </span>
                   </Link>
                 </li>

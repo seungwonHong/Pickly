@@ -1,14 +1,15 @@
 "use client";
 import { User } from "@/features/Profile/types/user";
-import defaultProfileImage from "../../../../public/defaultProfileImage.jpeg";
+import defaultProfileImage from "../../../../public/defaultProfileImage.jpeg"; //임시 defaultImage//
 import Image from "next/image";
 import FollowCounts from "./FollowCounts";
-import FollowButton from "./FollowButton";
+
 import { useState } from "react";
 import LogoutButton from "./LogoutButton";
 import useAuthentication from "@/features/header/hooks/useAuthentication";
 import BaseButton from "@/components/shared/BaseButton";
 import EditProfileModal from "./EditProfileModal";
+import FollowButtonClient from "./FollowButtonClient";
 
 interface Props {
   user: User;
@@ -20,7 +21,7 @@ export default function ProfileCard({ user, isMe }: Props) {
   const [followersCount, setFollowersCount] = useState(user.followersCount);
   const { isAuthenticated } = useAuthentication();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log("rr", isAuthenticated);
+
   return (
     <div className="mb-[60px] px-[20px] py-[30px] w-full h-auto rounded-lg bg-[#252530] border border-[#353542] md:px-[30px] lg:w-[340px] lg:mb-0 lg:sticky lg:top-[120px]">
       <div className="w-full h-auto flex flex-col items-center gap-[30px] lg:gap-10">
@@ -71,11 +72,12 @@ export default function ProfileCard({ user, isMe }: Props) {
             {isAuthenticated && <LogoutButton />}
           </div>
         ) : (
-          <FollowButton
+          <FollowButtonClient
             userId={user.id}
             isFollowing={isFollowing}
             setIsFollowing={setIsFollowing}
             setFollowersCount={setFollowersCount}
+            router={undefined}
           />
         )}
       </div>

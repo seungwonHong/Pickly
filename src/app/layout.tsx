@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { M_PLUS_Rounded_1c } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./providers/QueryProvider";
-
 import { Toaster } from "react-hot-toast";
 import Script from "next/script";
 

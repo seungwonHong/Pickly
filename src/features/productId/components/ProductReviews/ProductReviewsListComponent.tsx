@@ -7,10 +7,10 @@ import { formatDate } from "../../../../lib/utils/datetime";
 import { GetProductIdReviewsDetail } from "../../types";
 import useGetUser from "../../hooks/useGetUser";
 import ProductReviewEditDelete from "./ProductReviewEditDelete";
-
+import ProductImage from "../ProductImage";
 import Star from "../../../../../public/icons/star.svg";
 import Link from "next/link";
-import defalutImage from "../../../../../public/defaultProfileImage.jpeg";
+
 export default function ProductReviewsListComponent({
   review,
 }: {
@@ -18,20 +18,15 @@ export default function ProductReviewsListComponent({
 }) {
   const { user } = useGetUser();
   const isOwner = user?.id === review.userId;
-  const imgSrc =
-    review.user.image && review.user.image !== "https://none"
-      ? review.user.image
-      : defalutImage.src;
+
   return (
     <div className="text-[#F1F1F5] mb-[20px] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
       <div className="flex items-start gap-[10px]">
         <Link href={`/users/${review.userId}`}>
-          <Image
-            src={imgSrc}
+          <img
+            src={review.user.image || "/defaultProfileImage.jpeg"}
             alt="프로필 이미지"
-            width={43}
-            height={43}
-            className="rounded-full object-cover"
+            className="rounded-full w-[43px] h-[43px]"
           />
         </Link>
         <div>
@@ -60,14 +55,15 @@ export default function ProductReviewsListComponent({
         </div>
         <div>
           {review.reviewImages.length > 0 && (
-            <div className="flex lg:gap-[20px] gap-[10px] rela">
+            <div className="flex lg:gap-[20px] gap-[10px]">
               {review.reviewImages.map((image) => (
-                <img
+                <ProductImage
                   key={image.id}
                   src={image.source}
-                  loading="lazy"
                   alt="리뷰 이미지"
-                  className="lg:w-[100px] md:w-[80px] w-[60px] lg:h-[100px] md:h-[80px] h-[60px] rounded-xl object-contain"
+                  width={100}
+                  height={100}
+                  className="lg:w-[100px] md:w-[80px] w-[60px] lg:h-[100px] md:h-[80px] h-[60px] rounded-xl"
                 />
               ))}
             </div>
