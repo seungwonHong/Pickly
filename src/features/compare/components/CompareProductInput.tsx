@@ -9,7 +9,7 @@ import { useProductStatsStore } from "@/features/productId/libs/useProductStatsS
 type Props = {
   label: string;
   tagColor: "green" | "pink";
-  teamId: string;
+
   onProductSelectId?: (id: number | null) => void;
   onCategorySelect?: (categoryId: number | null) => void;
   excludeId?: number | null;
@@ -21,13 +21,13 @@ type Props = {
 export default function CompareProductInput({
   label,
   tagColor,
-  teamId,
+
   onProductSelectId,
   onCategorySelect,
   excludeId,
   defaultProductId,
   onProductNameChange,
-  setShowResult
+  setShowResult,
 }: Props) {
   const [inputValue, setInputValue] = useState("");
   const [selected, setSelected] = useState(false);
@@ -36,17 +36,16 @@ export default function CompareProductInput({
 
   const { baseCompareProductId, compareList } = useGetUser();
 
-  const {
-    setRating,
-    setReviewCount,
-    setFavoriteCount
-  } = useProductStatsStore();
+  const { setRating, setReviewCount, setFavoriteCount } =
+    useProductStatsStore();
 
   useEffect(() => {
-    const productId = defaultProductId != null ? defaultProductId : baseCompareProductId;
+    const productId =
+      defaultProductId != null ? defaultProductId : baseCompareProductId;
 
     if (productId != null) {
-      productService.getProductsId(productId)
+      productService
+        .getProductsId(productId)
         .then(async (res) => {
           const product = res.data;
           setInputValue(product.name);
@@ -54,15 +53,22 @@ export default function CompareProductInput({
           onProductSelectId?.(product.id);
           onCategorySelect?.(product.categoryId);
 
-          const statsRes = await productService.getStats(teamId, product.id);
+          const statsRes = await productService.getStats(product.id);
           const stats = statsRes.data;
           setRating(stats.rating);
           setReviewCount(stats.reviewCount);
           setFavoriteCount(stats.favoriteCount);
         })
-        .catch((error) => console.error("상품 정보를 가져오는 중 오류 발생:", error));
+        .catch((error) =>
+          console.error("상품 정보를 가져오는 중 오류 발생:", error)
+        );
     }
-  }, [defaultProductId, baseCompareProductId, onProductSelectId, onCategorySelect]);
+  }, [
+    defaultProductId,
+    baseCompareProductId,
+    onProductSelectId,
+    onCategorySelect,
+  ]);
 
   const filteredProducts = compareList.filter(
     (product) =>
@@ -70,15 +76,17 @@ export default function CompareProductInput({
       product.id !== excludeId
   );
 
-  const showDropdown = !selected && inputValue.trim() !== "" && filteredProducts.length > 0;
+  const showDropdown =
+    !selected && inputValue.trim() !== "" && filteredProducts.length > 0;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     setSelected(false);
   };
 
-  const handleAddProductInternal = (id: number, name: string) => {
-    productService.getProductsId(id)
+  const handleAddProductInternal = (id: number) => {
+    productService
+      .getProductsId(id)
       .then(async (res) => {
         const product = res.data;
         setInputValue(product.name);
@@ -87,7 +95,7 @@ export default function CompareProductInput({
         onCategorySelect?.(product.categoryId);
         onProductNameChange?.(product.name);
 
-        const statsRes = await productService.getStats(teamId, product.id);
+        const statsRes = await productService.getStats(product.id);
         const stats = statsRes.data;
         setRating(stats.rating);
         setReviewCount(stats.reviewCount);
@@ -114,14 +122,19 @@ export default function CompareProductInput({
 
   return (
     <div className="flex flex-col w-[500px] sm:w-[350px]">
-      <label htmlFor="productInput" className="text-[16px] lg:text-base mb-2 font-light text-white">
+      <label
+        htmlFor="productInput"
+        className="text-[16px] lg:text-base mb-2 font-light text-white"
+      >
         {label}
       </label>
 
       <div className="relative w-full">
         {selected && (
           <div className="absolute z-10 flex items-center space-x-2 top-[15px] left-4">
-            <div className={`flex items-center px-3 py-2 rounded-[6px] text-[16px] ${tagStyles}`}>
+            <div
+              className={`flex items-center px-3 py-2 rounded-[6px] text-[16px] ${tagStyles}`}
+            >
               {inputValue}
               <button
                 onClick={handleDelete}
@@ -134,7 +147,13 @@ export default function CompareProductInput({
           </div>
         )}
 
-        <div className={`relative rounded-[8px] border w-full h-[70px] ${isFocused || showDropdown ? "border-transparent bg-gradient-to-r from-[#5097fa] to-[#5363ff] p-[1px]" : "border-[#353542]"}`}>
+        <div
+          className={`relative rounded-[8px] border w-full h-[70px] ${
+            isFocused || showDropdown
+              ? "border-transparent bg-gradient-to-r from-[#5097fa] to-[#5363ff] p-[1px]"
+              : "border-[#353542]"
+          }`}
+        >
           <div className="w-full h-full rounded-[8px] bg-[#252530]">
             <input
               ref={inputRef}

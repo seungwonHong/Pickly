@@ -25,8 +25,8 @@ export default function ComparisonResult({ product2Stats }: Props) {
   const getWinner = (val1: number, val2: number) => {
     const v1 = val1 ?? 0;
     const v2 = val2 ?? 0;
-    if (val1 > val2) return "상품 1 승리";
-    if (val1 < val2) return "상품 2 승리";
+    if (v1 > v2) return "상품 1 승리";
+    if (v1 < v2) return "상품 2 승리";
     return "무승부";
   };
 
@@ -52,9 +52,18 @@ export default function ComparisonResult({ product2Stats }: Props) {
             <tbody className="text-sm font-light">
               <tr className="bg-[#252530]">
                 <td className="p-4 text-[var(--color-lightGray)]">별점</td>
-                <td className="p-4 text-white">{product1Stats.rating.toFixed(1)}</td>
-                <td className="p-4 text-white">{product2Stats.rating.toFixed(1)}</td>
-                <td className={`p-4 font-bold ${getWinnerColor(product1Stats.rating, product2Stats.rating)}`}>
+                <td className="p-4 text-white">
+                  {product1Stats.rating.toFixed(1)}
+                </td>
+                <td className="p-4 text-white">
+                  {product2Stats.rating.toFixed(1)}
+                </td>
+                <td
+                  className={`p-4 font-bold ${getWinnerColor(
+                    product1Stats.rating,
+                    product2Stats.rating
+                  )}`}
+                >
                   {getWinner(product1Stats.rating, product2Stats.rating)}
                 </td>
               </tr>
@@ -62,16 +71,36 @@ export default function ComparisonResult({ product2Stats }: Props) {
                 <td className="p-4 text-[var(--color-lightGray)]">리뷰 개수</td>
                 <td className="p-4 text-white">{product1Stats.reviewCount}</td>
                 <td className="p-4 text-white">{product2Stats.reviewCount}</td>
-                <td className={`p-4 font-bold ${getWinnerColor(product1Stats.reviewCount, product2Stats.reviewCount)}`}>
-                  {getWinner(product1Stats.reviewCount, product2Stats.reviewCount)}
+                <td
+                  className={`p-4 font-bold ${getWinnerColor(
+                    product1Stats.reviewCount,
+                    product2Stats.reviewCount
+                  )}`}
+                >
+                  {getWinner(
+                    product1Stats.reviewCount,
+                    product2Stats.reviewCount
+                  )}
                 </td>
               </tr>
               <tr className="bg-[#252530]">
                 <td className="p-4 text-[var(--color-lightGray)]">찜 개수</td>
-                <td className="p-4 text-white">{product1Stats.favoriteCount}</td>
-                <td className="p-4 text-white">{product2Stats.favoriteCount}</td>
-                <td className={`p-4 font-bold ${getWinnerColor(product1Stats.favoriteCount, product2Stats.favoriteCount)}`}>
-                  {getWinner(product1Stats.favoriteCount, product2Stats.favoriteCount)}
+                <td className="p-4 text-white">
+                  {product1Stats.favoriteCount}
+                </td>
+                <td className="p-4 text-white">
+                  {product2Stats.favoriteCount}
+                </td>
+                <td
+                  className={`p-4 font-bold ${getWinnerColor(
+                    product1Stats.favoriteCount,
+                    product2Stats.favoriteCount
+                  )}`}
+                >
+                  {getWinner(
+                    product1Stats.favoriteCount,
+                    product2Stats.favoriteCount
+                  )}
                 </td>
               </tr>
             </tbody>

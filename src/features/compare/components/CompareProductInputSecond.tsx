@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import CompareDropdown from "./CompareDropdown";
 import useProductSearch from "../hooks/useProductSearch";
 import { ProductsResponse } from "../types/product";
@@ -33,7 +33,7 @@ export default function CompareProductInputSecond({
   excludeId,
   categoryFilter,
   onProductStatsChange,
-  onProductNameChange
+  onProductNameChange,
 }: Props) {
   const [inputValue, setInputValue] = useState("");
   const [selected, setSelected] = useState(false);

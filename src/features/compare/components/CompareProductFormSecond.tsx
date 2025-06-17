@@ -9,7 +9,10 @@ type Props = {
   initialProducts: ProductsResponse;
 };
 
-export default function CompareProductFormSecond({ teamId, initialProducts }: Props) {
+export default function CompareProductFormSecond({
+  teamId,
+  initialProducts,
+}: Props) {
   const [product2, setProduct2] = useState<number | null>(null);
 
   return (
