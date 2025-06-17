@@ -1,5 +1,5 @@
 "use client";
-
+import { toast } from "react-hot-toast";
 import TypeButton from "@/components/shared/TypeButton";
 import { useRouter } from "next/navigation";
 
@@ -15,12 +15,13 @@ export default function LogoutButton() {
       const data = await res.json();
 
       if (data.success) {
-        alert("로그아웃 되었습니다.");
+        toast.success("로그아웃 되었습니다!");
         router.push("/"); // 홈페이지로 이동
         router.refresh(); // 상태 초기화
       }
-    } catch (err) {
-      console.error("로그아웃 실패", err);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("로그아웃에 실패했어요.");
     }
   };
 

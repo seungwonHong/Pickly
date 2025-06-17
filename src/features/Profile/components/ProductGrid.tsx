@@ -2,7 +2,8 @@ import { useUserProducts } from "../hook/useUserProducts";
 import { Product, ProductTabType } from "../types/user";
 import { ProductList } from "@/features/home/types/productType";
 import ProductCard from "@/components/shared/ProductCard";
-
+import logo from "../../../../public/icons/logo.png";
+import Image from "next/image";
 interface Props {
   userId: number;
   type: ProductTabType;
@@ -17,7 +18,7 @@ export default function ProductGrid({ userId, type, initialProducts }: Props) {
   });
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
       {products.length > 0 ? (
         products.map((product) => (
           <ProductCard
@@ -39,8 +40,9 @@ export default function ProductGrid({ userId, type, initialProducts }: Props) {
           />
         ))
       ) : (
-        <div className="col-span-2 md:col-span-3 text-center text-gray-400 pt-[100px]">
-          상품이 없습니다.
+        <div className="col-span-2 md:col-span-3 text-center text-gray-400 pt-[60px] lg:pt-[100px] flex justify-center gap-2 ">
+          <>상품이 없습니다</>
+          <Image src={logo} alt="로고" width={25} height={5} />
         </div>
       )}
       <div ref={ref} />

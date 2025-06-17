@@ -1,5 +1,5 @@
 // import Link from "next/link";
-
+// 혹시 몰라서남겨둠-삭제예정
 // interface ProductCardProps {
 //   id: number;
 //   name: string;
