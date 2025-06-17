@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { useOAuthLoginMutation } from '@/app/signin/useSignIn';
@@ -12,25 +12,20 @@ export default function GoogleCallback() {
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
 
-  const [id_token , setIdToken] = useState<string>('');
-
   const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI ?? '';
 
+  
   const { mutate: oAuthLogin } = useOAuthLoginMutation({
     onSuccess: (data) => {
       toast.success(`${data.user.nickname}님, 로그인 성공!`);
       router.replace("/homepage");
-    },
-    onError: (error) => {
-      if (error.response?.status === 403) {
-        router.replace(`/signup/google?provider=google&token=${encodeURIComponent(id_token)}`);
-      } 
+      console.log('pickly 구글 로그인 완료:', data);
     },
   });
-  
   useEffect(() => {
     if (!code) return;
 
+    let id_token: string = '';
     const fetchToken = async () => {
       try {
         // 1. 구글 OAuth2 토큰 발급
@@ -51,13 +46,14 @@ export default function GoogleCallback() {
           }
         );
 
-        // console.log('tokenRes:', tokenRes);
-
         if (!redirectUri) {
           throw new Error('Google redirect URI is not defined');
         }
 
-        setIdToken(tokenRes.data.id_token);
+        id_token = tokenRes.data.id_token;
+        console.log('구글 토큰발급 완료:', tokenRes);
+
+        
         // 2. 토큰 발급 후 로그인 처리
         oAuthLogin({
           redirectUri: redirectUri,
@@ -65,10 +61,12 @@ export default function GoogleCallback() {
           provider: "google",
         });
 
-        // 3. 로그인 성공 → 메인 페이지 이동
-        router.push('/homepage');
       } catch (error: any) {
-        if (error.response?.status !== 403){
+        if (error.response?.status === 403) {
+          toast(`처음이시네요! 간편회원가입 페이지로 이동합니다.`);
+          router.replace(`/signup/google?provider=google&token=${encodeURIComponent(id_token)}`);
+          console.log('로그인 정보없음 : 403 -> 간편회원가입 이동:', code);
+        } else {
           toast.error(`로그인 실패 😢: ${error.message}`);
         }
       }

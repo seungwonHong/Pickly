@@ -17,11 +17,13 @@ export default function KakaoCallback() {
     onSuccess: (data) => {
       toast.success(`${data.user.nickname}님, 로그인 성공!`);
       router.replace("/homepage");
+      console.log('카카오 로그인 성공:', data);
     },
     onError: (error) => {
       if (error.response?.status === 403) {
-        toast.error(`처음이시네요! 간편회원가입 페이지로 이동합니다.`);
-        router.replace(`/signup/kakao?provider=kakao&token=${code}`);
+        toast(`처음이시네요! 간편회원가입 페이지로 이동합니다.`);
+        router.replace(`/signup/kakao?provider=kakao&code=${code}`);
+        console.log('로그인 정보없음 : 403 -> 간편회원가입 이동:', code);
       } else {
         toast.error(`로그인 실패 😢: ${error.message}`);
       }
@@ -37,6 +39,7 @@ export default function KakaoCallback() {
         token: code,
         provider: "kakao",
       });
+      console.log('카카오 토큰 발급 요청:', code);
 
     }, [code]);
 

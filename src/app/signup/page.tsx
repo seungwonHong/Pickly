@@ -12,24 +12,14 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import ErrorPage from "./error";
 import { AxiosError } from "axios";
+import { googleAuthUrl, kakaoLoginUrl, login_logo } from "@/features/productId/auth";
 
-
-const login_logo = "/signup_logo.svg";
-
-const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-const GOOGLE_REDIRECT_URI = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
-
-const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
-const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 
 const SignUpPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
 
-  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email openid`;
-  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email,profile_nickname,profile_image&prompt=consent`;
- 
   const { mutate: signUp } = useSignUp({
     onSuccess: (data: AuthResponse) => {
       toast.success(`${data.user.nickname}님 회원가입 되었습니다!`);
@@ -157,7 +147,7 @@ const SignUpPage = () => {
                       text-[0px]">
                       구글 회원가입하기
                     </span>
-                    <span className="absolute block  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                    <span className="absolute group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
                       구글 회원가입하기
                     </span>
                   </Link>
@@ -183,7 +173,7 @@ const SignUpPage = () => {
                     >
                       카카오톡 회원가입
                     </span>
-                    <span className="absolute block  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                    <span className="absolute group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
                       카카오톡 회원가입
                     </span>
                   </Link>

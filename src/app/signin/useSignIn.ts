@@ -53,9 +53,9 @@ export function useOAuthLoginMutation(
         }
       );
 
-      console.log(res);
       const data = res.data;
 
+      console.log(`서버에 OAuth 로그인 요청 완료: ${data}`);
       // 2. 받은 accessToken을 Next.js API Route로 전달하여 쿠키 저장
       await fetch("/api/login", {
         method: "POST",
@@ -66,6 +66,8 @@ export function useOAuthLoginMutation(
           accessToken: data.accessToken,
         }),
       });
+
+      console.log(`next.js API Route에 accessToken 전달: ${data.accessToken}`);
 
       return data;
     },
