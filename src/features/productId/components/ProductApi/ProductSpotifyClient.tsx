@@ -77,6 +77,8 @@ export default function ProductSpotifyClient({
           alt={`${artistName} - ${albumName}`}
           width={250}
           height={250}
+          priority
+          loading="eager"
           className="w-[250px] h-[250px] object-cover"
         />
         <span

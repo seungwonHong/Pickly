@@ -10,6 +10,8 @@ const nextConfig = {
       "res.cloudinary.com",
       "cdn.example.com",
       "image.yes24.com",
+      "cdn.ize.co.kr",
+      "none",
     ],
   },
 };

@@ -4,7 +4,6 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 
 import ProductImage from "../../ProductImage";
-import useModalStore from "@/features/home/modals/store/modalStore";
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { Textbox } from "@/components/input/Textbox";
 import { imageService } from "@/features/productId/api";
@@ -30,7 +29,7 @@ export default function ProductReviewInputModal({
   initialText = "",
   initialImages = [],
 }: ProductReviewInputModalProps) {
-  const { description, setDescription } = useModalStore();
+  const [description, setDescription] = useState(initialText);
 
   const [text, setText] = useState(initialText);
   const [images, setImages] = useState<ImageData[]>(() =>

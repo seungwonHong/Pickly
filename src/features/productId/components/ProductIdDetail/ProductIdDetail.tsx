@@ -5,6 +5,8 @@ import CopyLinkImage from "./CopyLinkImage";
 import CategoryChip from "@/components/CategoryChip";
 import ProductImage from "../ProductImage";
 import { useGetProductIdGet } from "../../hooks/useGetProductId";
+
+import defalutImage from "../../../../../public/defaultProfileImage.jpeg";
 const ProductIdDetailHeart = dynamic(() => import("./ProductIdDetailHeart"), {
   ssr: false,
 });
@@ -23,13 +25,11 @@ export default function ProductIdDetailClient({
 
   return (
     <div className="flex md:items-start items-center justify-between lg:gap-[60px] md:gap-[40px] text-[#f1f1f5] md:flex-row flex-col gap-[20px]">
-      <div className="lg:w-[306px] lg:h-[306px] md:w-[242px] md:h-[242px]  w-[220px] h-[220px] flex justify-center items-center overflow-hidden bg-[#1C1C22">
-        <ProductImage
-          src={product.image}
+      <div className="lg:w-[306px] lg:h-[306px] md:w-[242px] md:h-[242px]  w-[220px] h-[220px] flex justify-center items-center overflow-hidden bg-[#1C1C22] relative">
+        <img
+          src={product.image || defalutImage}
           alt="상품 이미지"
-          width={306}
-          height={306}
-          className="w-full h-full object-cover"
+          className="object-contain"
         />
       </div>
 
