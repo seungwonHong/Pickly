@@ -37,7 +37,6 @@ export default function CopyLinkImage() {
       });
   };
 
-  // 안됨..
   const handleKakaoShare = () => {
     console.log("카카오 공유 버튼 클릭됨");
     if (window.Kakao) {

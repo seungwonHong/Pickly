@@ -1,11 +1,10 @@
 import {
+  QueryClient,
   dehydrate,
   HydrationBoundary,
-  QueryClient,
 } from "@tanstack/react-query";
-
 import getMusicvideo from "@/features/productId/hooks/useGetMusicvideo";
-import ProductYouTubeSection from "./ProductYouTubeSection";
+import ProductYouTubeWrapper from "./ProductYouTubeWrapper";
 
 export default async function ProductApiClient({
   searchQuery,
@@ -21,9 +20,11 @@ export default async function ProductApiClient({
     queryFn: () => getMusicvideo(searchQuery),
   });
 
+  const dehydratedState = dehydrate(queryClient);
+
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProductYouTubeSection query={searchQuery} category={category} />
+    <HydrationBoundary state={dehydratedState}>
+      <ProductYouTubeWrapper query={searchQuery} category={category} />
     </HydrationBoundary>
   );
 }

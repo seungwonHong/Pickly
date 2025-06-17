@@ -1,12 +1,8 @@
-import Image from "next/image";
-
 import ProductReviewSort from "./ProductReviewSort";
 import ProductReviewsInfinite from "./ProductReviewsInfinite";
 
 import { productService } from "../../api";
 import ProductReviewClient from "./ProductReviewClient";
-
-import logo404 from "../../../../../public/icons/404logo.png";
 
 interface ProductReviewsClientProps {
   productId: number;

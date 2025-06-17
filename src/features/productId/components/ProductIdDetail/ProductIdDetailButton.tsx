@@ -38,14 +38,11 @@ export default function ProductIdDetailButton({
   const [comparePlusButtonMessage, setComparePlusButtonMessage] = useState("");
   const activieModal = searchParams.get("modal") as ModalTypes | null;
   const {
-    name,
     setName,
-    categoryId,
-    description,
+
     setDescription,
     setImage,
-    image,
-    setCategoryId,
+
     setClickedValue,
   } = useModalStore();
   const openModal = (modalName: ModalTypes) => {
