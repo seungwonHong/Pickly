@@ -53,7 +53,7 @@ const AddEditProductModal = ({
     setClickedValue("카테고리 선택");
     setImage(null);
     setName(null);
-    setDescription(null);
+    setDescription(undefined);
     setCategoryId(null);
     setFile(null);
   };
