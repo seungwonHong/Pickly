@@ -7,7 +7,7 @@ import { formatDate } from "../../../../lib/utils/datetime";
 import { GetProductIdReviewsDetail } from "../../types";
 import useGetUser from "../../hooks/useGetUser";
 import ProductReviewEditDelete from "./ProductReviewEditDelete";
-import ProductImage from "../ProductImage";
+
 import Star from "../../../../../public/icons/star.svg";
 import Link from "next/link";
 import defalutImage from "../../../../../public/defaultProfileImage.jpeg";
@@ -62,9 +62,10 @@ export default function ProductReviewsListComponent({
           {review.reviewImages.length > 0 && (
             <div className="flex lg:gap-[20px] gap-[10px] rela">
               {review.reviewImages.map((image) => (
-                <ProductImage
+                <img
                   key={image.id}
                   src={image.source}
+                  loading="lazy"
                   alt="리뷰 이미지"
                   className="lg:w-[100px] md:w-[80px] w-[60px] lg:h-[100px] md:h-[80px] h-[60px] rounded-xl object-contain"
                 />

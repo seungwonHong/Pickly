@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import CopyLinkImage from "./CopyLinkImage";
 import CategoryChip from "@/components/CategoryChip";
-import ProductImage from "../ProductImage";
+
 import { useGetProductIdGet } from "../../hooks/useGetProductId";
 
 import defalutImage from "../../../../../public/defaultProfileImage.jpeg";
@@ -28,8 +28,11 @@ export default function ProductIdDetailClient({
       <div className="lg:w-[306px] lg:h-[306px] md:w-[242px] md:h-[242px]  w-[220px] h-[220px] flex justify-center items-center overflow-hidden bg-[#1C1C22] relative">
         <img
           src={product.image || defalutImage}
+          loading="eager"
           alt="상품 이미지"
-          className="object-contain"
+          className="absolute inset-0 w-full h-full object-contain"
+          width={306}
+          height={306}
         />
       </div>
 
