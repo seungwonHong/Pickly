@@ -16,7 +16,7 @@ export async function getUserProducts(
   const cookieStore = cookies();
   const token = (await cookieStore).get("access-token")?.value;
 
-  const headers = token ? { Authorization: `Bearer ${token}` } : {}; // 토큰이 없어도 API 호출 가능하도록 처리
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}; // 토큰이 없어도 API 호출 가능하도록 처리`
 
   const res = await apiInstance.get(`/users/${userId}/${type}-products`, {
     params: { cursor },

@@ -26,12 +26,10 @@ export default function ProductReviewsListComponent({
     <div className="text-[#F1F1F5] mb-[20px] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
       <div className="flex items-start gap-[10px]">
         <Link href={`/users/${review.userId}`}>
-          <Image
-            src={imgSrc}
+          <img
+            src={review.user.image || imgSrc}
             alt="프로필 이미지"
-            width={43}
-            height={43}
-            className="rounded-full md:w-[36px] md:h-[36px]"
+            className="rounded-full w-[43px] h-[43px]"
           />
         </Link>
         <div>
