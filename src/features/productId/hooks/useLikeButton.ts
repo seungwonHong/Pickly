@@ -37,10 +37,7 @@ export default function useLikeButton(
     },
     onError: (error) => {
       if (error instanceof AxiosError && error.response?.status === 401) {
-<<<<<<< HEAD
-=======
         setShowLoginModal(true);
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
       }
     },
   });

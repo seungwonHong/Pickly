@@ -2,10 +2,7 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-<<<<<<< HEAD
-=======
 import toast from "react-hot-toast";
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 
 import { checkLoginStatus } from "../../../hooks/checkLogin";
 import ProductReviewStarModal from "./ProductReviewStarModal";
@@ -41,10 +38,7 @@ export default function ProductReviewModal({
         content: reviewText,
         rating: rating,
         images: images,
-<<<<<<< HEAD
-=======
         accessToken: accessToken,
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
       }),
     onSuccess: () => {
       toast.success("리뷰가 등록되었습니다!");
@@ -57,10 +51,6 @@ export default function ProductReviewModal({
       toast.error("별점과 내용을 입력해주세요.");
     },
   });
-<<<<<<< HEAD
-  const handleSubmit = () => {
-    postReviewMutation.mutate();
-=======
   // 리뷰 작성 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
     const { accessToken } = await checkLoginStatus();
@@ -70,7 +60,6 @@ export default function ProductReviewModal({
     }
 
     postReviewMutation.mutate({ accessToken });
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   };
 
   const isSubmitEnabled = reviewText.trim().length > 0;

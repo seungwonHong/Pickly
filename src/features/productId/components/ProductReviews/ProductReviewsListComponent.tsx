@@ -7,11 +7,7 @@ import { formatDate } from "../../../../lib/utils/datetime";
 import { GetProductIdReviewsDetail } from "../../types";
 import useGetUser from "../../hooks/useGetUser";
 import ProductReviewEditDelete from "./ProductReviewEditDelete";
-<<<<<<< HEAD
-
-=======
 import ProductImage from "../ProductImage";
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 import Star from "../../../../../public/icons/star.svg";
 import Link from "next/link";
 
@@ -26,11 +22,7 @@ export default function ProductReviewsListComponent({
   return (
     <div className="text-[#F1F1F5] mb-[20px] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
       <div className="flex items-start gap-[10px]">
-<<<<<<< HEAD
-        <Link href={`/user/${review.userId}`}>
-=======
         <Link href={`/users/${review.userId}`}>
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
           <Image
             src={review.user.image || "/defaultProfileImage.jpeg"}
             alt="프로필 이미지"
@@ -70,13 +62,9 @@ export default function ProductReviewsListComponent({
                 <ProductImage
                   key={image.id}
                   src={image.source}
-<<<<<<< HEAD
-                  alt="Review Image"
-=======
                   alt="리뷰 이미지"
                   width={100}
                   height={100}
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
                   className="lg:w-[100px] md:w-[80px] w-[60px] lg:h-[100px] md:h-[80px] h-[60px] rounded-xl"
                 />
               ))}

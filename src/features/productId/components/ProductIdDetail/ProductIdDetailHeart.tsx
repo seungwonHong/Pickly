@@ -1,19 +1,10 @@
 "use client";
-<<<<<<< HEAD
-import React from "react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { getCookie } from "cookies-next";
-
-=======
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import { checkLoginStatus } from "../../hooks/checkLogin";
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 import { productService } from "../../api";
 import { useProductStatsStore } from "../../libs/useProductStatsStore";
 import ProductComparePlusModal from "@/components/shared/ProductComparePlusModal";
@@ -32,31 +23,6 @@ export default function ProductIdDetailHeart({
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
 
-<<<<<<< HEAD
-  const handleLike = async () => {
-    const csrfToken = (await getCookie("csrf-token")) ?? "";
-
-    const res = await fetch("/api/cookie", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "x-csrf-token": csrfToken,
-      },
-    });
-    if (!res.ok) {
-      setShowLoginModal(true); // 로그인되어 있지 않으면 모달 표시
-      return;
-    }
-
-    if (!isLiked) {
-      await productService.postProductsFavorite(productId);
-      setFavoriteCount(favoriteCount + 1);
-    } else {
-      await productService.deleteProductsFavorite(productId);
-      setFavoriteCount(favoriteCount - 1);
-    }
-    setIsLiked(!isLiked);
-=======
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -105,7 +71,6 @@ export default function ProductIdDetailHeart({
         console.error("Axios 에러 응답:", err.message);
       }
     }
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   };
 
   return (

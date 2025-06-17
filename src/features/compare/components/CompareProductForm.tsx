@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import CompareProductInput from "../components/CompareProductInput";
 import CompareProductInputSecond from "./CompareProductInputSecond";
@@ -57,7 +59,11 @@ export default function CompareProductForm({ teamId, initialProducts }: Props) {
     let product1Win = 0;
     let product2Win = 0;
 
-    const metrics: (keyof ProductStats)[] = ["rating", "reviewCount", "favoriteCount"];
+    const metrics: (keyof ProductStats)[] = [
+      "rating",
+      "reviewCount",
+      "favoriteCount",
+    ];
 
     for (const metric of metrics) {
       const val1 = product1Stats[metric];
@@ -66,8 +72,10 @@ export default function CompareProductForm({ teamId, initialProducts }: Props) {
       else if (val2 > val1) product2Win++;
     }
 
-    if (product1Win > product2Win) return { name: product1Name, count: product1Win };
-    if (product2Win > product1Win) return { name: product2Name, count: product2Win };
+    if (product1Win > product2Win)
+      return { name: product1Name, count: product1Win };
+    if (product2Win > product1Win)
+      return { name: product2Name, count: product2Win };
     return { name: "무승부", count: 0 };
   };
 
@@ -113,7 +121,9 @@ export default function CompareProductForm({ teamId, initialProducts }: Props) {
             <BaseButton
               disabled={!isBothSelected}
               className={`h-[70px] w-[500px] sm:w-[200px] mt-3 md:mt-8 text-[18px] ${
-                isBothSelected ? "" : "pointer-events-none cursor-not-allowed text-[#6E6E82]"
+                isBothSelected
+                  ? ""
+                  : "pointer-events-none cursor-not-allowed text-[#6E6E82]"
               }`}
             >
               비교하기
@@ -124,13 +134,19 @@ export default function CompareProductForm({ teamId, initialProducts }: Props) {
 
       {showResult && winnerInfo && (
         <div className="mt-20">
-          <ProductComparisonResult winnerInfo={winnerInfo} product1Name={product1Name} />
+          <ProductComparisonResult
+            winnerInfo={winnerInfo}
+            product1Name={product1Name}
+          />
         </div>
       )}
 
       {showResult && product2Stats && (
         <div className="mt-10">
-          <ComparisonResult product1Stats={product1Stats} product2Stats={product2Stats} />
+          <ComparisonResult
+            product1Stats={product1Stats}
+            product2Stats={product2Stats}
+          />
         </div>
       )}
 

@@ -1,13 +1,8 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
-<<<<<<< HEAD
-import { getCookie } from "cookies-next";
-
-=======
 
 import { checkLoginStatus } from "../../hooks/checkLogin";
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 import { GetProductIdDetail } from "../../types";
 import BaseButton from "@/components/shared/BaseButton";
 import TypeButton from "@/components/shared/TypeButton";
@@ -20,11 +15,7 @@ import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
 import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
 import ProductComparePlusModal from "../../../../components/shared/ProductComparePlusModal";
 
-<<<<<<< HEAD
-type ModalTypes = "review" | "compare" | "comparePlus";
-=======
 type ModalTypes = "review" | "compare" | "comparePlus" | "editProduct";
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 
 export default function ProductIdDetailButton({
   product,
@@ -46,9 +37,6 @@ export default function ProductIdDetailButton({
   const [comparePlusModalMessage, setComparePlusModalMessage] = useState("");
   const [comparePlusButtonMessage, setComparePlusButtonMessage] = useState("");
   const activieModal = searchParams.get("modal") as ModalTypes | null;
-<<<<<<< HEAD
-
-=======
   const {
     setName,
 
@@ -57,7 +45,6 @@ export default function ProductIdDetailButton({
 
     setClickedValue,
   } = useModalStore();
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   const openModal = (modalName: ModalTypes) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("modal", modalName);
@@ -80,23 +67,6 @@ export default function ProductIdDetailButton({
     router.push("/compare");
   };
 
-<<<<<<< HEAD
-  // 쿠키 토큰 확인
-  const checkLogin = async () => {
-    const csrfToken = (await getCookie("csrf-token")) ?? "";
-    const res = await fetch("/api/cookie", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "x-csrf-token": csrfToken,
-      },
-    });
-    const data = await res.json();
-    return data.isLoggedIn;
-  };
-
-=======
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   // 비교하기 모달
   const handleCompareClick = () => {
     const isAlreadyInList = sameCategoryCompareList.some(
@@ -127,12 +97,8 @@ export default function ProductIdDetailButton({
 
   // 리뷰 작성하기 모달 핸들러 쿠키
   const handleReviewClick = async () => {
-<<<<<<< HEAD
-    const isLoggedIn = await checkLogin();
-=======
     // 쿠키 확인
     const { isLoggedIn } = await checkLoginStatus();
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
     if (!isLoggedIn) {
       setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
       setComparePlusButtonMessage("로그인하러가기");
@@ -141,9 +107,6 @@ export default function ProductIdDetailButton({
     }
     openModal("review");
   };
-<<<<<<< HEAD
-
-=======
   const handleProductEdit = async () => {
     const { isLoggedIn } = await checkLoginStatus();
     if (!isLoggedIn) {
@@ -161,7 +124,6 @@ export default function ProductIdDetailButton({
 
     openModal("editProduct");
   };
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   // 쿠키 이용하면 로딩중 버튼 갯수 빠르게 로딩 가능
   return (
     <>
@@ -184,10 +146,7 @@ export default function ProductIdDetailButton({
           <TypeButton
             type="tertiary"
             className="lg:px-[44.5px] lg:py-[22px] md:px-[24px] md:py-[18px] px-[139px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] mt-[15px] md:mt-[0px]"
-<<<<<<< HEAD
-=======
             onClick={handleProductEdit}
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
           >
             편집하기
           </TypeButton>
@@ -236,8 +195,6 @@ export default function ProductIdDetailButton({
               : undefined
           }
         />
-<<<<<<< HEAD
-=======
       )}
       {activieModal === "editProduct" && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 bg-black/40">
@@ -248,7 +205,6 @@ export default function ProductIdDetailButton({
             productinfo={product}
           />
         </div>
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
       )}
     </>
   );

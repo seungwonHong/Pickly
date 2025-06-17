@@ -43,11 +43,7 @@ export default function ProductReviewSort({
   return (
     <div className="w-full">
       <div className="text-[#f1f1f1] w-full lg:text-[20px] text-[16px] font-medium flex justify-between mb-[30px]">
-<<<<<<< HEAD
-        <div>상품리뷰</div>
-=======
         <div className="flex items-center">상품리뷰</div>
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
         <SortDropDown
           selectList={selectList}
           selected={selectedOption}
