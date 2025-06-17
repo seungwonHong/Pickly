@@ -10,7 +10,7 @@ interface EditProps {
   description: string | null;
   categoryId?: number | null;
   setName: (name: string | null) => void;
-  setDescription: (desc: string | null) => void;
+  setDescription: (desc: string | undefined) => void;
   setImage: (image: string | null) => void;
   setCategoryId: (id: number | null) => void;
   setClickedValue: (val: string) => void;
@@ -112,7 +112,7 @@ const editProductFunction = async ({
     setName(null);
     setCategoryId?.(null);
     setClickedValue("카테고리 선택");
-    setDescription(null);
+    setDescription(undefined);
     setImage(null);
     setFile?.(null);
 
