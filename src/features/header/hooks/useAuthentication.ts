@@ -11,7 +11,7 @@ const useAuthentication = () => {
             .split("; ")
             .find((row) => row.startsWith("csrf-token="))
             ?.split("=")[1] ?? "";
-        
+
         const res = await fetch("/api/cookie", {
           method: "GET",
           credentials: "include", // 쿠키 포함 옵션

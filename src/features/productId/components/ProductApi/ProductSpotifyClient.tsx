@@ -2,7 +2,6 @@
 
 import React from "react";
 import { GetProductIdDetail } from "../../types";
-import ProductImage from "../ProductImage";
 
 interface SpotifyButtonProps {
   artistName: string;
@@ -72,12 +71,13 @@ export default function ProductSpotifyClient({
       className="group cursor-pointer text-white flex  items-center  md:justify-end justify-start lg:p-5 md:p-3 p-2 md:gap-2 gap-[10px] bg-[#1F1F1F] rounded-lg hover:bg-[#282828] transition-all duration-300 ease-in-out md:flex-col flex-row w-full"
     >
       <div className="relative lg:w-[250px] md:w-[180px] w-[50px] lg:h-[250px] md:h-[180px] h-[50px]">
-        <ProductImage
+        <img
           src={product?.image || ""}
           alt={`${artistName} - ${albumName}`}
           width={250}
           height={250}
-          className="w-[250px] h-[250px] object-cover"
+          loading="eager"
+          className="object-cover"
         />
         <span
           className="lg:w-[60px] w-[40px] lg:h-[60px] h-[40px] bg-green-500 rounded-full flex items-center justify-center absolute md:right-2 right-[-260px]  lg:top-[180px] md:top-[131px] top-[4px] z-10
