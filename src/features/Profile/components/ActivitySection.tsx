@@ -35,11 +35,7 @@ export default function ActivitySection({ user }: Props) {
             {user.mostFavoriteCategory ? (
               <CategoryChip category={user.mostFavoriteCategory.name} />
             ) : (
-<<<<<<< HEAD
-              <div className="text-[17px]  font-medium text-[#9FA6B2]  p-0.5">
-=======
               <div className="text-[17px]  font-medium text-[#9FA6B2] ">
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
                 없음
               </div>
             )}

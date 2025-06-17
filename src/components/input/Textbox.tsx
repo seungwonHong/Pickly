@@ -1,9 +1,6 @@
 "use client";
 import useModalStore from "@/features/home/modals/store/modalStore";
-<<<<<<< HEAD
-=======
 import toast from "react-hot-toast";
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 
 interface TextboxProps {
   placeholder?: string;
@@ -28,14 +25,8 @@ export function Textbox({
   const message = error || subText;
 
   const isActive = "focus-within:bg-gradient-to-r from-[#5097fa] to-[#5363ff]";
-<<<<<<< HEAD
-
   const isError = error ? "!bg-[var(--color-red)] " : isActive;
 
-=======
-  const isError = error ? "!bg-[var(--color-red)] " : isActive;
-
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   return (
     <>
       <div
@@ -47,9 +38,6 @@ export function Textbox({
             rounded-[8px] bg-[#252530] p-[20px] 
             placeholder-[var(--color-deepGray)] text-[var(--color-white)] 
             `}
-<<<<<<< HEAD
-          onChange={(e) => setDescription(e.target.value)}
-=======
           value={description ?? ""}
           onChange={(e) => {
             const value = e.target.value;
@@ -62,7 +50,6 @@ export function Textbox({
               }
             }
           }}
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
           placeholder={placeholder}
           {...rest}
         />
@@ -82,8 +69,4 @@ export function Textbox({
       )}
     </>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518

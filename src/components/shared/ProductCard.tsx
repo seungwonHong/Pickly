@@ -8,11 +8,6 @@ interface Props {
 }
 
 const ProductCard = ({ product }: Props) => {
-<<<<<<< HEAD
-  return (
-    <Link href={`/product/${product.id}`}>
-      <div className="transition-transform duration-300 hover:scale-105 cursor-pointer flex flex-col items-center p-[10px] lg:w-[300px] lg:h-[308px] md:w-[247px] md:h-[256px] w-[160px] h-[183px] rounded-xl bg-[#252530] border-[1px] border-[#353542]">
-=======
   const indexCategoryMap: Record<number, string> = {
     0: "검색",
     1: "음악",
@@ -30,17 +25,11 @@ const ProductCard = ({ product }: Props) => {
   return (
     <Link href={`/product/${product.id}`}>
       <div className="relative transition-transform duration-300 hover:scale-105 cursor-pointer flex flex-col items-center p-[10px] lg:w-[300px] lg:h-[308px] md:w-[247px] md:h-[256px] w-[160px] h-[183px] rounded-xl bg-[#252530] border-[1px] border-[#353542]">
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
         <img
           src={product.image}
           alt="productImage"
           className="object-contain w-auto lg:max-h-[200px] md:max-h-[160px] max-h-[98px]"
         />
-<<<<<<< HEAD
-
-        <div className="flex flex-col lg:mt-[20px] md:mt-[20px] mt-[10px] w-full lg:px-[6px]">
-          <span className="lg:text-[18px] md:text-[16px] text-[14px] text-[#F1F1F5] font-medium">
-=======
         <CategoryChip
           category={indexCategoryMap[product.categoryId]}
           className="absolute lg:top-[15px] lg:left-[15px] md:top-[10px] md:left-[10px] top-[5px] left-[5px]"
@@ -48,20 +37,15 @@ const ProductCard = ({ product }: Props) => {
 
         <div className="flex flex-col lg:mt-[20px] md:mt-[20px] mt-[10px] w-full lg:px-[6px]">
           <span className="lg:text-[18px] md:text-[16px] text-[14px] text-[#F1F1F5] font-medium w-full truncate">
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
             {product.name}
           </span>
 
           <div className="flex lg:flex-row md:flex-row flex-col md:items-center items-start md:justify-between lg:mt-[10px] md:mt-[10px] mt-[5px] lg:text-[16px] md:text-[14px] text-[12px] font-light">
             <div className="flex flex-row items-center text-[#6E6E82] ">
               <span>리뷰 {product.reviewCount}</span>
-<<<<<<< HEAD
-              <span className="md:ml-[15px] ml-[10px]">찜 {product.favoriteCount}</span>
-=======
               <span className="md:ml-[15px] ml-[10px]">
                 찜 {product.favoriteCount}
               </span>
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
             </div>
 
             <span className="text-[#9FA6B2]">

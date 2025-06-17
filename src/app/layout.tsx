@@ -2,12 +2,9 @@ import type { Metadata } from "next";
 import { M_PLUS_Rounded_1c } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./providers/QueryProvider";
-<<<<<<< HEAD
-import { Toaster } from 'react-hot-toast';
-=======
+
 import { Toaster } from "react-hot-toast";
 import Script from "next/script";
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 
 const mplus = M_PLUS_Rounded_1c({
   variable: "--font-mplus",
@@ -49,17 +46,6 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
         <QueryProvider>{children}</QueryProvider>
-<<<<<<< HEAD
-        <Toaster position="top-center"
-          toastOptions={{
-            style: {
-              background: 'rgba(37, 37, 48, 0.8)',
-              color: '#F1F1F5',
-              borderRadius: '8px',
-              border: '1px solid #353542',
-            }
-          }} />
-=======
         <Toaster
           position="top-center"
           toastOptions={{
@@ -71,7 +57,6 @@ export default function RootLayout({
             },
           }}
         />
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
       </body>
     </html>
   );

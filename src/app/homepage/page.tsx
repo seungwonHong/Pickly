@@ -104,15 +104,11 @@ export default async function HomePage({
 
       {sp.modal === "true" && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center">
-<<<<<<< HEAD
-          <AddEditProductModal buttonPlaceholder="추가하기" />
-=======
           <AddEditProductModal
             buttonPlaceholder="추가하기"
             modalType="addProduct"
             purpose="상품 추가"
           />
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
         </div>
       )}
     </div>

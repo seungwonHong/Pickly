@@ -7,10 +7,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { useSearchParams } from "next/navigation";
 import useAuthentication from "@/features/header/hooks/useAuthentication";
 import useResize from "@/features/header/hooks/useResize";
-<<<<<<< HEAD
-=======
 import { motion } from "framer-motion";
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 
 const Header = () => {
   const params = useParams();

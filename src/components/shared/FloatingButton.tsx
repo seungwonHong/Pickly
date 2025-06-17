@@ -1,23 +1,11 @@
 "use client";
-<<<<<<< HEAD
-import { useRouter } from "next/navigation";
-import React from "react";
-=======
 import ProductComparePlusModal from "./ProductComparePlusModal";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 import { FaPlus } from "react-icons/fa6";
 
 const FloatingButton = () => {
   const router = useRouter();
-<<<<<<< HEAD
-
-  const handleModalOpen = () => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("modal", "true");
-    router.push(`?${params.toString()}`, { scroll: false });
-=======
   const [isLogin, setIsLogin] = useState(false);
 
   const handleModalOpen = async () => {
@@ -49,7 +37,6 @@ const FloatingButton = () => {
     } catch (error) {
       console.error("상품 추가를 위한 로그인 인증 중 실패", error);
     }
->>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   };
 
   return (
