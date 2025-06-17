@@ -6,7 +6,7 @@ import { GetProductIdDetail } from "../../types";
 interface SpotifyButtonProps {
   artistName: string;
   albumName: string;
-  product: GetProductIdDetail;
+  product: GetProductIdDetail | null;
 }
 
 export default function ProductSpotifyClient({

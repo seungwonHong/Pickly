@@ -9,8 +9,10 @@ import ProductYouTubeSection from "./ProductYouTubeSection";
 
 export default async function ProductApiClient({
   searchQuery,
+  category,
 }: {
   searchQuery: string;
+  category: number;
 }) {
   const queryClient = new QueryClient();
 
@@ -21,7 +23,7 @@ export default async function ProductApiClient({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProductYouTubeSection query={searchQuery} />
+      <ProductYouTubeSection query={searchQuery} category={category} />
     </HydrationBoundary>
   );
 }
