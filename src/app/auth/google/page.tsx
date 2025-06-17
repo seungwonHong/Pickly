@@ -24,9 +24,7 @@ export default function GoogleCallback() {
     onError: (error) => {
       if (error.response?.status === 403) {
         router.replace(`/signup/google?provider=google&token=${encodeURIComponent(id_token)}`);
-      } else {
-        toast.error(`로그인 실패 😢: ${error.message}`);
-      }
+      } 
     },
   });
   
@@ -69,7 +67,10 @@ export default function GoogleCallback() {
 
         // 3. 로그인 성공 → 메인 페이지 이동
         router.push('/homepage');
-      } catch (err: any) {
+      } catch (error: any) {
+        if (error.response?.status !== 403){
+          toast.error(`로그인 실패 😢: ${error.message}`);
+        }
       }
     };
 
