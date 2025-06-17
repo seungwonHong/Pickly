@@ -1,19 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
 import { IoClose } from "react-icons/io5";
-
 import { InputField } from "../input/InputField";
 import CategoryDropDown from "./CategoryDropDown";
 import { Textbox } from "../input/Textbox";
 import BaseButton from "./BaseButton";
-
 import useModalStore from "@/features/home/modals/store/modalStore";
 import { ProductInfo } from "@/features/home/types/productType";
 import { handleSubmit } from "@/lib/utils/addProductFunction";
 import editProductFunction from "@/lib/utils/editProductFunction";
 import ProductComparePlusModal from "./ProductComparePlusModal";
+import toast from "react-hot-toast";
 
 interface Props {
   buttonPlaceholder: string;
@@ -54,11 +52,23 @@ const AddEditProductModal = ({
     router.replace(`?${params.toString()}`, { scroll: false });
     setClickedValue("카테고리 선택");
     setImage(null);
+    setName(null);
+    setDescription(undefined);
+    setCategoryId(null);
+    setFile(null);
   };
 
   const chooseFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (selected) {
+      const fileName = selected.name;
+      const hasKorean = /[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(fileName.normalize("NFC"));
+      if (hasKorean) {
+        toast.error(
+          "파일 이름에 한글이 포함되어 있습니다. 다른 이름을 사용해주세요."
+        );
+        return;
+      }
       const fileURL = URL.createObjectURL(selected);
       setImage(fileURL);
       setFile(selected);
@@ -99,8 +109,9 @@ const AddEditProductModal = ({
                     alt="image"
                     className="w-full h-full object-cover rounded-lg"
                   />
-                  <IoClose
-                    size={24}
+                  <img
+                    src={"/icons/cancel.png"}
+                    alt="cancel"
                     color="#1C1C22"
                     className="absolute z-999 top-[5px] right-[5px] cursor-pointer"
                     onClick={(e) => {
@@ -130,7 +141,7 @@ const AddEditProductModal = ({
               className="md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
               placeholder="상품명 (상품 등록 여부를 확인해 주세요)"
               type="text"
-              value={name ?? null}
+              value={name ?? ""}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setName(e.target.value)
               }
@@ -150,10 +161,11 @@ const AddEditProductModal = ({
                     alt="previewImage"
                     className="w-full h-full object-cover rounded-lg"
                   />
-                  <IoClose
-                    size={24}
-                    color="#1C1C22"
-                    className="absolute z-999 top-[5px] right-[5px] cursor-pointer"
+                  <img
+                    src={"/icons/cancel.png"}
+                    alt="cancel"
+                    color="#FFFFF"
+                    className="absolute w-[28px] h-[28px] z-999 top-[5px] right-[5px] cursor-pointer"
                     onClick={(e) => {
                       e.preventDefault();
                       setImage(null);
@@ -196,7 +208,7 @@ const AddEditProductModal = ({
                   setIsLogin,
                   setMessage,
                   name,
-                  description,
+                  description: description ?? "",
                   categoryId,
                   setName,
                   setDescription,
@@ -210,7 +222,7 @@ const AddEditProductModal = ({
                   file,
                   name,
                   handleClose,
-                  description,
+                  description: description ?? "",
                   categoryId,
                   setName,
                   setDescription,

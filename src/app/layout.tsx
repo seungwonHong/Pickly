@@ -12,7 +12,7 @@ const mplus = M_PLUS_Rounded_1c({
 });
 
 export const metadata: Metadata = {
-  title: "Create Next App",
+  title: "Pickly",
   description:
     " Pickly is a next-generation product discovery platform where quality meets curation. Whether you’re searching for the latest gadgets, everyday essentials, or hidden gems, Pickly connects you with handpicked items trusted by real users.",
   icons: "/icons/favicon.png",

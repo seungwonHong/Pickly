@@ -1,5 +1,6 @@
 import React from "react";
 import { ReviewRanking } from "../services/getReviewerRanking";
+import Link from "next/link";
 
 interface Props {
   rank: ReviewRanking;
@@ -23,11 +24,13 @@ const ReviewerTab = ({ rank, rankNum }: Props) => {
 
   return (
     <div className="flex flex-row lg:mb-[30px] lg:mr-0 md:mr-[20px] mr-[15px] shrink-0">
-      <img
-        src={rank.image || "/defaultProfileImage.jpeg"}
-        alt="profileImage"
-        className="lg:w-[42px] lg:h-[42px] w-[36px] h-[36px] rounded-full"
-      />
+      <Link href={`/users/${rank.id}`}>
+        <img
+          src={rank.image || "/defaultProfileImage.jpeg"}
+          alt="profileImage"
+          className="lg:w-[42px] lg:h-[42px] w-[36px] h-[36px] rounded-full"
+        />
+      </Link>
 
       <div className="flex flex-col ml-[10px]">
         <div className="flex flex-row items-center">
@@ -36,9 +39,12 @@ const ReviewerTab = ({ rank, rankNum }: Props) => {
           >
             {rankNum}등
           </div>
-          <span className=" lg:text-[16px] text-[14px] text-white font-normal">
+          <Link
+            href={`/users/${rank.id}`}
+            className=" lg:text-[16px] text-[14px] text-white font-normal"
+          >
             {rank.nickname}
-          </span>
+          </Link>
         </div>
 
         <div className="flex flex-row items-center mt-[5px] text-[12px] text-deepGray font-light">
