@@ -9,7 +9,7 @@ interface Props {
 
 export default function ActivitySection({ user }: Props) {
   return (
-    <div className="mt-[30px] flex gap-[15px]">
+    <div className="w-full mt-[30px] flex gap-[15px]">
       <ActivityCard
         text={
           <>
@@ -31,7 +31,7 @@ export default function ActivitySection({ user }: Props) {
         icon="/icons/bubble-icon.png"
       />
       <div className="w-full  flex bg-[#252530] border border-[#353542] rounded-[8px]  h-[130px]">
-        <div className="w-full h-full flex flex-col items-center justify-center gap-[12px]">
+        <div className="w-full h-full flex flex-col items-center justify-center gap-[10px]">
           <span className="block text-center text-sm font-medium text-[#9FA6B2] lg:text-base">
             관심 <br className="md:hidden" />
             카테고리
