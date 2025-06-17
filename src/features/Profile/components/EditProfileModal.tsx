@@ -1,5 +1,5 @@
 "use client";
-
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
@@ -83,7 +83,9 @@ export default function EditProfileModal({ isOpen, onClose }: Props) {
 
       router.refresh();
       onClose();
+      toast.success("프로필이 성공적으로 저장되었습니다!");
     } catch (err) {
+      toast.error("프로필편집에 실패했어요.");
       console.error("프로필 업데이트 실패", err);
     } finally {
       setIsPending(false);
@@ -137,7 +139,7 @@ export default function EditProfileModal({ isOpen, onClose }: Props) {
           />
         </div>
         {nicknameError && (
-          <p className="text-[12px] md:text-[12px] lg:text-[14px] text-[var(--color-red)] mb-[10px]">
+          <p className="text-[12px] md:text-[12px] lg:text-[14px] text-[var(--color-red)] mb-[10px] ">
             {nicknameError}
           </p>
         )}

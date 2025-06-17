@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const apiKey = process.env.GOOGLE_API_KEY;
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         { error: "YouTube API key is missing" },
@@ -35,12 +35,13 @@ export async function GET(request: Request) {
 
     const data = await response.json();
     return NextResponse.json(data);
-  } catch (error: any) {
-    console.error("YouTube API fetch error:", error);
+  } catch (error) {
+    const err = error as Error;
+    console.error("YouTube API fetch error:", err);
     return NextResponse.json(
       {
         error: "Failed to fetch data from YouTube API",
-        details: error.message,
+        details: err.message,
       },
       { status: 500 }
     );

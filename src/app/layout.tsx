@@ -3,6 +3,7 @@ import { M_PLUS_Rounded_1c } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./providers/QueryProvider";
 import { Toaster } from "react-hot-toast";
+import Script from "next/script";
 
 const mplus = M_PLUS_Rounded_1c({
   variable: "--font-mplus",
@@ -35,13 +36,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <head>{/* 카카오 SDK */}</head>
       <body className={`${mplus.variable} antialiased`}>
+        <Script
+          src="https://developers.kakao.com/sdk/js/kakao.min.js"
+          strategy="afterInteractive"
+        />
         <QueryProvider>{children}</QueryProvider>
         <Toaster
           position="top-center"
