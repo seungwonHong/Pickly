@@ -1,7 +1,14 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
+<<<<<<< HEAD
+=======
+import ProductImage from "../../ProductImage";
+import useModalStore from "@/features/home/modals/store/modalStore";
+import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 import { Textbox } from "@/components/input/Textbox";
 import { imageService } from "@/features/productId/api";
 import ImageDelete from "../../../../../../public/icons/image-delete.png";
@@ -19,12 +26,18 @@ interface ProductReviewInputModalProps {
   initialText?: string;
   initialImages?: string[];
 }
+
 export default function ProductReviewInputModal({
   onTextChange,
   onImageUrlsChange,
   initialText = "",
   initialImages = [],
 }: ProductReviewInputModalProps) {
+<<<<<<< HEAD
+=======
+  const { description, setDescription } = useModalStore();
+
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   const [text, setText] = useState(initialText);
   const [images, setImages] = useState<ImageData[]>(() =>
     initialImages.map((url) => ({
@@ -40,16 +53,38 @@ export default function ProductReviewInputModal({
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
     onTextChange(e.target.value);
+    setDescription(e.target.value);
   };
-
+  // 이미지 접근성 검사 함수
+  const checkImageAccessible = (url: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const img = new window.Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+  };
   // 이미지 변경 핸들러
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+<<<<<<< HEAD
+=======
+    const { accessToken } = await checkLoginStatus();
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
+<<<<<<< HEAD
       const uploadedUrl = await imageService.postImage(file);
 
+=======
+      const uploadedUrl = await imageService.postImage(file, accessToken ?? "");
+      const isAccessible = await checkImageAccessible(uploadedUrl);
+      if (!isAccessible) {
+        toast.error("이미지명이 한글이면 불러올 수 없습니다.");
+        return;
+      }
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
       setImages((prev) => {
         if (editingId) {
           return prev.map((img) =>
@@ -63,11 +98,22 @@ export default function ProductReviewInputModal({
 
       setEditingId(null);
     } catch (err) {
+<<<<<<< HEAD
       console.error("이미지 업로드 실패:", err);
       alert("이미지 업로드에 실패했습니다.");
     }
   };
 
+=======
+      const error = err as Error;
+      if (error?.message === "403") {
+        toast.error("권한이 없습니다. 다시 로그인해주세요.");
+      } else {
+        toast.error("이미지 업로드에 실패했습니다.");
+      }
+    }
+  };
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   // 이미지 삭제 핸들러
   const handleDeleteClick = (id: string) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
@@ -96,7 +142,11 @@ export default function ProductReviewInputModal({
       <Textbox
         size="S"
         placeholder="리뷰를 입력해주세요"
+<<<<<<< HEAD
         value={text}
+=======
+        value={description && text}
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
         onChange={handleTextChange}
         maxLength={500}
         className="h-[150px] w-[540px] text-[16px]"
@@ -106,12 +156,15 @@ export default function ProductReviewInputModal({
       <div className="flex flex-row-reverse gap-[20px] w-full justify-end">
         {images.map((image) => (
           <div key={image.id} className="relative">
-            <img
+            <ProductImage
               src={image.url}
               alt="미리보기 이미지"
+              width={160}
+              height={160}
               onClick={() => handleImageClick(image.id)}
-              className="w-[160px] h-[160px]  object-cover rounded-xl cursor-pointer"
+              className="w-[160px] h-[160px] object-cover rounded-xl cursor-pointer"
             />
+
             <button
               onClick={() => handleDeleteClick(image.id)}
               className="absolute top-[5px] right-[5px] bg-black/60 rounded-xl"

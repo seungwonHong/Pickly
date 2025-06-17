@@ -13,6 +13,10 @@ export default function ProductGrid({ userId, type, initialProducts }: Props) {
     type,
     initialData: initialProducts,
   });
+<<<<<<< HEAD
+=======
+  console.log("ProductGrid", products);
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   return (
     <>
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">

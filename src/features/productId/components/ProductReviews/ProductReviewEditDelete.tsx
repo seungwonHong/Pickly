@@ -44,7 +44,10 @@ export default function ProductReviewEditDelete({
           open={deleteOpen}
           setOpen={setDeleteOpen}
           reviewId={reviewId}
+<<<<<<< HEAD
           initialReviewData={initialReviewData}
+=======
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
         />
       )}
     </div>

@@ -4,12 +4,17 @@ import { InputField } from "@/components/input/InputField";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+<<<<<<< HEAD
+=======
+import { useUserStore } from "@/features/productId/libs/useUserStore";
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 import { AuthResponse, LoginForm, loginFormSchema } from "./validationSchema";
 import { useLoginMutation } from "./useSignIn";
 import Link from "next/link";
 
 import BaseButton from "@/components/shared/BaseButton";
 import Image from "next/image";
+<<<<<<< HEAD
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -17,17 +22,43 @@ const login_logo = "/signup_logo.svg";
 
 const SigninPage = () => {
   const router = useRouter();
+=======
+import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
+import ErrorPage from "./error";
+
+const login_logo = "/signup_logo.svg";
+
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+const GOOGLE_REDIRECT_URI = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
+
+const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+
+const SigninPage = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
+
+  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email openid`;
+  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email,profile_nickname,profile_image&prompt=consent`;
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 
   const {
     register,
     handleSubmit,
+<<<<<<< HEAD
     reset,   
+=======
+    reset,
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
     formState: { errors, isValid },
   } = useForm<LoginForm>({
     mode: "onBlur", // blur 시 유효성 검사
     resolver: zodResolver(loginFormSchema),
   });
 
+<<<<<<< HEAD
 
   const { mutate: login } = useLoginMutation({
     onSuccess: (data: AuthResponse) => {
@@ -41,6 +72,24 @@ const SigninPage = () => {
     onError: () => {
       toast.error("이메일 혹은 비밀번호를 확인해주세요.");
       reset({ email: '', password: '' });
+=======
+  const { mutate: login } = useLoginMutation({
+    onSuccess: (data: AuthResponse) => {
+      //로그인 성공시 '닉네임님 로그인 되었습니다! ' 모달 활성화 후 1초 뒤 홈으로 이동
+      //zustand store에 유저 정보 저장
+      toast.success(`${data.user.nickname}님 로그인 되었습니다!`);
+      setTimeout(() => {
+        router.replace("/homepage");
+      }, 1000);
+      useUserStore.getState().setUserData({
+        id: data.user.id,
+        nickname: data.user.nickname,
+      });
+    },
+    onError: () => {
+      toast.error("이메일 혹은 비밀번호를 확인해주세요.");
+      reset({ email: "", password: "" });
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
     },
   });
 
@@ -48,9 +97,21 @@ const SigninPage = () => {
     login(data);
   };
 
+<<<<<<< HEAD
   return (
     <>
       <div className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center bg-no-repeat`}>
+=======
+  if (error === "oauth") {
+    return <ErrorPage />;
+  }
+
+  return (
+    <>
+      <div
+        className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center bg-no-repeat`}
+      >
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
         <div className="max-w-[440px] md:max-w-[640px] w-full mx-auto pt-[93px] pb-[93px] min-h-[100dvh] flex justify-center items-center">
           <div className="w-full px-[20px] lg:px-[0px]">
             <div className="flex justify-center items-center mb-[25px]">
@@ -95,6 +156,7 @@ const SigninPage = () => {
                 로그인
               </BaseButton>
             </form>
+<<<<<<< HEAD
             <div className="text-[var(--color-deepGray)] mt-[60px] text-center text-base">
               <span>SNS로 바로 시작하기</span>
               <ul className="flex justify-center gap-5 mt-[19px]">
@@ -104,6 +166,21 @@ const SigninPage = () => {
                     className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[var(--color-white)] transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span className="
+=======
+            <div className="text-[var(--color-deepGray)] mt-[40px] text-center text-base">
+              <span>아직 회원이 아니신가요? <Link href="/signup" className="hover:text-[var(--color-white)]">회원가입</Link></span>
+            </div>
+            <div className="text-[var(--color-deepGray)] mt-[20px] text-center text-base">
+              <ul className="flex justify-center gap-5 mt-[19px]">
+                <li>
+                  <Link
+                    href={googleAuthUrl}
+                    className="group relative block border border-[#353542] rounded-full hover:bg-[var(--color-white)] hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+
+                  >
+                    <span
+                      className="
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
                       block 
                       bg-[var(--color-deepGray)] 
                       h-[56px] w-[56px] 
@@ -114,16 +191,30 @@ const SigninPage = () => {
                       mask-center 
                       hover:bg-[url('/sns_gg_bg.png')] bg-cover bg-center bg-no-repeat 
                       text-[0px]">
+<<<<<<< HEAD
+=======
+                      구글 로그인
+                    </span>
+                    <span className="absolute block  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
                       구글 로그인하기
                     </span>
                   </Link>
                 </li>
                 <li>
                   <Link
+<<<<<<< HEAD
                     href=""
                     className="block border  border-[#353542] rounded-full hover:scale-120 hover:bg-[#f3e21f] transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span className="
+=======
+                    href={kakaoLoginUrl}
+                    className="group relative block border border-[#353542] rounded-full hover:bg-[#f3e21f]  hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+                  >
+                    <span
+                      className="
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
                       block 
                       h-[56px] w-[56px] 
                       bg-[var(--color-deepGray)] 
@@ -134,8 +225,17 @@ const SigninPage = () => {
                       mask-no-repeat 
                       mask-center 
                       text-[0px] 
+<<<<<<< HEAD
                       hover:animate-spin-slow">
                       카카오톡 로그인하기
+=======
+                      hover:animate-spin-slow"
+                    >
+                      카카오톡 로그인
+                    </span>
+                    <span className="absolute block  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                      카카오톡 로그인
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
                     </span>
                   </Link>
                 </li>

@@ -58,6 +58,7 @@ export default function FollowCounts({ user }: { user: User }) {
     </>
   );
 }
+<<<<<<< HEAD
 
 /* <div className="w-full px-[51px] flex justify-between relative md:px-[108px] lg:px-[58px]">
         <div
@@ -106,3 +107,5 @@ export default function FollowCounts({ user }: { user: User }) {
         />
       )} */
 }
+=======
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518

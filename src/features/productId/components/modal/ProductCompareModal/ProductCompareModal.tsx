@@ -3,7 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+<<<<<<< HEAD
 import useGetProductId from "@/features/productId/hooks/useGetProductId";
+=======
+import { useGetProductId } from "@/features/productId/hooks/useGetProductId";
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 import useGetUser from "../../../hooks/useGetUser";
 import ModalProductName from "../ModalProductName";
 import BaseButton from "@/components/shared/BaseButton";

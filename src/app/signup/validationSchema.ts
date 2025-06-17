@@ -12,7 +12,11 @@ export const joinFormSchema = z.object({
   nickname: z
     .string({ required_error: '닉네임은 필수 입력입니다.' })
     .min(1, '닉네임은 최소 1자부터 가능합니다.')
+<<<<<<< HEAD
     .max(20, '닉네임은 최대 20자까지 가능합니다.'),
+=======
+    .max(10, '닉네임은 최대 10자까지 가능합니다.'),
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 
   password: z
     .string({ required_error: '비밀번호는 필수 입력입니다.' })
@@ -33,5 +37,20 @@ export const joinFormSchema = z.object({
     path: ['passwordConfirmation'],
   }
 );
+<<<<<<< HEAD
 // 유효성 검사 그대로 타입정의
 export type JoinForm = z.infer<typeof joinFormSchema>;
+=======
+
+
+// 유효성 검사 그대로 타입정의
+export type JoinForm = z.infer<typeof joinFormSchema>;
+
+export const simpleJoinFormSchema = z.object({
+  nickname: z
+    .string({ required_error: '닉네임은 필수 입력입니다.' })
+    .min(1, '닉네임은 최소 1자부터 가능합니다.')
+    .max(10, '닉네임은 최대 10자까지 가능합니다.'),
+});
+export type SimpleJoinForm = z.infer<typeof simpleJoinFormSchema>;
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518

@@ -8,6 +8,27 @@ import MoreProducts from "@/features/home/components/MoreProducts";
 import AddEditProductModal from "@/components/shared/AddEditProductModal";
 import SortComponent from "@/features/home/components/SortComponent";
 import SearchPage from "@/components/shared/SearchPage";
+<<<<<<< HEAD
+=======
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const decodeParams = decodeURIComponent(params.id);
+
+  return {
+    title: `Pickly | ${decodeParams}`,
+    description: `${decodeParams}와 관련된 모든 상품을 확인해보세요.`,
+    openGraph: {
+      title: `Pickly | ${decodeParams}`,
+      description: `${decodeParams}와 관련된 모든 상품을 Pickly에서 확인해보세요.`,
+    },
+  };
+}
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 
 // next 15 부터 동적 라우팅은 비동기로 처리된다
 // 따라서 params도 promise 형태로 감싸야 한다
@@ -54,7 +75,7 @@ export default async function CategoryPage({
 
   return (
     <div>
-      <header className="fixed top-0 left-0 right-0 z-999">
+      <header className="fixed top-0 left-0 right-0 z-40">
         <Header />
       </header>
 
@@ -126,7 +147,15 @@ export default async function CategoryPage({
       </div>
       {sp.modal?.toString() === "true" && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center">
+<<<<<<< HEAD
           <AddEditProductModal buttonPlaceholder="추가하기" />
+=======
+          <AddEditProductModal
+            buttonPlaceholder="추가하기"
+            modalType="addProduct"
+            purpose="상품 추가"
+          />
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
         </div>
       )}
     </div>
