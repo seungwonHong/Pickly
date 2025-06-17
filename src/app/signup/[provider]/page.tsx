@@ -9,6 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { SimpleJoinForm, simpleJoinFormSchema } from '../validationSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
 
 const login_logo = "/signup_logo.svg";
 
@@ -16,14 +17,12 @@ export default function OAuthSignUpPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const provider = searchParams.get('provider') ;
-  const email = searchParams.get('email');
   const token = searchParams.get('token');
   const redirectUri = provider === 'google'
     ? process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
     : process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 
   console.log('provider:', provider);
-  console.log('email:', email);
    const {
      register,
      handleSubmit,
@@ -50,11 +49,10 @@ export default function OAuthSignUpPage() {
         router.replace('/signin');
       } catch (error:  AxiosError | any) {
         if (error.response?.data?.message) {
-          alert(`회원가입 실패: ${error.response.data.message}`);
+          toast.error(`회원가입 실패: ${error.response.data.message}`);
         } else {
-          alert('회원가입 중 오류가 발생했습니다.');
+          toast.error('회원가입 중 오류가 발생했습니다.');
         }
-        console.error('회원가입 실패 ❌', error);
       }
    };
 

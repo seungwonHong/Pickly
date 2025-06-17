@@ -10,6 +10,7 @@ const nextConfig = {
       "res.cloudinary.com",
       "cdn.example.com",
       "image.yes24.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };

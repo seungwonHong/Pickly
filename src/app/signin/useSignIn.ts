@@ -53,6 +53,7 @@ export function useOAuthLoginMutation(
         }
       );
 
+      console.log(res);
       const data = res.data;
 
       // 2. 받은 accessToken을 Next.js API Route로 전달하여 쿠키 저장

@@ -1,23 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { useOAuthLoginMutation } from '@/app/signin/useSignIn';
 import toast from 'react-hot-toast';
-
-const base64UrlDecode = (str: string) => {
-  const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
-  const pad = base64.length % 4 === 0 ? '' : '='.repeat(4 - (base64.length % 4));
-  const decoded = Buffer.from(base64 + pad, 'base64').toString('utf-8');
-  return decoded;
-};
+import Loading from '@/app/landingpage/loading';
 
 export default function GoogleCallback() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const Base_URL = process.env.NEXT_PUBLIC_BASE_URL;
   const code = searchParams.get('code');
+
+  const [id_token , setIdToken] = useState<string>('');
 
   const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI ?? '';
 
@@ -27,7 +22,11 @@ export default function GoogleCallback() {
       router.replace("/homepage");
     },
     onError: (error) => {
-      toast.error("로그인 실패 😢");
+      if (error.response?.status === 403) {
+        router.replace(`/signup/google?provider=google&token=${encodeURIComponent(id_token)}`);
+      } else {
+        toast.error(`로그인 실패 😢: ${error.message}`);
+      }
     },
   });
   
@@ -35,8 +34,8 @@ export default function GoogleCallback() {
     if (!code) return;
 
     const fetchToken = async () => {
-      let id_token = '';
       try {
+        // 1. 구글 OAuth2 토큰 발급
         const tokenRes = await axios.post(
           'https://oauth2.googleapis.com/token',
           {
@@ -54,45 +53,28 @@ export default function GoogleCallback() {
           }
         );
 
-         id_token = tokenRes.data.id_token;
+        // console.log('tokenRes:', tokenRes);
 
-        console.log('tokenRes:', tokenRes);
-
-        
         if (!redirectUri) {
           throw new Error('Google redirect URI is not defined');
         }
-        
+
+        setIdToken(tokenRes.data.id_token);
+        // 2. 토큰 발급 후 로그인 처리
         oAuthLogin({
           redirectUri: redirectUri,
           token: id_token,
           provider: "google",
         });
 
+        // 3. 로그인 성공 → 메인 페이지 이동
+        router.push('/homepage');
       } catch (err: any) {
-        const parseEmailFromIdToken = (id_token: string) => {
-          try {
-            const payload = JSON.parse(base64UrlDecode(id_token.split('.')[1]));
-            return payload.email || 'unknown';
-          } catch (e) {
-            return 'unknown';
-          }
-        };
-
-        if (err.response?.status === 403) {
-          const backendEmail = err.response?.data?.email;
-          const fallbackEmail = parseEmailFromIdToken(id_token); // 여기서 접근 가능
-          const email = backendEmail || fallbackEmail;
-
-          router.replace(`/signup/google?email=${encodeURIComponent(email)}&provider=google&token=${encodeURIComponent(id_token)}`);
-        } else {
-          console.error('구글 로그인 실패 😢', err);
-        }
       }
     };
 
     fetchToken();
   }, [code]);
 
-  return <p>구글 로그인 중입니다...⏳</p>;
+  return <Loading />;
 }
