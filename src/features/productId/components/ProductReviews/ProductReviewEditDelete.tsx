@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
-
-import ProductReviewEdit from "./ProductReviewEdit";
-import ProductReviewDelete from "./ProductReviewDelete";
+import dynamic from "next/dynamic";
 
 import { GetProductIdReviewsDetail } from "../../types";
+
+const ProductReviewEdit = dynamic(() => import("./ProductReviewEdit"));
+const ProductReviewDelete = dynamic(() => import("./ProductReviewDelete"));
 
 interface ProductReviewEditDeleteProps {
   reviewId: number;

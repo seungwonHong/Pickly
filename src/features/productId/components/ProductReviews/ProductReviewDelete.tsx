@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import ProductComparePlusModal from "@/components/shared/ProductComparePlusModal";
 
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
-import useGetProductId from "../../hooks/useGetProductId";
+import { useGetProductId } from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
 
 interface ProductReviewModalProps {

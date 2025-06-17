@@ -1,11 +1,15 @@
 "use client";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
 import useLikeButton from "../../features/productId/hooks/useLikeButton";
-import ProductComparePlusModal from "./ProductComparePlusModal";
 import { useRouter } from "next/navigation";
 import ThumbsInactive from "../../../public/icons/thumbs-inactive.png";
 import ThumbsActive from "../../../public/icons/thumbs-active.png";
 
+const ProductComparePlusModal = dynamic(
+  () => import("./ProductComparePlusModal")
+);
 export default function ThumbsUpButton({
   reviewId,
   initialLikeCount,

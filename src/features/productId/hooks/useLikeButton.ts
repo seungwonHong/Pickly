@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { reviewService } from "../api";
 import { AxiosError } from "axios";
-import { getCookie } from "cookies-next";
+import { checkLoginStatus } from "../hooks/checkLogin";
 
 export default function useLikeButton(
   reviewId: number,
@@ -15,7 +15,8 @@ export default function useLikeButton(
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const likeMutation = useMutation({
-    mutationFn: () => reviewService.postReviewsLike(reviewId),
+    mutationFn: (accessToken: string) =>
+      reviewService.postReviewsLike(reviewId, accessToken),
     onSuccess: () => {
       setIsLikedState(true);
       setIsLikeCount((prev) => prev + 1);
@@ -29,7 +30,8 @@ export default function useLikeButton(
   });
 
   const unlikeMutation = useMutation({
-    mutationFn: () => reviewService.deleteReviewsLike(reviewId),
+    mutationFn: (accessToken: string) =>
+      reviewService.deleteReviewsLike(reviewId, accessToken),
     onSuccess: () => {
       setIsLikedState(false);
       setIsLikeCount((prev) => prev - 1);
@@ -44,25 +46,17 @@ export default function useLikeButton(
 
   // 쿠키 검증과 좋아요
   const toggleLike = async () => {
-    const csrfToken = (await getCookie("csrf-token")) ?? "";
+    const { accessToken } = await checkLoginStatus();
 
-    const res = await fetch("/api/cookie", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "x-csrf-token": csrfToken,
-      },
-    });
-
-    if (!res.ok) {
+    if (!accessToken) {
       setShowLoginModal(true);
       return;
     }
 
     if (isLikedState) {
-      unlikeMutation.mutate();
+      unlikeMutation.mutate(accessToken);
     } else {
-      likeMutation.mutate();
+      likeMutation.mutate(accessToken);
     }
   };
 

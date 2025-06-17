@@ -1,6 +1,7 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 
 import { checkLoginStatus } from "../../hooks/checkLogin";
 import { GetProductIdDetail } from "../../types";
@@ -8,13 +9,31 @@ import BaseButton from "@/components/shared/BaseButton";
 import TypeButton from "@/components/shared/TypeButton";
 import useGetUser from "../../hooks/useGetUser";
 
-import AddEditProductModal from "@/components/shared/AddEditProductModal";
-
 import useModalStore from "@/features/home/modals/store/modalStore";
-import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
-import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
-import ProductComparePlusModal from "../../../../components/shared/ProductComparePlusModal";
-
+const AddEditProductModal = dynamic(
+  () => import("@/components/shared/AddEditProductModal"),
+  {
+    ssr: false,
+  }
+);
+const ProductReviewModal = dynamic(
+  () => import("../modal/ProductReviewModal/ProductReviewModal"),
+  {
+    ssr: false,
+  }
+);
+const ProductCompareModal = dynamic(
+  () => import("../modal/ProductCompareModal/ProductCompareModal"),
+  {
+    ssr: false,
+  }
+);
+const ProductComparePlusModal = dynamic(
+  () => import("@/components/shared/ProductComparePlusModal"),
+  {
+    ssr: false,
+  }
+);
 type ModalTypes = "review" | "compare" | "comparePlus" | "editProduct";
 
 export default function ProductIdDetailButton({

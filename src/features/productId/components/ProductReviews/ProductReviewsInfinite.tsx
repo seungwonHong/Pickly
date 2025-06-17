@@ -1,12 +1,16 @@
 "use client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 
-import SpinningWidget from "@/components/shared/SpinningWidget";
-import ProductReviewsListComponent from "./ProductReviewsListComponent";
 import { productService } from "../../api";
 import { GetProductIdReviewsDetail } from "../../types";
-
+const ProductReviewsListComponent = dynamic(
+  () => import("./ProductReviewsListComponent")
+);
+const SpinningWidget = dynamic(
+  () => import("@/components/shared/SpinningWidget")
+);
 interface ProductIdReviewProps {
   nextCursor?: number | null;
   queryKey: [

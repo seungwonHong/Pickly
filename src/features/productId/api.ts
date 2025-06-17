@@ -166,12 +166,24 @@ class ReviewService {
     );
   }
 
-  postReviewsLike(reviewId: number) {
-    return axios.post(`${BaseURL}/reviews/${reviewId}/like`, {});
+  postReviewsLike(reviewId: number, accessToken: string) {
+    return axios.post(
+      `${BaseURL}/reviews/${reviewId}/like`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
   }
 
-  deleteReviewsLike(reviewId: number) {
-    return axios.delete(`${BaseURL}/reviews/${reviewId}/like`);
+  deleteReviewsLike(reviewId: number, accessToken: string) {
+    return axios.delete(`${BaseURL}/reviews/${reviewId}/like`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   }
 }
 

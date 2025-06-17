@@ -6,7 +6,7 @@ import {
   fetchGoogleSearch,
   fetchMovieSearch,
 } from "../../hooks/fetchOpenAi";
-import LazyLoadSection from "../ProductIdDetail/LazyLoadSection"; // LazyLoadSection 컴포넌트 경로에 맞게 수정
+import LazyLoadSection from "../ProductIdDetail/LazyLoadSection";
 
 const ProductApiClient = dynamic(() => import("./ProductApiClient"));
 const ProductSpotifyClient = dynamic(() => import("./ProductSpotifyClient"));

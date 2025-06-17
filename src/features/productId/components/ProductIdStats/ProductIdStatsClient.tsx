@@ -1,13 +1,13 @@
 "use client";
 import { useEffect } from "react";
-
+import dynamic from "next/dynamic";
 import { useProductStatsStore } from "../../libs/useProductStatsStore";
-import ProductIdStatsBone from "./ProductIdStatsBone";
+
 import { GetProductIdDetail } from "../../types";
 import Heart from "../../../../../public/icons/Heart.png";
 import Star from "../../../../../public/icons/star.svg";
 import Talk from "../../../../../public/icons/Talk.png";
-
+const ProductIdStatsBone = dynamic(() => import("./ProductIdStatsBone"));
 export default function ProductStatsClient({
   product,
 }: {

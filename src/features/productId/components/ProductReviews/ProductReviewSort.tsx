@@ -1,9 +1,9 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 
-import SortDropDown from "@/components/shared/SortDropDown";
-
+const SortDropDown = dynamic(() => import("@/components/shared/SortDropDown"));
 type ReviewSortOrder = "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
 
 interface SelectOption {
