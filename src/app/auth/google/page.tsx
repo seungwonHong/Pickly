@@ -13,7 +13,6 @@ export default function GoogleCallback() {
   const code = searchParams.get('code');
 
   const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI ?? '';
-
   
   const { mutate: oAuthLogin } = useOAuthLoginMutation({
     onSuccess: (data) => {
@@ -22,6 +21,7 @@ export default function GoogleCallback() {
       console.log('pickly 구글 로그인 완료:', data);
     },
   });
+  
   useEffect(() => {
     if (!code) return;
 
@@ -53,7 +53,6 @@ export default function GoogleCallback() {
         id_token = tokenRes.data.id_token;
         console.log('구글 토큰발급 완료:', tokenRes);
 
-        
         // 2. 토큰 발급 후 로그인 처리
         oAuthLogin({
           redirectUri: redirectUri,
