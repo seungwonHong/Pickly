@@ -14,7 +14,7 @@ const tabMap = {
 interface Props {
   userId: number;
   initialTab: ProductTabType;
-  initialProducts: Product[]; // 타입 정확히 지정하면 더 좋음
+  initialProducts: Product[];
 }
 
 export type TabKo = keyof typeof tabMap;
@@ -30,7 +30,7 @@ export default function ProductTabSection({
   )?.[0] as TabKo | undefined;
 
   return (
-    <section className="mt-20">
+    <section className="mt-20 w-full">
       <ProductTabHeader
         selected={tabKo ?? "리뷰 남긴 상품"}
         onChange={(tabKo: TabKo) => setSelectedTab(tabMap[tabKo])}

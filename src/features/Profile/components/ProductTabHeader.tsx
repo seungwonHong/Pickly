@@ -1,3 +1,4 @@
+import ProductTabDropdown from "./ProductTabDropdown";
 import { TabKo } from "./ProductTabSection";
 
 const TABS: TabKo[] = ["리뷰 남긴 상품", "등록한 상품", "찜한 상품"];
@@ -27,17 +28,11 @@ export default function ProductTabHeader({ selected, onChange }: Props) {
 
       {/* 모바일 드롭다운 */}
       <div className="lg:hidden">
-        <select
-          value={selected}
-          onChange={(e) => onChange(e.target.value as TabKo)}
-          className="w-[140px] p-2 font-semibold text-[18px]  text-white "
-        >
-          {TABS.map((tab) => (
-            <option key={tab} value={tab}>
-              {tab}
-            </option>
-          ))}
-        </select>
+        <ProductTabDropdown
+          options={TABS}
+          selected={selected}
+          onChange={onChange}
+        />
       </div>
     </div>
   );
