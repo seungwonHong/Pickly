@@ -3,8 +3,6 @@ import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
-import ProductImage from "../../ProductImage";
-import useModalStore from "@/features/home/modals/store/modalStore";
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { Textbox } from "@/components/input/Textbox";
 import { imageService } from "@/features/productId/api";
@@ -30,7 +28,7 @@ export default function ProductReviewInputModal({
   initialText = "",
   initialImages = [],
 }: ProductReviewInputModalProps) {
-  const { description, setDescription } = useModalStore();
+  const [description, setDescription] = useState(initialText);
 
   const [text, setText] = useState(initialText);
   const [images, setImages] = useState<ImageData[]>(() =>
@@ -130,9 +128,10 @@ export default function ProductReviewInputModal({
       <div className="flex flex-row-reverse gap-[20px] w-full justify-end">
         {images.map((image) => (
           <div key={image.id} className="relative">
-            <ProductImage
+            <img
               src={image.url}
               alt="미리보기 이미지"
+              loading="lazy"
               width={160}
               height={160}
               onClick={() => handleImageClick(image.id)}
