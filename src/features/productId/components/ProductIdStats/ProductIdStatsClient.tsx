@@ -46,19 +46,29 @@ export default function ProductStatsClient({
         <ProductIdStatsBone
           title="하트 수"
           icon={Heart}
+<<<<<<< HEAD
+          score={favoriteCount}
+          diffValue={favoriteCount - product.categoryMetric.favoriteCount}
+=======
           score={Number(favoriteCount.toFixed(1))}
           diffValue={Number(
             (favoriteCount - product.categoryMetric.favoriteCount).toFixed(1)
           )}
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
           unit=" 개"
         />
         <ProductIdStatsBone
           title="댓글 수"
           icon={Talk}
+<<<<<<< HEAD
+          score={reviewCount}
+          diffValue={reviewCount - product.categoryMetric.reviewCount}
+=======
           score={Number(reviewCount.toFixed(1))}
           diffValue={Number(
             (reviewCount - product.categoryMetric.reviewCount).toFixed(1)
           )}
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
           unit=" 개"
         />
       </div>

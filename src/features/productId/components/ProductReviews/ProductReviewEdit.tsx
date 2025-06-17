@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+<<<<<<< HEAD
+=======
 import toast from "react-hot-toast";
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 
 import ProductReviewStarModal from "../modal/ProductReviewModal/ProductReviewStarModal";
 import ProductIdGetModal from "../modal/ProductReviewModal/ProductIdGetModal";
@@ -10,9 +13,14 @@ import ProductReviewInputModal from "../modal/ProductReviewModal/ProductReviewIn
 import BaseButton from "@/components/shared/BaseButton";
 import ReviewBaseModal from "../modal/ProductReviewModal/ReviewBaseModal";
 
+<<<<<<< HEAD
+import { GetProductIdReviewsDetail } from "../../types";
+import useGetProductId from "../../hooks/useGetProductId";
+=======
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { GetProductIdReviewsDetail } from "../../types";
 import { useGetProductId } from "../../hooks/useGetProductId";
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
 import { reviewService } from "../../api";
 
 interface ProductReviewModalProps {
@@ -39,22 +47,40 @@ export default function ProductReviewEdit({
 
   // 리뷰 patch 요청을 위한 useMutation 훅
   const patchReviewMutation = useMutation({
+<<<<<<< HEAD
+    mutationFn: () =>
+=======
     mutationFn: ({ accessToken }: { accessToken: string }) =>
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
       reviewService.patchReviews({
         reviewId,
         content: reviewText,
         rating: rating,
         images: images,
+<<<<<<< HEAD
+      }),
+    onSuccess: () => {
+      alert("리뷰가 수정되었습니다!");
+=======
         accessToken,
       }),
     onSuccess: () => {
       toast.success("리뷰가 수정되었습니다!");
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
       setOpen(false);
       queryClient.invalidateQueries({
         queryKey: ["reviews", product.id, "recent"],
       });
     },
     onError: () => {
+<<<<<<< HEAD
+      alert("리뷰 수정에 실패했습니다.");
+    },
+  });
+  const handleSubmit = () => {
+    if (!product) return;
+    patchReviewMutation.mutate();
+=======
       toast.error("리뷰 수정에 실패했습니다.");
     },
   });
@@ -66,6 +92,7 @@ export default function ProductReviewEdit({
     }
     if (!product) return;
     patchReviewMutation.mutate({ accessToken });
+>>>>>>> 50cd9e1597e6f7cd44d8082cbaf4c01018d11518
   };
 
   const isSubmitEnabled = reviewText.trim().length > 0;
