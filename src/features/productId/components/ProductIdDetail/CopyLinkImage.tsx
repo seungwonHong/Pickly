@@ -17,10 +17,9 @@ export default function CopyLinkImage() {
 
       if (kakaoKey) {
         window.Kakao.init(kakaoKey);
+        console.log("Kakao SDK 초기화 완료");
       } else {
-        console.error(
-          "Kakao JS 키가 존재하지 않습니다. .env.local을 확인해주세요."
-        );
+        console.error("Kakao JS 키가 없습니다. .env.local을 확인해주세요.");
       }
     }
   }, []);
@@ -38,7 +37,6 @@ export default function CopyLinkImage() {
       });
   };
 
-  // 안됨..
   const handleKakaoShare = () => {
     console.log("카카오 공유 버튼 클릭됨");
     if (window.Kakao) {

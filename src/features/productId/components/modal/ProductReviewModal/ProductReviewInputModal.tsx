@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
+import ProductImage from "../../ProductImage";
 import useModalStore from "@/features/home/modals/store/modalStore";
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { Textbox } from "@/components/input/Textbox";
@@ -48,7 +49,15 @@ export default function ProductReviewInputModal({
     onTextChange(e.target.value);
     setDescription(e.target.value);
   };
-
+  // 이미지 접근성 검사 함수
+  const checkImageAccessible = (url: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const img = new window.Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+  };
   // 이미지 변경 핸들러
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { accessToken } = await checkLoginStatus();
@@ -57,7 +66,11 @@ export default function ProductReviewInputModal({
 
     try {
       const uploadedUrl = await imageService.postImage(file, accessToken ?? "");
-
+      const isAccessible = await checkImageAccessible(uploadedUrl);
+      if (!isAccessible) {
+        toast.error("이미지명이 한글이면 불러올 수 없습니다.");
+        return;
+      }
       setImages((prev) => {
         if (editingId) {
           return prev.map((img) =>
@@ -71,11 +84,14 @@ export default function ProductReviewInputModal({
 
       setEditingId(null);
     } catch (err) {
-      console.error("이미지 업로드 실패:", err);
-      toast.error("이미지 업로드에 실패했습니다.");
+      const error = err as Error;
+      if (error?.message === "403") {
+        toast.error("권한이 없습니다. 다시 로그인해주세요.");
+      } else {
+        toast.error("이미지 업로드에 실패했습니다.");
+      }
     }
   };
-
   // 이미지 삭제 핸들러
   const handleDeleteClick = (id: string) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
@@ -114,12 +130,15 @@ export default function ProductReviewInputModal({
       <div className="flex flex-row-reverse gap-[20px] w-full justify-end">
         {images.map((image) => (
           <div key={image.id} className="relative">
-            <img
+            <ProductImage
               src={image.url}
               alt="미리보기 이미지"
+              width={160}
+              height={160}
               onClick={() => handleImageClick(image.id)}
-              className="w-[160px] h-[160px]  object-cover rounded-xl cursor-pointer"
+              className="w-[160px] h-[160px] object-cover rounded-xl cursor-pointer"
             />
+
             <button
               onClick={() => handleDeleteClick(image.id)}
               className="absolute top-[5px] right-[5px] bg-black/60 rounded-xl"

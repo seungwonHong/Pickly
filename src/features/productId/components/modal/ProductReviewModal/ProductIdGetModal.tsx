@@ -1,4 +1,4 @@
-import useGetProductId from "../../../hooks/useGetProductId";
+import { useGetProductId } from "../../../hooks/useGetProductId";
 import CategoryChip from "@/components/CategoryChip";
 export default function ProductIdGetModal() {
   const { product } = useGetProductId();

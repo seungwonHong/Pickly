@@ -11,7 +11,7 @@ import ProductReviewInputModal from "./ProductReviewInputModal";
 import BaseButton from "@/components/shared/BaseButton";
 import ReviewBaseModal from "./ReviewBaseModal";
 
-import useGetProductId from "../../../hooks/useGetProductId";
+import { useGetProductId } from "../../../hooks/useGetProductId";
 import { reviewService } from "../../../api";
 
 interface ProductReviewModalProps {

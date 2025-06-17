@@ -1,8 +1,16 @@
-import { productService } from "../../api";
-import fetchArtistAlbum from "../../hooks/fetchArtistAlbum";
-import ProductApiClient from "./ProductApiClient";
-import ProductSpotifyClient from "./ProductSpotifyClient";
+import dynamic from "next/dynamic";
 
+import { productService } from "../../api";
+import {
+  fetchArtistAlbum,
+  fetchGoogleSearch,
+  fetchMovieSearch,
+} from "../../hooks/fetchOpenAi";
+import LazyLoadSection from "../ProductIdDetail/LazyLoadSection"; // LazyLoadSection 컴포넌트 경로에 맞게 수정
+
+const ProductApiClient = dynamic(() => import("./ProductApiClient"));
+const ProductSpotifyClient = dynamic(() => import("./ProductSpotifyClient"));
+const MapView = dynamic(() => import("./MapView"));
 export default async function ProductApiDetail({
   productId,
 }: {
@@ -11,12 +19,14 @@ export default async function ProductApiDetail({
   const response = await productService.getProductsId(productId);
   const product = response.data;
   if (!product) return <div>상품 정보가 없습니다.</div>;
-  console.log("product", product);
 
   const combinedText = `${product.name}\n${product.description}`;
 
-  // 아티스트 이름과 설명을 추출하여 ai에게 전달
-  const albumInfo = await fetchArtistAlbum(combinedText);
+  const [albumInfo, placeInfo, movieInfo] = await Promise.all([
+    fetchArtistAlbum(combinedText),
+    fetchGoogleSearch(combinedText),
+    fetchMovieSearch(combinedText),
+  ]);
 
   let artistName = "";
   let albumName = "";
@@ -46,23 +56,61 @@ export default async function ProductApiDetail({
       ? `${artistName} ${albumName} official music video`.trim()
       : combinedText;
 
+  // Google 검색을 통해 장소 정보 추출
+  let parsedPlace = "";
+  try {
+    if (placeInfo) {
+      const parsed = JSON.parse(placeInfo.trim());
+      parsedPlace = parsed?.place ?? "";
+    } else {
+      console.error("fetchGoogleSearch 결과가 null입니다");
+    }
+  } catch (e) {
+    console.error("장소 정보 파싱 실패", e);
+  }
+
+  // 영화 드라마 공식 트레일러
+  let parsedMovie = "";
+  try {
+    if (movieInfo) {
+      const parsed = JSON.parse(movieInfo.trim());
+      parsedMovie = parsed?.trailer ?? "";
+    } else {
+      console.error("fetchMovieSearch 결과가 null입니다");
+    }
+  } catch (e) {
+    console.error("영화 정보 파싱 실패", e);
+  }
   return (
     <>
-      {product.category?.id === 1 && (
-        <div className="flex gap-[20px] flex-col ">
-          <div className="text-white lg:text-[20px] md:text-[16px] font-normal">
-            음악 들으러 가기
+      <LazyLoadSection>
+        {product.category?.id === 1 && (
+          <div className="flex gap-[20px] flex-col ">
+            <div className="flex items-center lg:gap-[20px] gap-[15px] flex-col md:flex-row">
+              <ProductApiClient
+                searchQuery={searchQuery}
+                category={product.category.id}
+              />
+              <ProductSpotifyClient
+                artistName={artistName}
+                albumName={albumName}
+                product={product}
+              />
+            </div>
           </div>
-          <div className="flex items-center lg:gap-[20px] gap-[15px] flex-col md:flex-row">
-            <ProductApiClient searchQuery={searchQuery} />
-            <ProductSpotifyClient
-              artistName={artistName}
-              albumName={albumName}
-              product={product}
-            />
+        )}
+        {(product.category?.id === 4 || product.category?.id === 6) && (
+          <div style={{ height: "400px" }}>
+            <MapView place={parsedPlace} />
           </div>
-        </div>
-      )}
+        )}
+        {product.category?.id === 2 && (
+          <ProductApiClient
+            searchQuery={parsedMovie}
+            category={product.category.id}
+          />
+        )}
+      </LazyLoadSection>
     </>
   );
 }

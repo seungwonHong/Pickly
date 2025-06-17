@@ -12,7 +12,7 @@ import ReviewBaseModal from "../modal/ProductReviewModal/ReviewBaseModal";
 
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { GetProductIdReviewsDetail } from "../../types";
-import useGetProductId from "../../hooks/useGetProductId";
+import { useGetProductId } from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
 
 interface ProductReviewModalProps {
