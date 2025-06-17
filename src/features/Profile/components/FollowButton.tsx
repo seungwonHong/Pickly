@@ -1,13 +1,16 @@
 "use client";
 
+import useAuthentication from "@/features/header/hooks/useAuthentication";
 import { followUser, unfollowUser } from "../api/getUserFollow";
+import toast from "react-hot-toast";
 import BaseButton from "@/components/shared/BaseButton";
 
-interface Props {
+export interface Props {
   userId: number;
   isFollowing: boolean;
   setIsFollowing: (v: boolean) => void;
   setFollowersCount: React.Dispatch<React.SetStateAction<number>>;
+  router: ReturnType<typeof useRouter>;
 }
 
 export default function FollowButton({
@@ -15,11 +18,24 @@ export default function FollowButton({
   isFollowing,
   setIsFollowing,
   setFollowersCount,
+  router,
 }: Props) {
+  const { isAuthenticated } = useAuthentication();
+
   const handleFollow = async () => {
-    await followUser(userId);
-    setIsFollowing(true);
-    setFollowersCount((prev) => prev + 1);
+    if (!isAuthenticated) {
+      toast.error("로그인 후 이용 가능합니다.");
+      router.push("/signin");
+      return;
+    }
+    try {
+      await followUser(userId);
+      setIsFollowing(true);
+      setFollowersCount((prev) => prev + 1);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("팔로우에 실패했습니다.");
+    }
   };
 
   const handleUnfollow = async () => {
