@@ -3,6 +3,7 @@ import { M_PLUS_Rounded_1c } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./providers/QueryProvider";
 import { Toaster } from "react-hot-toast";
+import Script from "next/script";
 
 const mplus = M_PLUS_Rounded_1c({
   variable: "--font-mplus",
@@ -13,12 +14,12 @@ const mplus = M_PLUS_Rounded_1c({
 export const metadata: Metadata = {
   title: "Create Next App",
   description:
-    " Pickly is a next-generation product discovery platform where quality meets curation. Whether you’re searching for the latest gadgets, everyday essentials, or hidden gems, Pickly connects you with handpicked items trusted by real users.",
+    "Pickly is a next-generation product discovery platform where quality meets curation...",
   icons: "/icons/favicon.png",
   openGraph: {
     title: "Pickly",
     description:
-      "Discover and compare curated products trusted by real users. Experience the next generation of product discovery.",
+      "Discover and compare curated products trusted by real users...",
     siteName: "Pickly",
     url: "https://pickly.vercel.app",
     type: "website",
@@ -35,13 +36,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <head>{/* 카카오 SDK */}</head>
       <body className={`${mplus.variable} antialiased`}>
+        <Script
+          src="https://developers.kakao.com/sdk/js/kakao.min.js"
+          strategy="afterInteractive"
+        />
         <QueryProvider>{children}</QueryProvider>
         <Toaster
           position="top-center"

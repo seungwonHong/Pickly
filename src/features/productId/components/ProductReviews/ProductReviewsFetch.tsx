@@ -44,12 +44,7 @@ export default async function ProductReviewsFetch({
         </div>
       )}
       {initialData.list.length === 0 && (
-        <div className="text-[#f1f1f1] text-[16px] font-normal">
-          <Image
-            src={logo404}
-            alt="404 Not Found"
-            className="w-[30px] h-[40px] mx-auto mb-2"
-          />
+        <div className="text-[#f1f1f1] text-[16px] font-normal text-center pt-[80px]">
           <div className="w-full text-[#6E6E82] lg:text-[20px] md:text-[18px] text-[16px] font-medium">
             첫 리뷰를 작성해보세요!
           </div>
