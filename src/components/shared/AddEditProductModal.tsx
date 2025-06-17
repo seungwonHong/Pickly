@@ -1,17 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { IoClose } from "react-icons/io5";
+
 import { InputField } from "../input/InputField";
 import CategoryDropDown from "./CategoryDropDown";
 import { Textbox } from "../input/Textbox";
 import BaseButton from "./BaseButton";
-import { useRouter } from "next/navigation";
+
 import useModalStore from "@/features/home/modals/store/modalStore";
 import { ProductInfo } from "@/features/home/types/productType";
 import { handleSubmit } from "@/lib/utils/addProductFunction";
 import editProductFunction from "@/lib/utils/editProductFunction";
 import ProductComparePlusModal from "./ProductComparePlusModal";
-import { Toaster } from "react-hot-toast";
 
 interface Props {
   buttonPlaceholder: string;
@@ -30,8 +32,9 @@ const AddEditProductModal = ({
   const [addProduct, setAddProduct] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
-
   const router = useRouter();
+
+  const productId = productinfo?.id || null;
 
   const {
     name,
@@ -66,6 +69,8 @@ const AddEditProductModal = ({
     if (productinfo) {
       setClickedValue(productinfo.category.name);
       setImage(productinfo.image);
+      setName(productinfo.name);
+      setDescription(productinfo.description);
     }
   }, []);
 
@@ -125,7 +130,7 @@ const AddEditProductModal = ({
               className="md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
               placeholder="상품명 (상품 등록 여부를 확인해 주세요)"
               type="text"
-              value={productinfo && productinfo.name}
+              value={name ?? null}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setName(e.target.value)
               }
@@ -177,7 +182,6 @@ const AddEditProductModal = ({
           maxLength={500}
           placeholder="상품 설명을 입력해 주세요"
           className="lg:w-[540px] lg:h-[160px] md:w-[510px] md:h-[160px] w-[295px] h-[120px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
-          value={productinfo && productinfo.description}
         />
 
         <BaseButton
@@ -201,7 +205,21 @@ const AddEditProductModal = ({
                   setClickedValue,
                   image,
                 })
-              : editProductFunction(); // 편집 함수 호출
+              : editProductFunction({
+                  productId: Number(productId),
+                  file,
+                  name,
+                  handleClose,
+                  description,
+                  categoryId,
+                  setName,
+                  setDescription,
+                  setImage,
+                  setCategoryId,
+                  setClickedValue,
+                  image,
+                  setFile,
+                });
           }}
         >
           {buttonPlaceholder}

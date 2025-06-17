@@ -38,6 +38,7 @@ export function Textbox({
             rounded-[8px] bg-[#252530] p-[20px] 
             placeholder-[var(--color-deepGray)] text-[var(--color-white)] 
             `}
+          value={description ?? ""}
           onChange={(e) => {
             const value = e.target.value;
             const allowedPattern = /^[a-zA-Z0-9가-힣\s?!]*$/;

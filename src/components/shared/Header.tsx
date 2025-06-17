@@ -7,6 +7,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { useSearchParams } from "next/navigation";
 import useAuthentication from "@/features/header/hooks/useAuthentication";
 import useResize from "@/features/header/hooks/useResize";
+import { motion } from "framer-motion";
 
 const Header = () => {
   const params = useParams();
@@ -95,12 +96,16 @@ const Header = () => {
       <div className="border-[1px] border-[#252530] w-full"></div>
 
       {clicked && (
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
           className="fixed h-full w-full bg-[#25253080] md:hidden"
           onClick={() => setClicked(false)}
         >
           <Category categoryId={categoryId} />
-        </div>
+        </motion.div>
       )}
     </div>
   );

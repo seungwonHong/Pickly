@@ -1,10 +1,10 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { getCookie } from "cookies-next";
 
+import { checkLoginStatus } from "../../hooks/checkLogin";
 import { productService } from "../../api";
 import { useProductStatsStore } from "../../libs/useProductStatsStore";
 import ProductComparePlusModal from "@/components/shared/ProductComparePlusModal";
@@ -23,29 +23,54 @@ export default function ProductIdDetailHeart({
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
 
-  const handleLike = async () => {
-    const csrfToken = (await getCookie("csrf-token")) ?? "";
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const { accessToken } = await checkLoginStatus();
+        if (!accessToken) {
+          console.warn("accessToken이 없습니다.");
+        }
+        const res = await productService.getProductsId(
+          productId,
+          accessToken ?? ""
+        );
+        setIsLiked(res.data.isFavorite);
+        setFavoriteCount(res.data.favoriteCount);
+      } catch (error) {
+        console.error("상품 상세 정보 에러:", error);
+      }
+    };
 
-    const res = await fetch("/api/cookie", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "x-csrf-token": csrfToken,
-      },
-    });
-    if (!res.ok) {
-      setShowLoginModal(true); // 로그인되어 있지 않으면 모달 표시
+    fetchProduct();
+  }, [productId]);
+
+  const handleLike = async () => {
+    const { isLoggedIn, accessToken } = await checkLoginStatus();
+    //  console.log("isLoggedIn", isLoggedIn);
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
       return;
     }
 
-    if (!isLiked) {
-      await productService.postProductsFavorite(productId);
-      setFavoriteCount(favoriteCount + 1);
-    } else {
-      await productService.deleteProductsFavorite(productId);
-      setFavoriteCount(favoriteCount - 1);
+    try {
+      if (!isLiked) {
+        await productService.postProductsFavorite(productId, accessToken ?? "");
+        setFavoriteCount(favoriteCount + 1);
+      } else {
+        await productService.deleteProductsFavorite(
+          productId,
+          accessToken ?? ""
+        );
+        setFavoriteCount(favoriteCount - 1);
+      }
+      setIsLiked(!isLiked);
+    } catch (error) {
+      const err = error as Error;
+      console.error("Axios 에러 응답:", err.message);
+      if (err.message) {
+        console.error("Axios 에러 응답:", err.message);
+      }
     }
-    setIsLiked(!isLiked);
   };
 
   return (

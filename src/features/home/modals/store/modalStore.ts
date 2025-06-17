@@ -5,8 +5,8 @@ interface ModalStore {
   setIsClicked: (value: boolean) => void;
   clickedValue: string;
   setClickedValue: (value: string | undefined) => void;
-  categoryId: number | null;
-  setCategoryId: (value: number | null) => void;
+  categoryId?: number | null;
+  setCategoryId?: (value: number | null) => void;
   image: string | null;
   setImage: (value: string | null) => void;
   description: string | null;

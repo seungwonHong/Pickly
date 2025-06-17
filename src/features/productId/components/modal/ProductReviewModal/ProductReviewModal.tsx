@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
+import { checkLoginStatus } from "../../../hooks/checkLogin";
 import ProductReviewStarModal from "./ProductReviewStarModal";
 import ProductIdGetModal from "./ProductIdGetModal";
 import ProductReviewInputModal from "./ProductReviewInputModal";
@@ -30,26 +32,34 @@ export default function ProductReviewModal({
 
   // 리뷰 post 요청을 위한 useMutation 훅
   const postReviewMutation = useMutation({
-    mutationFn: () =>
+    mutationFn: ({ accessToken }: { accessToken: string }) =>
       reviewService.postReviews({
         productId: product.id,
         content: reviewText,
         rating: rating,
         images: images,
+        accessToken: accessToken,
       }),
     onSuccess: () => {
-      alert("리뷰가 등록되었습니다!");
+      toast.success("리뷰가 등록되었습니다!");
       setOpen(false);
       queryClient.invalidateQueries({
         queryKey: ["reviews", product.id, "recent"],
       });
     },
     onError: () => {
-      alert("리뷰 등록에 실패했습니다.");
+      toast.error("별점과 내용을 입력해주세요.");
     },
   });
-  const handleSubmit = () => {
-    postReviewMutation.mutate();
+  // 리뷰 작성 버튼 클릭 시 호출되는 함수
+  const handleSubmit = async () => {
+    const { accessToken } = await checkLoginStatus();
+    if (!accessToken) {
+      toast.error("로그인이 필요합니다.");
+      return;
+    }
+
+    postReviewMutation.mutate({ accessToken });
   };
 
   const isSubmitEnabled = reviewText.trim().length > 0;
