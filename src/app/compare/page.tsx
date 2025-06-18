@@ -1,3 +1,4 @@
+"use client";
 import CompareProductForm from "@/features/compare/components/CompareProductForm";
 import Header from "@/components/shared/Header";
 import { Suspense } from "react";
