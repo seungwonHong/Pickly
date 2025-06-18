@@ -54,7 +54,7 @@ export default function ProductReviewsFetch({
           onChange={onSortChange}
         />
       </div>
-      <div className="min-h-[500px]">
+      <div className="md:min-h-[500px] min-h-[200px]">
         {initialData.list.length >= 1 && (
           <ProductReviewsInfinite
             initialData={dataForSelectedOrder}
@@ -63,7 +63,7 @@ export default function ProductReviewsFetch({
           />
         )}
         {initialData.list.length === 0 && (
-          <div className="text-[#f1f1f1] text-[16px] font-normal text-center pt-[200px]">
+          <div className="text-[#f1f1f1] text-[16px] font-normal text-center md:pt-[200px] pt-[100px]">
             <div className="w-full text-[#6E6E82] lg:text-[20px] md:text-[18px] text-[16px] font-medium">
               첫 리뷰를 작성해보세요!
             </div>

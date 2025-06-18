@@ -116,7 +116,7 @@ export default function ProductReviewInputModal({
   }, [images, onImageUrlsChange]);
 
   return (
-    <div className="flex flex-col gap-[20px] min-h-[330px]">
+    <div className="flex flex-col lg:gap-[20px] md:gap-[15px] gap-[10px]">
       {/* 텍스트 입력 나중에 컴포넌트로 교체예쩡 텍스트필드 오류 있음 */}
       <Textbox
         size="S"
@@ -124,22 +124,25 @@ export default function ProductReviewInputModal({
         value={text}
         onChange={handleTextChange}
         maxLength={500}
-        className="h-[150px] w-[540px] text-[16px]"
+        className="md:h-[150px] h-[120px] lg:w-[540px] md:w-[510px] w-[295px]  text-[16px]"
       />
 
       {/* 이미지 업로드 섹션 */}
       <div className="flex flex-row-reverse gap-[20px] w-full justify-end">
         {images.map((image) => (
-          <div key={image.id} className="relative w-[160px] h-[160px]">
+          <div
+            key={image.id}
+            className="relative lg:w-[160px] w-[140px] lg:h-[160px] h-[140px] "
+          >
             <Image
               src={image.url}
               alt="미리보기 이미지"
-              width={160}
-              height={160}
+              width={140}
+              height={140}
               unoptimized
               loading="lazy"
               onClick={() => handleImageClick(image.id)}
-              className="w-[160px] h-[160px] object-cover rounded-xl cursor-pointer"
+              className="lg:w-[160px] w-[140px] lg:h-[160px] h-[140px] object-cover rounded-xl cursor-pointer"
             />
 
             <button
@@ -155,7 +158,7 @@ export default function ProductReviewInputModal({
         {images.length < 3 && (
           <button
             onClick={handleAddClick}
-            className="w-[160px] cursor-pointer h-[160px] flex items-center justify-center bg-[#252530] border border-[#353542] rounded-xl"
+            className="lg:w-[160px] md:w-[135px] w-[140px] cursor-pointer lg:h-[160px] md:h-[135px] h-[140px] flex items-center justify-center bg-[#252530] border border-[#353542] rounded-xl"
           >
             <Image
               src={PlusImage}

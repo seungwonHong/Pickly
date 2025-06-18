@@ -3,8 +3,7 @@ export async function fetchArtistAlbum(text: string) {
   const baseUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : process.env.NEXT_PUBLIC_BASE_URL ||
-        "https://mogazoa-api.vercel.app/14-6";
+      : process.env.BASE_URL || "https://mogazoa-api.vercel.app/14-6";
 
   const res = await fetch(`${baseUrl}/api/openai/extract-music`, {
     method: "POST",
@@ -29,8 +28,7 @@ export async function fetchGoogleSearch(query: string) {
   const baseUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : process.env.NEXT_PUBLIC_BASE_URL ||
-        "https://mogazoa-api.vercel.app/14-6";
+      : process.env.BASE_URL || "https://mogazoa-api.vercel.app/14-6";
 
   const res = await fetch(`${baseUrl}/api/openai/extract-place`, {
     method: "POST",
