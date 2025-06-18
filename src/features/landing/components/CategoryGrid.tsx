@@ -2,8 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import CategoryCard from "./CategoryCard";
-import Link from "next/link";
-import { FaArrowRight } from "react-icons/fa6";
 
 type Props = {};
 
