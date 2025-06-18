@@ -6,7 +6,7 @@ const Base_URL = process.env.NEXT_PUBLIC_BASE_URL;
 interface Props {
   keyword?: string;
   categoryId?: number | null;
-  order: "recent" | "rating" | "reviewCount";
+  order?: "recent" | "rating" | "reviewCount";
   cursor?: number;
 }
 

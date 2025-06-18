@@ -14,7 +14,7 @@ interface Props {
     "recent" | "rating" | "reviewCount" | undefined
   ];
   keyword?: string;
-  order: "recent" | "rating" | "reviewCount";
+  order?: "recent" | "rating" | "reviewCount";
 }
 
 const MoreProducts = ({
