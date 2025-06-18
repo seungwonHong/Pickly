@@ -1,25 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-
-import ProductReviewStarModal from "../modal/ProductReviewModal/ProductReviewStarModal";
-import ProductIdGetModal from "../modal/ProductReviewModal/ProductIdGetModal";
-import ProductReviewInputModal from "../modal/ProductReviewModal/ProductReviewInputModal";
-import BaseButton from "@/components/shared/BaseButton";
-import ReviewBaseModal from "../modal/ProductReviewModal/ReviewBaseModal";
+import dynamic from "next/dynamic";
 
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { GetProductIdReviewsDetail } from "../../types";
 import { useGetProductId } from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
 
+const ProductReviewStarModal = dynamic(
+  () => import("../modal/ProductReviewModal/ProductReviewStarModal")
+);
+const ProductIdGetModal = dynamic(
+  () => import("../modal/ProductReviewModal/ProductIdGetModal")
+);
+const ProductReviewInputModal = dynamic(
+  () => import("../modal/ProductReviewModal/ProductReviewInputModal")
+);
+const ReviewBaseModal = dynamic(
+  () => import("../modal/ProductReviewModal/ReviewBaseModal")
+);
+const BaseButton = dynamic(() => import("@/components/shared/BaseButton"));
+
+type ReviewImage = string | { id: number };
+
 interface ProductReviewModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   reviewId: number;
   initialReviewData: GetProductIdReviewsDetail;
+  // sort?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
 }
 
 export default function ProductReviewEdit({
@@ -27,26 +39,34 @@ export default function ProductReviewEdit({
   setOpen,
   reviewId,
   initialReviewData,
-}: ProductReviewModalProps) {
+}: // sort = "recent",
+ProductReviewModalProps) {
   const queryClient = useQueryClient();
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [reviewText, setReviewText] = useState(initialReviewData.content);
   const [rating, setRating] = useState<number>(initialReviewData.rating);
-  const [images, setImages] = useState<string[]>(
-    initialReviewData.reviewImages.map((img) => img.source)
+  const [images, setImages] = useState<ReviewImage[]>(
+    initialReviewData.reviewImages.map((img) => ({ id: img.id }))
   );
+
   // 상품 ID를 가져오기 위한 커스텀 훅 사용
   const { product } = useGetProductId();
 
   // 리뷰 patch 요청을 위한 useMutation 훅
   const patchReviewMutation = useMutation({
-    mutationFn: ({ accessToken }: { accessToken: string }) =>
-      reviewService.patchReviews({
+    mutationFn: async ({ accessToken }: { accessToken: string }) => {
+      const formattedImages = images.map((img) =>
+        typeof img === "string" ? { source: img } : { id: img.id }
+      );
+
+      return reviewService.patchReviews({
         reviewId,
         content: reviewText,
-        rating: rating,
-        images: images,
+        rating,
+        images: formattedImages,
         accessToken,
-      }),
+      });
+    },
     onSuccess: () => {
       toast.success("리뷰가 수정되었습니다!");
       setOpen(false);
@@ -54,10 +74,12 @@ export default function ProductReviewEdit({
         queryKey: ["reviews", product.id, "recent"],
       });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error("리뷰 수정 실패:", error.message);
       toast.error("리뷰 수정에 실패했습니다.");
     },
   });
+
   const handleSubmit = async () => {
     const { accessToken } = await checkLoginStatus();
     if (!accessToken) {
@@ -65,10 +87,24 @@ export default function ProductReviewEdit({
       return;
     }
     if (!product) return;
-    patchReviewMutation.mutate({ accessToken });
+    await patchReviewMutation.mutateAsync({ accessToken });
   };
 
   const isSubmitEnabled = reviewText.trim().length > 0;
+
+  useEffect(() => {
+    async function fetchAccessToken() {
+      const { accessToken } = await checkLoginStatus();
+      setAccessToken(accessToken || null);
+    }
+    fetchAccessToken();
+  }, []);
+
+  useEffect(() => {
+    setReviewText(initialReviewData.content);
+    setRating(initialReviewData.rating);
+    setImages(initialReviewData.reviewImages.map((img) => img.source));
+  }, [initialReviewData]);
 
   return (
     <ReviewBaseModal
@@ -79,11 +115,12 @@ export default function ProductReviewEdit({
     >
       <div className="w-full h-full flex gap-[40px] flex-col justify-between">
         <ProductIdGetModal />
-        <div className="flex flex-col gap-[20px] h-fit">
+        <div className="flex flex-col gap-[20px] min-h-[330px]">
           {/* 별점 입력 모달 */}
           <ProductReviewStarModal onChange={setRating} initialRating={rating} />
           {/* 리뷰 내용 입력 모달 */}
           <ProductReviewInputModal
+            accessToken={accessToken}
             onTextChange={setReviewText}
             onImageUrlsChange={setImages}
             initialText={initialReviewData.content}
@@ -97,7 +134,7 @@ export default function ProductReviewEdit({
           disabled={!isSubmitEnabled}
           onClick={handleSubmit}
         >
-          수정하기
+          {patchReviewMutation.isPending ? "수정 중..." : "수정하기"}
         </BaseButton>
       </div>
     </ReviewBaseModal>

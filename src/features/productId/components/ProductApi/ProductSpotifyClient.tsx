@@ -2,12 +2,21 @@
 
 import React from "react";
 import { GetProductIdDetail } from "../../types";
-import ProductImage from "../ProductImage";
+import Image from "next/image";
 
 interface SpotifyButtonProps {
   artistName: string;
   albumName: string;
   product: GetProductIdDetail | null;
+}
+
+interface SpotifyAlbumsResponse {
+  items: [
+    {
+      id: string;
+      name: string;
+    }
+  ];
 }
 
 export default function ProductSpotifyClient({
@@ -16,9 +25,10 @@ export default function ProductSpotifyClient({
   product,
 }: SpotifyButtonProps) {
   // 앨범 검색 결과에서 첫 번째 앨범으로 이동
-  const openFirstAlbumOrNull = (albums: any) => {
+  const openFirstAlbumOrNull = (albums: SpotifyAlbumsResponse) => {
     if (albums && albums.items && albums.items.length > 0) {
       const albumId = albums.items[0].id;
+
       window.open(`https://open.spotify.com/album/${albumId}`, "_blank");
       return true;
     }
@@ -69,14 +79,15 @@ export default function ProductSpotifyClient({
   return (
     <div
       onClick={handleGoToSpotifyAlbum}
-      className="group cursor-pointer text-white flex  items-center  md:justify-end justify-start lg:p-5 md:p-3 p-2 md:gap-2 gap-[10px] bg-[#1F1F1F] rounded-lg hover:bg-[#282828] transition-all duration-300 ease-in-out md:flex-col flex-row w-full"
+      className="group cursor-pointer w-fit text-white flex  items-center  md:justify-end justify-start lg:p-5 md:p-3 p-2 md:gap-2 gap-[10px] bg-[#1F1F1F] rounded-lg hover:bg-[#282828] transition-all duration-300 ease-in-out md:flex-col flex-row"
     >
       <div className="relative lg:w-[250px] md:w-[180px] w-[50px] lg:h-[250px] md:h-[180px] h-[50px]">
-        <ProductImage
+        <Image
           src={product?.image || ""}
           alt={`${artistName} - ${albumName}`}
           width={250}
           height={250}
+          unoptimized
           className="w-[250px] h-[250px] object-cover"
         />
         <span

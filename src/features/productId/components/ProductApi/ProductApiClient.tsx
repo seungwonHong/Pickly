@@ -3,7 +3,7 @@ import {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
-import getMusicvideo from "@/features/productId/hooks/useGetMusicvideo";
+import { getMusicvideo } from "@/features/productId/hooks/useGetMusicvideo";
 import ProductYouTubeWrapper from "./ProductYouTubeWrapper";
 
 export default async function ProductApiClient({

@@ -12,7 +12,11 @@ export default function ProductYouTubeSection({
   const { data: videos } = useYouTubeQuery(query);
 
   if (!videos || videos.length === 0) {
-    return <div>검색 결과가 없습니다.</div>;
+    return (
+      <div className="animate-pulse">
+        <div className="lg:min-w-[620px] md:min-w-[460px] lg:h-[350px] md:h-[260px] min-w-[330px] h-[190px] bg-gray-300 rounded-xl" />
+      </div>
+    );
   }
 
   if (category === 1) {

@@ -1,16 +1,24 @@
-import ProductReviewsListComponent from "./ProductReviewsListComponent";
-import { GetProductIdReviews, GetProductIdReviewsDetail } from "../../types";
+import { productService } from "@/features/productId/api";
+import ProductReviewsFetch from "./ProductReviewsFetch";
 
-interface Props {
-  initialData: GetProductIdReviews | null;
-}
+export default async function ProductReviewClient({
+  productId,
+}: {
+  productId: number;
+}) {
+  const initialOrder = "recent";
 
-export default function ProductReviewClient({ initialData }: Props) {
+  const initialData = await productService
+    .getProductsIdReviews(productId, "recent")
+    .then((res) => res.data);
+
+  if (!initialData) return <p className="text-gray-400">리뷰 로딩 중...</p>;
+
   return (
-    <>
-      {initialData?.list?.map((review: GetProductIdReviewsDetail) => (
-        <ProductReviewsListComponent key={review.id} review={review} />
-      ))}
-    </>
+    <ProductReviewsFetch
+      initialData={initialData}
+      productId={productId}
+      initialOrder={initialOrder}
+    />
   );
 }

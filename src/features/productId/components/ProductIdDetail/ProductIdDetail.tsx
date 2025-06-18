@@ -1,10 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import CopyLinkImage from "./CopyLinkImage";
+
 import CategoryChip from "@/components/CategoryChip";
-import ProductImage from "../ProductImage";
-import { useGetProductIdGet } from "../../hooks/useGetProductId";
+import { GetProductIdDetail } from "../../types";
+import Image from "next/image";
+
+const CopyLinkImage = dynamic(() => import("./CopyLinkImage"), { ssr: false });
+
 const ProductIdDetailHeart = dynamic(() => import("./ProductIdDetailHeart"), {
   ssr: false,
 });
@@ -13,23 +16,21 @@ const ProductIdReviewButton = dynamic(() => import("./ProductIdDetailButton"), {
 });
 
 export default function ProductIdDetailClient({
-  productId,
+  product,
 }: {
-  productId: number;
+  product: GetProductIdDetail;
 }) {
-  const { product, isLoading, isError } = useGetProductIdGet(productId);
-  if (isLoading) return <div>상품 정보를 불러오는 중입니다...</div>;
-  if (isError || !product) return <div>상품 정보를 불러오지 못했습니다.</div>;
-
   return (
     <div className="flex md:items-start items-center justify-between lg:gap-[60px] md:gap-[40px] text-[#f1f1f5] md:flex-row flex-col gap-[20px]">
-      <div className="lg:w-[306px] lg:h-[306px] md:w-[242px] md:h-[242px]  w-[220px] h-[220px] flex justify-center items-center overflow-hidden bg-[#1C1C22">
-        <ProductImage
+      <div className="lg:w-[306px] lg:h-[306px] md:w-[242px] md:h-[242px] w-[220px] h-[220px] flex justify-center items-center overflow-hidden bg-[#1C1C22]">
+        <Image
           src={product.image}
           alt="상품 이미지"
           width={306}
           height={306}
-          className="w-full h-full object-cover"
+          unoptimized
+          priority
+          className=" w-[306px] h-[306px] object-cover"
         />
       </div>
 
@@ -43,12 +44,15 @@ export default function ProductIdDetailClient({
         </div>
 
         <div className="flex flex-col justify-between gap-[20px]">
-          <div className="flex items-center justify-between ">
+          <div className="flex items-center justify-between">
             <div className="flex items-center justify-between w-full">
               <div className="lg:text-2xl text-[20px] font-semibold">
                 {product.name}
               </div>
-              <ProductIdDetailHeart productId={productId} />
+              <ProductIdDetailHeart
+                productId={product.id}
+                initialIsFavorite={product.isFavorite}
+              />
             </div>
           </div>
           <div className="lg:text-[16px] md:text-[14px] font-normal">

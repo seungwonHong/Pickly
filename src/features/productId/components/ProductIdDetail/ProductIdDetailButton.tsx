@@ -1,20 +1,48 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
+import dynamic from "next/dynamic";
 
 import { checkLoginStatus } from "../../hooks/checkLogin";
 import { GetProductIdDetail } from "../../types";
-import BaseButton from "@/components/shared/BaseButton";
-import TypeButton from "@/components/shared/TypeButton";
 import useGetUser from "../../hooks/useGetUser";
 
-import AddEditProductModal from "@/components/shared/AddEditProductModal";
-
 import useModalStore from "@/features/home/modals/store/modalStore";
-import ProductReviewModal from "../modal/ProductReviewModal/ProductReviewModal";
-import ProductCompareModal from "../modal/ProductCompareModal/ProductCompareModal";
-import ProductComparePlusModal from "../../../../components/shared/ProductComparePlusModal";
 
+const BaseButton = dynamic(() => import("@/components/shared/BaseButton"), {
+  ssr: false,
+});
+const TypeButton = dynamic(() => import("@/components/shared/TypeButton"), {
+  ssr: false,
+});
+const AddEditProductModal = dynamic(
+  () => import("@/components/shared/AddEditProductModal"),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
+const ProductReviewModal = dynamic(
+  () => import("../modal/ProductReviewModal/ProductReviewModal"),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
+const ProductCompareModal = dynamic(
+  () => import("../modal/ProductCompareModal/ProductCompareModal"),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
+const ProductComparePlusModal = dynamic(
+  () => import("@/components/shared/ProductComparePlusModal"),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
 type ModalTypes = "review" | "compare" | "comparePlus" | "editProduct";
 
 export default function ProductIdDetailButton({
@@ -24,33 +52,36 @@ export default function ProductIdDetailButton({
 }) {
   // useGetUser 훅을 사용하여 현재 사용자 정보를 가져옴
   const { user, compareList, addToCompare } = useGetUser();
-
   const isOwner = user?.id === product.writerId;
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const sameCategoryCompareList = compareList.filter(
-    (item) => item.category.id === product?.category?.id
-  );
+  const sameCategoryCompareList = useMemo(() => {
+    return compareList.filter(
+      (item) => item.category.id === product?.category?.id
+    );
+  }, [compareList, product?.category?.id]);
 
-  //ProductComparePlusModal 관련 상태
+  //  ProductComparePlusModal 관련 상태
   const [comparePlusModalMessage, setComparePlusModalMessage] = useState("");
   const [comparePlusButtonMessage, setComparePlusButtonMessage] = useState("");
-  const activieModal = searchParams.get("modal") as ModalTypes | null;
-  const {
-    setName,
 
-    setDescription,
-    setImage,
+  const modalFromUrl = searchParams.get("modal") as ModalTypes | null;
+  const [modal, setModal] = useState<ModalTypes | null>(modalFromUrl);
 
-    setClickedValue,
-  } = useModalStore();
+  const { setName, setDescription, setImage, setClickedValue } =
+    useModalStore();
+
   const openModal = (modalName: ModalTypes) => {
+    setModal(modalName);
     const params = new URLSearchParams(searchParams.toString());
     params.set("modal", modalName);
     router.replace(`?${params.toString()}`, { scroll: false });
   };
+
   const closeModal = () => {
+    setModal(null);
     const params = new URLSearchParams(searchParams.toString());
     params.delete("modal");
     router.replace(`?${params.toString()}`, { scroll: false });
@@ -66,7 +97,19 @@ export default function ProductIdDetailButton({
     closeModal();
     router.push("/compare");
   };
+  // 로그인 확인
+  const requireLogin = async (): Promise<boolean> => {
+    const { isLoggedIn, accessToken } = await checkLoginStatus();
 
+    if (!isLoggedIn || !accessToken) {
+      setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
+      setComparePlusButtonMessage("로그인하러가기");
+      openModal("comparePlus");
+
+      return false;
+    }
+    return true;
+  };
   // 비교하기 모달
   const handleCompareClick = () => {
     const isAlreadyInList = sameCategoryCompareList.some(
@@ -97,34 +140,26 @@ export default function ProductIdDetailButton({
 
   // 리뷰 작성하기 모달 핸들러 쿠키
   const handleReviewClick = async () => {
-    // 쿠키 확인
-    const { isLoggedIn } = await checkLoginStatus();
-    if (!isLoggedIn) {
-      setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
-      setComparePlusButtonMessage("로그인하러가기");
-      openModal("comparePlus");
+    if (!(await requireLogin())) {
       return;
     }
     openModal("review");
   };
   const handleProductEdit = async () => {
-    const { isLoggedIn } = await checkLoginStatus();
-    if (!isLoggedIn) {
-      setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
-      setComparePlusButtonMessage("로그인하러가기");
-      openModal("comparePlus");
-      return;
-    }
-
+    if (!(await requireLogin())) return;
     setName(product.name || "");
     setDescription(product.description || "");
-
     setImage(product.image || "");
     setClickedValue("수정하기");
-
     openModal("editProduct");
   };
-  // 쿠키 이용하면 로딩중 버튼 갯수 빠르게 로딩 가능
+  useEffect(() => {
+    const modalFromUrl = searchParams.get("modal") as ModalTypes | null;
+    if (modalFromUrl !== modal) {
+      setModal(modalFromUrl);
+    }
+  }, [searchParams.toString()]);
+
   return (
     <>
       {isOwner ? (
@@ -169,21 +204,13 @@ export default function ProductIdDetailButton({
           </TypeButton>
         </div>
       )}
-      {activieModal === "review" && (
-        <ProductReviewModal
-          open={activieModal === "review"}
-          setOpen={closeModal}
-        />
-      )}
-      {activieModal === "compare" && (
-        <ProductCompareModal
-          open={activieModal === "compare"}
-          setOpen={closeModal}
-        />
-      )}
-      {activieModal === "comparePlus" && (
+      {modal === "review" && <ProductReviewModal open setOpen={closeModal} />}
+
+      {modal === "compare" && <ProductCompareModal open setOpen={closeModal} />}
+
+      {modal === "comparePlus" && (
         <ProductComparePlusModal
-          open={activieModal === "comparePlus"}
+          open
           setOpen={closeModal}
           message={comparePlusModalMessage}
           buttonText={comparePlusButtonMessage}
@@ -196,7 +223,8 @@ export default function ProductIdDetailButton({
           }
         />
       )}
-      {activieModal === "editProduct" && (
+
+      {modal === "editProduct" && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 bg-black/40">
           <AddEditProductModal
             buttonPlaceholder="수정하기"

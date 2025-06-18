@@ -2,18 +2,33 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 
 import { checkLoginStatus } from "../../../hooks/checkLogin";
-import ProductReviewStarModal from "./ProductReviewStarModal";
-import ProductIdGetModal from "./ProductIdGetModal";
-import ProductReviewInputModal from "./ProductReviewInputModal";
 import BaseButton from "@/components/shared/BaseButton";
-import ReviewBaseModal from "./ReviewBaseModal";
 
 import { useGetProductId } from "../../../hooks/useGetProductId";
 import { reviewService } from "../../../api";
 
+const ProductReviewInputModal = dynamic(
+  () => import("./ProductReviewInputModal"),
+  {
+    ssr: false,
+  }
+);
+const ReviewBaseModal = dynamic(() => import("./ReviewBaseModal"), {
+  ssr: false,
+});
+const ProductIdGetModal = dynamic(() => import("./ProductIdGetModal"), {
+  ssr: false,
+});
+const ProductReviewStarModal = dynamic(
+  () => import("./ProductReviewStarModal"),
+  {
+    ssr: false,
+  }
+);
 interface ProductReviewModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -53,8 +68,8 @@ export default function ProductReviewModal({
   });
   // 리뷰 작성 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
-    const { accessToken } = await checkLoginStatus();
-    if (!accessToken) {
+    const { isLoggedIn, accessToken } = await checkLoginStatus();
+    if (!isLoggedIn || !accessToken) {
       toast.error("로그인이 필요합니다.");
       return;
     }
@@ -73,7 +88,7 @@ export default function ProductReviewModal({
     >
       <div className="w-full h-full flex gap-[40px] flex-col justify-between">
         <ProductIdGetModal />
-        <div className="flex flex-col gap-[20px] h-fit">
+        <div className="flex flex-col gap-[20px] min-h-[330px]">
           {/* 별점 입력 모달 */}
           <ProductReviewStarModal onChange={setRating} />
           {/* 리뷰 내용 입력 모달 */}

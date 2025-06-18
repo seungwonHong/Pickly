@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { StaticImageData } from "next/image";
-
+import React from "react";
 interface ProductIdStatsBoneProps {
   title: string;
   icon: StaticImageData;
@@ -9,7 +9,7 @@ interface ProductIdStatsBoneProps {
   unit: string;
 }
 
-export default function ProductIdStatsBone({
+function ProductIdStatsBone({
   title,
   icon,
   score,
@@ -58,3 +58,4 @@ export default function ProductIdStatsBone({
     </div>
   );
 }
+export default React.memo(ProductIdStatsBone);

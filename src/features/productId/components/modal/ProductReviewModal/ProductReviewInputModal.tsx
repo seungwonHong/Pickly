@@ -1,15 +1,13 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
-import ProductImage from "../../ProductImage";
-import useModalStore from "@/features/home/modals/store/modalStore";
-import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { Textbox } from "@/components/input/Textbox";
 import { imageService } from "@/features/productId/api";
 import ImageDelete from "../../../../../../public/icons/image-delete.png";
 import PlusImage from "../../../../../../public/icons/plus-image.png";
+import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 
 interface ImageData {
   id: string;
@@ -22,6 +20,7 @@ interface ProductReviewInputModalProps {
   onImageUrlsChange: (images: string[]) => void;
   initialText?: string;
   initialImages?: string[];
+  accessToken?: string | null;
 }
 
 export default function ProductReviewInputModal({
@@ -30,8 +29,6 @@ export default function ProductReviewInputModal({
   initialText = "",
   initialImages = [],
 }: ProductReviewInputModalProps) {
-  const { description, setDescription } = useModalStore();
-
   const [text, setText] = useState(initialText);
   const [images, setImages] = useState<ImageData[]>(() =>
     initialImages.map((url) => ({
@@ -47,8 +44,8 @@ export default function ProductReviewInputModal({
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
     onTextChange(e.target.value);
-    setDescription(e.target.value);
   };
+
   // 이미지 접근성 검사 함수
   const checkImageAccessible = (url: string): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -58,14 +55,18 @@ export default function ProductReviewInputModal({
       img.src = url;
     });
   };
+
   // 이미지 변경 핸들러
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { accessToken } = await checkLoginStatus();
     const file = e.target.files?.[0];
     if (!file) return;
-
+    const { isLoggedIn, accessToken } = await checkLoginStatus();
+    if (!isLoggedIn || typeof accessToken !== "string") {
+      toast.error("로그인이 필요합니다.");
+      return;
+    }
     try {
-      const uploadedUrl = await imageService.postImage(file, accessToken ?? "");
+      const uploadedUrl = await imageService.postImage(file, accessToken);
       const isAccessible = await checkImageAccessible(uploadedUrl);
       if (!isAccessible) {
         toast.error("이미지명이 한글이면 불러올 수 없습니다.");
@@ -93,21 +94,21 @@ export default function ProductReviewInputModal({
     }
   };
   // 이미지 삭제 핸들러
-  const handleDeleteClick = (id: string) => {
+  const handleDeleteClick = useCallback((id: string) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
-  };
+  }, []);
 
   // 이미지 클릭 핸들러
-  const handleImageClick = (id: string) => {
+  const handleImageClick = useCallback((id: string) => {
     setEditingId(id);
     fileInputRef.current?.click();
-  };
+  }, []);
 
   // 이미지 추가 핸들러
-  const handleAddClick = () => {
+  const handleAddClick = useCallback(() => {
     setEditingId(null);
     fileInputRef.current?.click();
-  };
+  }, []);
 
   // 이미지 URL 변경 시 콜백 호출
   useEffect(() => {
@@ -115,12 +116,12 @@ export default function ProductReviewInputModal({
   }, [images, onImageUrlsChange]);
 
   return (
-    <div className="flex flex-col gap-[20px] h-fit">
+    <div className="flex flex-col gap-[20px] min-h-[330px]">
       {/* 텍스트 입력 나중에 컴포넌트로 교체예쩡 텍스트필드 오류 있음 */}
       <Textbox
         size="S"
         placeholder="리뷰를 입력해주세요"
-        value={description && text}
+        value={text}
         onChange={handleTextChange}
         maxLength={500}
         className="h-[150px] w-[540px] text-[16px]"
@@ -129,12 +130,14 @@ export default function ProductReviewInputModal({
       {/* 이미지 업로드 섹션 */}
       <div className="flex flex-row-reverse gap-[20px] w-full justify-end">
         {images.map((image) => (
-          <div key={image.id} className="relative">
-            <ProductImage
+          <div key={image.id} className="relative w-[160px] h-[160px]">
+            <Image
               src={image.url}
               alt="미리보기 이미지"
               width={160}
               height={160}
+              unoptimized
+              loading="lazy"
               onClick={() => handleImageClick(image.id)}
               className="w-[160px] h-[160px] object-cover rounded-xl cursor-pointer"
             />
@@ -143,13 +146,7 @@ export default function ProductReviewInputModal({
               onClick={() => handleDeleteClick(image.id)}
               className="absolute top-[5px] right-[5px] bg-black/60 rounded-xl"
             >
-              <Image
-                src={ImageDelete}
-                alt="삭제 버튼"
-                width={24}
-                height={24}
-                className=" cursor-pointer"
-              />
+              <Image src={ImageDelete} alt="삭제 버튼" width={24} height={24} />
             </button>
           </div>
         ))}
@@ -165,6 +162,7 @@ export default function ProductReviewInputModal({
               alt="이미지 추가 버튼"
               width={34}
               height={34}
+              className="block "
             />
           </button>
         )}
