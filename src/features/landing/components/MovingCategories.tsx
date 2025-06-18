@@ -3,11 +3,10 @@ import CategoryChip from "@/components/CategoryChip";
 import { motion, useAnimationControls } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 
-type Props = {};
-
-const MovingCategories = (props: Props) => {
+const MovingCategories = () => {
   const controls = useAnimationControls();
   const listRef = useRef<HTMLDivElement>(null);
+
   const categories = [
     { category: "음악", className: "w-[129px] !h-[60px] text-[24px]" },
     { category: "영화/드라마", className: "w-[218px] !h-[60px] text-[24px]" },
