@@ -10,7 +10,6 @@ import SometimesTie from "@/features/landing/components/SometimesTie";
 import SometimesWin from "@/features/landing/components/SometimesWin";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
 
 export default async function LandingPage() {
   const cookieStore = await cookies();
