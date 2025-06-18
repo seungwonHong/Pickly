@@ -1,10 +1,9 @@
+"use client";
 import React from "react";
 import Lottie from "lottie-react";
 import paperplane from "@/../public/animations/paperplane.json";
 
-type Props = {};
-
-const Loading = (props: Props) => {
+const Loading = () => {
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <div className="w-[200px] h-[100px] lg:w-[600px] lg:h-[300px] md:w-[450px] md:h-[250px]">

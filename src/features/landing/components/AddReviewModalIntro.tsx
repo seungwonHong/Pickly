@@ -2,9 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-type Props = {};
-
-const AddReviewModalIntro = (props: Props) => {
+const AddReviewModalIntro = () => {
   return (
     <div className="flex md:flex-row flex-col items-center lg:mt-[346px] md:mt-[135px] mt-[76px]">
       <motion.div

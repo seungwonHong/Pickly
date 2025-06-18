@@ -3,9 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import CategoryCard from "./CategoryCard";
 
-type Props = {};
-
-const CategoryGrid = (props: Props) => {
+const CategoryGrid = () => {
   return (
     <div className="flex flex-col md:mt-[100px] mt-[36px]">
       <motion.div

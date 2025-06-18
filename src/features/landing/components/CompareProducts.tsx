@@ -2,9 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-type Props = {};
-
-const CompareProducts = (props: Props) => {
+const CompareProducts = () => {
   return (
     <div className="flex flex-col lg:mt-[346px] md:mt-[146px] mt-[76px]">
       <motion.h1
