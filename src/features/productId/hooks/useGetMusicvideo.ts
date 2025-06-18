@@ -1,7 +1,7 @@
 import { YoutubeVideo } from "../youtube-video";
 import { useQuery } from "@tanstack/react-query";
 
-export default async function getMusicvideo(
+export async function getMusicvideo(
   searchQuery: string
 ): Promise<YoutubeVideo[]> {
   const baseUrl =

@@ -15,7 +15,8 @@ export default async function ProductReviewsFetch({
   productId,
   searchParams,
 }: ProductReviewsClientProps) {
-  const sort = searchParams?.sort ?? "recent";
+  const resolvedSearchParams = await searchParams;
+  const sort = resolvedSearchParams?.sort ?? "recent";
 
   const initialData = await productService
     .getProductsIdReviews(productId, sort)

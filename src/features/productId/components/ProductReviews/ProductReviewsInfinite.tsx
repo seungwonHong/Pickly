@@ -5,11 +5,17 @@ import dynamic from "next/dynamic";
 
 import { productService } from "../../api";
 import { GetProductIdReviewsDetail } from "../../types";
-const ProductReviewsListComponent = dynamic(
-  () => import("./ProductReviewsListComponent")
-);
+
 const SpinningWidget = dynamic(
-  () => import("@/components/shared/SpinningWidget")
+  () => import("@/components/shared/SpinningWidget"),
+  {
+    loading: () => <p>로딩중입니다...</p>,
+  }
+);
+
+const ProductReviewsListComponent = dynamic(
+  () => import("./ProductReviewsListComponent"),
+  { loading: () => <p>로딩중입니다...</p> }
 );
 interface ProductIdReviewProps {
   nextCursor?: number | null;
@@ -50,6 +56,7 @@ export default function ProductReviewsInfinite({
     });
 
   useEffect(() => {
+    if (!observerRef.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
@@ -62,9 +69,7 @@ export default function ProductReviewsInfinite({
       }
     );
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
+    observer.observe(observerRef.current);
 
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
@@ -74,12 +79,11 @@ export default function ProductReviewsInfinite({
       <div>
         {data?.pages
           .flatMap((page) => page.list)
-          .map((review: GetProductIdReviewsDetail) => (
+          .map((review) => (
             <ProductReviewsListComponent key={review.id} review={review} />
           ))}
 
         {hasNextPage && <div ref={observerRef} className="h-[40px]"></div>}
-        {isFetchingNextPage && <p>로딩 중...</p>}
       </div>
       {isFetchingNextPage && (
         <div className="flex justify-center w-full mt-[10px]">

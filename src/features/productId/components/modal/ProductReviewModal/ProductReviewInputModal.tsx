@@ -1,10 +1,9 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
 import useModalStore from "@/features/home/modals/store/modalStore";
-import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { Textbox } from "@/components/input/Textbox";
 import { imageService } from "@/features/productId/api";
 import ImageDelete from "../../../../../../public/icons/image-delete.png";
@@ -21,6 +20,7 @@ interface ProductReviewInputModalProps {
   onImageUrlsChange: (images: string[]) => void;
   initialText?: string;
   initialImages?: string[];
+  accessToken?: string | null;
 }
 
 export default function ProductReviewInputModal({
@@ -28,6 +28,7 @@ export default function ProductReviewInputModal({
   onImageUrlsChange,
   initialText = "",
   initialImages = [],
+  accessToken,
 }: ProductReviewInputModalProps) {
   const { description, setDescription } = useModalStore();
 
@@ -59,10 +60,13 @@ export default function ProductReviewInputModal({
   };
   // 이미지 변경 핸들러
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { accessToken } = await checkLoginStatus();
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (!accessToken) {
+      toast.error("로그인이 필요합니다.");
+      return;
+    }
     try {
       const uploadedUrl = await imageService.postImage(file, accessToken ?? "");
       const isAccessible = await checkImageAccessible(uploadedUrl);
@@ -92,21 +96,21 @@ export default function ProductReviewInputModal({
     }
   };
   // 이미지 삭제 핸들러
-  const handleDeleteClick = (id: string) => {
+  const handleDeleteClick = useCallback((id: string) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
-  };
+  }, []);
 
   // 이미지 클릭 핸들러
-  const handleImageClick = (id: string) => {
+  const handleImageClick = useCallback((id: string) => {
     setEditingId(id);
     fileInputRef.current?.click();
-  };
+  }, []);
 
   // 이미지 추가 핸들러
-  const handleAddClick = () => {
+  const handleAddClick = useCallback(() => {
     setEditingId(null);
     fileInputRef.current?.click();
-  };
+  }, []);
 
   // 이미지 URL 변경 시 콜백 호출
   useEffect(() => {
@@ -129,11 +133,13 @@ export default function ProductReviewInputModal({
       <div className="flex flex-row-reverse gap-[20px] w-full justify-end">
         {images.map((image) => (
           <div key={image.id} className="relative">
-            <img
+            <Image
               src={image.url}
               alt="미리보기 이미지"
               width={160}
               height={160}
+              unoptimized
+              loading="lazy"
               onClick={() => handleImageClick(image.id)}
               className="w-[160px] h-[160px] object-cover rounded-xl cursor-pointer"
             />

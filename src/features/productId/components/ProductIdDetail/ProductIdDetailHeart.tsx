@@ -1,52 +1,31 @@
 "use client";
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+import { useProductStatsStore } from "../../libs/useProductStatsStore";
 import { checkLoginStatus } from "../../hooks/checkLogin";
 import { productService } from "../../api";
-import { useProductStatsStore } from "../../libs/useProductStatsStore";
 import ProductComparePlusModal from "@/components/shared/ProductComparePlusModal";
 
 import HeartInactive from "../../../../../public/icons/heart-inactive.svg";
 import HeartActive from "../../../../../public/icons/heart-active.svg";
 
-// 찜 하트 활성화 / 비활성화
 export default function ProductIdDetailHeart({
   productId,
+  initialIsFavorite,
 }: {
   productId: number;
+  initialIsFavorite: boolean;
 }) {
-  const [isLiked, setIsLiked] = useState(false);
-  const { favoriteCount, setFavoriteCount } = useProductStatsStore();
+  const [isLiked, setIsLiked] = useState(initialIsFavorite);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const { accessToken } = await checkLoginStatus();
-        if (!accessToken) {
-          console.warn("accessToken이 없습니다.");
-        }
-        const res = await productService.getProductsId(
-          productId,
-          accessToken ?? ""
-        );
-        setIsLiked(res.data.isFavorite);
-        setFavoriteCount(res.data.favoriteCount);
-      } catch (error) {
-        console.error("상품 상세 정보 에러:", error);
-      }
-    };
-
-    fetchProduct();
-  }, [productId]);
-
+  const { favoriteCount, setFavoriteCount } = useProductStatsStore();
   const handleLike = async () => {
     const { isLoggedIn, accessToken } = await checkLoginStatus();
-    //  console.log("isLoggedIn", isLoggedIn);
     if (!isLoggedIn) {
       setShowLoginModal(true);
       return;
@@ -61,27 +40,26 @@ export default function ProductIdDetailHeart({
           productId,
           accessToken ?? ""
         );
-        setFavoriteCount(favoriteCount - 1);
+        setFavoriteCount(Math.max(favoriteCount - 1, 0));
       }
-      setIsLiked(!isLiked);
+      setIsLiked((prev) => !prev);
     } catch (error) {
-      const err = error as Error;
-      console.error("Axios 에러 응답:", err.message);
-      if (err.message) {
-        console.error("Axios 에러 응답:", err.message);
-      }
+      console.error("좋아요 에러:", error);
     }
   };
 
   return (
     <>
-      <div onClick={handleLike}>
+      <div
+        onClick={handleLike}
+        className="flex items-center gap-1 cursor-pointer"
+      >
         <Image
           src={isLiked ? HeartActive : HeartInactive}
           alt="좋아요"
           width={28}
           height={28}
-          className="cursor-pointer hover:scale-110 transition-transform duration-200"
+          className="hover:scale-110 transition-transform duration-200"
         />
       </div>
       <ProductComparePlusModal

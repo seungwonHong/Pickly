@@ -11,6 +11,23 @@ import LazyLoadSection from "../ProductIdDetail/LazyLoadSection";
 const ProductApiClient = dynamic(() => import("./ProductApiClient"));
 const ProductSpotifyClient = dynamic(() => import("./ProductSpotifyClient"));
 const MapView = dynamic(() => import("./MapView"));
+
+function parseJsonSafe(jsonStr: string) {
+  try {
+    let str = jsonStr.trim();
+
+    if (str.startsWith("```")) {
+      const lines = str.split("\n");
+      if (lines.length >= 3) {
+        str = lines.slice(1, -1).join("\n").trim();
+      }
+    }
+    return JSON.parse(str);
+  } catch (error) {
+    console.error("JSON 파싱 실패", error, "원본:", jsonStr);
+    return null;
+  }
+}
 export default async function ProductApiDetail({
   productId,
 }: {
@@ -22,69 +39,37 @@ export default async function ProductApiDetail({
 
   const combinedText = `${product.name}\n${product.description}`;
 
-  const [albumInfo, placeInfo, movieInfo] = await Promise.all([
+  // OpenAI API 호출 병렬처리
+  const [albumInfoRaw, placeInfoRaw, movieInfoRaw] = await Promise.all([
     fetchArtistAlbum(combinedText),
     fetchGoogleSearch(combinedText),
     fetchMovieSearch(combinedText),
   ]);
 
-  let artistName = "";
-  let albumName = "";
+  // albumInfo 파싱
+  const albumInfoObj = parseJsonSafe(albumInfoRaw);
+  const artistName = albumInfoObj?.artist?.replace(/\(.*?\)/g, "").trim() ?? "";
+  const albumName = albumInfoObj?.album?.trim() ?? "";
 
-  try {
-    let jsonStr = albumInfo.trim();
-
-    if (jsonStr.startsWith("```")) {
-      const lines = jsonStr.split("\n");
-      if (lines.length >= 3) {
-        jsonStr = lines.slice(1, -1).join("\n").trim();
-      }
-    }
-
-    // JSON 문자열 파싱
-    const albumInfoObj = JSON.parse(jsonStr);
-
-    artistName = albumInfoObj.artist?.replace(/\(.*?\)/g, "").trim() ?? "";
-    albumName = albumInfoObj.album?.trim() ?? "";
-  } catch (error) {
-    console.error("albumInfo JSON 파싱 실패:", error, "응답값:", albumInfo);
-    return <div>아티스트 정보를 파싱할 수 없습니다.</div>;
-  }
-
+  // 검색 쿼리 설정
   const searchQuery =
     artistName.length > 0
       ? `${artistName} ${albumName} official music video`.trim()
       : combinedText;
 
-  // Google 검색을 통해 장소 정보 추출
-  let parsedPlace = "";
-  try {
-    if (placeInfo) {
-      const parsed = JSON.parse(placeInfo.trim());
-      parsedPlace = parsed?.place ?? "";
-    } else {
-      console.error("fetchGoogleSearch 결과가 null입니다");
-    }
-  } catch (e) {
-    console.error("장소 정보 파싱 실패", e);
-  }
+  // 장소 정보 파싱
+  const placeInfoObj = parseJsonSafe(placeInfoRaw);
+  const parsedPlace = placeInfoObj?.place ?? "";
 
-  // 영화 드라마 공식 트레일러
-  let parsedMovie = "";
-  try {
-    if (movieInfo) {
-      const parsed = JSON.parse(movieInfo.trim());
-      parsedMovie = parsed?.trailer ?? "";
-    } else {
-      console.error("fetchMovieSearch 결과가 null입니다");
-    }
-  } catch (e) {
-    console.error("영화 정보 파싱 실패", e);
-  }
+  // 영화 정보 파싱
+  const movieInfoObj = parseJsonSafe(movieInfoRaw);
+  const parsedMovie = movieInfoObj?.trailer ?? "";
+
+  const categoryId = product.category?.id ?? 0;
   return (
     <>
       <LazyLoadSection>
-        {product.category?.id === 1 && (
+        {categoryId === 1 && (
           <div className="flex gap-[20px] flex-col ">
             <div className="flex items-center lg:gap-[20px] gap-[15px] flex-col md:flex-row">
               <ProductApiClient
@@ -99,12 +84,12 @@ export default async function ProductApiDetail({
             </div>
           </div>
         )}
-        {(product.category?.id === 4 || product.category?.id === 6) && (
+        {(categoryId === 4 || categoryId === 6) && (
           <div style={{ height: "400px" }}>
             <MapView place={parsedPlace} />
           </div>
         )}
-        {product.category?.id === 2 && (
+        {categoryId === 2 && (
           <ProductApiClient
             searchQuery={parsedMovie}
             category={product.category.id}

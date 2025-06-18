@@ -23,20 +23,18 @@ export default function ProductReviewsListComponent({
 }: {
   review: GetProductIdReviewsDetail;
 }) {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { user } = useGetUser();
 
   useEffect(() => {
     const fetchLoginStatus = async () => {
-      const { isLoggedIn, accessToken } = await checkLoginStatus();
+      const { isLoggedIn } = await checkLoginStatus();
       setIsLoggedIn(isLoggedIn);
-      setAccessToken(accessToken ?? null);
     };
 
     fetchLoginStatus();
-  }, [accessToken]);
+  }, []);
 
   const isOwner = isLoggedIn && user?.id === review.userId;
 
@@ -49,10 +47,13 @@ export default function ProductReviewsListComponent({
     <div className="text-[#F1F1F5] mb-[20px] flex justify-between lg:p-[30px] p-[20px] bg-[#252530] rounded-2xl md:flex-row flex-col gap-[30px] md:gap-[0px]">
       <div className="flex items-start gap-[10px]">
         <Link href={`/users/${review.userId}`}>
-          <img
+          <Image
+            width={43}
+            height={43}
             src={profileImageSrc}
             alt="프로필 이미지"
-            className="rounded-full w-[43px] h-[43px]"
+            className="rounded-full "
+            unoptimized
           />
         </Link>
         <div>
@@ -82,12 +83,13 @@ export default function ProductReviewsListComponent({
         {review.reviewImages.length > 0 && (
           <div className="flex lg:gap-[20px] gap-[10px]">
             {review.reviewImages.map((image) => (
-              <img
+              <Image
                 key={image.id}
                 src={image.source}
                 alt="리뷰 이미지"
                 width={100}
                 height={100}
+                unoptimized
                 className="lg:w-[100px] md:w-[80px] w-[60px] lg:h-[100px] md:h-[80px] h-[60px] rounded-xl"
               />
             ))}

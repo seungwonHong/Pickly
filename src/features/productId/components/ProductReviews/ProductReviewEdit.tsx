@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -29,6 +29,7 @@ export default function ProductReviewEdit({
   initialReviewData,
 }: ProductReviewModalProps) {
   const queryClient = useQueryClient();
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [reviewText, setReviewText] = useState(initialReviewData.content);
   const [rating, setRating] = useState<number>(initialReviewData.rating);
   const [images, setImages] = useState<string[]>(
@@ -65,10 +66,24 @@ export default function ProductReviewEdit({
       return;
     }
     if (!product) return;
-    patchReviewMutation.mutate({ accessToken });
+    await patchReviewMutation.mutateAsync({ accessToken });
   };
 
   const isSubmitEnabled = reviewText.trim().length > 0;
+
+  useEffect(() => {
+    async function fetchAccessToken() {
+      const { accessToken } = await checkLoginStatus();
+      setAccessToken(accessToken || null);
+    }
+    fetchAccessToken();
+  }, []);
+
+  useEffect(() => {
+    setReviewText(initialReviewData.content);
+    setRating(initialReviewData.rating);
+    setImages(initialReviewData.reviewImages.map((img) => img.source));
+  }, [initialReviewData]);
 
   return (
     <ReviewBaseModal
@@ -84,6 +99,7 @@ export default function ProductReviewEdit({
           <ProductReviewStarModal onChange={setRating} initialRating={rating} />
           {/* 리뷰 내용 입력 모달 */}
           <ProductReviewInputModal
+            accessToken={accessToken}
             onTextChange={setReviewText}
             onImageUrlsChange={setImages}
             initialText={initialReviewData.content}
@@ -97,7 +113,7 @@ export default function ProductReviewEdit({
           disabled={!isSubmitEnabled}
           onClick={handleSubmit}
         >
-          수정하기
+          {patchReviewMutation.isPending ? "수정 중..." : "수정하기"}
         </BaseButton>
       </div>
     </ReviewBaseModal>
