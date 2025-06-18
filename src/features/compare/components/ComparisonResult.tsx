@@ -25,8 +25,8 @@ export default function ComparisonResult({ product2Stats }: Props) {
   const getWinner = (val1: number, val2: number) => {
     const v1 = val1 ?? 0;
     const v2 = val2 ?? 0;
-    if (val1 > val2) return "상품 1 승리";
-    if (val1 < val2) return "상품 2 승리";
+    if (v1 > v2) return "상품 1 승리";
+    if (v1 < v2) return "상품 2 승리";
     return "무승부";
   };
 
@@ -37,8 +37,8 @@ export default function ComparisonResult({ product2Stats }: Props) {
   };
 
   return (
-    <div className="flex justify-center items-center mt-6">
-      <div className="rounded-lg overflow-hidden border-2 border-[#353542] shadow-md max-w-[700px] w-full bg-[#1E1E24]">
+    <div className="flex justify-center items-center px-4 w-full">
+      <div className="rounded-lg overflow-hidden border-2 border-[#353542] shadow-md w-full max-w-full lg:max-w-[700px] bg-[#1E1E24]">
         {product2Stats && (
           <table className="w-full text-sm text-center">
             <thead>

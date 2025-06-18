@@ -1,8 +1,13 @@
 import React from "react";
-import { Product, ProductsResponse } from "../types/product";
+import { ProductsResponse } from "../types/product";
+
+type UserProduct ={
+  id: number;
+  name: string;
+};
 
 type Props = {
-  productList: ProductsResponse;
+  productList:{ list: UserProduct[] };
   handleAddProduct: (id: number, name: string) => void;
 };
 
