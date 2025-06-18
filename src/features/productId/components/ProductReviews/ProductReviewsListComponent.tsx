@@ -77,7 +77,7 @@ export default function ProductReviewsListComponent({
         </div>
       </div>
 
-      <div className="lg:w-[680px] md:w-[455px] flex flex-col gap-[20px]">
+      <div className="lg:w-[680px] md:w-[455px] flex flex-col md:gap-[20px] gap-[10px]">
         <div className="lg:text-[16px] text-[12px] font-medium">
           {review.content}
         </div>

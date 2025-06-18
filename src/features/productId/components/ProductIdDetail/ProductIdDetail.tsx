@@ -30,7 +30,7 @@ export default function ProductIdDetailClient({
           height={306}
           unoptimized
           priority
-          className=" w-[306px] h-[306px] object-cover"
+          className=" lg:w-[306px] lg:h-[306px] md:w-[242px] md:h-[242px] w-[220px] h-[220px] object-contain"
         />
       </div>
 

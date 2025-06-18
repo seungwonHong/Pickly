@@ -32,22 +32,25 @@ export default function ReviewBaseModal({
           onClick={onClose}
         >
           <motion.div
-            className={`w-[620px] h-[698px] bg-[#1C1C22] rounded-2xl absolute flex flex-col items-end ${modalClassName}`}
+            className={`lg:w-[620px] md:w-[590px] lg:h-[698px] md:h-[632px] w-[335px] h-[518px] bg-[#1C1C22] rounded-2xl absolute flex flex-col ${modalClassName}`}
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <Image
-              src={CloseX}
-              alt="close"
-              className="cursor-pointer w-[40px] h-[40px] relative top-[20px] right-[20px]"
-              onClick={onClose}
-            />
-
+            <div className="w-full flex justify-end">
+              <Image
+                src={CloseX}
+                alt="close"
+                width={40}
+                height={40}
+                className="cursor-pointer lg:w-[40px] md:w-[36px] w-[24px] lg:h-[40px] md:h-[36px] h-[24px] relative top-[20px] right-[20px]"
+                onClick={onClose}
+              />
+            </div>
             <div
-              className={` ${contentClassName} mt-[30px] mx-[40px] mb-[40px] flex-grow flex flex-col`}
+              className={` ${contentClassName} md:mt-[30px] my-[10px] md:mx-[40px] mx-[20px] md:mb-[40px] mb-[20px] flex-grow flex flex-col`}
             >
               {children}
             </div>

@@ -34,10 +34,11 @@ export default async function ProductIdPage({ params }: PageProps) {
     productId,
     "recent"
   );
+
   const initialData = response.data;
   return (
     <div>
-      <div className="lg:w-[940px] mx-auto lg:mb-[120px] lg:my-[160px] md:w-[684px] w-[335px] md:mt-[140px] md:mb-[147px] mt-[130px] mb-[200px] flex flex-col gap-[60px]">
+      <div className="lg:w-[940px] mx-auto  lg:mb-[120px] lg:my-[160px] md:w-[684px] w-[335px] md:mt-[140px] md:mb-[147px] mt-[130px] mb-[200px] flex flex-col gap-[60px]">
         <ProductIdDetailServer productId={productId} />
         <ProductApiDetail productId={productId} />
         <ProductIdStats productId={productId} />

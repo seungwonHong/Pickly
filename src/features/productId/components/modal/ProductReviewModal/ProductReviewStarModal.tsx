@@ -52,8 +52,10 @@ export default function ProductReviewStarModal({
   };
 
   return (
-    <div className="flex items-center gap-4">
-      <span className="text-[16px] font-medium">별점</span>
+    <div className="flex items-center lg:gap-5 gap-4">
+      <span className="lg:text-[16px] text-[14px] font-medium text-[#6E6E82]">
+        별점
+      </span>
       <div className="flex gap-1">
         {[1, 2, 3, 4, 5].map((index) => {
           const fill = getFillType(index);
@@ -63,7 +65,7 @@ export default function ProductReviewStarModal({
               onClick={(e) => handleClick(e, index)}
               onMouseMove={(e) => handleMouseMove(e, index)}
               onMouseLeave={handleMouseLeave}
-              className="relative w-8 h-8 cursor-pointer"
+              className="relative lg:w-[32px] w-[28px] lg:h-[32px] h-[28px] cursor-pointer"
             >
               {/* 빈 별 */}
               <FaRegStar className="absolute w-full h-full text-gray-300" />

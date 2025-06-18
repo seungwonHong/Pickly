@@ -11,7 +11,9 @@ export default function ProductIdGetModal() {
         category={product.category.name}
         className="text-[12px] w-fit"
       />
-      <div className="font-semibold text-[24px]">{product.name}</div>
+      <div className="font-semibold lg:text-[24px] text-[20px]">
+        {product.name}
+      </div>
     </div>
   );
 }

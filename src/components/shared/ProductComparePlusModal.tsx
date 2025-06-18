@@ -32,7 +32,7 @@ export default function ProductComparePlusModal({
           onClick={() => setOpen(false)}
         >
           <motion.div
-            className="w-[400px] h-[250px] bg-[#1C1C22] rounded-2xl flex flex-col items-center justify-between p-8 relative"
+            className="md:w-[400px] w-[300px] md:h-[250px] h-[200px] bg-[#1C1C22] rounded-2xl flex flex-col items-center justify-between p-8 relative"
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
@@ -42,11 +42,13 @@ export default function ProductComparePlusModal({
             <Image
               src={CloseX}
               alt="close"
+              width={24}
+              height={24}
               className="cursor-pointer w-[24px] h-[24px] absolute top-[20px] right-[20px]"
               onClick={() => setOpen(false)}
             />
 
-            <p className="text-white text-[20px] font-semibold text-center mt-8 w-max whitespace-pre-line">
+            <p className="text-white text-[20px] font-semibold text-center md:mt-8 mt-4 w-max whitespace-pre-line">
               {message}
             </p>
 
