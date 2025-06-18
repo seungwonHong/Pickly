@@ -5,7 +5,7 @@ type Props = {};
 
 const Footer = (props: Props) => {
   return (
-    <footer className="bg-[#D9D9D91A] lg:px-[160px] px-[24px] lg:h-[758px] lg:mt-[76px] md:mt-[47px] mt-[53px]">
+    <footer className="bg-[#D9D9D91A] lg:px-[160px] px-[24px] lg:h-[758px] lg:mt-[76px] md:mt-[47px] mt-[53px] pb-[20px]">
       <div className="flex flex-row justify-between">
         {/* Contributors */}
         <div className="flex flex-col lg:mt-[70px] md:mt-[35px] mt-[17px]">
