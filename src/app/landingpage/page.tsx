@@ -52,7 +52,7 @@ export default async function LandingPage() {
 
         <MovingCategories />
 
-        <CategoryGrid />
+        {/* <CategoryGrid /> */}
 
         <AddProductModalIntro />
         <AddReviewModalIntro />
