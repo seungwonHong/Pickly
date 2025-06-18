@@ -28,7 +28,7 @@ class ProductService {
     return axios.get(`${BASE_URL}/products/${productId}`);
   }
 
-  getStats(teamId: string, productId: number) {
+  getStats(productId: number) {
     return axios.get(`${BASE_URL}/products/${productId}`);
   }
 }
