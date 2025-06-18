@@ -7,21 +7,23 @@ import { CiSearch } from "react-icons/ci";
 const SearchPage = ({
   searchParams,
 }: {
-  searchParams: Promise<{
-    [key: string]: "recent" | "reviewCount" | "rating";
-  }>;
+  searchParams: {
+    sort?: "recent" | "reviewCount" | "rating";
+    modal?: string;
+  };
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [search, setSearch] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [params, setParams] = useState<{
-    [key: string]: "recent" | "reviewCount" | "rating";
+    sort?: "recent" | "reviewCount" | "rating";
+    modal?: string;
   } | null>(null);
 
   useEffect(() => {
     const readParams = async () => {
-      const sp = await searchParams;
+      const sp = searchParams;
       setParams(sp);
     };
 
@@ -60,8 +62,8 @@ const SearchPage = ({
         </div>
         <MoreProducts
           keyword={search}
-          queryKey={["search", search, params?.sort ?? "recent"]}
-          order={params?.sort ?? "recent"}
+          queryKey={["search", search, searchParams?.sort ?? "recent"]}
+          order={searchParams?.sort ?? "recent"}
         />
       </div>
     </div>
