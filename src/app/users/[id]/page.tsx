@@ -37,11 +37,14 @@ export default async function UserPage({ params }: Props) {
   return (
     <>
       <Header />
-      <div className="mt-[40px] px-[30px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-[20px] lg:flex lg:justify-center lg:gap-[70px] max-w-[1340px] ">
-        <div className="h-auto">
+      <div
+        className="mt-[40px] px-[30px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-[20px] 
+      lg:flex lg:justify-center lg:gap-[70px] max-w-[1380px]  "
+      >
+        <div className="h-auto ">
           <ProfileCard user={user} isMe={user.isMe} />
         </div>
-        <div className="w-full flex flex-col mb-[60px]">
+        <div className="w-full flex flex-col mb-[60px] ">
           <span className="text-[#F1F1F5] font-semibold text-[18px] lg:text-[20px]">
             활동 내역
           </span>

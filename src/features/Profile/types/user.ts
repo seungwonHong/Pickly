@@ -21,6 +21,7 @@ export interface User {
 export type ProductTabType = "reviewed" | "created" | "favorite";
 
 export interface Product {
+  categoryId: number;
   reviewCount: number;
   favoriteCount: number;
   rating: number;

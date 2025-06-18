@@ -17,8 +17,8 @@ const ProductComparisonResult = ({ winnerInfo, product1Name }: Props) => {
     : "text-[var(--color-pink)]";
 
   return (
-    <div className="text-center mt-4">
-      <h1 className="text-[24px] font-normal text-white">
+    <div className="text-center">
+      <h1 className="text-[24px] font-normal text-white mb-0">
         {isDraw ? (
           <>무승부입니다!</>
         ) : (
@@ -28,7 +28,7 @@ const ProductComparisonResult = ({ winnerInfo, product1Name }: Props) => {
         )}
       </h1>
       {!isDraw && (
-        <p className="mt-3 text-[var(--color-lightGray)] text-[16px] font-normal mb-8">
+        <p className="mt-3 text-[var(--color-lightGray)] text-[16px] font-normal mb-1">
           3가지 항목 중{" "}
           <span className="font-normal">{winnerInfo.count}가지 항목</span>에서 우세합니다.
         </p>

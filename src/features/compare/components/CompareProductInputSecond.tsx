@@ -1,9 +1,8 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import CompareDropdown from "./CompareDropdown";
 import useProductSearch from "../hooks/useProductSearch";
-import { ProductsResponse } from "../types/product";
 import { productService } from "../api/api";
 
 type ProductStats = {
@@ -15,8 +14,6 @@ type ProductStats = {
 interface Props {
   label: string;
   tagColor: "green" | "pink";
-  teamId: string;
-  initialProducts: ProductsResponse;
   onProductSelectId?: (id: number | null) => void;
   dropdownRef?: React.RefObject<HTMLDivElement>;
   excludeId?: number | null;
@@ -56,7 +53,6 @@ export default function CompareProductInputSecond({
   };
 
   const handleAddProductInternal = async (id: number, name: string) => {
-    console.log("setProduct2:", id);
     setInputValue(name);
     setSelected(true);
     onProductSelectId?.(id);
@@ -65,10 +61,6 @@ export default function CompareProductInputSecond({
     try {
       const res = await productService.getProductsId(id);
       const { rating, reviewCount, favoriteCount } = res.data;
-
-      console.log("별점:", rating);
-      console.log("리뷰 수:", reviewCount);
-      console.log("찜 수:", favoriteCount);
       onProductStatsChange?.({ rating, reviewCount, favoriteCount });
     } catch (error) {
       console.error("상품 정보 가져오기 실패:", error);
@@ -88,7 +80,7 @@ export default function CompareProductInputSecond({
       : "bg-[#3A263B] text-[var(--color-pink)]";
 
   return (
-    <div className="flex flex-col w-[500px] sm:w-[350px]">
+    <div className="flex flex-col w-full lg:max-w-[350px] px-2">
       <label
         htmlFor="productInput"
         className="text-[16px] lg:text-base mb-2 font-light text-white"
@@ -98,14 +90,14 @@ export default function CompareProductInputSecond({
 
       <div className="relative w-full">
         {selected && (
-          <div className="absolute z-10 flex items-center space-x-2 top-[15px] left-4">
+          <div className="absolute z-10 flex items-center space-x-2 top-[13px] left-4">
             <div
-              className={`flex items-center px-3 py-2 rounded-[6px] text-[16px] ${tagStyles}`}
+              className={`flex items-center px-3 py-2 rounded-[6px] text-[16px] lg:text-[18px] ${tagStyles}`}
             >
               {inputValue}
               <button
                 onClick={handleDelete}
-                className="ml-2 rounded-[5px] bg-[#1F2937] w-5 h-5 flex items-center justify-center text-white text-xs leading-none"
+                className="ml-2 rounded-[5px] bg-[#1F2937] w-5 h-5 flex items-center justify-center text-white text-[16px] leading-none"
                 aria-label="삭제"
               >
                 ✕
@@ -127,6 +119,11 @@ export default function CompareProductInputSecond({
               type="text"
               value={inputValue}
               onChange={handleInputChange}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); 
+                }
+              }}
               placeholder={selected ? "" : "상품을 입력하세요"}
               readOnly={selected}
               className="w-full h-full border-0 rounded-[8px] bg-transparent text-white px-4 pl-[15px] focus:outline-none"

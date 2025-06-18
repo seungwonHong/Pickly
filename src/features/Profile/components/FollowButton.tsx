@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import useAuthentication from "@/features/header/hooks/useAuthentication";
@@ -10,7 +11,7 @@ export interface Props {
   isFollowing: boolean;
   setIsFollowing: (v: boolean) => void;
   setFollowersCount: React.Dispatch<React.SetStateAction<number>>;
-  router: ReturnType<typeof useRouter>;
+  router: any;
 }
 
 export default function FollowButton({

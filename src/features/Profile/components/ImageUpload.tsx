@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -7,6 +8,7 @@ import revertButton from "@../../../public/RevertButton.png";
 import defaultProfileImage from "@../../../public/defaultProfileImage.jpeg";
 import addImage from "@../../../public/addImage.svg";
 import { uploadProfileImage } from "../api/uploadImage";
+import toast from "react-hot-toast";
 
 const DEFAULT_IMAGE_URL = defaultProfileImage.src;
 
@@ -16,7 +18,7 @@ interface Props {
 }
 
 export default function ImageUpload({ onImageSelect, defaultPreview }: Props) {
-  const [preview, setPreview] = useState<string>("");
+  const [preview, setPreview] = useState<string | null>(null);
   const [isUpdated, setIsUpdated] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -32,6 +34,10 @@ export default function ImageUpload({ onImageSelect, defaultPreview }: Props) {
 
     try {
       const uploadedUrl = await uploadProfileImage(file);
+      const isInvalidFileName = /[^\x00-\x7F]/.test(file.name);
+      if (isInvalidFileName) {
+        toast.error("이미지명이 한글이면 불러올 수 없습니다.");
+      }
       setPreview(uploadedUrl);
       setIsUpdated(true);
       onImageSelect(uploadedUrl);

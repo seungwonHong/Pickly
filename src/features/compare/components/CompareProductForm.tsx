@@ -2,18 +2,14 @@ import { useEffect, useState } from "react";
 import CompareProductInput from "../components/CompareProductInput";
 import CompareProductInputSecond from "./CompareProductInputSecond";
 import BaseButton from "../../../components/shared/BaseButton";
-import { ProductsResponse } from "../types/product";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProductComparisonResult from "./ProductComparisonResult";
 import ComparisonResult from "./ComparisonResult";
 import useGetUser from "@/features/productId/hooks/useGetUser";
 import { useProductStatsStore } from "@/features/productId/libs/useProductStatsStore";
+import { ProductsResponse } from "../types/product";
 
-type Props = {
-  teamId: string;
-  initialProducts: ProductsResponse;
-};
 
 type ProductStats = {
   rating: number;
@@ -21,7 +17,7 @@ type ProductStats = {
   favoriteCount: number;
 };
 
-export default function CompareProductForm({ teamId, initialProducts }: Props) {
+export default function CompareProductForm() {
   const [product1, setProduct1] = useState<number | null>(null);
   const [product2, setProduct2] = useState<number | null>(null);
   const [category1, setCategory1] = useState<number | null>(null);
@@ -33,23 +29,14 @@ export default function CompareProductForm({ teamId, initialProducts }: Props) {
   const isBothSelected = product1 !== null && product2 !== null;
 
   const { baseCompareProductId } = useGetUser();
-
-  useEffect(() => {
-    console.log("입력창 1에서 받은 카테고리 ID:", category1);
-  }, [category1]);
+  const { rating, reviewCount, favoriteCount } = useProductStatsStore();
+  const product1Stats: ProductStats = { rating, reviewCount, favoriteCount };
 
   useEffect(() => {
     if (!isBothSelected && showResult) {
       setShowResult(false);
     }
   }, [product1, product2, showResult]);
-
-  const { rating, reviewCount, favoriteCount } = useProductStatsStore();
-  const product1Stats: ProductStats = {
-    rating,
-    reviewCount,
-    favoriteCount,
-  };
 
   const getWinnerName = () => {
     if (!product2Stats) return null;
@@ -75,12 +62,16 @@ export default function CompareProductForm({ teamId, initialProducts }: Props) {
 
   return (
     <>
-      <form className="flex flex-col gap-[10px] justify-center items-center mt-[40px]">
-        <div className="flex flex-col md:flex-row gap-[20px] items-center">
+      <form
+        className="w-full flex flex-col justify-center items-center"
+        onSubmit={(e) => {
+          e.preventDefault(); // 엔터 키로 폼 제출 방지
+        }}
+      >
+        <div className="flex flex-col md:flex-row flex-wrap gap-[40px] lg:gap-[5px] justify-center items-start w-full mt-10 px-2">
           <CompareProductInput
             label="상품 1"
             tagColor="green"
-            teamId={teamId}
             onProductSelectId={setProduct1}
             onCategorySelect={setCategory1}
             excludeId={product2}
@@ -92,8 +83,6 @@ export default function CompareProductForm({ teamId, initialProducts }: Props) {
           <CompareProductInputSecond
             label="상품 2"
             tagColor="pink"
-            teamId={teamId}
-            initialProducts={initialProducts}
             onProductSelectId={setProduct2}
             onProductStatsChange={setProduct2Stats}
             excludeId={product1}
@@ -102,7 +91,8 @@ export default function CompareProductForm({ teamId, initialProducts }: Props) {
             onProductNameChange={setProduct2Name}
           />
 
-          <span
+          <div
+            className="w-full max-w-full lg:max-w-[200px] px-2 mt-8"
             onClick={() => {
               if (!isBothSelected) {
                 toast.warn("비교할 제품을 선택해 주세요");
@@ -112,18 +102,18 @@ export default function CompareProductForm({ teamId, initialProducts }: Props) {
           >
             <BaseButton
               disabled={!isBothSelected}
-              className={`h-[70px] w-[500px] sm:w-[200px] mt-3 md:mt-8 text-[18px] ${
+              className={`w-full h-[70px] text-[16px] lg:text-[18px]${
                 isBothSelected ? "" : "pointer-events-none cursor-not-allowed text-[#6E6E82]"
               }`}
             >
               비교하기
             </BaseButton>
-          </span>
+          </div>
         </div>
       </form>
 
       {showResult && winnerInfo && (
-        <div className="mt-20">
+        <div className="mt-15">
           <ProductComparisonResult winnerInfo={winnerInfo} product1Name={product1Name} />
         </div>
       )}

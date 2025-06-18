@@ -9,19 +9,18 @@ import { useProductStatsStore } from "@/features/productId/libs/useProductStatsS
 type Props = {
   label: string;
   tagColor: "green" | "pink";
-  teamId: string;
   onProductSelectId?: (id: number | null) => void;
   onCategorySelect?: (categoryId: number | null) => void;
   excludeId?: number | null;
   defaultProductId?: number | null | undefined;
   setShowResult?: (value: boolean) => void;
   onProductNameChange?: (name: string) => void;
+  className?: string;
 };
 
 export default function CompareProductInput({
   label,
   tagColor,
-  teamId,
   onProductSelectId,
   onCategorySelect,
   excludeId,
@@ -43,24 +42,26 @@ export default function CompareProductInput({
   } = useProductStatsStore();
 
   useEffect(() => {
-    const productId = defaultProductId != null ? defaultProductId : baseCompareProductId;
+    if (!selected) {
+      const productId = defaultProductId != null ? defaultProductId : baseCompareProductId;
 
-    if (productId != null) {
-      productService.getProductsId(productId)
-        .then(async (res) => {
-          const product = res.data;
-          setInputValue(product.name);
-          setSelected(true);
-          onProductSelectId?.(product.id);
-          onCategorySelect?.(product.categoryId);
+      if (productId != null) {
+        productService.getProductsId(productId)
+          .then(async (res) => {
+            const product = res.data;
+            setInputValue(product.name);
+            setSelected(true);
+            onProductSelectId?.(product.id);
+            onCategorySelect?.(product.categoryId);
 
-          const statsRes = await productService.getStats(teamId, product.id);
-          const stats = statsRes.data;
-          setRating(stats.rating);
-          setReviewCount(stats.reviewCount);
-          setFavoriteCount(stats.favoriteCount);
-        })
-        .catch((error) => console.error("상품 정보를 가져오는 중 오류 발생:", error));
+            const statsRes = await productService.getStats(product.id);
+            const stats = statsRes.data;
+            setRating(stats.rating);
+            setReviewCount(stats.reviewCount);
+            setFavoriteCount(stats.favoriteCount);
+          })
+          .catch((error) => console.error("상품 정보를 가져오는 중 오류 발생:", error));
+      }
     }
   }, [defaultProductId, baseCompareProductId, onProductSelectId, onCategorySelect]);
 
@@ -87,7 +88,7 @@ export default function CompareProductInput({
         onCategorySelect?.(product.categoryId);
         onProductNameChange?.(product.name);
 
-        const statsRes = await productService.getStats(teamId, product.id);
+        const statsRes = await productService.getStats(product.id);
         const stats = statsRes.data;
         setRating(stats.rating);
         setReviewCount(stats.reviewCount);
@@ -113,15 +114,15 @@ export default function CompareProductInput({
       : "bg-[#3A263B] text-[var(--color-pink)]";
 
   return (
-    <div className="flex flex-col w-[500px] sm:w-[350px]">
+    <div className="flex flex-col w-full lg:max-w-[350px] px-2">
       <label htmlFor="productInput" className="text-[16px] lg:text-base mb-2 font-light text-white">
         {label}
       </label>
 
       <div className="relative w-full">
         {selected && (
-          <div className="absolute z-10 flex items-center space-x-2 top-[15px] left-4">
-            <div className={`flex items-center px-3 py-2 rounded-[6px] text-[16px] ${tagStyles}`}>
+          <div className="absolute z-10 flex items-center space-x-2 top-[13px] left-4">
+            <div className={`flex items-center px-3 py-2 rounded-[6px] text-[16px] lg:text-[18px] ${tagStyles}`}>
               {inputValue}
               <button
                 onClick={handleDelete}
@@ -141,6 +142,11 @@ export default function CompareProductInput({
               type="text"
               value={inputValue}
               onChange={handleInputChange}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               placeholder={selected ? "" : "상품을 입력하세요"}
@@ -152,7 +158,6 @@ export default function CompareProductInput({
 
         {showDropdown && (
           <CompareDropdown
-            inputValue={inputValue}
             productList={{ list: filteredProducts }}
             handleAddProduct={handleAddProductInternal}
           />
