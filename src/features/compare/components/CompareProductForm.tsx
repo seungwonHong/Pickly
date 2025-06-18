@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useEffect, useState } from "react";
 import CompareProductInput from "../components/CompareProductInput";
 import CompareProductInputSecond from "./CompareProductInputSecond";
