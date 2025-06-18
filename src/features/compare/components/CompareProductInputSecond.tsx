@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { useRef, useState } from "react";
 import CompareDropdown from "./CompareDropdown";
 import useProductSearch from "../hooks/useProductSearch";
