@@ -1,3 +1,4 @@
+"use client";
 import Header from "@/components/shared/Header";
 import { Suspense } from "react";
 import LoadingClient from "./loadingClient";
