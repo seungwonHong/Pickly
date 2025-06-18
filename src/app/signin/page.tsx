@@ -1,5 +1,4 @@
 "use client";
-
 import { InputField } from "@/components/input/InputField";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -142,7 +141,7 @@ const SigninPage = () => {
                       text-[0px]">
                       구글 로그인
                     </span>
-                    <span className="absolute block  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                    <span className="absolute  group-hover:last:block hidden-bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
                       구글 로그인하기
                     </span>
                   </Link>
@@ -168,7 +167,7 @@ const SigninPage = () => {
                     >
                       카카오톡 로그인
                     </span>
-                    <span className="absolute block  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                    <span className="absolute group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
                       카카오톡 로그인
                     </span>
                   </Link>
