@@ -53,6 +53,7 @@ export default function ProductReviewsListComponent({
             src={profileImageSrc}
             alt="프로필 이미지"
             className="rounded-full "
+            loading="lazy"
             unoptimized
           />
         </Link>
@@ -68,6 +69,7 @@ export default function ProductReviewsListComponent({
                 alt="별점"
                 width={20}
                 height={20}
+                loading="lazy"
                 className="inline-block w-[12px] h-[12px]"
               />
             ))}
@@ -90,6 +92,7 @@ export default function ProductReviewsListComponent({
                 width={100}
                 height={100}
                 unoptimized
+                loading="lazy"
                 className="lg:w-[100px] md:w-[80px] w-[60px] lg:h-[100px] md:h-[80px] h-[60px] rounded-xl"
               />
             ))}

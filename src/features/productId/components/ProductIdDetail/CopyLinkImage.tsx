@@ -73,6 +73,7 @@ export default function CopyLinkImage() {
         width={28}
         height={28}
         onClick={handleKakaoShare}
+        priority
         className="cursor-pointer"
       />
       <Image
@@ -81,6 +82,7 @@ export default function CopyLinkImage() {
         width={28}
         height={28}
         onClick={handleCopyLink}
+        priority
         className="cursor-pointer"
       />
     </div>

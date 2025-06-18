@@ -99,11 +99,13 @@ export default function ProductIdDetailButton({
   };
   // 로그인 확인
   const requireLogin = async (): Promise<boolean> => {
-    const { isLoggedIn } = await checkLoginStatus();
-    if (!isLoggedIn) {
+    const { isLoggedIn, accessToken } = await checkLoginStatus();
+
+    if (!isLoggedIn || !accessToken) {
       setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
       setComparePlusButtonMessage("로그인하러가기");
       openModal("comparePlus");
+
       return false;
     }
     return true;
@@ -138,10 +140,11 @@ export default function ProductIdDetailButton({
 
   // 리뷰 작성하기 모달 핸들러 쿠키
   const handleReviewClick = async () => {
-    if (!(await requireLogin())) return;
+    if (!(await requireLogin())) {
+      return;
+    }
     openModal("review");
   };
-
   const handleProductEdit = async () => {
     if (!(await requireLogin())) return;
     setName(product.name || "");

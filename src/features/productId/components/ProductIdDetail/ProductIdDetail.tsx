@@ -1,18 +1,25 @@
-import CopyLinkImage from "./CopyLinkImage";
+"use client";
+
+import dynamic from "next/dynamic";
+
 import CategoryChip from "@/components/CategoryChip";
-import { productService } from "../../api";
-import ProductIdDetailHeart from "./ProductIdDetailHeart";
-import ProductIdReviewButton from "./ProductIdDetailButton";
+import { GetProductIdDetail } from "../../types";
 import Image from "next/image";
 
-export default async function ProductIdDetailClient({
-  productId,
-}: {
-  productId: number;
-}) {
-  const response = await productService.getProductsId(productId);
-  const product = response.data;
+const CopyLinkImage = dynamic(() => import("./CopyLinkImage"), { ssr: false });
 
+const ProductIdDetailHeart = dynamic(() => import("./ProductIdDetailHeart"), {
+  ssr: false,
+});
+const ProductIdReviewButton = dynamic(() => import("./ProductIdDetailButton"), {
+  ssr: false,
+});
+
+export default function ProductIdDetailClient({
+  product,
+}: {
+  product: GetProductIdDetail;
+}) {
   return (
     <div className="flex md:items-start items-center justify-between lg:gap-[60px] md:gap-[40px] text-[#f1f1f5] md:flex-row flex-col gap-[20px]">
       <div className="lg:w-[306px] lg:h-[306px] md:w-[242px] md:h-[242px] w-[220px] h-[220px] flex justify-center items-center overflow-hidden bg-[#1C1C22]">
@@ -21,9 +28,9 @@ export default async function ProductIdDetailClient({
           alt="상품 이미지"
           width={306}
           height={306}
-          loading="eager"
           unoptimized
-          className="w-full h-full object-cover"
+          priority
+          className=" w-[306px] h-[306px] object-cover"
         />
       </div>
 
@@ -43,7 +50,7 @@ export default async function ProductIdDetailClient({
                 {product.name}
               </div>
               <ProductIdDetailHeart
-                productId={productId}
+                productId={product.id}
                 initialIsFavorite={product.isFavorite}
               />
             </div>

@@ -88,7 +88,7 @@ export default function ProductReviewModal({
     >
       <div className="w-full h-full flex gap-[40px] flex-col justify-between">
         <ProductIdGetModal />
-        <div className="flex flex-col gap-[20px] h-fit">
+        <div className="flex flex-col gap-[20px] min-h-[330px]">
           {/* 별점 입력 모달 */}
           <ProductReviewStarModal onChange={setRating} />
           {/* 리뷰 내용 입력 모달 */}

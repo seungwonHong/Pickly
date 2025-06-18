@@ -14,7 +14,7 @@ export default function ProductYouTubeSection({
   if (!videos || videos.length === 0) {
     return (
       <div className="animate-pulse">
-        <div className="lg:w-[620px] md:w-[460px] lg:h-[350px] md:h-[260px] w-[330px] h-[190px] bg-gray-300 rounded-xl" />
+        <div className="lg:min-w-[620px] md:min-w-[460px] lg:h-[350px] md:h-[260px] min-w-[330px] h-[190px] bg-gray-300 rounded-xl" />
       </div>
     );
   }

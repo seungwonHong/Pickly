@@ -26,10 +26,9 @@ export default function ProductSpotifyClient({
 }: SpotifyButtonProps) {
   // 앨범 검색 결과에서 첫 번째 앨범으로 이동
   const openFirstAlbumOrNull = (albums: SpotifyAlbumsResponse) => {
-    console.log("albums:", albums);
     if (albums && albums.items && albums.items.length > 0) {
       const albumId = albums.items[0].id;
-      console.log("Opening album id:", albumId);
+
       window.open(`https://open.spotify.com/album/${albumId}`, "_blank");
       return true;
     }

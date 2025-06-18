@@ -3,17 +3,26 @@
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-
-import ProductReviewStarModal from "../modal/ProductReviewModal/ProductReviewStarModal";
-import ProductIdGetModal from "../modal/ProductReviewModal/ProductIdGetModal";
-import ProductReviewInputModal from "../modal/ProductReviewModal/ProductReviewInputModal";
-import BaseButton from "@/components/shared/BaseButton";
-import ReviewBaseModal from "../modal/ProductReviewModal/ReviewBaseModal";
+import dynamic from "next/dynamic";
 
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
-import { GetProductIdReviewsDetail } from "../../types";
+import { GetProductIdReviewsDetail, GetProductIdReviews } from "../../types";
 import { useGetProductId } from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
+
+const ProductReviewStarModal = dynamic(
+  () => import("../modal/ProductReviewModal/ProductReviewStarModal")
+);
+const ProductIdGetModal = dynamic(
+  () => import("../modal/ProductReviewModal/ProductIdGetModal")
+);
+const ProductReviewInputModal = dynamic(
+  () => import("../modal/ProductReviewModal/ProductReviewInputModal")
+);
+const ReviewBaseModal = dynamic(
+  () => import("../modal/ProductReviewModal/ReviewBaseModal")
+);
+const BaseButton = dynamic(() => import("@/components/shared/BaseButton"));
 
 interface ProductReviewModalProps {
   open: boolean;
@@ -54,16 +63,25 @@ export default function ProductReviewEdit({
       toast.success("리뷰가 수정되었습니다!");
       setOpen(false);
 
-      queryClient.setQueryData(
-        ["reviews", product.id, sort],
-        (oldReviews: GetProductIdReviewsDetail[] | undefined) => {
-          if (!oldReviews) return oldReviews;
-          console.log("oldReviews", oldReviews);
-          return oldReviews.map((review) =>
-            review.id === reviewId ? { ...review, ...updatedReview } : review
-          );
-        }
-      );
+      queryClient.setQueryData<{
+        pages: GetProductIdReviews[];
+        pageParams: unknown[];
+      }>(["reviews", product.id, sort], (oldData) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            list: page.list.map((review) =>
+              review.id === reviewId ? { ...review, ...updatedReview } : review
+            ),
+          })),
+        };
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["reviews", product.id, sort],
+      });
     },
     onError: () => {
       toast.error("리뷰 수정에 실패했습니다.");
@@ -105,7 +123,7 @@ export default function ProductReviewEdit({
     >
       <div className="w-full h-full flex gap-[40px] flex-col justify-between">
         <ProductIdGetModal />
-        <div className="flex flex-col gap-[20px] h-fit">
+        <div className="flex flex-col gap-[20px] min-h-[330px]">
           {/* 별점 입력 모달 */}
           <ProductReviewStarModal onChange={setRating} initialRating={rating} />
           {/* 리뷰 내용 입력 모달 */}

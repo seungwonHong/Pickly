@@ -114,7 +114,7 @@ export default function ProductReviewInputModal({
   }, [images, onImageUrlsChange]);
 
   return (
-    <div className="flex flex-col gap-[20px] h-fit">
+    <div className="flex flex-col gap-[20px] min-h-[330px]">
       {/* 텍스트 입력 나중에 컴포넌트로 교체예쩡 텍스트필드 오류 있음 */}
       <Textbox
         size="S"
@@ -128,7 +128,7 @@ export default function ProductReviewInputModal({
       {/* 이미지 업로드 섹션 */}
       <div className="flex flex-row-reverse gap-[20px] w-full justify-end">
         {images.map((image) => (
-          <div key={image.id} className="relative">
+          <div key={image.id} className="relative w-[160px] h-[160px]">
             <Image
               src={image.url}
               alt="미리보기 이미지"
@@ -144,13 +144,7 @@ export default function ProductReviewInputModal({
               onClick={() => handleDeleteClick(image.id)}
               className="absolute top-[5px] right-[5px] bg-black/60 rounded-xl"
             >
-              <Image
-                src={ImageDelete}
-                alt="삭제 버튼"
-                width={24}
-                height={24}
-                className=" cursor-pointer"
-              />
+              <Image src={ImageDelete} alt="삭제 버튼" width={24} height={24} />
             </button>
           </div>
         ))}
@@ -166,6 +160,7 @@ export default function ProductReviewInputModal({
               alt="이미지 추가 버튼"
               width={34}
               height={34}
+              className="block "
             />
           </button>
         )}

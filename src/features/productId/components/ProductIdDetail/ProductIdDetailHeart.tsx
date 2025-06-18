@@ -59,6 +59,7 @@ export default function ProductIdDetailHeart({
           alt="좋아요"
           width={28}
           height={28}
+          priority
           className="hover:scale-110 transition-transform duration-200"
         />
       </div>
