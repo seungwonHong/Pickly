@@ -5,18 +5,12 @@ import CompareProducts from "@/features/landing/components/CompareProducts";
 import Footer from "@/features/landing/components/Footer";
 import HomePagePreview from "@/features/landing/components/HomePagePreview";
 import LandingPageTop from "@/features/landing/components/LandingPageTop";
+import MovingCategories from "@/features/landing/components/MovingCategories";
 import SometimesTie from "@/features/landing/components/SometimesTie";
 import SometimesWin from "@/features/landing/components/SometimesWin";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import dynamic from "next/dynamic";
-
-// 이 부분 추가
-const MovingCategories = dynamic(
-  () => import("@/features/landing/components/MovingCategories"),
-  { ssr: false }
-);
 
 export default async function LandingPage() {
   const cookieStore = await cookies();
@@ -56,9 +50,7 @@ export default async function LandingPage() {
           <HomePagePreview />
         </div>
 
-        <Suspense fallback={null}>
-          <MovingCategories />
-        </Suspense>
+        <MovingCategories />
 
         <CategoryGrid />
 
