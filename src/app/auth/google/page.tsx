@@ -1,10 +1,6 @@
-import dynamic from "next/dynamic";
+"use client";
+import GoogleCallback from "@/features/google/components/GoogleCallback";
 import { Suspense } from "react";
-
-const GoogleCallback = dynamic(
-  () => import("../../../features/google/components/GoogleCallback"),
-  { ssr: false }
-);
 
 export default function GooglePage() {
   return (
