@@ -1,8 +1,12 @@
-"use client";
-import CompareProductForm from "@/features/compare/components/CompareProductForm";
 import Header from "@/components/shared/Header";
 import { Suspense } from "react";
 import LoadingClient from "./loadingClient";
+import dynamic from "next/dynamic";
+
+const CompareProductForm = dynamic(
+  () => import("@/features/compare/components/CompareProductForm"),
+  { ssr: false }
+);
 
 export default function Compare() {
   return (
