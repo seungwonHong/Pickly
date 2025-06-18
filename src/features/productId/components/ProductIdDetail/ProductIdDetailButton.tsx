@@ -117,7 +117,7 @@ export default function ProductIdDetailButton({
     );
 
     if (isAlreadyInList) {
-      setComparePlusModalMessage("이미 비교 목록에 있는 상품입니다.");
+      setComparePlusModalMessage("이미 비교 목록에 있는 \n상품입니다.");
       openModal("comparePlus");
       return;
     }

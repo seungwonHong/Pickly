@@ -86,9 +86,9 @@ export default function ProductReviewModal({
       modalClassName="custom-modal-class"
       contentClassName="custom-content-class"
     >
-      <div className="w-full h-full flex gap-[40px] flex-col justify-between">
+      <div className="lg:w-full md:w-[510px] lg:h-full md:h-[552px] flex md:gap-[40px] gap-[20px] flex-col justify-between">
         <ProductIdGetModal />
-        <div className="flex flex-col gap-[20px] min-h-[330px]">
+        <div className="flex flex-col md:gap-[20px] gap-[10px] ">
           {/* 별점 입력 모달 */}
           <ProductReviewStarModal onChange={setRating} />
           {/* 리뷰 내용 입력 모달 */}
@@ -98,7 +98,7 @@ export default function ProductReviewModal({
           />
         </div>
         <BaseButton
-          className="py-[22px] text-[18px] font-semibold"
+          className="lg:py-[22px] md:py-[18px]  py-[15px]  text-[18px] font-semibold"
           disabled={!isSubmitEnabled}
           onClick={handleSubmit}
         >
