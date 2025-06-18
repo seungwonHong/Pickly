@@ -7,12 +7,13 @@ import ProfileCard from "@/features/Profile/components/ProfileCard";
 import { redirect } from "next/navigation";
 import { getMyProfile } from "@/features/Profile/api/getMyProfile";
 
-interface Props {
-  params: { id: string };
-}
-
-export default async function UserPage({ params }: Props) {
-  const userId = Number(params.id);
+export default async function UserPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const userId = Number(id);
 
   // 기본적으로 유저 프로필 정보는 조회
   const user = await getUserProfile(userId);
