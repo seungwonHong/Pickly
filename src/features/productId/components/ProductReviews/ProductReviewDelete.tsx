@@ -4,8 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 
-import { GetProductIdReviews } from "../../types";
-
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { useGetProductId } from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
@@ -17,15 +15,16 @@ interface ProductReviewModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   reviewId: number;
-  sort?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
+
+  // sort?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
 }
 
 export default function ProductReviewDelete({
   open,
   setOpen,
   reviewId,
-  sort = "recent",
-}: ProductReviewModalProps) {
+}: // sort = "recent",
+ProductReviewModalProps) {
   const queryClient = useQueryClient();
 
   // 상품 ID를 가져오기 위한 커스텀 훅 사용
@@ -38,30 +37,42 @@ export default function ProductReviewDelete({
     onSuccess: () => {
       toast.success("리뷰가 삭제되었습니다!");
       closeModal();
-
-      queryClient.setQueryData<{
-        pages: GetProductIdReviews[];
-        pageParams: unknown[];
-      }>(["reviews", product.id, sort], (oldData) => {
-        if (!oldData) return oldData;
-
-        return {
-          ...oldData,
-          pages: oldData.pages.map((page) => ({
-            ...page,
-            list: page.list.filter((review) => review.id !== reviewId),
-          })),
-        };
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ["reviews", product.id, sort],
-      });
+      if (product) {
+        queryClient.invalidateQueries({
+          queryKey: ["reviews", product.id, "recent"],
+        });
+      }
     },
     onError: () => {
       toast.error("리뷰 삭제에 실패했습니다.");
     },
   });
+  // const deleteReviewMutation = useMutation({
+  //   mutationFn: ({ accessToken }: { accessToken: string }) =>
+  //     reviewService.deleteReviews(reviewId, accessToken),
+  //   onSuccess: () => {
+  //     toast.success("리뷰가 삭제되었습니다!");
+  //     closeModal();
+
+  //     queryClient.setQueryData<{
+  //       pages: GetProductIdReviews[];
+  //       pageParams: unknown[];
+  //     }>(["reviews", product.id, sort], (oldData) => {
+  //       if (!oldData) return oldData;
+
+  //       return {
+  //         ...oldData,
+  //         pages: oldData.pages.map((page) => ({
+  //           ...page,
+  //           list: page.list.filter((review) => review.id !== reviewId),
+  //         })),
+  //       };
+  //     });
+  //   },
+  //   onError: () => {
+  //     toast.error("리뷰 삭제에 실패했습니다.");
+  //   },
+  // });
 
   // 리뷰 삭제
   const handleDeleteConfirm = async () => {

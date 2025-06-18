@@ -18,9 +18,10 @@ export const checkLoginStatus = async (): Promise<{
     if (!res.ok) return { isLoggedIn: false };
 
     const data = await res.json();
+    const token = data.accessToken;
     return {
-      isLoggedIn: !!data.accessToken,
-      accessToken: data.accessToken?.value,
+      isLoggedIn: typeof token === "string" || typeof token?.value === "string",
+      accessToken: typeof token === "string" ? token : token?.value,
     };
   } catch (err) {
     console.error("Login check failed:", err);

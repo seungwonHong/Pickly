@@ -68,8 +68,8 @@ export default function ProductReviewModal({
   });
   // 리뷰 작성 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
-    const { accessToken } = await checkLoginStatus();
-    if (!accessToken) {
+    const { isLoggedIn, accessToken } = await checkLoginStatus();
+    if (!isLoggedIn || !accessToken) {
       toast.error("로그인이 필요합니다.");
       return;
     }

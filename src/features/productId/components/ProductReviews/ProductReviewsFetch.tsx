@@ -1,52 +1,66 @@
-import ProductReviewSort from "./ProductReviewSort";
-import ProductReviewsInfinite from "./ProductReviewsInfinite";
+"use client";
+import { useState } from "react";
 
-import { productService } from "../../api";
-import ProductReviewClient from "./ProductReviewClient";
+import ProductReviewsInfinite from "./ProductReviewsInfinite";
+import { GetProductIdReviews } from "../../types";
+import SortDropDown from "@/components/shared/SortDropDown";
 
 interface ProductReviewsClientProps {
+  initialData: GetProductIdReviews;
   productId: number;
-  searchParams: {
-    [key: string]: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
-  };
+  initialOrder?:
+    | "recent"
+    | "ratingDesc"
+    | "ratingAsc"
+    | "likeCount"
+    | undefined;
 }
 
-export default async function ProductReviewsFetch({
+export default function ProductReviewsFetch({
+  initialData,
   productId,
-  searchParams,
+  initialOrder,
 }: ProductReviewsClientProps) {
-  const resolvedSearchParams = await searchParams;
-  const sort = resolvedSearchParams?.sort ?? "recent";
+  const selectList = [
+    { name: "최신순", value: "recent" },
+    { name: "평점 높은 순", value: "ratingDesc" },
+    { name: "평점 낮은 순", value: "ratingAsc" },
+    { name: "좋아요 많은 순", value: "likeCount" },
+  ];
+  const [selectedOption, setSelectedOption] = useState<
+    "recent" | "ratingDesc" | "ratingAsc" | "likeCount"
+  >("recent");
+  const [dataForSelectedOrder, setDataForSelectedOrder] = useState<
+    GetProductIdReviews | undefined
+  >(initialOrder === selectedOption ? initialData : undefined);
 
-  const initialData = await productService
-    .getProductsIdReviews(productId, sort)
-    .then((res) => res.data);
-
+  const onSortChange = (value: string) => {
+    const newSort = value as
+      | "recent"
+      | "ratingDesc"
+      | "ratingAsc"
+      | "likeCount";
+    setSelectedOption(newSort);
+    setDataForSelectedOrder(undefined);
+  };
   return (
     <div>
-      <div className="text-[#f1f1f1]  lg:text-[20px] text-[16px] font-medium flex justify-between ">
-        <ProductReviewSort sort={sort} />
-      </div>
+      <div className="text-[#f1f1f1] lg:text-[20px] text-[16px] font-medium flex justify-between mb-[30px]">
+        <div>상품리뷰</div>
 
-      <ProductReviewClient initialData={initialData} />
-      {initialData.nextCursor && (
-        <div className="w-full">
-          <ProductReviewsInfinite
-            nextCursor={initialData?.nextCursor}
-            productId={productId}
-            queryKey={["reviews", productId, sort]}
-            order={sort}
-            initialData={initialData}
-          />
-        </div>
-      )}
-      {initialData.list.length === 0 && (
-        <div className="text-[#f1f1f1] text-[16px] font-normal text-center pt-[80px]">
-          <div className="w-full text-[#6E6E82] lg:text-[20px] md:text-[18px] text-[16px] font-medium">
-            첫 리뷰를 작성해보세요!
-          </div>
-        </div>
-      )}
+        <SortDropDown
+          selectList={selectList}
+          selected={selectedOption}
+          onChange={onSortChange}
+        />
+      </div>
+      <div className="min-h-[1000px]">
+        <ProductReviewsInfinite
+          initialData={dataForSelectedOrder}
+          productId={productId}
+          order={selectedOption}
+        />
+      </div>
     </div>
   );
 }

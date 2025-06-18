@@ -7,6 +7,7 @@ import { Textbox } from "@/components/input/Textbox";
 import { imageService } from "@/features/productId/api";
 import ImageDelete from "../../../../../../public/icons/image-delete.png";
 import PlusImage from "../../../../../../public/icons/plus-image.png";
+import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 
 interface ImageData {
   id: string;
@@ -27,7 +28,6 @@ export default function ProductReviewInputModal({
   onImageUrlsChange,
   initialText = "",
   initialImages = [],
-  accessToken,
 }: ProductReviewInputModalProps) {
   const [text, setText] = useState(initialText);
   const [images, setImages] = useState<ImageData[]>(() =>
@@ -45,6 +45,7 @@ export default function ProductReviewInputModal({
     setText(e.target.value);
     onTextChange(e.target.value);
   };
+
   // 이미지 접근성 검사 함수
   const checkImageAccessible = (url: string): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -54,12 +55,13 @@ export default function ProductReviewInputModal({
       img.src = url;
     });
   };
+
   // 이미지 변경 핸들러
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    if (!accessToken) {
+    const { isLoggedIn, accessToken } = await checkLoginStatus();
+    if (!isLoggedIn || typeof accessToken !== "string") {
       toast.error("로그인이 필요합니다.");
       return;
     }

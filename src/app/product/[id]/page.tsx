@@ -3,13 +3,11 @@ import ProductIdStats from "@/features/productId/components/ProductIdStats/Produ
 import ProductIdDetailServer from "@/features/productId/components/ProductIdDetail/ProductIdDetailServer";
 import ProductReviewsFetch from "@/features/productId/components/ProductReviews/ProductReviewsFetch";
 import ProductApiDetail from "@/features/productId/components/ProductApi/ProductApiDetail";
+import { productService } from "@/features/productId/api";
 import { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{ id: string }>;
-  searchParams: {
-    [key: string]: "recent" | "ratingDesc" | "ratingAsc" | "likeCount";
-  };
 }
 
 export async function generateMetadata({
@@ -27,14 +25,16 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductIdPage({
-  params,
-  searchParams,
-}: PageProps) {
+export default async function ProductIdPage({ params }: PageProps) {
   const { id } = await params;
   const productId = Number(id);
   if (isNaN(productId)) return null;
 
+  const response = await productService.getProductsIdReviews(
+    productId,
+    "recent"
+  );
+  const initialData = response.data;
   return (
     <div>
       <div className="lg:w-[940px] mx-auto lg:mb-[120px] lg:my-[160px] md:w-[684px] w-[335px] md:mt-[140px] md:mb-[147px] mt-[130px] mb-[200px] flex flex-col gap-[60px]">
@@ -42,8 +42,9 @@ export default async function ProductIdPage({
         <ProductApiDetail productId={productId} />
         <ProductIdStats productId={productId} />
         <ProductReviewsFetch
-          searchParams={searchParams}
           productId={productId}
+          initialData={initialData}
+          initialOrder="recent"
         />
       </div>
     </div>

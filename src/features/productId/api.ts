@@ -148,7 +148,7 @@ class ReviewService {
     reviewId: number;
     content: string;
     rating: number;
-    images: string[];
+    images: { id?: number; source?: string }[];
     accessToken: string;
   }) {
     return axios.patch(

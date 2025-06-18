@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
-import { GetProductIdReviewsDetail, GetProductIdReviews } from "../../types";
+import { GetProductIdReviewsDetail } from "../../types";
 import { useGetProductId } from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
 
@@ -24,12 +24,14 @@ const ReviewBaseModal = dynamic(
 );
 const BaseButton = dynamic(() => import("@/components/shared/BaseButton"));
 
+type ReviewImage = string | { id: number };
+
 interface ProductReviewModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   reviewId: number;
   initialReviewData: GetProductIdReviewsDetail;
-  sort?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
+  // sort?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
 }
 
 export default function ProductReviewEdit({
@@ -37,53 +39,43 @@ export default function ProductReviewEdit({
   setOpen,
   reviewId,
   initialReviewData,
-  sort = "recent",
-}: ProductReviewModalProps) {
+}: // sort = "recent",
+ProductReviewModalProps) {
   const queryClient = useQueryClient();
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [reviewText, setReviewText] = useState(initialReviewData.content);
   const [rating, setRating] = useState<number>(initialReviewData.rating);
-  const [images, setImages] = useState<string[]>(
-    initialReviewData.reviewImages.map((img) => img.source)
+  const [images, setImages] = useState<ReviewImage[]>(
+    initialReviewData.reviewImages.map((img) => ({ id: img.id }))
   );
+
   // 상품 ID를 가져오기 위한 커스텀 훅 사용
   const { product } = useGetProductId();
 
   // 리뷰 patch 요청을 위한 useMutation 훅
   const patchReviewMutation = useMutation({
-    mutationFn: ({ accessToken }: { accessToken: string }) =>
-      reviewService.patchReviews({
+    mutationFn: async ({ accessToken }: { accessToken: string }) => {
+      const formattedImages = images.map((img) =>
+        typeof img === "string" ? { source: img } : { id: img.id }
+      );
+
+      return reviewService.patchReviews({
         reviewId,
         content: reviewText,
         rating,
-        images,
+        images: formattedImages,
         accessToken,
-      }),
-    onSuccess: (updatedReview) => {
-      toast.success("리뷰가 수정되었습니다!");
-      setOpen(false);
-
-      queryClient.setQueryData<{
-        pages: GetProductIdReviews[];
-        pageParams: unknown[];
-      }>(["reviews", product.id, sort], (oldData) => {
-        if (!oldData) return oldData;
-
-        return {
-          ...oldData,
-          pages: oldData.pages.map((page) => ({
-            ...page,
-            list: page.list.map((review) =>
-              review.id === reviewId ? { ...review, ...updatedReview } : review
-            ),
-          })),
-        };
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["reviews", product.id, sort],
       });
     },
-    onError: () => {
+    onSuccess: () => {
+      toast.success("리뷰가 수정되었습니다!");
+      setOpen(false);
+      queryClient.invalidateQueries({
+        queryKey: ["reviews", product.id, "recent"],
+      });
+    },
+    onError: (error) => {
+      console.error("리뷰 수정 실패:", error.message);
       toast.error("리뷰 수정에 실패했습니다.");
     },
   });
