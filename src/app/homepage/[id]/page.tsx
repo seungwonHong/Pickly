@@ -33,12 +33,12 @@ export default async function CategoryPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ sort?: 'recent' | 'reviewCount' | 'rating'; modal?: string }>;
+  params: { id: string };
+  searchParams: { sort?: "recent" | "reviewCount" | "rating"; modal?: string };
 }) {
-  const { id: categoryId } = await params;
+  const { id: categoryId } = params;
   const decodeParams = decodeURIComponent(categoryId);
-  const sp = await searchParams;
+  const sp = searchParams;
   let products;
 
   const categoryIndexMap: Record<string, number> = {
