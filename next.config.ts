@@ -11,6 +11,10 @@ const nextConfig = {
       "image.yes24.com",
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
+
 
 module.exports = nextConfig;

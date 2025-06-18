@@ -3,7 +3,9 @@ import React from "react";
 import Lottie from "lottie-react";
 import paperplane from "@/../public/animations/paperplane.json";
 
-const Loading = () => {
+type Props = {};
+
+const LoadingClient = (props: Props) => {
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <div className="w-[200px] h-[100px] lg:w-[600px] lg:h-[300px] md:w-[450px] md:h-[250px]">
@@ -20,4 +22,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default LoadingClient;

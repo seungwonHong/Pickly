@@ -2,9 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-type Props = {};
-
-const SometimesWin = (props: Props) => {
+const SometimesWin = () => {
   return (
     <div className="flex flex-col lg:mt-[236px] md:mt-[160px] mt-[72px]">
       <motion.h2

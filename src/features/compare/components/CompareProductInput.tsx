@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import CompareDropdown from "./CompareDropdown";
 import useGetUser from "@/features/productId/hooks/useGetUser";
