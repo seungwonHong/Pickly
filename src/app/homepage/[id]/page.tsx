@@ -34,9 +34,7 @@ export default async function CategoryPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{
-    [key: string]: "recent" | "reviewCount" | "rating";
-  }>;
+  searchParams: Promise<{ sort?: 'recent' | 'reviewCount' | 'rating'; modal?: string }>;
 }) {
   const { id: categoryId } = await params;
   const decodeParams = decodeURIComponent(categoryId);
@@ -83,7 +81,7 @@ export default async function CategoryPage({
 
         {categoryNumber === 0 ? (
           <div className="lg:flex flex-col mt-[60px] hidden lg:mb-[50px] mb-[30px] lg:w-[950px] md:w-[510px] w-[340px]">
-            <SearchPage searchParams={searchParams} />
+            <SearchPage searchParams={sp} />
           </div>
         ) : (
           <div className="lg:flex flex-col mt-[60px] hidden lg:mb-[50px] mb-[30px] lg:w-[950px] md:w-[510px] w-[340px]">
@@ -113,7 +111,7 @@ export default async function CategoryPage({
           {/* 데스크톱 사이즈가 아닌 경우 */}
           {categoryNumber === 0 ? (
             <div className="lg:hidden flex flex-col mt-[60px] md:ml-[25px] md:w-[510px] w-full max-w-[335px] lg:mb-[50px] mb-[30px]">
-              <SearchPage searchParams={searchParams} />
+              <SearchPage searchParams={sp} />
             </div>
           ) : (
             <div className="lg:hidden flex flex-col mt-[60px] md:ml-[25px] md:w-[510px] w-[335px] lg:mb-[50px] mb-[30px]">
