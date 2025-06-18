@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import FloatingButton from "@/components/shared/FloatingButton";
 import Header from "@/components/shared/Header";
 import Category from "@/features/home/components/Category";
