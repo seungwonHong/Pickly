@@ -3,7 +3,6 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
-import useModalStore from "@/features/home/modals/store/modalStore";
 import { Textbox } from "@/components/input/Textbox";
 import { imageService } from "@/features/productId/api";
 import ImageDelete from "../../../../../../public/icons/image-delete.png";
@@ -30,8 +29,6 @@ export default function ProductReviewInputModal({
   initialImages = [],
   accessToken,
 }: ProductReviewInputModalProps) {
-  const { description, setDescription } = useModalStore();
-
   const [text, setText] = useState(initialText);
   const [images, setImages] = useState<ImageData[]>(() =>
     initialImages.map((url) => ({
@@ -47,7 +44,6 @@ export default function ProductReviewInputModal({
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
     onTextChange(e.target.value);
-    setDescription(e.target.value);
   };
   // 이미지 접근성 검사 함수
   const checkImageAccessible = (url: string): Promise<boolean> => {
@@ -68,7 +64,7 @@ export default function ProductReviewInputModal({
       return;
     }
     try {
-      const uploadedUrl = await imageService.postImage(file, accessToken ?? "");
+      const uploadedUrl = await imageService.postImage(file, accessToken);
       const isAccessible = await checkImageAccessible(uploadedUrl);
       if (!isAccessible) {
         toast.error("이미지명이 한글이면 불러올 수 없습니다.");
@@ -123,7 +119,7 @@ export default function ProductReviewInputModal({
       <Textbox
         size="S"
         placeholder="리뷰를 입력해주세요"
-        value={description && text}
+        value={text}
         onChange={handleTextChange}
         maxLength={500}
         className="h-[150px] w-[540px] text-[16px]"

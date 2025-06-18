@@ -20,6 +20,7 @@ interface ProductReviewModalProps {
   setOpen: (open: boolean) => void;
   reviewId: number;
   initialReviewData: GetProductIdReviewsDetail;
+  sort?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
 }
 
 export default function ProductReviewEdit({
@@ -27,6 +28,7 @@ export default function ProductReviewEdit({
   setOpen,
   reviewId,
   initialReviewData,
+  sort = "recent",
 }: ProductReviewModalProps) {
   const queryClient = useQueryClient();
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -44,21 +46,30 @@ export default function ProductReviewEdit({
       reviewService.patchReviews({
         reviewId,
         content: reviewText,
-        rating: rating,
-        images: images,
+        rating,
+        images,
         accessToken,
       }),
-    onSuccess: () => {
+    onSuccess: (updatedReview) => {
       toast.success("리뷰가 수정되었습니다!");
       setOpen(false);
-      queryClient.invalidateQueries({
-        queryKey: ["reviews", product.id, "recent"],
-      });
+
+      queryClient.setQueryData(
+        ["reviews", product.id, sort],
+        (oldReviews: GetProductIdReviewsDetail[] | undefined) => {
+          if (!oldReviews) return oldReviews;
+          console.log("oldReviews", oldReviews);
+          return oldReviews.map((review) =>
+            review.id === reviewId ? { ...review, ...updatedReview } : review
+          );
+        }
+      );
     },
     onError: () => {
       toast.error("리뷰 수정에 실패했습니다.");
     },
   });
+
   const handleSubmit = async () => {
     const { accessToken } = await checkLoginStatus();
     if (!accessToken) {

@@ -2,18 +2,33 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 
 import { checkLoginStatus } from "../../../hooks/checkLogin";
-import ProductReviewStarModal from "./ProductReviewStarModal";
-import ProductIdGetModal from "./ProductIdGetModal";
-import ProductReviewInputModal from "./ProductReviewInputModal";
 import BaseButton from "@/components/shared/BaseButton";
-import ReviewBaseModal from "./ReviewBaseModal";
 
 import { useGetProductId } from "../../../hooks/useGetProductId";
 import { reviewService } from "../../../api";
 
+const ProductReviewInputModal = dynamic(
+  () => import("./ProductReviewInputModal"),
+  {
+    ssr: false,
+  }
+);
+const ReviewBaseModal = dynamic(() => import("./ReviewBaseModal"), {
+  ssr: false,
+});
+const ProductIdGetModal = dynamic(() => import("./ProductIdGetModal"), {
+  ssr: false,
+});
+const ProductReviewStarModal = dynamic(
+  () => import("./ProductReviewStarModal"),
+  {
+    ssr: false,
+  }
+);
 interface ProductReviewModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
