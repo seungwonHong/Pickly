@@ -13,9 +13,10 @@ import type { Metadata } from "next";
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
-}): Promise<Metadata> {
-  const decodeParams = decodeURIComponent(params.id);
+  params:Promise< { id: string }>;
+  }): Promise<Metadata> {
+    const { id } = await params;
+  const decodeParams = decodeURIComponent(id);
 
   return {
     title: `Pickly | ${decodeParams}`,
@@ -34,11 +35,11 @@ export default async function CategoryPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ sort?: 'recent' | 'reviewCount' | 'rating'; modal?: string }>;
+  searchParams: Promise<{ sort?: "recent" | "reviewCount" | "rating"; modal?: string }>;
 }) {
   const { id: categoryId } = await params;
-  const decodeParams = decodeURIComponent(categoryId);
   const sp = await searchParams;
+  const decodeParams = decodeURIComponent(categoryId);
   let products;
 
   const categoryIndexMap: Record<string, number> = {

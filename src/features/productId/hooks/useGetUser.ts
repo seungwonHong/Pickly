@@ -1,7 +1,6 @@
 "use client";
-
+import React from "react";
 import { useUserStore } from "../libs/useUserStore";
-
 export default function useGetUser() {
   const user = useUserStore((state) => state.userData);
   const compareList = useUserStore((state) => state.compareList);

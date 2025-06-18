@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import ComparisonResult from "./ComparisonResult";
 import { productService } from "../api/api";
@@ -44,7 +45,8 @@ const ComparisonContainer = ({ productId1, productId2 }: Props) => {
   }, [productId1, productId2]);
 
   if (loading) return <div>로딩 중...</div>;
-  if (!product1Stats || !product2Stats) return <div>상품 정보를 불러올 수 없습니다.</div>;
+  if (!product1Stats || !product2Stats)
+    return <div>상품 정보를 불러올 수 없습니다.</div>;
 
   return (
     <ComparisonResult

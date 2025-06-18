@@ -1,3 +1,4 @@
+"use client";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
@@ -141,7 +142,11 @@ export const useUserStore = create<UserState>()(
     },
     {
       name: "user-storage",
-      storage: createJSONStorage(() => localStorage),
+      // 수정한 코드 (서버에서도 안전하게 동작)
+      storage:
+        typeof window !== "undefined"
+          ? createJSONStorage(() => localStorage)
+          : undefined,
     }
   )
 );
