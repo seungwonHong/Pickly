@@ -10,7 +10,7 @@ export default function ProductYouTubeSection({
   category: number;
 }) {
   const { data: videos } = useYouTubeQuery(query);
-console.log(videos)
+
   if (!videos || videos.length === 0) {
     return (
       <div className="animate-pulse">

@@ -68,6 +68,6 @@ export async function fetchMovieSearch(query: string) {
     return null;
   }
   const data = await res.json();
-  console.log("Google Search API 응답:", data);
+ 
   return data.result;
 }
