@@ -38,7 +38,7 @@ const SigninPage = () => {
     reset,
     formState: { errors, isValid },
   } = useForm<LoginForm>({
-    mode: "onBlur", // blur 시 유효성 검사
+    mode: "onChange", // blur 시 유효성 검사
     resolver: zodResolver(loginFormSchema),
   });
 

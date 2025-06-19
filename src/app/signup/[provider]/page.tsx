@@ -29,7 +29,7 @@ export default function OAuthSignUpPage() {
      handleSubmit,
      formState: { errors, isValid },
    } = useForm<SimpleJoinForm>({
-     mode: "onBlur", // blur 시 유효성 검사
+     mode: "onChange", // blur 시 유효성 검사
      resolver: zodResolver(simpleJoinFormSchema),
    });
  

@@ -48,7 +48,7 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<JoinForm>({
-    mode: "onBlur", // blur 시 유효성 검사
+    mode: "onChange", // onChange 시 유효성 검사
     resolver: zodResolver(joinFormSchema),
   });
 
