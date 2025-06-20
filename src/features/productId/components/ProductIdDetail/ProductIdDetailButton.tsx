@@ -2,9 +2,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { toast } from "react-hot-toast";
 
-import { productService } from "../../api";
 import { checkLoginStatus } from "../../hooks/checkLogin";
 import { GetProductIdDetail } from "../../types";
 import useGetUser from "../../hooks/useGetUser";
@@ -45,12 +43,7 @@ const ProductComparePlusModal = dynamic(
     loading: () => null,
   }
 );
-type ModalTypes =
-  | "review"
-  | "compare"
-  | "comparePlus"
-  | "editProduct"
-  | "deleteProduct";
+type ModalTypes = "review" | "compare" | "comparePlus" | "editProduct";
 
 export default function ProductIdDetailButton({
   product,
@@ -58,9 +51,21 @@ export default function ProductIdDetailButton({
   product: GetProductIdDetail;
 }) {
   // useGetUser 훅을 사용하여 현재 사용자 정보를 가져옴
+
   const { user, compareList, addToCompare } = useGetUser();
-  const isOwner = user?.id === product.writerId;
-  const productId = product.id;
+  const [isOwner, setIsOwner] = useState(false);
+
+  useEffect(() => {
+    const checkOwner = async () => {
+      const { isLoggedIn } = await checkLoginStatus();
+      if (!isLoggedIn) return;
+      if (user?.id === product.writerId) {
+        setIsOwner(true);
+      }
+    };
+    checkOwner();
+  }, [user, product.writerId]);
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -161,34 +166,6 @@ export default function ProductIdDetailButton({
     openModal("editProduct");
   };
 
-  const handleProductDelete = async () => {
-    if (!(await requireLogin())) return;
-    setComparePlusModalMessage("정말 삭제하시겠습니까?");
-    setComparePlusButtonMessage("삭제하기");
-    openModal("deleteProduct");
-  };
-  const handleConfirmDelete = async () => {
-    const { accessToken } = await checkLoginStatus();
-
-    if (!accessToken) {
-      setComparePlusModalMessage("로그인이 필요한 서비스입니다.");
-      setComparePlusButtonMessage("로그인하러가기");
-      openModal("comparePlus");
-      return;
-    }
-
-    try {
-      await productService.deleteProductsId(productId, accessToken);
-      toast.success("상품이 삭제되었습니다.");
-      closeModal();
-      setTimeout(() => {
-        router.push("/homepage");
-      }, 100);
-    } catch {
-      toast.error("상품 삭제에 실패했습니다.");
-    }
-  };
-
   useEffect(() => {
     const modalFromUrl = searchParams.get("modal") as ModalTypes | null;
     if (modalFromUrl !== modal) {
@@ -202,31 +179,24 @@ export default function ProductIdDetailButton({
         <div className="flex items-center justify-between md:flex-row flex-col">
           <BaseButton
             disabled={false}
-            className="lg:px-[30px] lg:py-[22px] md:px-[16px] md:py-[18px] px-[130px] py-[15px] font-semibold lg:text-[17px] md:text-[14px] text-[12px] mb-[15px] md:mb-[0px]"
+            className="lg:px-[44.5px] lg:py-[22px] md:px-[24px] md:py-[18px] px-[126px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] mb-[15px] md:mb-[0px]"
             onClick={handleReviewClick}
           >
             리뷰 작성하기
           </BaseButton>
           <TypeButton
             type="secondary"
-            className="lg:px-[30px] lg:py-[22px] md:px-[16px] md:py-[18px] px-[138px] py-[15px] font-semibold lg:text-[17px] md:text-[14px] text-[14px] "
+            className="lg:px-[44.5px] lg:py-[22px] md:px-[24px] md:py-[18px] px-[139px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] "
             onClick={handleCompareClick}
           >
             비교하기
           </TypeButton>
           <TypeButton
             type="tertiary"
-            className="lg:px-[30px] lg:py-[22px] md:px-[16px] md:py-[18px] px-[138px] py-[15px] font-semibold lg:text-[17px] md:text-[14px] text-[14px] mt-[15px] md:mt-[0px]"
+            className="lg:px-[44.5px] lg:py-[22px] md:px-[24px] md:py-[18px] px-[139px] py-[15px] font-semibold lg:text-[18px] md:text-[16px] text-[14px] mt-[15px] md:mt-[0px]"
             onClick={handleProductEdit}
           >
             편집하기
-          </TypeButton>
-          <TypeButton
-            type="tertiary"
-            className="lg:px-[30px] lg:py-[22px] md:px-[16px] md:py-[18px] px-[138px] py-[15px] font-semibold lg:text-[17px] md:text-[14px] text-[14px] mt-[15px] md:mt-[0px]"
-            onClick={handleProductDelete}
-          >
-            삭제하기
           </TypeButton>
         </div>
       ) : (
@@ -276,15 +246,6 @@ export default function ProductIdDetailButton({
             productinfo={product}
           />
         </div>
-      )}
-      {modal === "deleteProduct" && (
-        <ProductComparePlusModal
-          open
-          setOpen={closeModal}
-          message={comparePlusModalMessage}
-          buttonText={comparePlusButtonMessage}
-          onButtonClick={handleConfirmDelete}
-        />
       )}
     </>
   );

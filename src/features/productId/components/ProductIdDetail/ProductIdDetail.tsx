@@ -40,7 +40,7 @@ export default function ProductIdDetailClient({
             category={product.category.name}
             className="text-[12px]"
           />
-          <CopyLinkImage />
+          <CopyLinkImage product={product} />
         </div>
 
         <div className="flex flex-col justify-between gap-[20px]">
