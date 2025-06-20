@@ -172,7 +172,7 @@ const SigninPage = () => {
                       mask-[url('/icons/login_sns_kakao.svg')] 
                       mask-no-repeat 
                       mask-center 
-                      text-[0px] 
+                      text-[0px] hover:animate-spin-slow
                     >
                       카카오톡 로그인
                     </span>
