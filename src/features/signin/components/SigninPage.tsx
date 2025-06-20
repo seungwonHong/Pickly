@@ -152,7 +152,7 @@ const SigninPage = () => {
                       구글 로그인
                     </span>
                     <span className="absolute  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
-                      구글 로그인하기
+                      구글 로그인
                     </span>
                   </Link>
                 </li>
@@ -172,7 +172,7 @@ const SigninPage = () => {
                       mask-[url('/icons/login_sns_kakao.svg')] 
                       mask-no-repeat 
                       mask-center 
-                      text-[0px] 
+                      text-[0px] hover:animate-spin-slow"
                     >
                       카카오톡 로그인
                     </span>

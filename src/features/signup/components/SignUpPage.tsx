@@ -134,8 +134,7 @@ const SignUpPage = () => {
             <div className="text-[var(--color-deepGray)] mt-[40px] text-center text-base">
               <span>이미 회원이신가요? <Link href="/signin" className="hover:text-[var(--color-white)]">로그인</Link></span>
             </div>
-            <div className="text-[var(--color-deepGray)] mt-[60px] text-center text-base">
-              <span>SNS로 바로 시작하기</span>
+            <div className="text-[var(--color-deepGray)] mt-[20px] text-center text-base">
               <ul className="flex justify-center gap-5 mt-[19px]">
                 <li>
                   <Link
@@ -153,17 +152,17 @@ const SignUpPage = () => {
                       mask-center 
                       hover:bg-[url('/sns_gg_bg.png')] bg-cover bg-center bg-no-repeat 
                       text-[0px]">
-                      구글 회원가입하기
+                      구글 회원가입
                     </span>
-                    <span className="absolute group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
-                      구글 회원가입하기
+                    <span className="absolute group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                      구글 회원가입
                     </span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href={kakaoLoginUrl}
-                    className="block border border-[#353542] rounded-full hover:bg-[#f3e21f]  hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
+                    className="group relative block border border-[#353542] rounded-full hover:bg-[#f3e21f]  hover:scale-110 transition-transform duration-200 ease-in-out shadow-lg"
                   >
                     <span
                       className="
@@ -176,12 +175,11 @@ const SignUpPage = () => {
                       mask-[url('/icons/login_sns_kakao.svg')] 
                       mask-no-repeat 
                       mask-center 
-                      text-[0px] 
-                      hover:animate-spin-slow"
+                      text-[0px] hover:animate-spin-slow"
                     >
                       카카오톡 회원가입
                     </span>
-                    <span className="absolute group-hover:last:block hidden-bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                    <span className="absolute group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
                       카카오톡 회원가입
                     </span>
                   </Link>
