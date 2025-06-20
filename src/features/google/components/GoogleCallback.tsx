@@ -25,7 +25,7 @@ export default function GoogleCallback() {
       toast.success(`${data.user.nickname}님, 로그인 성공!`);
       router.replace("/homepage");
     },
-    onError: (error) => {
+    onError: () => {
       toast.error("로그인 실패 😢");
     },
   });

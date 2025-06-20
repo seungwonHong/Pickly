@@ -38,7 +38,7 @@ const SigninPage = () => {
     reset,
     formState: { errors, isValid },
   } = useForm<LoginForm>({
-    mode: "onBlur", // blur 시 유효성 검사
+    mode: "onChange", // blur 시 유효성 검사
     resolver: zodResolver(loginFormSchema),
   });
 
@@ -151,7 +151,7 @@ const SigninPage = () => {
                     >
                       구글 로그인
                     </span>
-                    <span className="absolute  group-hover:last:block hidden-bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                    <span className="absolute  group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
                       구글 로그인하기
                     </span>
                   </Link>
@@ -173,7 +173,6 @@ const SigninPage = () => {
                       mask-no-repeat 
                       mask-center 
                       text-[0px] 
-                      hover:animate-spin-slow"
                     >
                       카카오톡 로그인
                     </span>

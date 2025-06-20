@@ -48,7 +48,7 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<JoinForm>({
-    mode: "onBlur", // blur 시 유효성 검사
+    mode: "onChange", // onChange 시 유효성 검사
     resolver: zodResolver(joinFormSchema),
   });
 
@@ -155,7 +155,7 @@ const SignUpPage = () => {
                       text-[0px]">
                       구글 회원가입하기
                     </span>
-                    <span className="absolute group-hover:last:block hidden-bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
+                    <span className="absolute group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] block text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
                       구글 회원가입하기
                     </span>
                   </Link>
