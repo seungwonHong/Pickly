@@ -86,7 +86,7 @@ const AddEditProductModal = ({
 
   return (
     <div className="relative flex w-full h-full justify-center items-center bg-[#000000B2]">
-      <div className="flex flex-col lg:w-[620px] lg:h-[614px] md:w-[590px] md:h-[569px] w-[335px] h-[578px] bg-[#1C1C22] rounded-2xl lg:p-[20px] p-[20px]">
+      <div className="relative flex flex-col lg:w-[620px] lg:h-[614px] md:w-[590px] md:h-[569px] w-[335px] h-[578px] bg-[#1C1C22] rounded-2xl lg:p-[20px] p-[40px]">
         <IoClose
           color="#F1F1F5"
           className="ml-auto cursor-pointer lg:w-[40px] lg:h-[40px] md:w-[36px] md:h-[36px] w-[24px] h-[24px]"
@@ -95,107 +95,109 @@ const AddEditProductModal = ({
         <span className="lg:text-[24px] text-[20px] text-[#F1F1F5] font-semibold md:ml-[20px]">
           {purpose}
         </span>
-
-        <div className="flex md:flex-row flex-col md:mt-[40px] mt-[20px] md:ml-[20px]">
-          <div className="md:hidden flex">
-            <label
-              htmlFor="fileInput"
-              className="flex items-center justify-center cursor-pointer lg:w-[160px] lg:h-[160px] md:w-[135px] md:h-[135px] w-[140px] h-[140px] rounded-lg bg-[#252530] border-[1px] border-[#353542] "
-            >
-              {image ? (
-                <div className="relative w-full h-full">
-                  <img
-                    src={image}
-                    alt="image"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                  <img
-                    src={"/icons/cancel.png"}
-                    alt="cancel"
-                    color="#1C1C22"
-                    className="absolute z-999 top-[5px] right-[5px] cursor-pointer"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setImage(null);
-                    }}
-                  />
-                </div>
-              ) : (
-                <img
-                  src="/icons/addImage.png"
-                  alt="addImageIcon"
-                  className="lg:w-[34px] lg:h-[34px] w-[24px] h-[24px]"
+        <div className="flex flex-col items-center justify-between"> 
+          <div className="flex w-full md:flex-row flex-col md:ml-[20px]">
+            <div className="flex w-full gap-5">
+              <div className="md:hidden flex w-full">
+                <label
+                  htmlFor="fileInput"
+                  className="flex items-center justify-center cursor-pointer lg:w-[160px] lg:h-[160px] md:w-[135px] md:h-[135px] w-[140px] h-[140px] rounded-lg bg-[#252530] border-[1px] border-[#353542] "
+                >
+                  {image ? (
+                    <div className="relative w-full h-full">
+                      <img
+                        src={image}
+                        alt="image"
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                      <img
+                        src={"/icons/cancel.png"}
+                        alt="cancel"
+                        color="#1C1C22"
+                        className="absolute z-999 top-[5px] right-[5px] cursor-pointer"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setImage(null);
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <img
+                      src="/icons/addImage.png"
+                      alt="addImageIcon"
+                      className="lg:w-[34px] lg:h-[34px] w-[24px] h-[24px]"
+                    />
+                  )}
+                </label>
+                <input
+                  type="file"
+                  name="file"
+                  id="fileInput"
+                  className="hidden"
+                  onChange={(e) => chooseFile(e)}
                 />
-              )}
-            </label>
-            <input
-              type="file"
-              name="file"
-              id="fileInput"
-              className="hidden"
-              onChange={(e) => chooseFile(e)}
-            />
-          </div>
-          <div className="flex flex-col lg:mr-[20px] md:mr-[15px]">
-            <InputField
-              className="md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
-              placeholder="상품명 (상품 등록 여부를 확인해 주세요)"
-              type="text"
-              value={name ?? ""}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setName(e.target.value)
-              }
-            />
-            <CategoryDropDown />
+              </div>
+              <div className="flex flex-col w-full">
+                <InputField
+                  className="md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] mb-0"
+                  placeholder="상품명 (상품 등록 여부를 확인해 주세요)"
+                  type="text"
+                  value={name ?? ""}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setName(e.target.value)
+                  }
+                />
+                <CategoryDropDown />
+              </div>
+            </div>
+
+            <div className="md:flex hidden">
+              <label
+                htmlFor="fileInput"
+                className="flex items-center justify-center cursor-pointer lg:w-[160px] lg:h-[160px] md:w-[135px] md:h-[135px] w-[140px] h-[140px] rounded-lg bg-[#252530] border-[1px] border-[#353542] "
+              >
+                {image ? (
+                  <div className="relative w-full h-full">
+                    <img
+                      src={image}
+                      alt="previewImage"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <img
+                      src={"/icons/cancel.png"}
+                      alt="cancel"
+                      color="#FFFFF"
+                      className="absolute w-[28px] h-[28px] z-999 top-[5px] right-[5px] cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setImage(null);
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src="/icons/addImage.png"
+                    alt="addImageIcon"
+                    className="lg:w-[34px] lg:h-[34px] w-[24px] h-[24px]"
+                  />
+                )}
+              </label>
+              <input
+                type="file"
+                name="file"
+                id="fileInput"
+                className="hidden"
+                onChange={(e) => chooseFile(e)}
+              />
+            </div>
           </div>
 
-          <div className="md:flex hidden">
-            <label
-              htmlFor="fileInput"
-              className="flex items-center justify-center cursor-pointer lg:w-[160px] lg:h-[160px] md:w-[135px] md:h-[135px] w-[140px] h-[140px] rounded-lg bg-[#252530] border-[1px] border-[#353542] "
-            >
-              {image ? (
-                <div className="relative w-full h-full">
-                  <img
-                    src={image}
-                    alt="previewImage"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                  <img
-                    src={"/icons/cancel.png"}
-                    alt="cancel"
-                    color="#FFFFF"
-                    className="absolute w-[28px] h-[28px] z-999 top-[5px] right-[5px] cursor-pointer"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setImage(null);
-                    }}
-                  />
-                </div>
-              ) : (
-                <img
-                  src="/icons/addImage.png"
-                  alt="addImageIcon"
-                  className="lg:w-[34px] lg:h-[34px] w-[24px] h-[24px]"
-                />
-              )}
-            </label>
-            <input
-              type="file"
-              name="file"
-              id="fileInput"
-              className="hidden"
-              onChange={(e) => chooseFile(e)}
-            />
-          </div>
+          <Textbox
+            maxLength={500}
+            placeholder="상품 설명을 입력해 주세요"
+            className="lg:w-[540px] lg:h-[160px] md:w-[510px] md:h-[160px] w-[295px] h-[120px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
+          />
         </div>
-
-        <Textbox
-          maxLength={500}
-          placeholder="상품 설명을 입력해 주세요"
-          className="lg:w-[540px] lg:h-[160px] md:w-[510px] md:h-[160px] w-[295px] h-[120px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
-        />
-
         <BaseButton
           className="lg:w-[540px] lg:h-[65px] md:w-[510px] md:h-[55px] md:mt-[40px] mt-[20px] md:ml-[20px] lg:text-[18px] text-[16px] font-semibold rounded-lg"
           onClick={() => {
