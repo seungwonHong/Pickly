@@ -166,11 +166,7 @@ export default function CopyLinkImage({
           setOpen={() => setModalOpen(false)}
           message={comparePlusModalMessage}
           buttonText={comparePlusButtonMessage}
-          onButtonClick={
-            comparePlusButtonMessage === "삭제하기"
-              ? handleConfirmDelete
-              : undefined
-          }
+          onButtonClick={handleConfirmDelete}
         />
       )}
     </>
