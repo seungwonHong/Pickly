@@ -38,7 +38,7 @@ const MovingCategories = () => {
   }, [controls, categories.length]);
 
   return (
-    <div className="2xl:mt-[462px] lg:mt-[300px] md:mt-[176px] mt-[120px]">
+    <div className="2xl:mt-[200px] lg:mt-[150px] md:mt-[100px] mt-[60px] overflow-x-hidden">
       <motion.div
         ref={listRef}
         animate={controls}
