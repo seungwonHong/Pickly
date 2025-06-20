@@ -39,13 +39,11 @@ const SometimesTie = (props: Props) => {
         viewport={{ once: true, amount: 0.3 }}
         className="lg:mt-[173px] md:mt-[79px] mt-[53px] mx-auto"
       >
-        <Link href="/compare">
-          <BaseButton
-            type="button"
-            className="md:w-[153px] w-[100px] h-[33px] md:h-[47px] md:text-[20px] text-[12px] font-extrabold"
-          >
-            Try it out
-          </BaseButton>
+        <Link
+          href="/compare"
+          className="flex items-center justify-center md:w-[153px] w-[100px] h-[33px] md:h-[47px] md:text-[20px] text-[12px] font-extrabold bg-gradient-to-r from-[#5097fa] to-[#5363ff] hover:scale-105 transition-transform duration-400 ease-in-out rounded-lg text-white"
+        >
+          Try it out
         </Link>
       </motion.div>
     </div>

@@ -108,7 +108,7 @@ const Header = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed h-full w-full bg-[#25253080] md:hidden"
+          className="z-50 fixed h-full w-full bg-[#25253080] md:hidden"
           onClick={() => setClicked(false)}
         >
           <Category categoryId={categoryId} />

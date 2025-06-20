@@ -37,7 +37,9 @@ export default async function UserPage({
 
   return (
     <>
-      <Header />
+      <header className="fixed top-0 left-0 right-0 z-40">
+        <Header />
+      </header>
       <div
         className="mt-[40px] px-[30px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-[20px] 
       lg:flex lg:justify-center lg:gap-[70px] max-w-[1380px]  "

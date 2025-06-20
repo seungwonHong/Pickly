@@ -64,7 +64,6 @@ export default async function ProductApiDetail({
   // 영화 정보 파싱
   const movieInfoObj = parseJsonSafe(movieInfoRaw);
   const parsedMovie = movieInfoObj?.trailer ?? "";
-
   const categoryId = product.category?.id ?? 0;
   return (
     <>
@@ -85,7 +84,7 @@ export default async function ProductApiDetail({
           </div>
         )}
         {(categoryId === 4 || categoryId === 6) && (
-          <div style={{ height: "400px" }}>
+          <div>
             <MapView place={parsedPlace} />
           </div>
         )}

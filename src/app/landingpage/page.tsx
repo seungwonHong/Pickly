@@ -38,27 +38,31 @@ export default async function LandingPage() {
 
   return (
     <>
-      <main className="relative overflow-x-hidden flex flex-col lg:px-[160px] px-[24px]">
-        <img
+      <main>
+        <div className="overflow-y-auto flex flex-col">
+          {/* <img
           src="/signup_bg.jpg"
           alt="bgImage"
-          className="absolute inset-0 w-full z-0 lg:h-[2000px] md:h-[1204px] h-[806px]"
-        />
-        <div className="z-10">
-          <LandingPageTop />
-          <HomePagePreview />
+          className="absolute inset-0 w-full z-0 2xl:h-[1800px] lg:h-[1500px] md:h-[1204px] h-[1000px] pointer-events-none object-cover"
+        /> */}
+          <div className="bg-[url('/signup_bg.jpg')] bg-cover bg-center bg-no-repeat 2xl:h-[1800px] lg:h-[1500px] md:h-[1204px] h-[1000px] 2xl:px-[160px] lg:px-[100px] md:px-[50px] px-[24px]">
+            <LandingPageTop />
+            <HomePagePreview />
+          </div>
         </div>
 
         <MovingCategories />
 
-        <CategoryGrid />
+        <div className="2xl:px-[160px] lg:px-[100px] md:px-[50px] px-[24px]">
+          <CategoryGrid />
 
-        <AddProductModalIntro />
-        <AddReviewModalIntro />
+          <AddProductModalIntro />
+          <AddReviewModalIntro />
 
-        <CompareProducts />
-        <SometimesWin />
-        <SometimesTie />
+          <CompareProducts />
+          <SometimesWin />
+          <SometimesTie />
+        </div>
       </main>
 
       <Footer />

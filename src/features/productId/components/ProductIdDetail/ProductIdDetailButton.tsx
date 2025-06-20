@@ -51,8 +51,20 @@ export default function ProductIdDetailButton({
   product: GetProductIdDetail;
 }) {
   // useGetUser 훅을 사용하여 현재 사용자 정보를 가져옴
+
   const { user, compareList, addToCompare } = useGetUser();
-  const isOwner = user?.id === product.writerId;
+  const [isOwner, setIsOwner] = useState(false);
+
+  useEffect(() => {
+    const checkOwner = async () => {
+      const { isLoggedIn } = await checkLoginStatus();
+      if (!isLoggedIn) return;
+      if (user?.id === product.writerId) {
+        setIsOwner(true);
+      }
+    };
+    checkOwner();
+  }, [user, product.writerId]);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -153,6 +165,7 @@ export default function ProductIdDetailButton({
     setClickedValue("수정하기");
     openModal("editProduct");
   };
+
   useEffect(() => {
     const modalFromUrl = searchParams.get("modal") as ModalTypes | null;
     if (modalFromUrl !== modal) {

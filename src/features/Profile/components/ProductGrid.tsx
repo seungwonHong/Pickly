@@ -18,7 +18,7 @@ export default function ProductGrid({ userId, type, initialProducts }: Props) {
   });
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 w-full place-items-center ">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:w-full lg:max-w-[1000px] w-full md:max-w-[620px] sm:max-w-[620px] ">
       {products.length > 0 ? (
         products.map((product) => (
           <ProductCard

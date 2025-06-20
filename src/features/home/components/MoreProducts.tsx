@@ -64,7 +64,7 @@ const MoreProducts = ({
 
   return (
     <>
-      <div className="grid lg:grid-cols-3 grid-cols-2 lg:gap-[20px] gap-[15px] lg:mt-[20px] mt-[15px]">
+      <div className="grid 2xl:grid-cols-3 grid-cols-2 lg:gap-[20px] gap-[15px] lg:mt-[20px] mt-[15px]">
         {data?.pages
           .flatMap((page) => page.list)
           .map((product) => (

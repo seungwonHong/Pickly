@@ -13,12 +13,12 @@ const AddProductModalIntro = () => {
         className="flex flex-col md:hidden justify-center mr-auto"
       >
         <div className="mr-auto">
-          <h1 className="w-[65px] text-[16px] font-extrabold text-white">
+          <h1 className="w-[65px] text-[32px] font-extrabold text-white">
             Add Your Product
           </h1>
         </div>
-        <div className="w-[102px] mr-auto mt-[8px] leading-none">
-          <span className="text-[6px] font-medium text-[#808080]">
+        <div className="w-[200px] mr-auto mt-[8px] leading-none">
+          <span className="text-[12px] font-medium text-[#808080]">
             Fill out the form and share your own product to the community
           </span>
         </div>
