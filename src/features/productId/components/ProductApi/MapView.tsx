@@ -28,7 +28,12 @@ export default function MapByPlace({ place }: { place: string }) {
   }, [isLoaded, place]);
 
   if (!isLoaded) return <div>Loading...</div>;
-  if (!position) return <div>위치 찾는 중...</div>;
+  if (!position)
+    return (
+      <div className="w-full h-[50px] text-amber-50 flex items-center justify-center">
+        해당 위치를 찾을 수 없습니다.
+      </div>
+    );
 
   return (
     <GoogleMap
