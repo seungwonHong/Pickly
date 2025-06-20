@@ -10,6 +10,7 @@ interface Props {
   description: string;
   color: string;
   url: string;
+  className?: string;
 }
 
 //lg:w-[517px] lg:h-[517px] md:w-[221px] md:h-[221px] w-[98px] h-[98px]
@@ -20,7 +21,7 @@ interface Props {
 
 // 버튼 lg:w-[48px] lg:h-[48px] md:w-[24px] md:h-[24px] w-[12px] h-[12px]
 
-const CategoryCard = ({ category, img, description, color, url }: Props) => {
+const CategoryCard = ({ category, img, description, color, url, className }: Props) => {
   return (
     <Link href={url}>
       <motion.div
@@ -29,7 +30,7 @@ const CategoryCard = ({ category, img, description, color, url }: Props) => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className={`flex flex-col w-full h-full aspect-square rounded-lg bg-cover cursor-pointer overflow-hidden`}
+        className={`flex flex-col w-full h-full aspect-square rounded-lg bg-cover cursor-pointer overflow-hidden ${className}`}
         style={{ backgroundImage: `url(${img})`, transformOrigin: "bottom" }}
       >
         <div
@@ -56,7 +57,7 @@ const CategoryCard = ({ category, img, description, color, url }: Props) => {
             className={`absolute flex items-center justify-center w-[10%] aspect-square lg:right-[17px] lg:bottom-[17px] md:right-[5px] md:bottom-[5px] right-[3px] bottom-[3px] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300 ease-in-out`}
           >
             <FaArrowRight
-              className="lg:w-[14px] lg:h-[14px] md:w-[8px] md:h-[8px] w-[4px] h-[4px]"
+              className="lg:w-[14px] lg:h-[14px] w-[8px] h-[8px]"
               color="#000000"
             />
           </button>
