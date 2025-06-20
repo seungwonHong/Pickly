@@ -59,6 +59,15 @@ class ProductService {
       }
     );
   }
+
+  deleteProductsId(productId: number, accessToken: string) {
+    return axios.delete(`${BaseURL}/products/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }
+
   getProductsIdReviews(
     productId: number,
     order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined,
