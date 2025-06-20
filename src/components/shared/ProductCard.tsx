@@ -32,7 +32,7 @@ const ProductCard = ({ product }: Props) => {
           <img
             src={product.image}
             alt="productImage"
-            className="w-[80%] h-[70%] mb-2 object-contain"
+            className="w-[80%] md:h-[70%] h-[60%] mb-2 object-contain"
           />
           <CategoryChip
             category={indexCategoryMap[product.categoryId]}
