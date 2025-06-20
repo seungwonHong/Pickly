@@ -13,12 +13,12 @@ const AddReviewModalIntro = () => {
         className="flex flex-col md:mr-auto md:ml-0 ml-auto justify-center md:text-left text-right"
       >
         <div>
-          <h1 className="lg:w-[257px] md:w-[130px] w-[56px] md:ml-0 ml-auto lg:text-[64px] md:text-[32px] text-[16px] font-extrabold text-white">
+          <h1 className="lg:w-[257px] w-[130px] md:ml-0 ml-auto lg:text-[64px] text-[32px] font-extrabold text-white">
             Add Your Review
           </h1>
         </div>
-        <div className="lg:w-[415px] md:w-[208px] w-[103px] md:ml-0 lg:mt-[37px] md:mt-[11px] leading-none">
-          <span className="lg:text-[24px] md:text-[12px] text-[6px] font-medium text-[#808080]">
+        <div className="lg:w-[415px] w-[208px] md:ml-0 lg:mt-[37px] md:mt-[11px] leading-none">
+          <span className="lg:text-[24px] text-[12px] font-medium text-[#808080]">
             Share your thoughts and help others discover great products.
           </span>
         </div>

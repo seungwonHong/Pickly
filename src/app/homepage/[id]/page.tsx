@@ -70,24 +70,26 @@ export default async function CategoryPage({
   console.log(products);
 
   return (
-    <div>
+    <div className="overflow-x-visible">
       <header className="fixed top-0 left-0 right-0 z-40">
         <Header />
       </header>
 
-      <div className="relative flex flex-row lg:justify-center 2xl:px-[180px] md:px-0 px-[20px] mt-[100px]">
-        <div className="fixed 2xl:left-[180px] md:left-0 md:flex hidden">
+      <div className="relative flex flex-row lg:justify-center 2xl:px-[150px] md:px-0 px-[20px] mt-[100px]">
+        <div className="fixed 2xl:left-[150px] lg:left-[40px] md:left-0 md:flex hidden">
           <Category categoryId={categoryId} />
         </div>
 
         {categoryNumber === 0 ? (
-          <div className="lg:flex flex-col mt-[60px] hidden lg:mb-[50px] mb-[30px] lg:w-[950px] md:w-[510px] w-[340px]">
-            <SearchPage searchParams={sp} />
+          <div className="2xl:flex flex-col justify-center items-center mt-[60px] hidden lg:mb-[50px] mb-[30px] lg:w-[950px] md:w-[510px] w-[340px]">
+            <div className="lg:w-[50vw] md:w-[60vw] w-[90vw] max-w-[1000px]">
+              <SearchPage searchParams={sp} />
+            </div>
           </div>
         ) : (
-          <div className="lg:flex flex-col mt-[60px] hidden lg:mb-[50px] mb-[30px] lg:w-[950px] md:w-[510px] w-[340px]">
+          <div className="2xl:flex flex-col mt-[60px] hidden lg:mb-[50px] mb-[30px] lg:max-w-[950px] md:max-w-[510px] max-w-[340px] lg:w-[50vw] md:w-[60vw] w-[90vw]">
             <div className="flex flex-row items-center justify-between">
-              <span className="lg:text-[24px] text-[#F1F1F5] font-semibold">
+              <span className="lg:text-[24px] text-[#F1F1F5] font-semibold ">
                 {decodeParams}의 모든 상품
               </span>
               <SortComponent />
@@ -105,17 +107,19 @@ export default async function CategoryPage({
         )}
 
         <div className="flex flex-col overflow-x-hidden lg:ml-0 md:ml-[180px]">
-          <div className="lg:fixed 2xl:right-[180px]">
+          <div className="lg:fixed 2xl:right-[150px] lg:right-[40px] md:right-0">
             <ReviewerRanking />
           </div>
 
           {/* 데스크톱 사이즈가 아닌 경우 */}
           {categoryNumber === 0 ? (
-            <div className="lg:hidden flex flex-col mt-[60px] md:ml-[25px] md:w-[510px] w-full max-w-[335px] lg:mb-[50px] mb-[30px]">
-              <SearchPage searchParams={sp} />
+            <div className="2xl:hidden flex flex-col mt-[60px] md:ml-[25px] w-full lg:mb-[50px] mb-[30px] ">
+              <div className="lg:w-[50vw] md:w-[60vw] w-[90vw] max-w-[620px]">
+                <SearchPage searchParams={sp} />
+              </div>
             </div>
           ) : (
-            <div className="lg:hidden flex flex-col mt-[60px] md:ml-[25px] md:w-[510px] w-[335px] lg:mb-[50px] mb-[30px]">
+            <div className="2xl:hidden flex flex-col mt-[60px] md:ml-[25px] lg:mb-[50px] mb-[30px] lg:w-[50vw] md:w-[60vw] w-[90vw] max-w-[620px]">
               <div className="flex md:flex-row flex-col items-center justify-between">
                 <span className="lg:text-[24px] text-[#F1F1F5] font-semibold mr-auto">
                   {decodeParams}의 모든 상품

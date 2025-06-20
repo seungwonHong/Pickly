@@ -44,12 +44,15 @@ const AddEditProductModal = ({
     image,
     setCategoryId,
     setClickedValue,
+    isModalOpen,
+    setIsModalOpen,
   } = useModalStore();
 
   const handleClose = () => {
-    const params = new URLSearchParams(window.location.search);
-    params.delete("modal");
-    router.replace(`?${params.toString()}`, { scroll: false });
+    // const params = new URLSearchParams(window.location.search);
+    // params.delete("modal");
+    // router.replace(`?${params.toString()}`, { scroll: false });
+    setIsModalOpen(false);
     setClickedValue("카테고리 선택");
     setImage(null);
     setName(null);
@@ -85,19 +88,23 @@ const AddEditProductModal = ({
   }, []);
 
   return (
-    <div className="relative flex w-full h-full justify-center items-center bg-[#000000B2]">
-      <div className="lg:mt-0 lg:mb-0 mb-[150px] mt-[150px] flex flex-col justify-center items-center overflow-y-auto lg:max-w-[620px] lg:max-h-[614px] md:max-w-[590px] md:max-h-[569px] max-w-[335px] max-h-[578px] w-[80vw] h-[80vh] bg-[#1C1C22] rounded-2xl md:p-[40px] p-[20px]">
-        <div className="flex flex-col">
+    <div
+      className={`${
+        isModalOpen || "hidden"
+      } fixed z-50 top-0 left-0 w-full h-full flex justify-center items-center bg-[#000000B2]`}
+    >
+      <div className="flex flex-col justify-center items-center overflow-y-auto lg:max-w-[620px] lg:max-h-[614px] md:max-w-[590px] md:max-h-[569px] max-w-[335px] h-[578px] w-[80vw] md:p-[40px] p-[20px] bg-[#1C1C22] rounded-2xl">
+        <div className="relative flex flex-col w-full h-full">
           <IoClose
             color="#F1F1F5"
             className="ml-auto cursor-pointer lg:w-[40px] lg:h-[40px] md:w-[36px] md:h-[36px] w-[24px] h-[24px]"
             onClick={handleClose}
           />
-          <span className="lg:text-[24px] text-[20px] text-[#F1F1F5] font-semibold md:ml-[20px]">
+          <span className="lg:text-[24px] text-[20px] text-[#F1F1F5] font-semibold">
             {purpose}
           </span>
 
-          <div className="flex md:flex-row flex-col md:mt-[40px] mt-[20px] md:ml-[20px]">
+          <div className="flex md:flex-row flex-col md:mt-[40px] mt-[20px]">
             <div className="md:hidden flex">
               <label
                 htmlFor="fileInput"
@@ -139,7 +146,7 @@ const AddEditProductModal = ({
             </div>
             <div className="flex flex-col lg:mr-[20px] md:mr-[15px]">
               <InputField
-                className="md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] md:mt-0 mt-[10px] mb-0"
+                className="md:w-[360px] lg:h-[70px] md:h-[60px] w-full h-[55px] md:mt-0 mt-[10px] mb-0"
                 placeholder="상품명 (상품 등록 여부를 확인해 주세요)"
                 type="text"
                 value={name ?? ""}
@@ -194,11 +201,11 @@ const AddEditProductModal = ({
           <Textbox
             maxLength={500}
             placeholder="상품 설명을 입력해 주세요"
-            className="lg:w-[540px] lg:h-[160px] md:w-[510px] md:h-[160px] w-[295px] h-[120px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px] md:ml-[20px]"
+            className="w-full lg:h-[160px] md:h-[160px] h-[120px] rounded-lg bg-[#252530] border-[1px] border-[#353542] lg:mt-[20px] md:mt-[15px] mt-[10px]"
           />
 
           <BaseButton
-            className="w-full lg:h-[65px] md:h-[55px] md:mt-[40px] mt-[20px] md:ml-[20px] lg:text-[18px] text-[16px] font-semibold rounded-lg"
+            className="w-full lg:h-[65px] md:h-[55px] md:mt-[40px] mt-[20px] lg:text-[18px] text-[16px] font-semibold rounded-lg"
             onClick={() => {
               modalType === "addProduct"
                 ? handleSubmit({
