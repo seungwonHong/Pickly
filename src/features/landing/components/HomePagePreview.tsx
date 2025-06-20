@@ -6,8 +6,8 @@ type Props = {};
 const HomePagePreview = (props: Props) => {
   return (
     <div className="flex flex-col lg:mt-[150px] md:mt-[120px] mt-[82px]">
-      <div className="lg:w-[545px] md:w-[280px] w-[140px]">
-        <h1 className="text-white lg:text-[64px] md:text-[32px] text-[16px] font-extrabold">
+      <div className="lg:w-[545px] w-[280px]">
+        <h1 className="text-white lg:text-[64px] text-[32px] font-extrabold">
           Meet various Kind of products
         </h1>
       </div>

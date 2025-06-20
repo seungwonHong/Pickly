@@ -22,11 +22,21 @@ const ReviewerTab = ({ rank, rankNum }: Props) => {
     bgColor = "bg-[#9FA6B21A]";
   }
 
+  console.log(`rank Image: ${rank.image}`);
+
   return (
-    <div className="flex flex-row lg:mb-[30px] lg:mr-0 md:mr-[20px] mr-[15px] shrink-0">
+    <div className="flex flex-row lg:mb-[30px] shrink-0 lg:w-full">
       <Link href={`/users/${rank.id}`}>
         <img
-          src={rank.image || "/defaultProfileImage.jpeg"}
+          src={
+            rank.image &&
+            rank.image.startsWith("http") &&
+            !["undefined", "null", "none"].some((s) =>
+              rank.image.toLowerCase().includes(s)
+            )
+              ? rank.image
+              : "/defaultProfileImage.jpeg"
+          }
           alt="profileImage"
           className="lg:w-[42px] lg:h-[42px] w-[36px] h-[36px] rounded-full"
         />

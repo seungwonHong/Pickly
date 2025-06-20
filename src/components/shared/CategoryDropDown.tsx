@@ -37,7 +37,7 @@ const CategoryDropDown = (props: Props) => {
 
   return (
     <div
-      className={`relative flex flex-row items-center lg:mt-[20px] md:mt-[15px] mt-[10px] md:w-[360px] lg:h-[70px] md:h-[60px] w-[295px] h-[55px] bg-[#252530] border-[1px] ${
+      className={`relative flex flex-row items-center lg:mt-[20px] md:mt-[15px] mt-[10px] md:w-[360px] lg:h-[70px] md:h-[60px] w-full h-[55px] bg-[#252530] border-[1px] ${
         isClicked ? "border-[#5363FF]" : "border-[#353542]"
       } lg:px-[23px] lg:py-[20px] md:px-[20px] md:py-[21px] px-[20px] py-[18px] lg:text-[16px] text-[14px] text-[#6E6E82] font-normal rounded-lg cursor-pointer`}
       onClick={() => setIsClicked(!isClicked)}
@@ -52,7 +52,7 @@ const CategoryDropDown = (props: Props) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-999 top-[90px] left-0 flex flex-col md:w-[360px] w-[295px] rounded-lg bg-[#252530] border-[1px] border-[#353542] p-[10px] text-[14px] font-normal text-[#6E6E82] "
+            className="absolute z-50 top-[90px] left-0 flex flex-col w-full rounded-lg bg-[#252530] border-[1px] border-[#353542] p-[10px] text-[14px] font-normal text-[#6E6E82] "
           >
             <div
               className="hover:bg-[#353542] hover:text-[#F1F1F5] px-[20px] py-[6px] rounded-lg cursor-pointer"

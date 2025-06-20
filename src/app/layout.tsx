@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     description:
       "Discover and compare curated products trusted by real users. Experience the next generation of product discovery.",
     siteName: "Pickly",
-    url: "https://pickly.vercel.app",
+    url: "https://pickly-gamma.vercel.app/",
     type: "website",
     images: [
       {
-        url: "https://pickly.vercel.app/images/opengraph.png",
+        url: "https://pickly-gamma.vercel.app/images/opengraph.png",
         width: 1200,
         height: 630,
         alt: "Pickly image",

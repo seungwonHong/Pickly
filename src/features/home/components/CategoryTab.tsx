@@ -16,7 +16,7 @@ const CategoryTab = ({ placeholder, selected, icon }: Props) => {
   return (
     <Link href={`/homepage/${encodeURIComponent(placeholder)}?sort=recent`}>
       <div
-        className={`flex flex-row items-center lg:h-[50px] lg:px-[20px] lg:py-[15px] h-[45px] px-[20px] py-[14px] rounded-lg lg:text-[16px] text-[14px] text-[${textColor}] font-medium bg-[${backGroundColor}] cursor-pointer ${
+        className={`flex flex-row items-center w-full lg:h-[50px] lg:px-[20px] lg:py-[15px] h-[45px] px-[20px] py-[14px] rounded-lg lg:text-[16px] text-[14px] text-[${textColor}] font-medium bg-[${backGroundColor}] cursor-pointer ${
           selected ? `hover:[#252530]` : `hover:bg-[#2e2e36]`
         }`}
       >

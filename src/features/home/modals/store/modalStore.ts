@@ -13,6 +13,8 @@ interface ModalStore {
   setDescription: (value: string | undefined) => void;
   name: string | null;
   setName: (value: string | null) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: (value: boolean) => void;
 }
 
 const useModalStore = create<ModalStore>((set) => ({
@@ -28,6 +30,8 @@ const useModalStore = create<ModalStore>((set) => ({
   setDescription: (value) => set({ description: value }),
   name: null,
   setName: (value) => set({ name: value }),
+  isModalOpen: false,
+  setIsModalOpen: (value) => set({ isModalOpen: value }),
 }));
 
 export default useModalStore;
