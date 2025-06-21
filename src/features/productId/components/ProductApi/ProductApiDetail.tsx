@@ -1,14 +1,15 @@
 import dynamic from "next/dynamic";
 
-import { productService } from "../../api";
 import {
   fetchArtistAlbum,
   fetchGoogleSearch,
   fetchMovieSearch,
 } from "../../hooks/fetchOpenAi";
 import LazyLoadSection from "../ProductIdDetail/LazyLoadSection";
+import { GetProductIdDetail } from "@/features/productId/types";
+import { getMusicvideo } from "../../hooks/useGetMusicvideo";
 
-const ProductApiClient = dynamic(() => import("./ProductApiClient"));
+import ProductApiClient from "./ProductApiClient";
 const ProductSpotifyClient = dynamic(() => import("./ProductSpotifyClient"));
 const MapView = dynamic(() => import("./MapView"));
 
@@ -29,12 +30,10 @@ function parseJsonSafe(jsonStr: string) {
   }
 }
 export default async function ProductApiDetail({
-  productId,
+  product,
 }: {
-  productId: number;
+  product: GetProductIdDetail;
 }) {
-  const response = await productService.getProductsId(productId);
-  const product = response.data;
   if (!product) return <div>상품 정보가 없습니다.</div>;
 
   const combinedText = `${product.name}\n${product.description}`;
@@ -65,6 +64,9 @@ export default async function ProductApiDetail({
   const movieInfoObj = parseJsonSafe(movieInfoRaw);
   const parsedMovie = movieInfoObj?.trailer ?? "";
   const categoryId = product.category?.id ?? 0;
+
+  const videos = await getMusicvideo(searchQuery);
+  const videoTrailer = await getMusicvideo(parsedMovie);
   return (
     <>
       <LazyLoadSection>
@@ -74,6 +76,7 @@ export default async function ProductApiDetail({
               <ProductApiClient
                 searchQuery={searchQuery}
                 category={product.category.id}
+                initialVideos={videos}
               />
               <ProductSpotifyClient
                 artistName={artistName}
@@ -92,6 +95,7 @@ export default async function ProductApiDetail({
           <ProductApiClient
             searchQuery={parsedMovie}
             category={product.category.id}
+            initialVideos={videoTrailer}
           />
         )}
       </LazyLoadSection>

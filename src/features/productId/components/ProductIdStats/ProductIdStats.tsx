@@ -1,11 +1,11 @@
 import ProductIdStatsClient from "./ProductIdStatsClient";
-import { productService } from "../../api";
+
+import { GetProductIdDetail } from "@/features/productId/types";
 
 export default async function ProductIdStats({
-  productId,
+  product,
 }: {
-  productId: number;
+  product: GetProductIdDetail;
 }) {
-  const { data: product } = await productService.getProductsId(productId);
   return <ProductIdStatsClient product={product} />;
 }

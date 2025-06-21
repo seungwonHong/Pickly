@@ -1,15 +1,4 @@
-"use client";
-
-import dynamic from "next/dynamic";
-
-const ProductYouTubeSection = dynamic(() => import("./ProductYouTubeSection"), {
-  ssr: false,
-  loading: () => (
-    <div className="animate-pulse">
-      <div className="lg:w-[620px] md:w-[460px] lg:h-[350px] md:h-[260px] w-[330px] h-[190px] bg-gray-300 rounded-xl" />
-    </div>
-  ),
-});
+import ProductYouTubeSection from "./ProductYouTubeSection";
 
 export default function ProductYouTubeWrapper({
   query,
