@@ -1,27 +1,33 @@
+export const dynamic = "force-dynamic";
+
 import Header from "@/components/shared/Header";
 
-const PrivacyPage = () => {
-
+export default async function PrivacyPage() {
   return (
     <>
-      <Header />
-      <section className="
-      lg:w-[940px] mx-auto 
-      lg:mb-[120px] 
-      lg:my-[160px] 
-      md:w-[684px] 
-      w-[335px] 
-      md:mt-[140px] 
-      md:mb-[147px] 
-      mt-[130px] 
-      mb-[200px] 
-      flex flex-col 
-      gap-[30px]
-      text-[var(--color-white)]
-      ">
+        <Header />
+      <section
+        className="
+        lg:w-[940px] mx-auto 
+        lg:mb-[120px] 
+        lg:my-[160px] 
+        md:w-[684px] 
+        w-[335px] 
+        md:mt-[140px] 
+        md:mb-[147px] 
+        mt-[130px] 
+        mb-[200px] 
+        flex flex-col 
+        gap-[30px]
+        text-[var(--color-white)]
+        "
+      >
         <h1>개인정보처리방침</h1>
         <div>
-          <p>운영자는 이용자의 개인정보를 중요시하며, 관련 법령을 준수하여 개인정보를 보호하고 있습니다.</p>
+          <p>
+            운영자는 이용자의 개인정보를 중요시하며, 관련 법령을 준수하여
+            개인정보를 보호하고 있습니다.
+          </p>
         </div>
 
         <div>
@@ -41,12 +47,17 @@ const PrivacyPage = () => {
 
         <div>
           <h2>3. 개인정보의 보유 및 이용기간</h2>
-          <p>회원 탈퇴 시 또는 개인정보 수집 및 이용 목적이 달성된 후 지체 없이 파기합니다.</p>
+          <p>
+            회원 탈퇴 시 또는 개인정보 수집 및 이용 목적이 달성된 후 지체 없이
+            파기합니다.
+          </p>
         </div>
 
         <div>
           <h2>4. 개인정보의 제3자 제공</h2>
-          <p>회사는 이용자의 동의 없이 개인정보를 제3자에게 제공하지 않습니다.</p>
+          <p>
+            회사는 이용자의 동의 없이 개인정보를 제3자에게 제공하지 않습니다.
+          </p>
         </div>
 
         <div>
@@ -59,6 +70,4 @@ const PrivacyPage = () => {
       </section>
     </>
   );
-};
-
-export default PrivacyPage;
+}

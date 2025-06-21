@@ -26,7 +26,7 @@ const ProductCard = ({ product }: Props) => {
     <Link href={`/product/${product.id}`}>
       <div className="relative transition-transform duration-300 hover:scale-105 cursor-pointer flex flex-col items-center p-[10px] min-w-[160px] min-h-[183px] max-w-[300px] w-full h-full rounded-xl bg-[#252530] border-[1px] border-[#353542] aspect-square overflow-hidden">
         <div
-          className="w-[90%] h-[90%] flex flex-col items-center justify-between"
+          className="w-[90%] h-[90%] flex-grow flex flex-col items-center justify-between"
           style={{ fontSize: "clamp(10px, 2vw, 18px)" }}
         >
           <img

@@ -5,7 +5,7 @@ import CategoryCard from "./CategoryCard";
 
 const CategoryGrid = () => {
   return (
-    <div className="flex flex-col mx-auto md:mt-[100px] mt-[36px] w-[80vw] overflow-x-hidden ">
+    <div className="flex flex-col mx-auto overflow-y-hidden md:mt-[100px] mt-[36px] w-[80vw] overflow-x-hidden ">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
