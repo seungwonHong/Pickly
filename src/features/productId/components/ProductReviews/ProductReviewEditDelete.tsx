@@ -1,11 +1,10 @@
 "use client";
 import { useState } from "react";
-import dynamic from "next/dynamic";
 
 import { GetProductIdReviewsDetail } from "../../types";
 
-const ProductReviewEdit = dynamic(() => import("./ProductReviewEdit"));
-const ProductReviewDelete = dynamic(() => import("./ProductReviewDelete"));
+import ProductReviewEdit from "./ProductReviewEdit";
+import ProductReviewDelete from "./ProductReviewDelete";
 
 interface ProductReviewEditDeleteProps {
   reviewId: number;
@@ -38,6 +37,7 @@ export default function ProductReviewEditDelete({
           setOpen={setEditOpen}
           reviewId={reviewId}
           initialReviewData={initialReviewData}
+          editRating={initialReviewData.rating}
         />
       )}
       {deleteOpen && (
@@ -45,6 +45,7 @@ export default function ProductReviewEditDelete({
           open={deleteOpen}
           setOpen={setDeleteOpen}
           reviewId={reviewId}
+          deletedReviewRating={initialReviewData.rating}
         />
       )}
     </div>

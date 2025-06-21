@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 import { checkLoginStatus } from "../../../hooks/checkLogin";
 import BaseButton from "@/components/shared/BaseButton";
 
+import { useProductStatsStore } from "@/features/productId/libs/useProductStatsStore";
+import { GetProductIdReviews, GetProductIdReviewsDetail } from "../../../types";
 import { useGetProductId } from "../../../hooks/useGetProductId";
 import { reviewService } from "../../../api";
 
@@ -38,9 +40,15 @@ export default function ProductReviewModal({
   open,
   setOpen,
 }: ProductReviewModalProps) {
+  const setReviewCount = useProductStatsStore((state) => state.setReviewCount);
+  const currentReviewCount = useProductStatsStore((state) => state.reviewCount);
+
+  const setRating = useProductStatsStore((state) => state.setRating);
+  const rating = useProductStatsStore((state) => state.rating);
+
   const queryClient = useQueryClient();
   const [reviewText, setReviewText] = useState("");
-  const [rating, setRating] = useState<number>(0);
+
   const [images, setImages] = useState<string[]>([]);
   // 상품 ID를 가져오기 위한 커스텀 훅 사용
   const { product } = useGetProductId();
@@ -55,15 +63,59 @@ export default function ProductReviewModal({
         images: images,
         accessToken: accessToken,
       }),
-    onSuccess: () => {
-      toast.success("리뷰가 등록되었습니다!");
-      setOpen(false);
-      queryClient.invalidateQueries({
-        queryKey: ["reviews", product.id, "recent"],
+    onSuccess: (newReviewResponse) => {
+      const newReview: GetProductIdReviewsDetail = newReviewResponse.data;
+
+      queryClient.setQueryData<{
+        pages: GetProductIdReviews[];
+        pageParams: unknown[];
+      }>(["reviews", product.id, "recent"], (oldData) => {
+        if (!oldData) {
+          return {
+            pages: [
+              {
+                list: [newReview],
+                nextCursor: null,
+              },
+            ],
+            pageParams: [undefined],
+          };
+        }
+
+        const newPages = oldData.pages.map((page, index) => {
+          if (index === 0) {
+            return {
+              ...page,
+              list: [newReview, ...page.list],
+            };
+          }
+          return page;
+        });
+
+        return {
+          ...oldData,
+          pages: newPages,
+        };
       });
+
+      // 캐시 업데이트 후 실제 데이터 찍기
+      queryClient.getQueryData(["reviews", product.id, "recent"]);
+
+      setReviewCount(currentReviewCount + 1);
+      const newAverageRating =
+        (product.rating * currentReviewCount + newReview.rating) /
+        (currentReviewCount + 1);
+
+      setRating(newAverageRating);
+
+      toast.success("리뷰가 등록되었습니다!");
+      setReviewText("");
+      setOpen(false);
     },
-    onError: () => {
-      toast.error("별점과 내용을 입력해주세요.");
+
+    onError: (error) => {
+      console.log("onError:", error);
+      toast.error("별점과 내용(10자 이상)을 입력해주세요.");
     },
   });
   // 리뷰 작성 버튼 클릭 시 호출되는 함수

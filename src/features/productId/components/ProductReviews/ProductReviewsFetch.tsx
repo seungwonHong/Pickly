@@ -29,10 +29,7 @@ export default function ProductReviewsFetch({
   ];
   const [selectedOption, setSelectedOption] = useState<
     "recent" | "ratingDesc" | "ratingAsc" | "likeCount"
-  >("recent");
-  const [dataForSelectedOrder, setDataForSelectedOrder] = useState<
-    GetProductIdReviews | undefined
-  >(initialOrder === selectedOption ? initialData : undefined);
+  >(initialOrder ?? "recent");
 
   const onSortChange = (value: string) => {
     const newSort = value as
@@ -41,7 +38,6 @@ export default function ProductReviewsFetch({
       | "ratingAsc"
       | "likeCount";
     setSelectedOption(newSort);
-    setDataForSelectedOrder(undefined);
   };
   return (
     <div>
@@ -55,20 +51,15 @@ export default function ProductReviewsFetch({
         />
       </div>
       <div className="md:min-h-[500px] min-h-[200px]">
-        {initialData.list.length >= 1 && (
-          <ProductReviewsInfinite
-            initialData={dataForSelectedOrder}
-            productId={productId}
-            order={selectedOption}
-          />
-        )}
-        {initialData.list.length === 0 && (
-          <div className="text-[#f1f1f1] text-[16px] font-normal text-center md:pt-[200px] pt-[100px]">
-            <div className="w-full text-[#6E6E82] lg:text-[20px] md:text-[18px] text-[16px] font-medium">
-              첫 리뷰를 작성해보세요!
-            </div>
-          </div>
-        )}
+        <ProductReviewsInfinite
+          initialData={
+            selectedOption === (initialOrder ?? "recent")
+              ? initialData
+              : undefined
+          }
+          productId={productId}
+          order={selectedOption}
+        />
       </div>
     </div>
   );
