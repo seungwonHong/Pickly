@@ -1,11 +1,14 @@
 import ProductYouTubeSection from "./ProductYouTubeSection";
+import { YoutubeVideo } from "../../youtube-video";
 
 export default function ProductYouTubeWrapper({
-  query,
   category,
+  initialVideos,
 }: {
-  query: string;
   category: number;
+  initialVideos?: YoutubeVideo[];
 }) {
-  return <ProductYouTubeSection query={query} category={category} />;
+  return (
+    <ProductYouTubeSection category={category} initialVideos={initialVideos} />
+  );
 }
