@@ -28,6 +28,7 @@ const AddEditProductModal = ({
 }: Props) => {
   const [file, setFile] = useState<File | null>(null);
   const [addProduct, setAddProduct] = useState(false);
+  const [editProduct, setEditProduct] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
   const router = useRouter();
@@ -237,6 +238,7 @@ const AddEditProductModal = ({
                     image,
                     setFile,
                     router,
+                    setEditProduct,
                   });
             }}
           >
@@ -263,6 +265,17 @@ const AddEditProductModal = ({
             buttonText="확인"
             onButtonClick={() => {
               setAddProduct(false);
+            }}
+          />
+        )}
+        {editProduct && (
+          <ProductComparePlusModal
+            open={editProduct}
+            setOpen={setEditProduct}
+            message={message}
+            buttonText="확인"
+            onButtonClick={() => {
+              setEditProduct(false);
             }}
           />
         )}
