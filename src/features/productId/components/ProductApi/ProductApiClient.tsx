@@ -1,6 +1,6 @@
 import { getMusicvideo } from "@/features/productId/hooks/useGetMusicvideo";
 import ProductYouTubeSection from "./ProductYouTubeSection";
-import { YoutubeVideo } from "../../youtube-video";
+import { YoutubeVideo } from "@/features/productId/youtube-video";
 export default async function ProductApiClient({
   searchQuery,
   category,
