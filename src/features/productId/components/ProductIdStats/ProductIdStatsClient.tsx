@@ -13,21 +13,24 @@ export default function ProductStatsClient({
 }: {
   product: GetProductIdDetail;
 }) {
-  const {
-    setRating,
-    setReviewCount,
-    setFavoriteCount,
-    setIsFavorite,
-    rating,
-    reviewCount,
-    favoriteCount,
-  } = useProductStatsStore();
+  const rating = useProductStatsStore((state) => state.rating);
+  const reviewCount = useProductStatsStore((state) => state.reviewCount);
+  const favoriteCount = useProductStatsStore((state) => state.favoriteCount);
+
+  const setRating = useProductStatsStore((state) => state.setRating);
+  const setReviewCount = useProductStatsStore((state) => state.setReviewCount);
+  const setFavoriteCount = useProductStatsStore(
+    (state) => state.setFavoriteCount
+  );
+  const setIsFavorite = useProductStatsStore((state) => state.setIsFavorite);
 
   useEffect(() => {
-    setRating(product.rating);
-    setReviewCount(product.reviewCount);
-    setFavoriteCount(product.favoriteCount);
-    setIsFavorite?.(product.isFavorite);
+    if (rating === 0 && reviewCount === 0 && favoriteCount === 0) {
+      setRating(product.rating);
+      setReviewCount(product.reviewCount);
+      setFavoriteCount(product.favoriteCount);
+      setIsFavorite?.(product.isFavorite);
+    }
   }, [product]);
 
   const isLoading =
