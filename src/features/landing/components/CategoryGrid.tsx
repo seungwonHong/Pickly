@@ -22,7 +22,7 @@ const CategoryGrid = () => {
         </span>
       </motion.div>
 
-      <div className="grid grid-cols-3 lg:gap-[24px] gap-[16px] lg:mt-[102px] md:mt-[51px] mt-[27px] mx-auto w-full">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:gap-[24px] gap-[16px] lg:mt-[102px] md:mt-[51px] mt-[27px] mx-auto w-full">
         <CategoryCard
           category="Music"
           description="Discover the rhythm that moves you."
@@ -86,6 +86,14 @@ const CategoryGrid = () => {
           img="/images/clothesaccessories.png"
           color="#757AFF"
           url="/homepage/의류%2F악세서리?sort=recent"
+        />
+        <CategoryCard
+          category="App"
+          description="Handpicked apps for your daily life."
+          img="/images/app.jpg"
+          color="#3098E3"
+          url="/homepage/앱?sort=recent"
+          className="md:hidden"
         />
       </div>
     </div>

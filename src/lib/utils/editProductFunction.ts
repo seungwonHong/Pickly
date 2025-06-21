@@ -1,9 +1,11 @@
 import toast from "react-hot-toast";
 import postImage from "@/features/home/services/postImage";
 import { productService } from "@/features/productId/api";
+import type { useRouter } from "next/navigation";
 
 interface EditProps {
   handleClose: () => void;
+
   productId: number;
   file?: File | null;
   name: string | null;
@@ -15,12 +17,13 @@ interface EditProps {
   setCategoryId: (id: number | null) => void;
   setClickedValue: (val: string) => void;
   setFile?: React.Dispatch<React.SetStateAction<File | null>>;
-
+  router: ReturnType<typeof useRouter>;
   image: string | null;
 }
 
 const editProductFunction = async ({
   handleClose,
+
   productId,
   file,
   name,
@@ -32,7 +35,7 @@ const editProductFunction = async ({
   setCategoryId,
   setClickedValue,
   setFile,
-
+  router,
   image,
 }: EditProps) => {
   if (
@@ -89,7 +92,6 @@ const editProductFunction = async ({
   } else if (image?.startsWith("blob:")) {
     imageUrl = "";
   }
-  console.log("입력된 name:", JSON.stringify(name));
 
   const trimmedName = name?.trim() || "";
 
@@ -102,7 +104,7 @@ const editProductFunction = async ({
     productId,
     name: trimmedName,
     description,
-    categoryId: categoryId ?? 0, // null/undefined 방어
+    categoryId: categoryId ?? 0,
     image: imageUrl || "",
     accessToken: accessToken.value,
   });
@@ -117,6 +119,7 @@ const editProductFunction = async ({
     setFile?.(null);
 
     handleClose();
+    router.refresh();
   } else {
     console.error("상품 수정 실패:", response);
     toast.error("상품 수정에 실패하였습니다.");

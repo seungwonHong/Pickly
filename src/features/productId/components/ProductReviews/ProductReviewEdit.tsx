@@ -3,26 +3,17 @@
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import dynamic from "next/dynamic";
 
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { GetProductIdReviewsDetail } from "../../types";
 import { useGetProductId } from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
 
-const ProductReviewStarModal = dynamic(
-  () => import("../modal/ProductReviewModal/ProductReviewStarModal")
-);
-const ProductIdGetModal = dynamic(
-  () => import("../modal/ProductReviewModal/ProductIdGetModal")
-);
-const ProductReviewInputModal = dynamic(
-  () => import("../modal/ProductReviewModal/ProductReviewInputModal")
-);
-const ReviewBaseModal = dynamic(
-  () => import("../modal/ProductReviewModal/ReviewBaseModal")
-);
-const BaseButton = dynamic(() => import("@/components/shared/BaseButton"));
+import BaseButton from "@/components/shared/BaseButton";
+import ProductReviewStarModal from "../modal/ProductReviewModal/ProductReviewStarModal";
+import ProductIdGetModal from "../modal/ProductReviewModal/ProductIdGetModal";
+import ProductReviewInputModal from "../modal/ProductReviewModal/ProductReviewInputModal";
+import ReviewBaseModal from "../modal/ProductReviewModal/ReviewBaseModal";
 
 type ReviewImage = string | { id: number };
 
@@ -31,7 +22,6 @@ interface ProductReviewModalProps {
   setOpen: (open: boolean) => void;
   reviewId: number;
   initialReviewData: GetProductIdReviewsDetail;
-  // sort?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined;
 }
 
 export default function ProductReviewEdit({
@@ -39,8 +29,7 @@ export default function ProductReviewEdit({
   setOpen,
   reviewId,
   initialReviewData,
-}: // sort = "recent",
-ProductReviewModalProps) {
+}: ProductReviewModalProps) {
   const queryClient = useQueryClient();
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [reviewText, setReviewText] = useState(initialReviewData.content);
