@@ -59,9 +59,9 @@ export default async function CategoryPage({
     앱: 10,
   };
 
-  console.log("현재 카테고리:", decodeParams);
+  // console.log("현재 카테고리:", decodeParams);
   const categoryNumber = categoryIndexMap[decodeParams] ?? undefined;
-  console.log("매핑된 번호:", categoryNumber);
+  // console.log("매핑된 번호:", categoryNumber);
 
   if (categoryNumber >= 1) {
     products = await getProductsFetch({
@@ -70,7 +70,7 @@ export default async function CategoryPage({
     });
   }
 
-  console.log(products);
+  // console.log(products);
 
   return (
     <div className="overflow-x-visible">
