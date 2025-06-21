@@ -83,7 +83,6 @@ const AddEditProductModal = ({
       setDescription(productinfo.description);
     }
   }, []);
-  // 한번 수정하면 setCategoryId가  다시 null로 초기화 돼서 수정이 안되는 문제 땜에 isModalOpen로 의존성 배열 추가했어요
   return (
     <div
       className={`${
