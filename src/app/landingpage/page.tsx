@@ -30,10 +30,7 @@ export default async function LandingPage() {
   const data = await res.json();
 
   if (data.success) {
-    console.log("로그인 된 상태여서 홈페이지로 이동합니다");
     redirect("/homepage");
-  } else {
-    console.log("랜딩페이지에서 로그인 돼있지 않음");
   }
 
   return (
