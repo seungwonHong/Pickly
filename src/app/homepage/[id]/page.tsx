@@ -13,9 +13,9 @@ import type { Metadata } from "next";
 export async function generateMetadata({
   params,
 }: {
-  params:Promise< { id: string }>;
-  }): Promise<Metadata> {
-    const { id } = await params;
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
   const decodeParams = decodeURIComponent(id);
 
   return {
@@ -35,7 +35,10 @@ export default async function CategoryPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ sort?: "recent" | "reviewCount" | "rating"; modal?: string }>;
+  searchParams: Promise<{
+    sort?: "recent" | "reviewCount" | "rating";
+    modal?: string;
+  }>;
 }) {
   const { id: categoryId } = await params;
   const sp = await searchParams;
@@ -145,15 +148,12 @@ export default async function CategoryPage({
           <FloatingButton />
         </div>
       </div>
-      {sp.modal?.toString() === "true" && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center">
-          <AddEditProductModal
-            buttonPlaceholder="추가하기"
-            modalType="addProduct"
-            purpose="상품 추가"
-          />
-        </div>
-      )}
+
+      <AddEditProductModal
+        buttonPlaceholder="추가하기"
+        modalType="addProduct"
+        purpose="상품 추가"
+      />
     </div>
   );
 }
