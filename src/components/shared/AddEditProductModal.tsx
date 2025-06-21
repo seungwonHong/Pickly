@@ -117,7 +117,7 @@ const AddEditProductModal = ({
                       src={"/icons/cancel.png"}
                       alt="cancel"
                       color="#1C1C22"
-                      className="absolute z-50 top-[5px] right-[5px] cursor-pointer"
+                      className="absolute z-50 top-[5px] right-[5px] cursor-pointer w-[26px] h-[26px] md:w-[28px] md:h-[28px]"
                       onClick={(e) => {
                         e.preventDefault();
                         setImage(null);
