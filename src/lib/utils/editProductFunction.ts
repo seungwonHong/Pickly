@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 interface EditProps {
   handleClose: () => void;
-  setEditProduct: React.Dispatch<React.SetStateAction<boolean>>;
+
   productId: number;
   file?: File | null;
   name: string | null;
@@ -23,7 +23,7 @@ interface EditProps {
 
 const editProductFunction = async ({
   handleClose,
-  setEditProduct,
+
   productId,
   file,
   name,
@@ -104,7 +104,7 @@ const editProductFunction = async ({
     productId,
     name: trimmedName,
     description,
-    categoryId: categoryId ?? 0, // null/undefined 방어
+    categoryId: categoryId ?? 0,
     image: imageUrl || "",
     accessToken: accessToken.value,
   });
@@ -121,7 +121,6 @@ const editProductFunction = async ({
     handleClose();
     router.refresh();
   } else {
-    setEditProduct(true);
     console.error("상품 수정 실패:", response);
     toast.error("상품 수정에 실패하였습니다.");
   }

@@ -238,7 +238,6 @@ const AddEditProductModal = ({
                     image,
                     setFile,
                     router,
-                    setEditProduct,
                   });
             }}
           >
@@ -265,17 +264,6 @@ const AddEditProductModal = ({
             buttonText="확인"
             onButtonClick={() => {
               setAddProduct(false);
-            }}
-          />
-        )}
-        {editProduct && (
-          <ProductComparePlusModal
-            open={editProduct}
-            setOpen={setEditProduct}
-            message={message}
-            buttonText="확인"
-            onButtonClick={() => {
-              setEditProduct(false);
             }}
           />
         )}
