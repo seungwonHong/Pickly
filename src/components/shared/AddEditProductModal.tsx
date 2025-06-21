@@ -28,7 +28,6 @@ const AddEditProductModal = ({
 }: Props) => {
   const [file, setFile] = useState<File | null>(null);
   const [addProduct, setAddProduct] = useState(false);
-  const [editProduct, setEditProduct] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
   const router = useRouter();

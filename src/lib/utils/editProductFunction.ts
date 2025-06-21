@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import postImage from "@/features/home/services/postImage";
 import { productService } from "@/features/productId/api";
-import { useRouter } from "next/navigation";
+import type { useRouter } from "next/navigation";
 
 interface EditProps {
   handleClose: () => void;
