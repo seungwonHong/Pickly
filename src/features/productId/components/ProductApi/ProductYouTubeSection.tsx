@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { YoutubeVideo } from "../../youtube-video";
-
+import LoadingSkeletonYoutube from "./LoadingSkeletonYoutube";
 interface InnerYouTubeSectionProps {
   category: number;
   initialVideos?: YoutubeVideo[];
@@ -14,7 +14,11 @@ export default function ProductYouTubeSection({
   const videos = initialVideos;
 
   if (!videos || videos.length === 0) {
-    return <div>영상이 없습니다.</div>;
+    return (
+      <div>
+        <LoadingSkeletonYoutube />
+      </div>
+    );
   }
 
   if (category === 1) {

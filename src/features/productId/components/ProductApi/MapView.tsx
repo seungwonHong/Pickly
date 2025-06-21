@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 
 export default function MapByPlace({ place }: { place: string }) {
+  if (!process.env.NEXT_PUBLIC_GOOGLE_API_KEY) {
+    throw new Error("NEXT_PUBLIC_GOOGLE_API_KEY is not defined");
+  }
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY!,
 
     libraries: ["places"],
   });
-  console.log(process.env.GOOGLE_API_KEY);
+
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(
     null
   );
