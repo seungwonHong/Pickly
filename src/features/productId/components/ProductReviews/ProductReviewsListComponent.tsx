@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
 import { formatDate } from "../../../../lib/utils/datetime";
@@ -12,7 +13,6 @@ import useGetUser from "../../hooks/useGetUser";
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 
 import defaultImageProfile from "../../../../../public/defaultProfileImage.jpeg";
-import Star from "../../../../../public/icons/star.svg";
 
 const ProductReviewEditDelete = dynamic(
   () => import("./ProductReviewEditDelete")
@@ -40,7 +40,7 @@ export default function ProductReviewsListComponent({
 
   const profileImageSrc =
     !review.user.image || review.user.image === "https://none"
-      ? defaultImageProfile.src
+      ? defaultImageProfile
       : review.user.image;
 
   return (
@@ -52,9 +52,8 @@ export default function ProductReviewsListComponent({
             height={43}
             src={profileImageSrc}
             alt="프로필 이미지"
-            className="rounded-full "
+            className="rounded-full w-[43px] h-[43px] object-cover"
             loading="lazy"
-            unoptimized
           />
         </Link>
         <div>
@@ -62,17 +61,24 @@ export default function ProductReviewsListComponent({
             {review.user.nickname}
           </div>
           <div className="flex gap-[2px]">
-            {Array.from({ length: review.rating }).map((_, idx) => (
-              <Image
-                key={idx}
-                src={Star}
-                alt="별점"
-                width={20}
-                height={20}
-                loading="lazy"
-                className="inline-block w-[12px] h-[12px]"
-              />
-            ))}
+            {[1, 2, 3, 4, 5].map((index) => {
+              const score = review.rating;
+              if (score >= index) {
+                return (
+                  <FaStar
+                    key={index}
+                    className="text-yellow-400 lg:w-4 lg:h-4 md:w-3 md:h-3"
+                  />
+                );
+              } else if (score >= index - 0.5) {
+                return (
+                  <FaStarHalfAlt
+                    key={index}
+                    className="text-yellow-400 lg:w-4 lg:h-4 md:w-3 md:h-3"
+                  />
+                );
+              }
+            })}
           </div>
         </div>
       </div>
@@ -85,13 +91,12 @@ export default function ProductReviewsListComponent({
         {review.reviewImages.length > 0 && (
           <div className="flex lg:gap-[20px] gap-[10px]">
             {review.reviewImages.map((image) => (
-              <Image
+              <img
                 key={image.id}
                 src={image.source}
                 alt="리뷰 이미지"
                 width={100}
                 height={100}
-                unoptimized
                 loading="lazy"
                 className="lg:w-[100px] md:w-[80px] w-[60px] lg:h-[100px] md:h-[80px] h-[60px] rounded-xl"
               />

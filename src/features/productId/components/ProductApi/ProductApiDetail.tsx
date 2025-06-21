@@ -14,6 +14,7 @@ import ProductApiClient from "./ProductApiClient";
 const ProductSpotifyClient = dynamic(() => import("./ProductSpotifyClient"));
 const MapView = dynamic(() => import("./MapView"));
 
+// JSON 파싱 함수
 function parseJsonSafe(jsonStr: string) {
   try {
     let str = jsonStr.trim();
@@ -38,47 +39,54 @@ export default async function ProductApiDetail({
   if (!product) return <div>상품 정보가 없습니다.</div>;
 
   const combinedText = `${product.name}\n${product.description}`;
-
-  // OpenAI API 호출 병렬처리
-  const albumInfoRaw = await fetchArtistAlbum(combinedText);
-  const placeInfoRaw = await fetchGoogleSearch(combinedText);
-  const movieInfoRaw = await fetchMovieSearch(combinedText);
-
-  // albumInfo 파싱
-  const albumInfoObj = parseJsonSafe(albumInfoRaw);
-  const artistName = albumInfoObj?.artist?.replace(/\(.*?\)/g, "").trim() ?? "";
-  const albumName = albumInfoObj?.album?.trim() ?? "";
-
-  // 검색 쿼리 설정
-  const searchQuery =
-    artistName.length > 0
-      ? `${artistName} ${albumName} official music video`.trim()
-      : combinedText;
-
-  // 장소 정보 파싱
-  const placeInfoObj = parseJsonSafe(placeInfoRaw);
-  const parsedPlace = placeInfoObj?.place ?? "";
-
-  // 영화 정보 파싱
-  const movieInfoObj = parseJsonSafe(movieInfoRaw);
-  const parsedMovie = movieInfoObj?.trailer ?? "";
   const categoryId = product.category?.id ?? 0;
 
+  let artistName = "";
+  let albumName = "";
+  let searchQuery = "";
   let videos: YoutubeVideo[] = [];
   let videoTrailer: YoutubeVideo[] = [];
+  let parsedPlace = "";
+  let parsedMovie = "";
 
-  try {
-    videos = await getMusicvideo(searchQuery);
-  } catch (e) {
-    console.error("유튜브 fetch 실패 - videos:", e);
+  // 카테고리1 음악과 뮤직비디오
+  if (categoryId === 1) {
+    const albumInfoRaw = await fetchArtistAlbum(combinedText);
+    const albumInfoObj = parseJsonSafe(albumInfoRaw);
+    artistName = albumInfoObj?.artist?.replace(/\(.*?\)/g, "").trim() ?? "";
+    albumName = albumInfoObj?.album?.trim() ?? "";
+
+    searchQuery =
+      artistName.length > 0
+        ? `${artistName} ${albumName} official music video`.trim()
+        : combinedText;
+
+    try {
+      videos = await getMusicvideo(searchQuery);
+    } catch (e) {
+      console.error("유튜브 fetch 실패 - videos:", e);
+    }
   }
 
-  try {
-    videoTrailer = await getMusicvideo(parsedMovie);
-  } catch (e) {
-    console.error("유튜브 fetch 실패 - videoTrailer:", e);
+  // 카테고리 2 영화 or 드라마
+  if (categoryId === 2) {
+    const movieInfoRaw = await fetchMovieSearch(combinedText);
+    const movieInfoObj = parseJsonSafe(movieInfoRaw);
+    parsedMovie = movieInfoObj?.trailer ?? "";
+
+    try {
+      videoTrailer = await getMusicvideo(parsedMovie);
+    } catch (e) {
+      console.error("유튜브 fetch 실패 - videoTrailer:", e);
+    }
   }
 
+  // 카테고리 4 호텔 그리고 카테고리 6 음식점
+  if (categoryId === 4 || categoryId === 6) {
+    const placeInfoRaw = await fetchGoogleSearch(combinedText);
+    const placeInfoObj = parseJsonSafe(placeInfoRaw);
+    parsedPlace = placeInfoObj?.place ?? "";
+  }
   return (
     <>
       <LazyLoadSection>
