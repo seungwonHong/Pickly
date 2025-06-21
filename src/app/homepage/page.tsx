@@ -20,6 +20,7 @@ export default async function HomePage({
   const starProduct = await getProductsFetch({ order: "rating" });
 
   const sp = await searchParams;
+  //  sp 이거 어디다 쓰는거죠?
   const { id } = await params;
 
   return (

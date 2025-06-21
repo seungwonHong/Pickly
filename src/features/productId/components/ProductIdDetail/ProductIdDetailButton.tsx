@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 
@@ -67,7 +67,6 @@ export default function ProductIdDetailButton({
   }, [user, product.writerId]);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const sameCategoryCompareList = useMemo(() => {
     return compareList.filter(
@@ -78,25 +77,15 @@ export default function ProductIdDetailButton({
   //  ProductComparePlusModal 관련 상태
   const [comparePlusModalMessage, setComparePlusModalMessage] = useState("");
   const [comparePlusButtonMessage, setComparePlusButtonMessage] = useState("");
+  const [modal, setModal] = useState<ModalTypes | null>(null);
 
-  const modalFromUrl = searchParams.get("modal") as ModalTypes | null;
-  const [modal, setModal] = useState<ModalTypes | null>(modalFromUrl);
-
-  const { setName, setDescription, setImage, setClickedValue } =
+  const { setName, setDescription, setImage, setClickedValue, setIsModalOpen } =
     useModalStore();
 
-  const openModal = (modalName: ModalTypes) => {
-    setModal(modalName);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("modal", modalName);
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
+  const openModal = (modalName: ModalTypes) => setModal(modalName);
 
   const closeModal = () => {
     setModal(null);
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("modal");
-    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   // 로그인 리다이렉트 핸들러
@@ -162,16 +151,10 @@ export default function ProductIdDetailButton({
     setName(product.name || "");
     setDescription(product.description || "");
     setImage(product.image || "");
-    setClickedValue("수정하기");
+    setClickedValue(" " + product.category.name);
     openModal("editProduct");
+    setIsModalOpen(true);
   };
-
-  useEffect(() => {
-    const modalFromUrl = searchParams.get("modal") as ModalTypes | null;
-    if (modalFromUrl !== modal) {
-      setModal(modalFromUrl);
-    }
-  }, [searchParams.toString()]);
 
   return (
     <>
@@ -238,14 +221,12 @@ export default function ProductIdDetailButton({
       )}
 
       {modal === "editProduct" && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 bg-black/40">
-          <AddEditProductModal
-            buttonPlaceholder="수정하기"
-            modalType="editProduct"
-            purpose="상품 수정"
-            productinfo={product}
-          />
-        </div>
+        <AddEditProductModal
+          buttonPlaceholder="수정하기"
+          modalType="editProduct"
+          purpose="상품 수정"
+          productinfo={product}
+        />
       )}
     </>
   );
