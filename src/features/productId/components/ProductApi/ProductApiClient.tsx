@@ -1,30 +1,16 @@
-import {
-  QueryClient,
-  dehydrate,
-  HydrationBoundary,
-} from "@tanstack/react-query";
 import { getMusicvideo } from "@/features/productId/hooks/useGetMusicvideo";
-import ProductYouTubeWrapper from "./ProductYouTubeWrapper";
-
+import ProductYouTubeSection from "./ProductYouTubeSection";
+import { YoutubeVideo } from "@/features/productId/youtube-video";
 export default async function ProductApiClient({
   searchQuery,
   category,
+  initialVideos,
 }: {
   searchQuery: string;
   category: number;
+  initialVideos?: YoutubeVideo[];
 }) {
-  const queryClient = new QueryClient();
+  const videos = initialVideos ?? (await getMusicvideo(searchQuery));
 
-  await queryClient.prefetchQuery({
-    queryKey: ["youtube-video", searchQuery],
-    queryFn: () => getMusicvideo(searchQuery),
-  });
-
-  const dehydratedState = dehydrate(queryClient);
-
-  return (
-    <HydrationBoundary state={dehydratedState}>
-      <ProductYouTubeWrapper query={searchQuery} category={category} />
-    </HydrationBoundary>
-  );
+  return <ProductYouTubeSection category={category} initialVideos={videos} />;
 }

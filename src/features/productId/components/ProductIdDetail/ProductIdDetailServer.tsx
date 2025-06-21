@@ -1,13 +1,10 @@
 import ProductIdDetail from "./ProductIdDetail";
-import { productService } from "../../api";
+import { GetProductIdDetail } from "@/features/productId/types";
 
 export default async function ProductIdDetailServer({
-  productId,
+  product,
 }: {
-  productId: number;
+  product: GetProductIdDetail;
 }) {
-  const response = await productService.getProductsId(productId);
-  const product = response.data;
-
   return <ProductIdDetail product={product} />;
 }

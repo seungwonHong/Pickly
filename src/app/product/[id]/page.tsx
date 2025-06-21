@@ -30,18 +30,21 @@ export default async function ProductIdPage({ params }: PageProps) {
   const productId = Number(id);
   if (isNaN(productId)) return null;
 
-  const response = await productService.getProductsIdReviews(
+  const responseProductId = await productService.getProductsIdReviews(
     productId,
     "recent"
   );
+  const initialData = responseProductId.data;
 
-  const initialData = response.data;
+  const response = await productService.getProductsId(productId);
+  const product = response.data;
+
   return (
     <div>
       <div className="lg:w-[940px] mx-auto  lg:mb-[120px] lg:my-[160px] md:w-[684px] w-[335px] md:mt-[140px] md:mb-[147px] mt-[130px] mb-[200px] flex flex-col gap-[60px]">
-        <ProductIdDetailServer productId={productId} />
-        <ProductApiDetail productId={productId} />
-        <ProductIdStats productId={productId} />
+        <ProductIdDetailServer product={product} />
+        <ProductApiDetail product={product} />
+        <ProductIdStats product={product} />
         <ProductReviewsFetch
           productId={productId}
           initialData={initialData}

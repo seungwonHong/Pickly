@@ -1,22 +1,20 @@
 "use client";
+import React from "react";
+import { YoutubeVideo } from "../../youtube-video";
 
-import { useYouTubeQuery } from "@/features/productId/hooks/useGetMusicvideo";
+interface InnerYouTubeSectionProps {
+  category: number;
+  initialVideos?: YoutubeVideo[];
+}
 
 export default function ProductYouTubeSection({
-  query,
   category,
-}: {
-  query: string;
-  category: number;
-}) {
-  const { data: videos } = useYouTubeQuery(query);
+  initialVideos = [],
+}: InnerYouTubeSectionProps) {
+  const videos = initialVideos;
 
   if (!videos || videos.length === 0) {
-    return (
-      <div className="animate-pulse">
-        <div className="lg:min-w-[620px] md:min-w-[460px] lg:h-[350px] md:h-[260px] min-w-[330px] h-[190px] bg-gray-300 rounded-xl" />
-      </div>
-    );
+    return <div>영상이 없습니다.</div>;
   }
 
   if (category === 1) {
