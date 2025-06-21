@@ -1,9 +1,10 @@
+export const dynamic = "force-dynamic";
 import Header from "@/components/shared/Header";
 
 export default async function TermsPage() {
   return (
     <>
-      <Header />
+        <Header />
       <section
         className="
         lg:w-[940px] mx-auto 
