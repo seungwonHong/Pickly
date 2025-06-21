@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
 import { formatDate } from "../../../../lib/utils/datetime";
@@ -13,7 +13,6 @@ import useGetUser from "../../hooks/useGetUser";
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 
 import defaultImageProfile from "../../../../../public/defaultProfileImage.jpeg";
-import Star from "../../../../../public/icons/star.svg";
 
 const ProductReviewEditDelete = dynamic(
   () => import("./ProductReviewEditDelete")
