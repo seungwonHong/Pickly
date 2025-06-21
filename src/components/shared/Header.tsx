@@ -89,7 +89,9 @@ const Header = () => {
           <Link
             href={"/mypage"}
             className="md:hidden cursor-pointer lg:text-[16px] md:text-[14px] text-[#F1F1F5] font-normal"
-          >내 프로필</Link>
+          >
+            내 프로필
+          </Link>
         ) : (
           <Link
             href="/signin"
