@@ -92,9 +92,9 @@ export default function ProductSpotifyClient({
         />
         <span
           className="lg:w-[60px] w-[40px] lg:h-[60px] h-[40px] bg-green-500 rounded-full flex items-center justify-center absolute md:right-2 right-[-260px]  lg:top-[180px] md:top-[131px] top-[4px] z-10
-                   opacity-0 translate-y-4
-                   transition-all duration-300 ease-in-out
-                   group-hover:opacity-100 group-hover:translate-y-0"
+                   lg:opacity-0 lg:translate-y-4
+                   lg:transition-all lg:duration-300 ease-in-out
+                   lg:group-hover:opacity-100 lg:group-hover:translate-y-0"
         >
           <svg
             className="w-[30px] h-[30px] text-white"

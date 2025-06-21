@@ -8,6 +8,7 @@ import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { GetProductIdReviewsDetail } from "../../types";
 import { useGetProductId } from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
+import { useProductStatsStore } from "../../libs/useProductStatsStore";
 
 import BaseButton from "@/components/shared/BaseButton";
 import ProductReviewStarModal from "../modal/ProductReviewModal/ProductReviewStarModal";
@@ -22,6 +23,7 @@ interface ProductReviewModalProps {
   setOpen: (open: boolean) => void;
   reviewId: number;
   initialReviewData: GetProductIdReviewsDetail;
+  editRating?: number;
 }
 
 export default function ProductReviewEdit({
@@ -29,11 +31,17 @@ export default function ProductReviewEdit({
   setOpen,
   reviewId,
   initialReviewData,
+  editRating,
 }: ProductReviewModalProps) {
   const queryClient = useQueryClient();
+
+  const setGlobalRating = useProductStatsStore((state) => state.setRating);
+
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [reviewText, setReviewText] = useState(initialReviewData.content);
-  const [rating, setRating] = useState<number>(initialReviewData.rating);
+  const [rating, setRating] = useState<number>(
+    editRating ?? initialReviewData.rating
+  );
   const [images, setImages] = useState<ReviewImage[]>(
     initialReviewData.reviewImages.map((img) => ({ id: img.id }))
   );
@@ -51,12 +59,26 @@ export default function ProductReviewEdit({
       return reviewService.patchReviews({
         reviewId,
         content: reviewText,
-        rating,
+        rating: rating,
         images: formattedImages,
         accessToken,
       });
     },
-    onSuccess: () => {
+    onSuccess: (res) => {
+      const updatedReview = res.data;
+      const { rating: currentGlobalRating, reviewCount: currentReviewCount } =
+        useProductStatsStore.getState();
+
+      if (product && currentReviewCount > 0) {
+        const newAverageRating =
+          (currentGlobalRating * currentReviewCount -
+            initialReviewData.rating +
+            updatedReview.rating) /
+          currentReviewCount;
+
+        setGlobalRating(newAverageRating);
+      }
+
       toast.success("리뷰가 수정되었습니다!");
       setOpen(false);
       queryClient.invalidateQueries({
