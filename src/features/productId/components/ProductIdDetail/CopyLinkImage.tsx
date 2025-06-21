@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 
-import KakaoLink from "../../../../../public/images/kakao-link.png";
-import LinkShare from "../../../../../public/images/link-share.png";
+import KakaoLink from "../../../../../public/icons/kakako-link.png";
+import LinkShare from "../../../../../public/icons/link-share.png";
 import Trash from "../../../../../public/icons/trash-icon.png";
 
 import { productService } from "../../api";
@@ -129,36 +129,39 @@ export default function CopyLinkImage({
 
   return (
     <>
-      <div className="flex items-center justify-between gap-[10px]">
+      <div className="flex items-center justify-between gap-[10px] ">
         {isOwner && (
-          <Image
-            src={Trash}
-            alt="삭제"
-            width={28}
-            height={28}
+          <div
+            className="p-[5px] cursor-pointer bg-[#252530] rounded-[8px]"
             onClick={handleDeleteClick}
-            priority
-            className="cursor-pointer"
-          />
+          >
+            <Image src={Trash} alt="삭제" width={18} height={18} priority />
+          </div>
         )}
-        <Image
-          src={KakaoLink}
-          alt="카카오 공유 링크"
-          width={28}
-          height={28}
+        <div
+          className="p-[5px] cursor-pointer bg-[#252530] rounded-[8px]"
           onClick={handleKakaoShare}
-          priority
-          className="cursor-pointer"
-        />
-        <Image
-          src={LinkShare}
-          alt="링크 공유"
-          width={28}
-          height={28}
+        >
+          <Image
+            src={KakaoLink}
+            alt="카카오 공유 링크"
+            width={18}
+            height={18}
+            priority
+          />
+        </div>
+        <div
+          className="p-[5px] cursor-pointer bg-[#252530] rounded-[8px]"
           onClick={handleCopyLink}
-          priority
-          className="cursor-pointer"
-        />
+        >
+          <Image
+            src={LinkShare}
+            alt="링크 공유"
+            width={18}
+            height={18}
+            priority
+          />
+        </div>
       </div>
       {modalopen && (
         <ProductComparePlusModal

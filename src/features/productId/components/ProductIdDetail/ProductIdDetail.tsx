@@ -11,9 +11,7 @@ const CopyLinkImage = dynamic(() => import("./CopyLinkImage"), { ssr: false });
 const ProductIdDetailHeart = dynamic(() => import("./ProductIdDetailHeart"), {
   ssr: false,
 });
-const ProductIdReviewButton = dynamic(() => import("./ProductIdDetailButton"), {
-  ssr: false,
-});
+import ProductIdDetailButton from "./ProductIdDetailButton";
 
 export default function ProductIdDetailClient({
   product,
@@ -58,7 +56,7 @@ export default function ProductIdDetailClient({
           <div className="lg:text-[16px] md:text-[14px] font-normal">
             {product.description}
           </div>
-          <ProductIdReviewButton product={product} />
+          <ProductIdDetailButton product={product} />
         </div>
       </div>
     </div>

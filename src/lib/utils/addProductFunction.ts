@@ -78,8 +78,6 @@ export const handleSubmit = async ({
       });
 
       if (responseFile) {
-        console.log("responseFile:", responseFile);
-        console.log("사진 등록됨");
         const response = await postProduct({
           categoryId,
           name,
