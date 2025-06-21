@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import postImage from "@/features/home/services/postImage";
 import { productService } from "@/features/productId/api";
 import { useRouter } from "next/navigation";
+
 interface EditProps {
   handleClose: () => void;
   setEditProduct: React.Dispatch<React.SetStateAction<boolean>>;
@@ -113,7 +114,7 @@ const editProductFunction = async ({
     setName(null);
     setCategoryId?.(null);
     setClickedValue("카테고리 선택");
-    setDescription("");
+    setDescription(undefined);
     setImage(null);
     setFile?.(null);
 

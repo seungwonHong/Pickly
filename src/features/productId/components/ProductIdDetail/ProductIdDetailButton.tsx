@@ -151,7 +151,7 @@ export default function ProductIdDetailButton({
     setName(product.name || "");
     setDescription(product.description || "");
     setImage(product.image || "");
-    setClickedValue(" " + product.category.name);
+    setClickedValue(product.category.name);
     openModal("editProduct");
     setIsModalOpen(true);
   };
