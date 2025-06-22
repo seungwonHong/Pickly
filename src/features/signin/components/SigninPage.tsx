@@ -8,13 +8,13 @@ import BaseButton from "@/components/shared/BaseButton";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import ErrorPage from "@/app/signin/error";
 import { useLoginMutation } from "@/app/signin/useSignIn";
 import {
   AuthResponse,
   LoginForm,
   loginFormSchema,
 } from "@/app/signin/validationSchema";
+import ErrorPage from "@/app/signin/error";
 
 const login_logo = "/signup_logo.svg";
 
@@ -129,7 +129,7 @@ const SigninPage = () => {
                 </Link>
               </span>
             </div>
-            <div className="text-[var(--color-deepGray)] mt-[20px] text-center text-base">
+            {/* <div className="text-[var(--color-deepGray)] mt-[20px] text-center text-base">
               <ul className="flex justify-center gap-5 mt-[19px]">
                 <li>
                   <Link
@@ -182,7 +182,20 @@ const SigninPage = () => {
                   </Link>
                 </li>
               </ul>
-            </div>
+              
+              <ul className="flex justify-center gap-5 mt-[50px]">
+                <li>
+                  <Link href="/privacy" className="hover:underline text-[16px] text-[var(--color-deepGray)]">
+                    <span>개인정보처리방침</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:underline text-[16px] text-[var(--color-deepGray)]">
+                    <span>서비스 이용약관</span>
+                  </Link>
+                </li>
+              </ul>
+            </div> */}
           </div>
         </div>
       </div>

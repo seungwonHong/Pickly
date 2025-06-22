@@ -25,9 +25,6 @@ const SignUpPage = () => {
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
 
-  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email openid`;
-  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&scope=account_email,profile_nickname,profile_image&prompt=consent`;
- 
   const { mutate: signUp } = useSignUp({
     onSuccess: (data: AuthResponse) => {
       toast.success(`${data.user.nickname}님 회원가입 되었습니다!`);
@@ -134,7 +131,7 @@ const SignUpPage = () => {
             <div className="text-[var(--color-deepGray)] mt-[40px] text-center text-base">
               <span>이미 회원이신가요? <Link href="/signin" className="hover:text-[var(--color-white)]">로그인</Link></span>
             </div>
-            <div className="text-[var(--color-deepGray)] mt-[20px] text-center text-base">
+            {/* <div className="text-[var(--color-deepGray)] mt-[20px] text-center text-base">
               <ul className="flex justify-center gap-5 mt-[19px]">
                 <li>
                   <Link
@@ -185,7 +182,19 @@ const SignUpPage = () => {
                   </Link>
                 </li>
               </ul>
-            </div>
+              <ul className="flex justify-center gap-5 mt-[50px]">
+                <li>
+                  <Link href="/privacy" className="hover:underline text-[16px] text-[var(--color-deepGray)]">
+                    <span>개인정보처리방침</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:underline text-[16px] text-[var(--color-deepGray)]">
+                    <span>서비스 이용약관</span>
+                  </Link>
+                </li>
+              </ul> 
+            </div> */}
           </div>
         </div>
       </div>
