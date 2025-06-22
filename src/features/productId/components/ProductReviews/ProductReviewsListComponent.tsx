@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 import ThumbsUpButton from "@/components/shared/ThumbsUpButton";
-import { formatDate } from "../../../../lib/utils/datetime";
+import { formatDate, diffDate } from "../../../../lib/utils/datetime";
 import { GetProductIdReviewsDetail } from "../../types";
 import useGetUser from "../../hooks/useGetUser";
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
@@ -20,8 +20,10 @@ const ProductReviewEditDelete = dynamic(
 
 export default function ProductReviewsListComponent({
   review,
+  productId,
 }: {
   review: GetProductIdReviewsDetail;
+  productId: number;
 }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -106,7 +108,20 @@ export default function ProductReviewsListComponent({
 
         <div className="flex justify-between items-end">
           <div className="flex gap-[20px] lg:text-[14px] text-[12px] md:text-[12px]">
-            <div className="text-[#6E6E82]">{formatDate(review.createdAt)}</div>
+            {diffDate(review.createdAt) > 31 ? (
+              <>
+                <span className="text-[#6E6E82]">
+                  {formatDate(review.createdAt)}
+                </span>
+              </>
+            ) : (
+              <div className="flex gap-[2px]">
+                <span className="text-[#6E6E82]">
+                  {diffDate(review.createdAt)}
+                </span>
+                <span className="text-[#6E6E82]">일 전</span>
+              </div>
+            )}
             {isOwner && (
               <ProductReviewEditDelete
                 reviewId={review.id}
@@ -119,6 +134,7 @@ export default function ProductReviewsListComponent({
             reviewId={review.id}
             initialLikeCount={review.likeCount}
             initialIsLiked={review.isLiked}
+            productId={productId}
           />
         </div>
       </div>

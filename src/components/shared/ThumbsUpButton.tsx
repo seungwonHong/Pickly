@@ -14,10 +14,12 @@ export default function ThumbsUpButton({
   reviewId,
   initialLikeCount,
   initialIsLiked,
+  productId,
 }: {
   reviewId: number;
   initialLikeCount: number;
   initialIsLiked: boolean;
+  productId: number;
 }) {
   const router = useRouter();
   const {
@@ -26,7 +28,7 @@ export default function ThumbsUpButton({
     toggleLike,
     showLoginModal,
     setShowLoginModal,
-  } = useLikeButton(reviewId, initialLikeCount, initialIsLiked);
+  } = useLikeButton(reviewId, initialLikeCount, initialIsLiked, productId);
 
   return (
     <>
