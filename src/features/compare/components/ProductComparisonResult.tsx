@@ -16,9 +16,10 @@ const ProductComparisonResult = ({ winnerInfo, product1Name }: Props) => {
     ? "text-[var(--color-green)]"
     : "text-[var(--color-pink)]";
 
+
   return (
     <div className="text-center">
-      <h1 className="text-[24px] font-normal text-white mb-0">
+      <h1 className="text-[24px] font-normal text-white">
         {isDraw ? (
           <>무승부입니다!</>
         ) : (

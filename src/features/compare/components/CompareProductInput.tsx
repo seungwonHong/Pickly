@@ -53,6 +53,7 @@ export default function CompareProductInput({
             setSelected(true);
             onProductSelectId?.(product.id);
             onCategorySelect?.(product.categoryId);
+            onProductNameChange?.(product.name);
 
             const statsRes = await productService.getStats(product.id);
             const stats = statsRes.data;
