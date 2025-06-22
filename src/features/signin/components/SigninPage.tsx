@@ -8,13 +8,13 @@ import BaseButton from "@/components/shared/BaseButton";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import ErrorPage from "@/app/signin/error";
 import { useLoginMutation } from "@/app/signin/useSignIn";
 import {
   AuthResponse,
   LoginForm,
   loginFormSchema,
 } from "@/app/signin/validationSchema";
+import ErrorPage from "@/app/signin/error";
 
 const login_logo = "/signup_logo.svg";
 
@@ -179,6 +179,19 @@ const SigninPage = () => {
                     <span className="absolute group-hover:last:block hidden -bottom-[30px] left-1/2 translate-x-[-50%] text-[var(--color-deepGray)] text-[14px] whitespace-nowrap">
                       카카오톡 로그인
                     </span>
+                  </Link>
+                </li>
+              </ul>
+              
+              <ul className="flex justify-center gap-5 mt-[50px]">
+                <li>
+                  <Link href="/privacy" className="hover:underline text-[16px] text-[var(--color-deepGray)]">
+                    <span>개인정보처리방침</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:underline text-[16px] text-[var(--color-deepGray)]">
+                    <span>서비스 이용약관</span>
                   </Link>
                 </li>
               </ul>

@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { useOAuthLoginMutation } from '@/app/signin/useSignIn';
 import toast from 'react-hot-toast';
+import LoadingPage from '@/components/shared/Loading';
 
 const base64UrlDecode = (str: string) => {
   const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
@@ -20,6 +21,7 @@ export default function GoogleCallback() {
 
   const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI ?? '';
 
+  console.log('redirectUri:', redirectUri);
   const { mutate: oAuthLogin } = useOAuthLoginMutation({
     onSuccess: (data) => {
       toast.success(`${data.user.nickname}님, 로그인 성공!`);
@@ -93,5 +95,5 @@ export default function GoogleCallback() {
     fetchToken();
   }, [code]);
 
-  return <p>구글 로그인 중입니다...⏳</p>;
+  return <LoadingPage />;
 }

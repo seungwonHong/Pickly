@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
+import LoadingPage from '@/components/shared/Loading';
 
 export default function KakaoCallback() {
   const router = useRouter();
@@ -11,61 +12,62 @@ export default function KakaoCallback() {
   const code = searchParams.get('code');
 
   const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+useEffect(() => {
+  if (!code) return;
 
-  useEffect(() => {
-    if (!code) return;
-
-    const fetchToken = async () => {
-      try {
-        // 1. 카카오에서 access_token 요청
-        const payload = new URLSearchParams({
-          grant_type: 'authorization_code',
-          client_id: process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY!,
-          redirect_uri: redirectUri!,
-          code: code!,
-          client_secret: process.env.NEXT_PUBLIC_KAKAO_CLIENT_SECRET!, // 있다면
-        });
-
-        const tokenRes = await axios.post(
-          'https://kauth.kakao.com/oauth/token',
-          payload.toString(), // 반드시 toString으로 변환
-          {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-            },
-          }
-        );
-        const { access_token } = tokenRes.data;
-        console.log('카카오 access_token:', tokenRes);
-        console.log({
-          code,
-          redirectUri,
-          client_id: process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY,
-        });
-        // 2. 우리 백엔드에 access_token 전달
-        const kakaoUserCheckRes = await axios.post(`${Base_URL}/auth/signIn/kakao`, {
-          redirectUri,
-          token: access_token,
-        });
-
-        // 3. 로그인 성공 → 메인 페이지 이동
-        // router.push('/');
-      } catch (err: any) {
-
-        const raw = err?.response?.data || 'no data';
-        console.error('Axios 에러:', err.message);
-        console.warn('응답 raw data:', raw);
-        if (err.response?.status === 403) {
-          // router.replace(`/signup/kakao?email=${encodeURIComponent(email)}&provider=kakao`);
-        } else {
-          console.error('카카오 로그인 실패 😢', err);
-        }
-      }
+  const fetchToken = async () => {
+    const payload = {
+      redirectUri,
+      token: code,
     };
 
+    try {
+      // 1. 회원가입 & 로그인 병렬 요청
+      const [signUpResult, signInResult] = await Promise.allSettled([
+        axios.post(`${Base_URL}/auth/signUp/kakao`, {
+          ...payload,
+          nickname: 'Test11', // TODO: 최초 회원가입시만 필요. 이후 제거 예정
+        }),
+        axios.post(`${Base_URL}/auth/signIn/kakao`, payload),
+      ]);
 
-    fetchToken();
-  }, [code]);
+      // 2. 성공 응답 중 access_token 있는 거 찾기
+      const fulfilled = [signUpResult, signInResult].find(
+        (res): res is PromiseFulfilledResult<any> =>
+          res.status === 'fulfilled' && res.value?.data?.access_token
+      );
 
-  return <p>카카오 로그인 중입니다...⏳</p>;
+      console.log('✅ signUpResult:', signUpResult);
+      if (signUpResult.status === 'rejected') {
+        console.log('❌ signUpResult reason:', signUpResult.reason);
+      }
+      const access_token = fulfilled?.value?.data?.access_token;
+      console.log('✅ access_token:', access_token);
+
+      if (!access_token) {
+        console.warn('access_token 없음. 응답 확인 필요');
+        return;
+      }
+
+      // 3. 로그인 성공 처리
+      // router.push('/');
+
+    } catch (err: any) {
+      const status = err?.response?.status;
+      const raw = err?.response?.data;
+
+      console.error('❌ 카카오 로그인 실패:', err.message);
+      console.warn('서버 응답:', raw);
+
+      if (status === 403) {
+        // router.replace(`/signup/kakao?email=${encodeURIComponent(email)}&provider=kakao`);
+      }
+    }
+  };
+
+  fetchToken();
+}, [code]);
+
+
+  return <LoadingPage />;
 }
