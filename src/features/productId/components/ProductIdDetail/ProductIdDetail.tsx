@@ -8,9 +8,7 @@ import Image from "next/image";
 
 const CopyLinkImage = dynamic(() => import("./CopyLinkImage"), { ssr: false });
 
-const ProductIdDetailHeart = dynamic(() => import("./ProductIdDetailHeart"), {
-  ssr: false,
-});
+import ProductIdDetailHeart from "./ProductIdDetailHeart";
 import ProductIdDetailButton from "./ProductIdDetailButton";
 
 export default function ProductIdDetailClient({

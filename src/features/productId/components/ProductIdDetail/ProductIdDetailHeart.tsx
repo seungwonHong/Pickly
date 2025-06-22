@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -21,9 +21,11 @@ export default function ProductIdDetailHeart({
 }) {
   const [isLiked, setIsLiked] = useState(initialIsFavorite);
   const [showLoginModal, setShowLoginModal] = useState(false);
+
   const router = useRouter();
 
   const { favoriteCount, setFavoriteCount } = useProductStatsStore();
+
   const handleLike = async () => {
     const { isLoggedIn, accessToken } = await checkLoginStatus();
     if (!isLoggedIn) {
@@ -33,20 +35,44 @@ export default function ProductIdDetailHeart({
 
     try {
       if (!isLiked) {
-        await productService.postProductsFavorite(productId, accessToken ?? "");
+        const res = await productService.postProductsFavorite(
+          productId,
+          accessToken ?? ""
+        );
+
         setFavoriteCount(favoriteCount + 1);
+        setIsLiked(res.data.isFavorite);
       } else {
-        await productService.deleteProductsFavorite(
+        const res = await productService.deleteProductsFavorite(
           productId,
           accessToken ?? ""
         );
         setFavoriteCount(Math.max(favoriteCount - 1, 0));
+        setIsLiked(res.data.isFavorite);
       }
-      setIsLiked((prev) => !prev);
     } catch (error) {
       console.error("좋아요 에러:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchFavoriteStatus = async () => {
+      const { isLoggedIn, accessToken } = await checkLoginStatus();
+      if (isLoggedIn) {
+        try {
+          const res = await productService.getProductsId(
+            productId,
+            accessToken ?? ""
+          );
+          setIsLiked(res.data.isFavorite);
+        } catch (err) {
+          console.error("찜 상태 불러오기 실패:", err);
+        }
+      }
+    };
+
+    fetchFavoriteStatus();
+  }, [productId]);
 
   return (
     <>

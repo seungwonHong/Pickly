@@ -88,7 +88,11 @@ export default function ProductReviewsInfinite({
           className="flex flex-col md:gap-[20px] gap-[15px] md:mb-[20px] mb-[15px]"
         >
           {page?.list?.map((review) => (
-            <ProductReviewsListComponent key={review.id} review={review} />
+            <ProductReviewsListComponent
+              key={review.id}
+              review={review}
+              productId={productId}
+            />
           ))}
         </div>
       ))}
