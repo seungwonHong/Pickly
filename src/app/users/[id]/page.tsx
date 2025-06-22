@@ -41,7 +41,7 @@ export default async function UserPage({
         <Header />
       </header>
       <div
-        className="mt-[40px] px-[30px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-[20px] 
+        className="mt-[160px] px-[30px] height: 100vh; md:px-[117px] lg:mx-auto lg:px-[20px] 
       lg:flex lg:justify-center lg:gap-[70px] max-w-[1380px]  "
       >
         <div className="h-auto ">
