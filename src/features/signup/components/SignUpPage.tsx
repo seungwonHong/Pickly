@@ -185,6 +185,18 @@ const SignUpPage = () => {
                   </Link>
                 </li>
               </ul>
+              <ul className="flex justify-center gap-5 mt-[50px]">
+                <li>
+                  <Link href="/privacy" className="hover:underline text-[16px] text-[var(--color-deepGray)]">
+                    <span>개인정보처리방침</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:underline text-[16px] text-[var(--color-deepGray)]">
+                    <span>서비스 이용약관</span>
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
