@@ -20,8 +20,10 @@ const ProductReviewEditDelete = dynamic(
 
 export default function ProductReviewsListComponent({
   review,
+  productId,
 }: {
   review: GetProductIdReviewsDetail;
+  productId: number;
 }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -119,6 +121,7 @@ export default function ProductReviewsListComponent({
             reviewId={review.id}
             initialLikeCount={review.likeCount}
             initialIsLiked={review.isLiked}
+            productId={productId}
           />
         </div>
       </div>

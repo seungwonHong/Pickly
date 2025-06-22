@@ -71,14 +71,17 @@ class ProductService {
   getProductsIdReviews(
     productId: number,
     order?: "recent" | "ratingDesc" | "ratingAsc" | "likeCount" | undefined,
-    cursor?: number
+    cursor?: number,
+    accessToken?: string
   ) {
     let url = `${BaseURL}/products/${productId}/reviews`;
 
     if (order) url += `?order=${order}`;
     if (cursor) url += `&cursor=${cursor}`;
 
-    return axios.get(url);
+    return axios.get(url, {
+      headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+    });
   }
 
   postProductsFavorite(productId: number, accessToken: string) {
