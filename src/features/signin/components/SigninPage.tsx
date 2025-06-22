@@ -129,7 +129,7 @@ const SigninPage = () => {
                 </Link>
               </span>
             </div>
-            <div className="text-[var(--color-deepGray)] mt-[20px] text-center text-base">
+            {/* <div className="text-[var(--color-deepGray)] mt-[20px] text-center text-base">
               <ul className="flex justify-center gap-5 mt-[19px]">
                 <li>
                   <Link
@@ -195,7 +195,7 @@ const SigninPage = () => {
                   </Link>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
