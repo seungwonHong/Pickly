@@ -12,6 +12,7 @@ import { updateMyProfile } from "../api/updateMyProfile";
 import { getMyProfile } from "../api/getMyProfile";
 import { uploadProfileImage } from "../api/uploadImage";
 import ModalPortal from "./ModalPortal";
+import { motion, AnimatePresence } from "framer-motion";
 
 const DEFAULT_IMAGE_URL = defaultProfileImage.src;
 
@@ -98,58 +99,59 @@ export default function EditProfileModal({ isOpen, onClose }: Props) {
   if (!isOpen) return null;
 
   return (
-    <ModalPortal>
-      <div className="fixed inset-0 bg-[#000000]/50 z-[1000] flex items-center justify-center overflow-hidden">
-        <div
-          className="bg-[#1C1C22] rounded-xl w-[335px] h-[550px] md:w-[590px] md:h-[640px] lg:w-[620px] lg:h-[704px] relative pl-[20px] md:pl-[40px] pt-[40px] md:pt-[60px] pr-[18px] pb-[6px] md:pb-[40px]"
-          ref={modalRef}
-        >
-          <Image
-            src={closeButton}
-            className="absolute w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 top-[15px] right-[15px] md:top-5 md:right-5 cursor-pointer"
-            onClick={onClose}
-            alt="모달닫기 버튼"
-          />
+    <AnimatePresence>
+      <ModalPortal>
+        <motion.div className="fixed inset-0 bg-[#000000]/50 z-[1000] flex items-center justify-center overflow-hidden">
+          <motion.div
+            className="bg-[#1C1C22] rounded-xl w-[335px] h-[550px] md:w-[590px] md:h-[640px] lg:w-[620px] lg:h-[704px] relative pl-[20px] md:pl-[40px] pt-[40px] md:pt-[60px] pr-[18px] pb-[6px] md:pb-[40px]"
+            ref={modalRef}
+          >
+            <Image
+              src={closeButton}
+              className="absolute w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 top-[15px] right-[15px] md:top-5 md:right-5 cursor-pointer"
+              onClick={onClose}
+              alt="모달닫기 버튼"
+            />
 
-          <div className="text-white text-[20px] lg:text-[24px] font-semibold leading-[28px] mb-[20px] md:mb-[40px]">
-            프로필 편집
-          </div>
+            <motion.div className="text-white text-[20px] lg:text-[24px] font-semibold leading-[28px] mb-[20px] md:mb-[40px]">
+              프로필 편집
+            </motion.div>
 
-          <ImageUpload
-            defaultPreview={preview ?? DEFAULT_IMAGE_URL}
-            onImageSelect={(url) => {
-              if (url) {
-                setPreview(url);
-              } else {
-                setPreview(DEFAULT_IMAGE_URL);
-              }
-            }}
-          />
-
-          <div className="w-[295px] h-[55px] md:w-[510px] md:h-[60px] lg:w-[540px] rounded-[8px] bg-[#252530] border border-[#353542] my-[12px] focus-within:border-[#3B82F6] flex pl-[20px]">
-            <input
-              value={nickname}
-              onChange={(e) => {
-                const value = e.target.value;
-                setNickname(value);
-                if (value.length > 10) {
-                  setNicknameError("닉네임은 10자 이하로 입력해주세요.");
+            <ImageUpload
+              defaultPreview={preview ?? DEFAULT_IMAGE_URL}
+              onImageSelect={(url) => {
+                if (url) {
+                  setPreview(url);
                 } else {
-                  setNicknameError(null);
+                  setPreview(DEFAULT_IMAGE_URL);
                 }
               }}
-              className="w-full focus:outline-none placeholder-[var(--color-deepGray)] font-normal text-white"
-              placeholder="닉네임을 입력해주세요"
             />
-          </div>
-          {nicknameError && (
-            <p className="text-[12px] md:text-[12px] lg:text-[14px] text-[var(--color-red)] mb-[10px] ">
-              {nicknameError}
-            </p>
-          )}
 
-          <div
-            className={`
+            <motion.div className="w-[295px] h-[55px] md:w-[510px] md:h-[60px] lg:w-[540px] rounded-[8px] bg-[#252530] border border-[#353542] my-[12px] focus-within:border-[#3B82F6] flex pl-[20px]">
+              <input
+                value={nickname}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setNickname(value);
+                  if (value.length > 10) {
+                    setNicknameError("닉네임은 10자 이하로 입력해주세요.");
+                  } else {
+                    setNicknameError(null);
+                  }
+                }}
+                className="w-full focus:outline-none placeholder-[var(--color-deepGray)] font-normal text-white"
+                placeholder="닉네임을 입력해주세요"
+              />
+            </motion.div>
+            {nicknameError && (
+              <p className="text-[12px] md:text-[12px] lg:text-[14px] text-[var(--color-red)] mb-[10px] ">
+                {nicknameError}
+              </p>
+            )}
+
+            <motion.div
+              className={`
     w-[295px] h-[120px] md:w-[510px] md:h-[160px] lg:w-[540px] 
     relative p-[1px] bg-[#353542] rounded-[8px] mb-[20px]
     ${
@@ -158,32 +160,33 @@ export default function EditProfileModal({ isOpen, onClose }: Props) {
         : "focus-within:border-[#3B82F6]"
     }
   `}
-          >
-            <textarea
-              value={description}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value.length <= 300) {
-                  setDescription(value);
-                }
-              }}
-              placeholder="프로필 소개를 입력해주세요"
-              className="w-full h-full  outline-0 resize-none overflow-y-auto break-words rounded-[8px] bg-[#252530] p-[20px] placeholder-[var(--color-deepGray)] text-[var(--color-white)]"
-            />
-            <span className="absolute bottom-[20px] right-[20px] text-sm text-[var(--color-deepGray)]">
-              {description.length}/300
-            </span>
-          </div>
+            >
+              <textarea
+                value={description}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value.length <= 300) {
+                    setDescription(value);
+                  }
+                }}
+                placeholder="프로필 소개를 입력해주세요"
+                className="w-full h-full  outline-0 resize-none overflow-y-auto break-words rounded-[8px] bg-[#252530] p-[20px] placeholder-[var(--color-deepGray)] text-[var(--color-white)]"
+              />
+              <span className="absolute bottom-[20px] right-[20px] text-sm text-[var(--color-deepGray)]">
+                {description.length}/300
+              </span>
+            </motion.div>
 
-          <BaseButton
-            className="w-[295px] md:w-[510px] lg:w-[540px] h-[50px] md:h-[55px] lg:h-[65px] text-[16px] lg:text-[18px]"
-            onClick={handleSubmit}
-            disabled={isPending}
-          >
-            저장하기
-          </BaseButton>
-        </div>
-      </div>
-    </ModalPortal>
+            <BaseButton
+              className="w-[295px] md:w-[510px] lg:w-[540px] h-[50px] md:h-[55px] lg:h-[65px] text-[16px] lg:text-[18px]"
+              onClick={handleSubmit}
+              disabled={isPending}
+            >
+              저장하기
+            </BaseButton>
+          </motion.div>
+        </motion.div>
+      </ModalPortal>
+    </AnimatePresence>
   );
 }
