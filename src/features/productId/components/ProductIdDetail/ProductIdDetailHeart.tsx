@@ -72,7 +72,7 @@ export default function ProductIdDetailHeart({
     };
 
     fetchFavoriteStatus();
-  }, [productId, isLiked]);
+  }, [productId]);
 
   return (
     <>
