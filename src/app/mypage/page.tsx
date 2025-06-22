@@ -14,7 +14,6 @@ export default async function MyPage() {
     redirect("/signin");
   }
   const initialProducts = await getUserProducts(user.id, "reviewed");
-  // console.log(user);
 
   return (
     <>
