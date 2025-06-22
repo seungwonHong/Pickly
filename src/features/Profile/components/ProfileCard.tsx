@@ -20,7 +20,7 @@ export default function ProfileCard({ user, isMe }: Props) {
   const [followersCount, setFollowersCount] = useState(user.followersCount);
   const { isAuthenticated } = useAuthentication();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log("rr", isAuthenticated);
+
   return (
     <div className="mb-[60px] px-[20px] py-[30px] w-full h-auto rounded-lg bg-[#252530] border border-[#353542] md:px-[30px] lg:w-[340px] lg:mb-0 lg:sticky lg:top-[120px]">
       <div className="w-full h-auto flex flex-col items-center gap-[30px] lg:gap-10">
