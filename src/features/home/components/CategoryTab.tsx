@@ -11,7 +11,6 @@ interface Props {
 const CategoryTab = ({ placeholder, selected, icon }: Props) => {
   const textColor = selected ? "#F1F1F5" : "#6E6E82";
   const backGroundColor = selected ? "#252530" : "#1C1C22";
-  console.log(`${placeholder} :${selected}`);
 
   return (
     <Link href={`/homepage/${encodeURIComponent(placeholder)}?sort=recent`}>

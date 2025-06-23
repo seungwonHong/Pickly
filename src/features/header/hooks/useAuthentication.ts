@@ -11,7 +11,7 @@ const useAuthentication = () => {
             .split("; ")
             .find((row) => row.startsWith("csrf-token="))
             ?.split("=")[1] ?? "";
-        
+
         const res = await fetch("/api/cookie", {
           method: "GET",
           credentials: "include", // 쿠키 포함 옵션
@@ -23,10 +23,8 @@ const useAuthentication = () => {
         const data = await res.json();
 
         if (data.success) {
-          console.log("로그인 된 상태");
           setIsAuthenticated(true);
         } else {
-          console.log("로그인 돼있지 않음");
           setIsAuthenticated(false);
         }
       } catch (error) {

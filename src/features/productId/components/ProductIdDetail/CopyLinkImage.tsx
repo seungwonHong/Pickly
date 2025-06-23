@@ -107,7 +107,7 @@ export default function CopyLinkImage({
     try {
       await productService.deleteProductsId(productId, accessToken);
       toast.success("상품이 삭제되었습니다.");
-      router.push("/homepage");
+      router.back();
     } catch {
       toast.error("상품 삭제에 실패했습니다.");
     }
