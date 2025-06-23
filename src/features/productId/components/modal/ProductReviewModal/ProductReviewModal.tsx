@@ -123,7 +123,7 @@ export default function ProductReviewModal({
     },
 
     onError: () => {
-      toast.error("별점과 내용(10자 이상)을 입력해주세요.");
+      toast.error("별점(1점이상)과 내용(10자 이상)을 입력해주세요.");
     },
   });
   // 리뷰 작성 버튼 클릭 시 호출되는 함수
@@ -137,7 +137,7 @@ export default function ProductReviewModal({
     postReviewMutation.mutate({ accessToken });
   };
 
-  const isSubmitEnabled = reviewText.trim().length > 0;
+  const isSubmitEnabled = reviewText.trim().length > 0 && localRating > 0;
   if (!product) return null;
   return (
     <ReviewBaseModal

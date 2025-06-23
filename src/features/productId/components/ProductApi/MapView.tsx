@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
-
+import LoadingSkeletonYoutube from "./LoadingSkeletonYoutube";
 export default function MapByPlace({ place }: { place: string }) {
   if (!process.env.NEXT_PUBLIC_GOOGLE_API_KEY) {
     throw new Error("NEXT_PUBLIC_GOOGLE_API_KEY is not defined");
@@ -30,13 +30,8 @@ export default function MapByPlace({ place }: { place: string }) {
     });
   }, [isLoaded, place]);
 
-  if (!isLoaded) return <div>Loading...</div>;
-  if (!position)
-    return (
-      <div className="w-full h-[50px] text-amber-50 flex items-center justify-center">
-        해당 위치를 찾을 수 없습니다.
-      </div>
-    );
+  if (!isLoaded) return <LoadingSkeletonYoutube />;
+  if (!position) return <LoadingSkeletonYoutube />;
 
   return (
     <GoogleMap
@@ -44,7 +39,7 @@ export default function MapByPlace({ place }: { place: string }) {
       center={position}
       mapContainerStyle={{
         width: "100%",
-        height: "400px",
+        height: "350px",
         borderRadius: "8px",
       }}
     >
