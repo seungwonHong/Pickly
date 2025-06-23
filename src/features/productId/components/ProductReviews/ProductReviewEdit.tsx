@@ -70,7 +70,8 @@ export default function ProductReviewEdit({
       const state = useProductIDStatsStore.getState();
 
       const currentGlobalRating = state.rating[product.id] ?? product.rating;
-      const currentReviewCount = state.reviewCount[product.id] ?? 1;
+      const currentReviewCount =
+        state.reviewCount[product.id] ?? product.reviewCount ?? 0;
 
       if (product && currentReviewCount > 0) {
         const newAverageRating =

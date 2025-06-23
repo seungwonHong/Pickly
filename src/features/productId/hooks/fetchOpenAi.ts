@@ -17,9 +17,9 @@ export async function fetchArtistAlbum(text: string) {
     console.error("API 응답 실패", await res.text());
     return null;
   }
-  console.log(res);
+
   const data = await res.json();
-  console.log(data);
+
   return data.result;
 }
 
@@ -43,7 +43,7 @@ export async function fetchGoogleSearch(query: string) {
     return null;
   }
   const data = await res.json();
-  console.log("Google Search API 응답:", data);
+
   return data.result;
 }
 
@@ -52,8 +52,7 @@ export async function fetchMovieSearch(query: string) {
   const baseUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : process.env.BASE_URL ||
-        "https://mogazoa-api.vercel.app/14-6";
+      : process.env.BASE_URL || "https://mogazoa-api.vercel.app/14-6";
 
   const res = await fetch(`${baseUrl}/api/openai/extract-movie`, {
     method: "POST",
@@ -68,6 +67,6 @@ export async function fetchMovieSearch(query: string) {
     return null;
   }
   const data = await res.json();
- 
+
   return data.result;
 }
