@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-import { useProductStatsStore } from "@/features/productId/libs/useProductStatsStore";
+import { useProductIDStatsStore } from "@/features/productId/libs/useProductStatsStore";
 import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { useGetProductId } from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
@@ -22,16 +22,20 @@ export default function ProductReviewDelete({
   reviewId,
   deletedReviewRating,
 }: ProductReviewModalProps) {
-  const setReviewCount = useProductStatsStore((state) => state.setReviewCount);
-  const currentReviewCount = useProductStatsStore((state) => state.reviewCount);
+  const { product } = useGetProductId();
+  const setReviewCount = useProductIDStatsStore(
+    (state) => state.setReviewCount
+  );
+  const currentReviewCount = useProductIDStatsStore(
+    (state) => state.reviewCount[product?.id]
+  );
 
-  const setRating = useProductStatsStore((state) => state.setRating);
-  const rating = useProductStatsStore((state) => state.rating);
+  const setRating = useProductIDStatsStore((state) => state.setRating);
+  const rating = useProductIDStatsStore((state) => state.rating[product?.id]);
 
   const queryClient = useQueryClient();
 
   // 상품 ID를 가져오기 위한 커스텀 훅 사용
-  const { product } = useGetProductId();
 
   // 리뷰 patch 요청을 위한 useMutation 훅
   const deleteReviewMutation = useMutation({
@@ -48,11 +52,11 @@ export default function ProductReviewDelete({
           const newAverageRating =
             (rating * currentReviewCount - deletedReviewRating) / newCount;
 
-          setReviewCount(newCount);
-          setRating(newAverageRating);
+          setReviewCount(product.id, newCount);
+          setRating(product.id, newAverageRating);
         } else {
-          setReviewCount(0);
-          setRating(0);
+          setReviewCount(product.id, 0);
+          setRating(product.id, 0);
         }
       }
       toast.success("리뷰가 삭제되었습니다!");

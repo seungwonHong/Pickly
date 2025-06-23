@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { useProductStatsStore } from "../../libs/useProductStatsStore";
+import { useProductIDStatsStore } from "../../libs/useProductStatsStore";
 import { checkLoginStatus } from "../../hooks/checkLogin";
 import { productService } from "../../api";
 import ProductComparePlusModal from "@/components/shared/ProductComparePlusModal";
@@ -24,7 +24,7 @@ export default function ProductIdDetailHeart({
 
   const router = useRouter();
 
-  const { favoriteCount, setFavoriteCount } = useProductStatsStore();
+  const { favoriteCount, setFavoriteCount } = useProductIDStatsStore();
 
   const handleLike = async () => {
     const { isLoggedIn, accessToken } = await checkLoginStatus();
@@ -40,14 +40,17 @@ export default function ProductIdDetailHeart({
           accessToken ?? ""
         );
 
-        setFavoriteCount(favoriteCount + 1);
+        setFavoriteCount(productId, (favoriteCount[productId] ?? 0) + 1);
         setIsLiked(res.data.isFavorite);
       } else {
         const res = await productService.deleteProductsFavorite(
           productId,
           accessToken ?? ""
         );
-        setFavoriteCount(Math.max(favoriteCount - 1, 0));
+        setFavoriteCount(
+          productId,
+          Math.max((favoriteCount[productId] ?? 0) - 1, 0)
+        );
         setIsLiked(res.data.isFavorite);
       }
     } catch (error) {

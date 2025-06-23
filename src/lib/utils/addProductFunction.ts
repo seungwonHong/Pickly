@@ -71,7 +71,6 @@ export const handleSubmit = async ({
     const { accessToken } = await res.json();
 
     if (accessToken) {
-      console.log("accessToken:", accessToken);
       const responseFile = await postImage({
         file,
         accessToken: accessToken.value,
@@ -88,7 +87,7 @@ export const handleSubmit = async ({
 
         if (response?.status === 200 || response?.status === 201) {
           toast.success("상품이 등록되었습니다.");
-          console.log("포스트 등록됨");
+
           setName(null);
           setCategoryId(null);
           setClickedValue("카테고리 선택");

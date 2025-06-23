@@ -1,70 +1,76 @@
 "use client";
- 
-import { InputField } from '@/components/input/InputField';
-import BaseButton from '@/components/shared/BaseButton';
-import Image from 'next/image';
-import Link from 'next/link';
-import {  useRouter, useSearchParams } from 'next/navigation';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import axios, { AxiosError } from 'axios';
-import { SimpleJoinForm, simpleJoinFormSchema } from '@/app/signup/validationSchema';
+
+import { InputField } from "@/components/input/InputField";
+import BaseButton from "@/components/shared/BaseButton";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios, { AxiosError } from "axios";
+import {
+  SimpleJoinForm,
+  simpleJoinFormSchema,
+} from "@/app/signup/validationSchema";
 
 const login_logo = "/signup_logo.svg";
 
 export default function OAuthSignUpPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const provider = searchParams.get('provider') ;
-  const email = searchParams.get('email');
-  const token = searchParams.get('token');
-  const redirectUri = provider === 'google'
-    ? process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
-    : process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+  const provider = searchParams.get("provider");
+  const email = searchParams.get("email");
+  const token = searchParams.get("token");
+  const redirectUri =
+    provider === "google"
+      ? process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
+      : process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 
-  console.log('provider:', provider);
-  console.log('email:', email);
-   const {
-     register,
-     handleSubmit,
-     formState: { errors, isValid },
-   } = useForm<SimpleJoinForm>({
-     mode: "onChange", // blur 시 유효성 검사
-     resolver: zodResolver(simpleJoinFormSchema),
-   });
- 
-   const onSubmit: SubmitHandler<SimpleJoinForm> = async (data) => {
-    console.log('Form Data:', data);    
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<SimpleJoinForm>({
+    mode: "onChange", // blur 시 유효성 검사
+    resolver: zodResolver(simpleJoinFormSchema),
+  });
+
+  const onSubmit: SubmitHandler<SimpleJoinForm> = async (data) => {
     // 여기서 백엔드 API 호출하여 회원가입 처리
-    
-      try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/signUp/${provider}`, {
+
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/signUp/${provider}`,
+        {
           nickname: data.nickname,
           redirectUri,
-          token
-        });
-
-        console.log('회원가입 성공:', response.data);
-
-        // 회원가입 후 로그인 페이지 또는 메인으로 리다이렉트
-        router.replace('/signin');
-      } catch (error:  AxiosError | any) {
-        if (error.response?.data?.message) {
-          alert(`회원가입 실패: ${error.response.data.message}`);
-        } else {
-          alert('회원가입 중 오류가 발생했습니다.');
+          token,
         }
-        console.error('회원가입 실패 ❌', error);
+      );
+
+      console.log("회원가입 성공:", response.data);
+
+      // 회원가입 후 로그인 페이지 또는 메인으로 리다이렉트
+      router.replace("/signin");
+    } catch (error: AxiosError | any) {
+      if (error.response?.data?.message) {
+        alert(`회원가입 실패: ${error.response.data.message}`);
+      } else {
+        alert("회원가입 중 오류가 발생했습니다.");
       }
-   };
+      console.error("회원가입 실패 ❌", error);
+    }
+  };
 
   return (
     <>
-      <div className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center bg-no-repeat`}>
+      <div
+        className={`min-h-dvh bg-[url('/signup_bg.jpg')] bg-cover bg-center bg-no-repeat`}
+      >
         <div className="max-w-[440px] md:max-w-[640px] w-full mx-auto pt-[93px] pb-[93px] min-h-[100dvh] flex justify-center items-center">
           <div className="w-full px-[20px] lg:px-[0px]">
             <div className="flex justify-center items-center mb-[25px]">
-              <Link href="/" >
+              <Link href="/">
                 <Image
                   src={login_logo}
                   width={193}
@@ -97,12 +103,18 @@ export default function OAuthSignUpPage() {
             </form>
             <ul className="flex justify-center gap-5 mt-[50px]">
               <li>
-                <Link href="/privacy" className="hover:underline text-[16px] text-[var(--color-deepGray)]">
+                <Link
+                  href="/privacy"
+                  className="hover:underline text-[16px] text-[var(--color-deepGray)]"
+                >
                   <span>개인정보처리방침</span>
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:underline text-[16px] text-[var(--color-deepGray)]">
+                <Link
+                  href="/terms"
+                  className="hover:underline text-[16px] text-[var(--color-deepGray)]"
+                >
                   <span>서비스 이용약관</span>
                 </Link>
               </li>

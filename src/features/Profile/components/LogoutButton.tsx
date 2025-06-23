@@ -4,10 +4,12 @@ import TypeButton from "@/components/shared/TypeButton";
 import { useRouter } from "next/navigation";
 import LogoutConfirmModal from "./LogoutConfirmModal";
 import { useState } from "react";
+import { useUserStore } from "@/features/productId/libs/useUserStore";
 
 export default function LogoutButton() {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
+  const clearAll = useUserStore((state) => state.clearAll);
 
   const handleLogout = async () => {
     try {
@@ -17,6 +19,7 @@ export default function LogoutButton() {
       const data = await res.json();
 
       if (data.success) {
+        clearAll();
         toast.success("로그아웃 되었습니다.");
         router.push("/");
         router.refresh();
@@ -32,7 +35,7 @@ export default function LogoutButton() {
   return (
     <>
       <TypeButton
-        className=" hover:bg-[#BF0C0C] hover:border-none  font-semibold md:h-[55px] lg:h-[65px] lg:text-[18px] h-[50px]"
+        className=" hover:bg-[#FB4444] hover:text-[#ffffff] hover:border-none  font-semibold md:h-[55px] lg:h-[65px] lg:text-[18px] h-[50px]"
         type="tertiary"
         onClick={() => setModalOpen(true)}
       >
