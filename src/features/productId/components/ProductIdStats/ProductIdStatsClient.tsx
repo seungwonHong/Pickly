@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
-import { useProductStatsStore } from "../../libs/useProductStatsStore";
+import { useProductIDStatsStore } from "../../libs/useProductStatsStore";
 
 import { GetProductIdDetail } from "../../types";
 import Heart from "../../../../../public/icons/Heart.png";
@@ -13,30 +13,45 @@ export default function ProductStatsClient({
 }: {
   product: GetProductIdDetail;
 }) {
-  const rating = useProductStatsStore((state) => state.rating);
-  const reviewCount = useProductStatsStore((state) => state.reviewCount);
-  const favoriteCount = useProductStatsStore((state) => state.favoriteCount);
+  const {
+    rating,
+    reviewCount,
+    favoriteCount,
+    // isFavorite,
+    setRating,
+    setReviewCount,
+    setFavoriteCount,
+    setIsFavorite,
+  } = useProductIDStatsStore();
 
-  const setRating = useProductStatsStore((state) => state.setRating);
-  const setReviewCount = useProductStatsStore((state) => state.setReviewCount);
-  const setFavoriteCount = useProductStatsStore(
-    (state) => state.setFavoriteCount
-  );
-  const setIsFavorite = useProductStatsStore((state) => state.setIsFavorite);
+  const currentRating = rating[product.id];
+  const currentReviewCount = reviewCount[product.id];
+  const currentFavoriteCount = favoriteCount[product.id];
+  // const currentIsFavorite = isFavorite[product.id];
 
   useEffect(() => {
-    if (rating === 0 && reviewCount === 0 && favoriteCount === 0) {
-      setRating(product.rating);
-      setReviewCount(product.reviewCount);
-      setFavoriteCount(product.favoriteCount);
-      setIsFavorite?.(product.isFavorite);
+    if (
+      currentRating === undefined &&
+      currentReviewCount === undefined &&
+      currentFavoriteCount === undefined
+    ) {
+      setRating(product.id, product.rating);
+      setReviewCount(product.id, product.reviewCount);
+      setFavoriteCount(product.id, product.favoriteCount);
+      setIsFavorite(product.id, product.isFavorite);
     }
-  }, [product]);
+  }, [
+    product.id,
+    product.rating,
+    product.reviewCount,
+    product.favoriteCount,
+    product.isFavorite,
+  ]);
 
   const isLoading =
-    rating === undefined ||
-    reviewCount === undefined ||
-    favoriteCount === undefined;
+    currentRating === undefined ||
+    currentReviewCount === undefined ||
+    currentFavoriteCount === undefined;
   return (
     <div className="md:h-[244px] h-full min-h-[200px] text-amber-50 flex items-start flex-col gap-[29px]">
       <div className="lg:text-[20px] md:text-[16px] font-normal">상품통계</div>
@@ -52,27 +67,31 @@ export default function ProductStatsClient({
           <ProductIdStatsBone
             title="별점 평균"
             icon={Star}
-            score={Number(rating.toFixed(1))}
+            score={Number(currentRating.toFixed(1))}
             diffValue={Number(
-              (rating - product.categoryMetric.rating).toFixed(1)
+              (currentRating - product.categoryMetric.rating).toFixed(1)
             )}
             unit=" 점"
           />
           <ProductIdStatsBone
             title="하트 수"
             icon={Heart}
-            score={Number(favoriteCount.toFixed(1))}
+            score={Number(currentFavoriteCount.toFixed(1))}
             diffValue={Number(
-              (favoriteCount - product.categoryMetric.favoriteCount).toFixed(1)
+              (
+                currentFavoriteCount - product.categoryMetric.favoriteCount
+              ).toFixed(1)
             )}
             unit=" 개"
           />
           <ProductIdStatsBone
             title="댓글 수"
             icon={Talk}
-            score={Number(reviewCount.toFixed(1))}
+            score={Number(currentReviewCount.toFixed(1))}
             diffValue={Number(
-              (reviewCount - product.categoryMetric.reviewCount).toFixed(1)
+              (currentReviewCount - product.categoryMetric.reviewCount).toFixed(
+                1
+              )
             )}
             unit=" 개"
           />

@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { checkLoginStatus } from "../../../hooks/checkLogin";
 import BaseButton from "@/components/shared/BaseButton";
 
-import { useProductStatsStore } from "@/features/productId/libs/useProductStatsStore";
+import { useProductIDStatsStore } from "@/features/productId/libs/useProductStatsStore";
 import { GetProductIdReviews, GetProductIdReviewsDetail } from "../../../types";
 import { useGetProductId } from "../../../hooks/useGetProductId";
 import { reviewService } from "../../../api";
@@ -25,12 +25,7 @@ const ReviewBaseModal = dynamic(() => import("./ReviewBaseModal"), {
 const ProductIdGetModal = dynamic(() => import("./ProductIdGetModal"), {
   ssr: false,
 });
-const ProductReviewStarModal = dynamic(
-  () => import("./ProductReviewStarModal"),
-  {
-    ssr: false,
-  }
-);
+import ProductReviewStarModal from "./ProductReviewStarModal";
 interface ProductReviewModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -40,18 +35,24 @@ export default function ProductReviewModal({
   open,
   setOpen,
 }: ProductReviewModalProps) {
-  const setReviewCount = useProductStatsStore((state) => state.setReviewCount);
-  const currentReviewCount = useProductStatsStore((state) => state.reviewCount);
+  // 상품 ID를 가져오기 위한 커스텀 훅 사용
+  const { product } = useGetProductId();
+  const setReviewCount = useProductIDStatsStore(
+    (state) => state.setReviewCount
+  );
+  const currentReviewCount = useProductIDStatsStore(
+    (state) => state.reviewCount[product?.id]
+  );
 
-  const setRating = useProductStatsStore((state) => state.setRating);
-  const rating = useProductStatsStore((state) => state.rating);
+  const setRating = useProductIDStatsStore((state) => state.setRating);
+  const currentRating = useProductIDStatsStore(
+    (state) => state.rating[product?.id]
+  );
 
   const queryClient = useQueryClient();
   const [reviewText, setReviewText] = useState("");
-
+  const [localRating, setLocalRating] = useState(product?.rating ?? 0);
   const [images, setImages] = useState<string[]>([]);
-  // 상품 ID를 가져오기 위한 커스텀 훅 사용
-  const { product } = useGetProductId();
 
   // 리뷰 post 요청을 위한 useMutation 훅
   const postReviewMutation = useMutation({
@@ -59,7 +60,7 @@ export default function ProductReviewModal({
       reviewService.postReviews({
         productId: product.id,
         content: reviewText,
-        rating: rating,
+        rating: localRating,
         images: images,
         accessToken: accessToken,
       }),
@@ -100,13 +101,21 @@ export default function ProductReviewModal({
 
       // 캐시 업데이트 후 실제 데이터 찍기
       queryClient.getQueryData(["reviews", product.id, "recent"]);
+      // 안전하게 기본값 설정
+      const safeCurrentRating = currentRating ?? product.rating ?? 0;
+      const safeCurrentReviewCount =
+        currentReviewCount ?? product.reviewCount ?? 0;
 
-      setReviewCount(currentReviewCount + 1);
+      // 리뷰 수 1 증가
+      const newReviewCount = safeCurrentReviewCount + 1;
+      setReviewCount(product.id, newReviewCount);
+
+      // 평균 별점 새로 계산
       const newAverageRating =
-        (product.rating * currentReviewCount + newReview.rating) /
-        (currentReviewCount + 1);
+        (safeCurrentRating * safeCurrentReviewCount + newReview.rating) /
+        newReviewCount;
 
-      setRating(newAverageRating);
+      setRating(product.id, newAverageRating);
 
       toast.success("리뷰가 등록되었습니다!");
       setReviewText("");
@@ -130,7 +139,7 @@ export default function ProductReviewModal({
   };
 
   const isSubmitEnabled = reviewText.trim().length > 0;
-
+  if (!product) return null;
   return (
     <ReviewBaseModal
       isOpen={open}
@@ -142,7 +151,9 @@ export default function ProductReviewModal({
         <ProductIdGetModal />
         <div className="flex flex-col md:gap-[20px] gap-[10px] ">
           {/* 별점 입력 모달 */}
-          <ProductReviewStarModal onChange={setRating} />
+          <ProductReviewStarModal
+            onChange={(rating) => setLocalRating(rating)}
+          />
           {/* 리뷰 내용 입력 모달 */}
           <ProductReviewInputModal
             onTextChange={setReviewText}

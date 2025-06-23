@@ -1,5 +1,43 @@
 import { create } from "zustand";
 
+interface ProductStatsState {
+  rating: Record<number, number>;
+  reviewCount: Record<number, number>;
+  favoriteCount: Record<number, number>;
+  isFavorite: Record<number, boolean>;
+  setRating: (productId: number, rating: number) => void;
+  setReviewCount: (productId: number, count: number) => void;
+  setFavoriteCount: (productId: number, count: number) => void;
+  setIsFavorite: (productId: number, isFavorite: boolean) => void;
+}
+
+export const useProductIDStatsStore = create<ProductStatsState>((set) => ({
+  rating: {},
+  reviewCount: {},
+  favoriteCount: {},
+  isFavorite: {},
+
+  setRating: (productId, rating) =>
+    set((state) => ({
+      rating: { ...state.rating, [productId]: rating },
+    })),
+
+  setReviewCount: (productId, count) =>
+    set((state) => ({
+      reviewCount: { ...state.reviewCount, [productId]: count },
+    })),
+
+  setFavoriteCount: (productId, count) =>
+    set((state) => ({
+      favoriteCount: { ...state.favoriteCount, [productId]: count },
+    })),
+
+  setIsFavorite: (productId, isFavorite) =>
+    set((state) => ({
+      isFavorite: { ...state.isFavorite, [productId]: isFavorite },
+    })),
+}));
+
 interface ProductStats {
   rating: number;
   reviewCount: number;
