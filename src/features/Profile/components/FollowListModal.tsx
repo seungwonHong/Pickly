@@ -153,7 +153,9 @@ export default function FollowListModal({
         />
 
         {/* 타이틀 */}
-        <h2 className=" text-[20px] lg-[24px] font-semibold  my-7">{title}</h2>
+        <h2 className=" text-[20px] text-[#ffffff] lg-[24px] font-semibold  my-7">
+          {title}
+        </h2>
 
         {/* 리스트 */}
         {users.length === 0 ? (
