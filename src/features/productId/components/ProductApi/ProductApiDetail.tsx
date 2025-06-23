@@ -87,6 +87,7 @@ export default async function ProductApiDetail({
     const placeInfoObj = parseJsonSafe(placeInfoRaw);
     parsedPlace = placeInfoObj?.place ?? "";
   }
+
   return (
     <>
       <LazyLoadSection>
