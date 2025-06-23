@@ -22,8 +22,6 @@ const ReviewerTab = ({ rank, rankNum }: Props) => {
     bgColor = "bg-[#9FA6B21A]";
   }
 
-  console.log(`rank Image: ${rank.image}`);
-
   return (
     <div className="flex flex-row lg:mb-[30px] shrink-0 lg:w-full">
       <Link href={`/users/${rank.id}`}>
