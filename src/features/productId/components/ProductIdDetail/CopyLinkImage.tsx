@@ -45,7 +45,6 @@ export default function CopyLinkImage({
 
       if (kakaoKey) {
         window.Kakao.init(kakaoKey);
-        console.log("Kakao SDK 초기화 완료");
       } else {
         console.error("Kakao JS 키가 없습니다. .env.local을 확인해주세요.");
       }
@@ -66,9 +65,7 @@ export default function CopyLinkImage({
   };
 
   const handleKakaoShare = () => {
-    console.log("카카오 공유 버튼 클릭됨");
     if (window.Kakao) {
-      console.log("window.Kakao 존재");
       window.Kakao.Share.sendDefault({
         objectType: "feed",
         content: {

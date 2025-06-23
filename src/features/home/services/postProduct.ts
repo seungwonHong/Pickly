@@ -17,13 +17,6 @@ export default async function postProduct({
   name,
   accessToken,
 }: Props) {
-  console.log("상품 등록 요청 payload", {
-    categoryId,
-    image,
-    description,
-    name,
-  });
-  
   try {
     const res = await axios.post(
       `${Base_URL}/products`,

@@ -26,7 +26,6 @@ export async function getProducts({
     const response = await axios.get(`${Base_URL}/products`, { params });
     return response.data;
   } catch (error) {
-    console.log(`상품 가져오기 실패: ${error}`);
     throw error;
   }
 }
@@ -45,8 +44,6 @@ export async function getProductsFetch({
 
   const query = new URLSearchParams(params).toString();
 
-  console.log(query);
-
   try {
     const response = await fetch(`${Base_URL}/products?${query}`, {
       cache: "no-store",
@@ -58,7 +55,6 @@ export async function getProductsFetch({
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(`상품 가져오기 실패: ${error}`);
     throw error;
   }
 }

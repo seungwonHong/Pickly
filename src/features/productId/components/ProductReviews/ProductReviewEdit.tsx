@@ -8,7 +8,7 @@ import { checkLoginStatus } from "@/features/productId/hooks/checkLogin";
 import { GetProductIdReviewsDetail } from "../../types";
 import { useGetProductId } from "../../hooks/useGetProductId";
 import { reviewService } from "../../api";
-import { useProductStatsStore } from "../../libs/useProductStatsStore";
+import { useProductIDStatsStore } from "../../libs/useProductStatsStore";
 
 import BaseButton from "@/components/shared/BaseButton";
 import ProductReviewStarModal from "../modal/ProductReviewModal/ProductReviewStarModal";
@@ -35,7 +35,7 @@ export default function ProductReviewEdit({
 }: ProductReviewModalProps) {
   const queryClient = useQueryClient();
 
-  const setGlobalRating = useProductStatsStore((state) => state.setRating);
+  const setGlobalRating = useProductIDStatsStore((state) => state.setRating);
 
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [reviewText, setReviewText] = useState(initialReviewData.content);
@@ -66,8 +66,12 @@ export default function ProductReviewEdit({
     },
     onSuccess: (res) => {
       const updatedReview = res.data;
-      const { rating: currentGlobalRating, reviewCount: currentReviewCount } =
-        useProductStatsStore.getState();
+
+      const state = useProductIDStatsStore.getState();
+
+      const currentGlobalRating = state.rating[product.id] ?? product.rating;
+      const currentReviewCount =
+        state.reviewCount[product.id] ?? product.reviewCount ?? 0;
 
       if (product && currentReviewCount > 0) {
         const newAverageRating =
@@ -76,7 +80,7 @@ export default function ProductReviewEdit({
             updatedReview.rating) /
           currentReviewCount;
 
-        setGlobalRating(newAverageRating);
+        setGlobalRating(product.id, newAverageRating);
       }
 
       toast.success("리뷰가 수정되었습니다!");

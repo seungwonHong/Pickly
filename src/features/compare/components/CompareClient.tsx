@@ -6,7 +6,7 @@ import LoadingClient from "@/app/compare/loadingClient";
 
 export default function CompareClient() {
   return (
-    <div className="flex flex-col mt-[40px]">
+    <div className="flex flex-col my-[40px]">
       <Suspense fallback={<LoadingClient />}>
         <CompareProductForm />
       </Suspense>

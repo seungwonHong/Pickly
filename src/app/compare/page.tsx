@@ -6,8 +6,8 @@ export default function Compare() {
   return (
     <div>
       <Header />
-      <div className="flex flex-col mt-[40px]">
-          <CompareClient />
+      <div className="flex flex-col my-[40px]">
+        <CompareClient />
       </div>
     </div>
   );
