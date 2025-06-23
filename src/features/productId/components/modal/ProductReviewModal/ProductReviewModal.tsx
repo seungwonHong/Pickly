@@ -122,8 +122,7 @@ export default function ProductReviewModal({
       setOpen(false);
     },
 
-    onError: (error) => {
-      console.log("onError:", error);
+    onError: () => {
       toast.error("별점과 내용(10자 이상)을 입력해주세요.");
     },
   });
