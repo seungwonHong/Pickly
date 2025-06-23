@@ -6,8 +6,6 @@ const Category = ({ categoryId }: { categoryId: string }) => {
   const decodedId =
     typeof categoryId === "string" ? decodeURIComponent(categoryId) : "";
 
-  console.log(decodedId);
-
   return (
     <nav className="flex flex-col lg:w-[220px] md:w-[15vw] w-[180px] h-full px-[10px] bg-[#1C1C22]">
       <span className="lg:mt-[45px] mt-[45px] lg:ml-[20px] ml-[20px] lg:mb-0 mb-[20px] lg:text-[16px] text-[14px] text-[#F1F1F5] font-normal">
@@ -18,7 +16,7 @@ const Category = ({ categoryId }: { categoryId: string }) => {
         <CategoryTab
           placeholder="검색"
           selected={decodedId === "검색"}
-          icon={<CiSearch className="mr-[10px]"/>}
+          icon={<CiSearch className="mr-[10px]" />}
         />
         <CategoryTab placeholder="음악" selected={decodedId === "음악"} />
         <CategoryTab
